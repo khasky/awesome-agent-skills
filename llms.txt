@@ -1,0 +1,29 @@
+# Awesome Agent Skills
+
+> Skills for AI coding agents in the Agent Skills (agentskills.io) format: code review, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a SKILL.md; install by copying the folder into your agent's skills directory (`.claude/skills/`, `.agents/skills/`, or equivalent — see README).
+
+## Skills
+
+- [awesome-code-review](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-code-review/SKILL.md): Reviews diffs and PRs for correctness, security, and team standards, with confidence-scored findings in severity buckets.
+- [awesome-code-review-feedback](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-code-review-feedback/SKILL.md): Responds to review feedback: verify before implementing, clarify unclear items, push back with technical reasoning.
+- [awesome-code-standards](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-code-standards/SKILL.md): Naming, structure, immutability, and type-safety patterns for consistent code.
+- [awesome-code-cleanup](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-code-cleanup/SKILL.md): Repo-wide cleanup of AI-like code noise: comments by default, plus read-only audit and refactor modes — strictly behavior-preserving.
+- [awesome-bug-fix](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-bug-fix/SKILL.md): Reproduce with a runnable pass/fail signal, isolate root cause, fix, verify — no fixes without root cause first.
+- [awesome-root-cause](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-root-cause/SKILL.md): Structured root-cause analysis for incidents and process problems with no failing test: 5-Whys, fishbone, PDCA, one-page A3.
+- [awesome-error-standards](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-error-standards/SKILL.md): Consistent error handling: typed errors, operational-vs-programmer classification, API error envelopes.
+- [awesome-logging-standards](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-logging-standards/SKILL.md): Structured logging, levels, PII handling, and wide-event (canonical log line) patterns.
+- [awesome-security-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-security-audit/SKILL.md): Audits for injection, secrets, auth issues, and dependency CVEs with confidence-gated, CWE/OWASP-mapped findings.
+- [awesome-leak-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-leak-audit/SKILL.md): Audits a public client (extension, app, SPA, CLI) so it doesn't leak backend internals; client-side hardening included.
+- [awesome-accessibility-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-accessibility-audit/SKILL.md): WCAG 2.1/2.2 accessibility checks and concrete fixes: keyboard, labels, contrast, focus, dynamic content.
+- [awesome-seo-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-seo-audit/SKILL.md): Read-only SEO and AI-discoverability audit — technical SEO, programmatic-page safety, agent/LLM readability — with a SHIP/FIX/BLOCK verdict.
+- [awesome-performance-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-performance-audit/SKILL.md): Read-only server/runtime performance and reliability audit — event loop, streams/backpressure, memory diagnostics, graceful shutdown — with a SHIP/FIX/BLOCK verdict.
+- [awesome-landing-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-landing-audit/SKILL.md): Read-only structural audit of landing/marketing pages — single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics, not copy quality.
+- [awesome-humanize-en](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-humanize-en/SKILL.md): Removes signs of AI generation from English text: 36 patterns, regex artifact markers, density-gated vocabulary tiers.
+- [awesome-document-style](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-document-style/SKILL.md): Line-edits Markdown into clear, specific, publication-ready prose without fabricating facts.
+- [awesome-grammar-check](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-grammar-check/SKILL.md): Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text.
+- [awesome-translate-ru-en](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-translate-ru-en/SKILL.md): Russian-to-English translation preserving structure, formatting, identifiers, and the author's voice.
+
+## Docs
+
+- [README](https://github.com/khasky/awesome-agent-skills/blob/main/README.md): full catalog with per-agent install paths (Claude Code, Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp).
+- [LICENSE](https://github.com/khasky/awesome-agent-skills/blob/main/LICENSE): MIT.
