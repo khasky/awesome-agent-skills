@@ -234,6 +234,7 @@ git ls-remote --heads --tags origin
   ```
   git push origin --delete <branch-or-tag>
   ```
+  **Deleting a tag orphans its GitHub Release** — the release object and its notes/assets survive, but its tag link goes dead. Warn the user per tag before deleting, and note the tradeoff: keeping the tag leaves the old history reachable through it (the reset stays cosmetic for `<branch>`); deleting it completes the wipe but breaks the release.
 - Tidy local remote-tracking refs:
   ```
   git remote prune origin
