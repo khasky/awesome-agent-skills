@@ -21,6 +21,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
   - [Design principles](#design-principles)
+  - [Related](#related)
   - [License](#license)
 
 ## Quick start
@@ -148,6 +149,16 @@ The frontmatter `description` tells the agent when to activate the skill; the bo
 - **Few, not many** — a small set that covers repeated engineering work, not a hundred micro-skills nobody remembers.
 - **Portable** — plain `SKILL.md` per the open spec, stack-agnostic, nothing vendor-specific baked in.
 - **Verification-first** — skills end with the check that proves the claim: run the command, read the output, then say "done".
+
+## Related
+
+Part of a set of agent tooling — pick the layer you need:
+
+- **Awesome Agent Skills** — *this repo:* portable `SKILL.md` skills every agent loads — code review, debugging, security and leak audits, code and text cleanup.
+- [Awesome AGENTS.md](https://github.com/khasky/awesome-agents-md) — the base, tool-agnostic ruleset every agent imports (one `AGENTS.md`).
+- [Agent MCP Integrations](https://github.com/khasky/agent-mcp-integrations) — MCP servers that connect agents to browsers, cloud, databases, infra, and domain APIs.
+- [Claude Code Token Optimization](https://github.com/khasky/claude-code-token-optimization) — the token-efficiency layer (RTK, LSP, Context7, `codebase-memory-mcp`, claude-mem, Caveman, Ponytail).
+- [Claude Code Security Audit](https://github.com/khasky/claude-code-security-audit) — the layered security-audit workflow (deep audit, continuous guardrails, scanners).
 
 ## License
 
