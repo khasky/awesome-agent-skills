@@ -81,6 +81,12 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | [awesome-performance-audit](skills/awesome-performance-audit) | Read-only server/runtime performance and reliability audit: event loop, streams/backpressure, memory diagnostics, graceful shutdown, with a SHIP/FIX/BLOCK verdict |
 | [awesome-landing-audit](skills/awesome-landing-audit) | Read-only structural audit of landing/marketing pages: single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics, not copy |
 
+### Git and repository operations
+
+| Skill | What it does |
+| --- | --- |
+| [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's git history to a single Initial commit and force-pushes — safely: access checks, verified mirror backup, secret scan, and a confirmation gate before anything irreversible |
+
 ### Writing and text
 
 | Skill | What it does |
