@@ -32,7 +32,7 @@ Three invariants hold throughout:
 
 - `<repository-url>` — required. HTTPS or SSH (`https://github.com/owner/repo.git` or `git@github.com:owner/repo.git`).
 - `[branch]` — optional. Defaults to the remote's **detected** default branch. Only pass this to target a non-default branch.
-- `--message` — optional. The single commit's message. Default: `Initial commit`.
+- `--message` — optional. The single commit's message. If omitted, Phase 0 asks for it at preflight (default `Initial commit`).
 
 If the user invokes the skill without a URL, ask for one before doing anything else.
 
@@ -99,9 +99,11 @@ Do every check that your available tools allow. Each failure is a hard stop, not
 
 9. **Forks** (from step 6's `forkCount`) — a rewrite cannot reach a fork; every forker keeps a full copy of the old history. If `forkCount > 0`, say so plainly: this is not a way to make the old history unrecoverable.
 
-10. **Confirmation gate.** State exactly what will happen, then get an explicit yes:
+10. **Commit message.** Ask the user what to name the single commit the whole history collapses into — unless `--message` was already passed on invocation. Offer `Initial commit` as the default so they can accept it in one word. Record the answer as `<message>`; Phase 3 commits with it verbatim, and the confirmation gate below quotes it back.
 
-   > This will permanently erase all history on `<branch>` of `<owner>/<repo>` and replace it with a single `Initial commit`, then force-push. Old commits will be unrecoverable from the remote tip (a verified backup is kept locally). Open PRs will break; existing forks keep the old history. Proceed?
+11. **Confirmation gate.** State exactly what will happen, then get an explicit yes:
+
+   > This will permanently erase all history on `<branch>` of `<owner>/<repo>` and replace it with a single commit (`<message>`), then force-push. Old commits will be unrecoverable from the remote tip (a verified backup is kept locally). Open PRs will break; existing forks keep the old history. Proceed?
 
    No explicit confirmation → stop here. Everything up to this point was read-only.
 
