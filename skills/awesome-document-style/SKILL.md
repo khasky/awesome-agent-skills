@@ -1,6 +1,6 @@
 ---
 name: awesome-document-style
-description: Clean and line-edit Markdown documents for clear, specific, publication-ready prose. Use when asked to de-bloat, de-template, remove chatbot artifacts, fix vague wording, or make Markdown read like careful human editorial writing. Do not use to fabricate facts or bypass detectors.
+description: "Clean and line-edit Markdown documents for clear, specific, publication-ready prose. Use when asked to de-bloat, de-template, remove chatbot artifacts, fix vague wording, or make Markdown read like careful human editorial writing. Do not use to fabricate facts or bypass detectors."
 license: MIT
 metadata:
   author: Khasky
@@ -112,8 +112,8 @@ For every paragraph, ask:
 4. Does it assert causation without evidence (post-hoc)? "Launched in Q3, so adoption rose" is a logic error — either supply the proof ("adoption rose 25% the next month, driven by the onboarding change") or downgrade to correlation. This is a repair that *adds evidence*, never a hedge.
 5. Is the heading specific enough for a reader scanning the page?
 6. Are names, filenames, variables, and section labels unambiguous?
-6. Will this content drift? Screenshots, UI step lists, and hardcoded version numbers go stale fastest — flag them with a TODO comment if you cannot verify they are current.
-7. Would a scanning reader find the answer in 15 seconds? Check the headings, code-block placement, and the first 100 words.
+7. Will this content drift? Screenshots, UI step lists, and hardcoded version numbers go stale fastest — flag them with a TODO comment if you cannot verify they are current.
+8. Would a scanning reader find the answer in 15 seconds? Check the headings, code-block placement, and the first 100 words.
 
 Intentional style deviations are not errors: sentence fragments in marketing copy or a deliberately punchy register may be the author's choice — ask before normalizing them.
 
@@ -149,4 +149,4 @@ If editing pasted text:
 If the user asks for an audit trail:
 
 - Return a change table `# | Original | Correction | Reason` instead of prose notes, separating objective fixes (artifacts, broken structure) from subjective suggestions (wording), so the author can accept or reject each edit.
-- Lead with the **top 3–5 highest-impact fixes** (label them Critical / Important / Minor) above the full table, so the author fixes what matters first.
+- Lead with the **top 3–5 highest-impact fixes** (label them Critical / High / Medium) above the full table, so the author fixes what matters first.

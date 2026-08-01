@@ -95,16 +95,16 @@ For each issue:
 - **WCAG / principle:** [Criterion or principle, e.g. 1.3.1 Info and Relationships, 2.1.1 Keyboard.]
 - **Impact:** [Who is affected and how.]
 - **Recommendation:** [Concrete fix: code or attribute. For contrast findings, cite computed ratios: "#aaa on #fff = 2.32:1, needs 4.5:1 → use #595959 (7.0:1)".]
-- **Severity:** Critical | Major | Minor
+- **Severity:** Critical | High | Medium
 ```
 
-Summary: "Reviewed: [scope]. Found X critical, Y major, Z minor. Recommend automated scan (axe/Lighthouse) and keyboard/screen reader testing."
+Summary: "Reviewed: [scope]. Found X critical, Y high, Z medium. Recommend automated scan (axe/Lighthouse) and keyboard/screen reader testing."
 
 ## Severity
 
 - **Critical** — Blocks core task (e.g. cannot submit form, cannot navigate with keyboard, no labels on required fields). Fix before release.
-- **Major** — Significant barrier (e.g. poor contrast, missing headings, confusing order). Fix soon.
-- **Minor** — Improvement (e.g. redundant label, minor contrast). Backlog or fix when touching the component.
+- **High** — Significant barrier (e.g. poor contrast, missing headings, confusing order). Fix soon.
+- **Medium** — Improvement (e.g. redundant label, minor contrast). Backlog or fix when touching the component.
 
 ## Good vs bad examples
 

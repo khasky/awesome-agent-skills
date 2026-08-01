@@ -12,7 +12,7 @@
 - [awesome-root-cause](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-root-cause/SKILL.md): Structured root-cause analysis for incidents and process problems with no failing test: 5-Whys, fishbone, PDCA, one-page A3.
 - [awesome-error-standards](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-error-standards/SKILL.md): Consistent error handling: typed errors, operational-vs-programmer classification, API error envelopes.
 - [awesome-logging-standards](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-logging-standards/SKILL.md): Structured logging, levels, PII handling, and wide-event (canonical log line) patterns.
-- [awesome-security-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-security-audit/SKILL.md): Audits for injection, secrets, auth issues, and dependency CVEs with confidence-gated, CWE/OWASP-mapped findings.
+- [awesome-security-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-security-audit/SKILL.md): Audits for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and cryptographic misuse, with confidence-gated, CWE/OWASP-mapped findings.
 - [awesome-leak-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-leak-audit/SKILL.md): Audits a public client (extension, app, SPA, CLI) so it doesn't leak backend internals; client-side hardening included.
 - [awesome-accessibility-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-accessibility-audit/SKILL.md): WCAG 2.1/2.2 accessibility checks and concrete fixes: keyboard, labels, contrast, focus, dynamic content.
 - [awesome-seo-audit](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-seo-audit/SKILL.md): Read-only SEO and AI-discoverability audit — technical SEO, programmatic-page safety, agent/LLM readability — with a SHIP/FIX/BLOCK verdict.
@@ -27,4 +27,5 @@
 ## Docs
 
 - [README](https://github.com/khasky/awesome-agent-skills/blob/main/README.md): full catalog with per-agent install paths (Claude Code, Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp).
+- [CONTRIBUTING](https://github.com/khasky/awesome-agent-skills/blob/main/CONTRIBUTING.md): when a new skill is justified, the frontmatter contract, body templates, rating vocabularies.
 - [LICENSE](https://github.com/khasky/awesome-agent-skills/blob/main/LICENSE): MIT.

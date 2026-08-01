@@ -1,6 +1,6 @@
 ---
 name: awesome-translate-ru-en
-description: Translate Russian text of any kind into natural English while preserving every structural element, formatting marker, link, identifier, and the author's human voice. Use when translating Russian articles, docs, prose, fiction, marketing copy, technical content, transcripts, or any other Russian-language text to English; when mirroring a directory of Russian files into an English equivalent; or when the user asks to "translate to English", "convert to en", or "make an English version" of a Russian source.
+description: "Translate Russian text of any kind into natural English while preserving every structural element, formatting marker, link, identifier, and the author's human voice. Use when translating Russian articles, docs, prose, fiction, marketing copy, technical content, transcripts, or any other Russian-language text to English; when mirroring a directory of Russian files into an English equivalent; or when the user asks to \"translate to English\", \"convert to en\", or \"make an English version\" of a Russian source."
 license: MIT
 metadata:
   author: Khasky

@@ -54,7 +54,7 @@ Missing or jarring transitions, choppy runs of same-length sentences, overuse of
 ## Output
 
 1. **Summary line** — error counts by category (Grammar N · Logic N · Flow N), and whether the text reads as ready / needs-work.
-2. **Top 3–5 fixes** — the highest-impact ones first, each labeled **Critical / Important / Minor**, so the author fixes what matters before the long tail.
+2. **Top 3–5 fixes** — the highest-impact ones first, each labeled **Critical / High / Medium**, so the author fixes what matters before the long tail.
 3. **Full table** — `# | Location (quote) | Category | Issue | Suggested fix | Why`. Keep the suggestion minimal and quote the span; do not rewrite surrounding text. Explain the "Why" in plain terms, no grammar jargon the author would have to look up.
 4. **Objective/tone check** (only if `objective` was given) — one line on whether the text serves its purpose and the tone fits the audience.
 

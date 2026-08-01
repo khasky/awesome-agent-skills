@@ -1,0 +1,104 @@
+name: lint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: skill frontmatter is valid
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          KEY = re.compile(r"^([a-z_]+):(.*)$")
+          fail = []
+
+          def unquote(raw, where):
+              value = raw.strip()
+              if value[:1] in ('"', "'"):
+                  if len(value) < 2 or value[-1] != value[0]:
+                      fail.append(f"{where}: unbalanced quoting in the value")
+                      return value
+                  return value[1:-1]
+              return value
+
+          for folder in sorted(pathlib.Path("skills").iterdir()):
+              if not folder.is_dir():
+                  continue
+              path = folder / "SKILL.md"
+              if not path.exists():
+                  fail.append(f"{folder}: no SKILL.md")
+                  continue
+              lines = path.read_text(encoding="utf-8").splitlines()
+              if not lines or lines[0].strip() != "---":
+                  fail.append(f"{path}: no frontmatter")
+                  continue
+              try:
+                  end = lines.index("---", 1)
+              except ValueError:
+                  fail.append(f"{path}: frontmatter is never closed")
+                  continue
+
+              keys = {}
+              for line in lines[1:end]:
+                  match = KEY.match(line)
+                  if match:
+                      keys[match.group(1)] = match.group(2)
+
+              for required in ("name", "description", "license", "metadata"):
+                  if required not in keys:
+                      fail.append(f"{path}: missing '{required}'")
+
+              if "name" in keys and unquote(keys["name"], path) != folder.name:
+                  fail.append(f"{path}: name does not match folder '{folder.name}'")
+
+              if "description" in keys:
+                  description = unquote(keys["description"], path)
+                  if not description:
+                      fail.append(f"{path}: empty description — the agent has nothing to trigger on")
+                  elif len(description) > 1024:
+                      fail.append(f"{path}: description is {len(description)} chars (max 1024)")
+
+          print("\n".join(fail) if fail else "frontmatter OK")
+          sys.exit(1 if fail else 0)
+          PY
+
+      - name: skill count matches every catalog
+        run: |
+          skills=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
+          readme=$(grep -c '^| \[awesome-' README.md)
+          llms=$(grep -c '^- \[awesome-' llms.txt)
+          claim=$(grep -oE 'symlinks all [0-9]+ skills' README.md | grep -oE '[0-9]+')
+          echo "skills/=$skills README table=$readme llms.txt=$llms README claim=$claim"
+          [ "$skills" = "$readme" ] && [ "$skills" = "$llms" ] && [ "$skills" = "$claim" ]
+
+      - name: code fences are balanced
+        run: |
+          status=0
+          for f in $(git ls-files '*.md'); do
+            n=$(grep -c '^```' "$f" || true)
+            [ $((n % 2)) -eq 0 ] || { echo "$f: unbalanced code fences ($n)"; status=1; }
+          done
+          exit $status
+
+      # Only catalogue links are checked: SKILL.md bodies quote example markdown
+      # (`[x](url)`, `sandbox:/mnt/data/…`) that a general link checker would flag.
+      - name: catalogue links point at real skills
+        run: |
+          status=0
+          for target in $(grep -ohE 'skills/awesome-[a-z0-9-]+' README.md llms.txt | sort -u); do
+            [ -d "$target" ] || { echo "catalogue references missing skill: $target"; status=1; }
+          done
+          exit $status
+
+      - name: humanize-en marker regexes still match their fixtures
+        run: python3 skills/awesome-humanize-en/scripts/check_markers.py

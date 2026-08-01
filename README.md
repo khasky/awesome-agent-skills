@@ -16,12 +16,14 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Code quality and refactoring](#code-quality-and-refactoring)
     - [Debugging and reliability](#debugging-and-reliability)
     - [Audits](#audits)
+    - [Git and repository operations](#git-and-repository-operations)
     - [Writing and text](#writing-and-text)
   - [Install](#install)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
   - [Design principles](#design-principles)
   - [Related](#related)
+  - [Contributing](#contributing)
   - [License](#license)
 
 ## Quick start
@@ -34,7 +36,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 16 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 19 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -75,7 +77,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-security-audit](skills/awesome-security-audit) | Checks for injection, secrets, auth issues, and dependency CVEs |
+| [awesome-security-audit](skills/awesome-security-audit) | Checks for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and crypto misuse |
 | [awesome-leak-audit](skills/awesome-leak-audit) | Keeps a public client (extension, app, SPA, CLI) from leaking backend internals; client hardening |
 | [awesome-accessibility-audit](skills/awesome-accessibility-audit) | WCAG-oriented a11y checks and fixes |
 | [awesome-seo-audit](skills/awesome-seo-audit) | Read-only SEO + AI-discoverability audit: technical SEO, programmatic-page safety, agent/LLM readability, with a SHIP/FIX/BLOCK verdict |
@@ -143,6 +145,13 @@ skills/<skill-name>/
 
 The frontmatter `description` tells the agent when to activate the skill; the body loads only after activation, and `references/` files only when needed — so a large skill still costs little context until used.
 
+Two rating vocabularies are shared across the collection, so two reports never mean different things by the same word:
+
+- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. A skill may use only the top three where lower tiers are meaningless (accessibility, copy-editing).
+- **Verdict** — `SHIP / FIX / BLOCK`, for read-only audits that gate a release (landing, performance, SEO), always paired with `NOT ASSESSED` for anything that could not be checked.
+
+`awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those are addressed to an author, not to a release gate.
+
 ## Design principles
 
 - **Self-contained** — every skill is complete in this repo; no chasing external links or docs.
@@ -159,6 +168,10 @@ Part of a set of agent tooling — pick the layer you need:
 - [Agent MCP Integrations](https://github.com/khasky/agent-mcp-integrations) — MCP servers that connect agents to browsers, cloud, databases, infra, and domain APIs.
 - [Claude Code Token Optimization](https://github.com/khasky/claude-code-token-optimization) — the token-efficiency layer (RTK, LSP, Context7, `codebase-memory-mcp`, claude-mem, Caveman, Ponytail).
 - [Claude Code Security Audit](https://github.com/khasky/claude-code-security-audit) — the layered security-audit workflow (deep audit, continuous guardrails, scanners).
+
+## Contributing
+
+A new skill is justified only when no existing one covers the trigger — otherwise it becomes a section in the skill that already fires. [CONTRIBUTING.md](CONTRIBUTING.md) has the frontmatter contract, the two body templates, the shared rating vocabularies, and the checks CI runs.
 
 ## License
 

@@ -274,5 +274,4 @@ Verified:     ls-remote tip = <NEW_SHA>; local rev-list = 1; fsck clean
 - `--force-with-lease`, never bare `--force`, so a concurrent push aborts you instead of being destroyed.
 - The backup and any remote ref the user didn't name are never deleted by this skill.
 - This rewrites history on a repo the user controls and authorizes. It is not a way to scrub a secret from a public project's past (forks and caches defeat that) — for that, rotate the secret; the rewrite is secondary.
-```
 

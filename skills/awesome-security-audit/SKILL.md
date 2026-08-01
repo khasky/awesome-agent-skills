@@ -1,6 +1,6 @@
 ---
 name: awesome-security-audit
-description: "Audits code for common vulnerabilities: injection, secrets, auth, and dependency CVEs — with confidence-gated, evidence-backed findings mapped to CWE/OWASP. Use when reviewing security, before a release, after adding auth/payments/sensitive-data handling, or when the user says 'security review', 'security audit', 'check for vulnerabilities', 'is this secure'. Do not use for auditing what a public client discloses about a private backend — use awesome-leak-audit for that."
+description: "Audits code for common vulnerabilities: injection, secrets, auth, dependency CVEs, CI/CD pipeline exposure, and cryptographic misuse — with confidence-gated, evidence-backed findings mapped to CWE/OWASP. Use when reviewing security, before a release, after adding auth/payments/sensitive-data handling, when hardening GitHub Actions or other CI workflows, or when the user says 'security review', 'security audit', 'check for vulnerabilities', 'is this secure'. Do not use for auditing what a public client discloses about a private backend — use awesome-leak-audit for that."
 license: MIT
 metadata:
   author: Khasky
@@ -55,6 +55,7 @@ When the scope is a diff, triage by change type before reading line-by-line:
 | File upload | Path traversal, RCE | MIME+size validation, stored outside web root |
 | New dependency | Supply chain / CVE | pinned, reputable, `npm audit` clean |
 | Env var / config | Hardcoded secret, fail-open default | not committed, no `or 'default'` |
+| CI workflow / lockfile / build script | Pipeline compromise | actions pinned by SHA, `permissions` scoped, no untrusted interpolation, lockfile diff reviewed |
 
 ## Trust boundaries first
 
@@ -120,6 +121,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 ### 5. Dependencies
 
 - **Known vulnerabilities** — Run the project's dependency scanner (e.g. `npm audit`, `pip audit`, `go list -m all` with a CVE DB). Address critical/high; document or accept risk for others with justification. Note direct vs transitive in each finding (dependency path, e.g. `express > send > mime`). No fix available → check whether the vulnerable code path is reachable from your code before accepting or escalating.
+- **Install-time execution** — A package's install scripts run with the developer's or runner's privileges before a single line is imported: check whether CI installs with `--ignore-scripts`, and treat a dependency that requires them as a reviewed exception.
 - **Supply chain** — Prefer pinned versions and lockfiles; review new dependencies before adding. Prefer well-maintained, widely used packages; an unmaintained package with zero CVEs is still a supply-chain finding. Check for dependency confusion (internal package names resolvable from the public registry) and typosquats; verify provenance where supported (`npm audit signatures`).
 
 ### 6. Configuration and deployment
@@ -156,6 +158,31 @@ Distinct from the code-vulnerability categories above: these are flows that work
 - **Scraping and bulk export** — Enumerable IDs, unthrottled list/search endpoints, and export features let one account exfiltrate the whole dataset. Cursor limits and per-account volume caps, not just per-request page size.
 - **Fake accounts at scale** — Beyond enumeration (uniform responses/timing, under auth): confirm signup can't be automated to seed abuse — anti-automation on the abusable action, not only at signup.
 - **Workflow / moderation bypass** — Content or actions that must pass review can't reach the published/trusted state through an alternate path that skips the check.
+
+### 9. CI/CD and build pipeline
+
+The workflow files are executable code holding repository credentials, and they are the least-reviewed files in most repos. Audit them whenever they are in scope.
+
+- **Unpinned actions** — a third-party action referenced by tag or branch (`uses: owner/action@v3`) executes whatever that mutable ref points to today. Full commit SHA only. CWE-1357.
+- **Untrusted code in a privileged trigger** — `pull_request_target` and `workflow_run` run with secrets and write scope against the base repo. Checking out or executing PR-head code inside them is remote code execution by design (poisoned pipeline execution). CWE-913.
+- **Script injection via expressions** — `${{ github.event.pull_request.title }}` (or branch name, issue body, commit message) interpolated into a `run:` block is expanded before the shell parses it: attacker-controlled text becomes shell code. Values pass through `env:` and are used as quoted variables. CWE-94.
+- **Over-broad token scope** — no top-level `permissions:` means the default token scope; a job that only reads should not hold write. CWE-250.
+- **Long-lived cloud credentials** — static `AWS_ACCESS_KEY_ID`/service-account JSON in repo secrets where the provider supports OIDC federation with short-lived tokens. CWE-798.
+- **Cross-trust cache and artifact reuse** — a cache key or artifact writable by a fork PR job and consumed by a release, signing, or deploy job crosses the trust boundary. CWE-349.
+- **Runner exposure** — self-hosted runners serving public-fork PRs, or non-ephemeral runners leaking state between jobs. CWE-269.
+- **Secret handling** — secrets echoed for debugging, written to artifacts, or passed as command-line arguments visible in process listings. CWE-532.
+
+### 10. Cryptographic misuse
+
+- **Broken primitive for the role** — MD5 or SHA-1 used for signatures, tokens, or integrity (CWE-327/328). The role decides: MD5 for a cache key or file dedup is fine.
+- **Weak randomness** — `Math.random()`, `rand()`, a timestamp, or a PID used for tokens, session ids, salts, nonces, or reset codes instead of a CSPRNG. CWE-338/330.
+- **Broken mode or nonce reuse** — ECB, or a static/reused IV/nonce with CBC or GCM; unauthenticated ciphertext where an AEAD was available. CWE-327/323.
+- **Non-constant-time comparison** — `===`, `==`, or `strcmp` on a token, MAC, or signature — a timing oracle. CWE-208.
+- **Password hashing** — a fast hash (SHA-256, single-round) instead of argon2id/bcrypt/scrypt, an unsalted hash, or a cost factor that has never been re-tuned. CWE-916.
+- **JWT verification** — accepting `alg: none`, not pinning the expected algorithm (HS/RS confusion turns the public key into a signing key), or skipping `exp`/`iss`/`aud`. CWE-347.
+- **Hand-rolled crypto** — a custom cipher, padding, key-derivation, or signature scheme where a vetted library exists. CWE-1240.
+- **No rotation path** — keys or signing secrets with no key id and no way to re-encrypt, so compromise cannot be recovered from. CWE-320.
+- **Disabled certificate validation** — `rejectUnauthorized: false`, `verify=False`, `InsecureSkipVerify: true` outside an explicitly local-only path. CWE-295.
 
 ## Output Format
 

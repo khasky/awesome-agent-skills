@@ -1,6 +1,6 @@
 ---
 name: awesome-performance-audit
-description: "Read-only audit of server/runtime performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, and production shutdown/timeout/job habits — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', or 'review this for throughput'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency contracts (use awesome-error-standards) or frontend render/animation perf (use awesome-code-standards)."
+description: "Read-only audit of server/runtime performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, and production shutdown/timeout/job habits — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', or 'review this for throughput'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency contracts (use awesome-error-standards). Frontend render and animation performance is out of scope — this skill audits server and runtime only."
 license: MIT
 metadata:
   author: Khasky
@@ -99,5 +99,6 @@ Positive: <1-3 things done right>
 ## See also
 
 - **awesome-error-standards** — retry/backoff/jitter, `Idempotency-Key`, error envelopes.
-- **awesome-code-standards** — frontend render/animation performance and general code style.
+- **awesome-code-standards** — general code style, structure, and naming.
+- Frontend render and animation performance (paint/layout cost, Core Web Vitals, scroll-driven work) is deliberately outside this collection: audit it against browser profiles and field data, not this skill.
 - **awesome-bug-fix** — a *specific* slowness/leak bug that needs reproduction and a fix, not a survey.
