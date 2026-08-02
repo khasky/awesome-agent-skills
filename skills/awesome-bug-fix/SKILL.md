@@ -89,7 +89,7 @@ Complete each phase before proceeding to the next.
 ### Phase 4: Implementation
 
 1. **Minimize the repro** — Before fixing, cut inputs, callers, config, data, and steps one at a time, re-running the loop after each cut, until only the essential trigger remains.
-2. **Create a failing test (or repro)** — Simplest reproduction: automated test if possible, or one-off script. Must exist before applying the fix — but only if a correct seam exists to test at; if no correct seam exists, that itself is the finding. Use TDD skill for the test if needed.
+2. **Create a failing test (or repro)** — Simplest reproduction: automated test if possible, or one-off script. Must exist before applying the fix — but only if a correct seam exists to test at; if no correct seam exists, that itself is the finding.
 3. **Implement a single fix** — Address the root cause. One change. No "while I'm here" refactors or extras.
 4. **Verify** — Test passes; no other tests broken; issue actually resolved.
 5. **If the fix doesn't work** — Stop. No fixes before diagnosis is complete, no exceptions; one fix at a time, test after each. If you have tried 3+ fixes and each reveals a problem elsewhere (a fix cascade), question the architecture (see below). Do not attempt a fourth fix without stepping back.

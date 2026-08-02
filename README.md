@@ -37,7 +37,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 20 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 21 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -83,7 +83,8 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | [awesome-leak-audit](skills/awesome-leak-audit) | Keeps a public client (extension, app, SPA, CLI) from leaking backend internals; client hardening |
 | [awesome-accessibility-audit](skills/awesome-accessibility-audit) | WCAG-oriented a11y checks and fixes |
 | [awesome-seo-audit](skills/awesome-seo-audit) | Read-only SEO + AI-discoverability audit: technical SEO, programmatic-page safety, agent/LLM readability, with a SHIP/FIX/BLOCK verdict |
-| [awesome-performance-audit](skills/awesome-performance-audit) | Read-only server/runtime performance and reliability audit: event loop, streams/backpressure, memory diagnostics, graceful shutdown, with a SHIP/FIX/BLOCK verdict |
+| [awesome-performance-audit](skills/awesome-performance-audit) | Read-only server/runtime performance and reliability audit: event loop, streams/backpressure, memory diagnostics, graceful shutdown, resilience topology (circuit breakers, retry budgets, queue bounds), with a SHIP/FIX/BLOCK verdict |
+| [awesome-db-audit](skills/awesome-db-audit) | Read-only database-layer audit: schema anti-patterns (EAV, imprecise types), query/index fit, integrity and concurrency, migration hygiene and tenancy, with a SHIP/FIX/BLOCK verdict |
 | [awesome-landing-audit](skills/awesome-landing-audit) | Read-only structural audit of landing/marketing pages: single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics, not copy |
 
 ### Git and repository operations

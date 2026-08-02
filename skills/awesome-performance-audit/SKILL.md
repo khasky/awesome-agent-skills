@@ -1,10 +1,10 @@
 ---
 name: awesome-performance-audit
-description: "Read-only audit of server/runtime performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, and production shutdown/timeout/job habits — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', or 'review this for throughput'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency contracts (use awesome-error-standards). Frontend render and animation performance is out of scope — this skill audits server and runtime only."
+description: "Read-only audit of server/runtime performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, production shutdown/timeout/job habits, and cross-service resilience topology (circuit breakers, retry budgets, queue bounds, dual-writes) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', 'review this for throughput', or 'will this survive a dependency outage'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency header contracts (use awesome-error-standards — this skill audits the failure topology, that one owns the contract format). Frontend render and animation performance is out of scope — this skill audits server and runtime only."
 license: MIT
 metadata:
   author: Khasky
-  tags: ["performance", "audit", "event-loop", "backpressure", "reliability"]
+  tags: ["performance", "audit", "event-loop", "backpressure", "reliability", "resilience"]
   documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-performance-audit"
 ---
 
@@ -14,11 +14,12 @@ Audit a server, API, or worker for the runtime and reliability failure modes tha
 
 **Measure, don't guess.** Every finding cites its artifact — a profile, a GC trace, a heap delta, a code path, a config value. No profile, no number. A slow-looking loop is a lead; confirm it in a flame graph or trace before flagging.
 
-Four audit tracks, run the ones in scope:
+Five audit tracks, run the ones in scope:
 - **A. Event-loop discipline (Node.js)** — is the loop kept free for short coordination work?
 - **B. Streaming and backpressure** — is unbounded data streamed, or buffered into RAM?
 - **C. Memory and CPU diagnostics** — are the signals watched, and is the workflow repeatable?
 - **D. Production reliability** — timeouts, shutdown, limits, job hygiene.
+- **E. Resilience and failure paths** — circuit breakers, retry budgets, queue topology, cross-service failure containment.
 
 ## Scope and method
 
@@ -80,6 +81,18 @@ Audit whether the team *can* diagnose, and whether current signals point at a re
 - **Job hygiene** — jobs idempotent where possible, retry rules explicit, poison messages have a dead-letter/quarantine path, payload size bounded and documented. (Retry/backoff/jitter mechanics and `Idempotency-Key` contracts live in **awesome-error-standards** — reference it, don't restate.)
 - **Other runtimes** — timeouts, cancellation, drain, and input caps are runtime-independent; only the API name changes (`AbortSignal` in Node.js, `CancellationToken` in .NET, `context.Context` in Go).
 
+## Track E — Resilience and failure paths
+
+How the service behaves when a dependency is slow, dead, or delivers twice — the failure topology, complementing Track D's per-process hygiene:
+
+- **Circuit breaker on synchronous dependencies** — every hot cross-service call has an explicit timeout *and* a breaker with a named fallback; a timeout alone just queues the failure. Read the HTTP/RPC client setup; a hot dependency without a breaker is a finding.
+- **Retry budget** — retries are bounded, jittered, and transient-only (never 4xx), with a capped total. Layered retries multiply (client × broker × job runner): compute the worst-case amplification and cite it. (Retry/backoff mechanics and `Idempotency-Key` header contracts live in **awesome-error-standards** — audit the topology here, not the header format.)
+- **Duplicate-delivery safety** — at-least-once delivery means consumers run twice: side-effect handlers (fulfillment, email, provisioning) are keyed by a stable event id checked before acting. An unkeyed money-or-email consumer is FIX at minimum.
+- **Dual-write** — a DB state change and a broker publish as two separate steps is a lost-event bug waiting for a crash between them: look for a transactional outbox/CDC, or a documented, accepted inconsistency.
+- **Queue topology** — every consumer has bounded retries and a dead-letter destination someone monitors; every in-memory queue/buffer is bounded with a declared overflow policy (backpressure, drop, throttle). Unbounded is Track B's OOM arriving via topology.
+- **Blast-radius isolation** — per-dependency pools and concurrency limits (bulkhead) so one slow downstream saturates its own pool, not the shared one; one shared pool serving both critical and bulk traffic is a finding when the shared resource is the measured bottleneck.
+- **Verdict cue** — a confirmed lost-event dual-write or an unbounded retry-amplification path is BLOCK for the affected flow; a missing breaker or DLQ on a hot path is FIX; bounded queues with idempotent consumers earn a Positive line.
+
 ## What not to flag
 
 - **Premature micro-optimization** — a `for` vs `.map`, a stray allocation off the hot path, string-concat style. No measured impact = not a finding.
@@ -96,7 +109,7 @@ Performance Audit - <scope / workload> - <date>
 Verdict: SHIP | FIX | BLOCK   (per track or per endpoint/job class)
 
 Findings (highest impact first):
-- [track A/B/C/D] <file:line or profile/trace ref> - <issue> - <evidence: p99, heap delta, GC %> - <fix direction> - severity
+- [track A/B/C/D/E] <file:line or profile/trace ref> - <issue> - <evidence: p99, heap delta, GC %, retry amplification> - <fix direction> - severity
 
 Not assessed: <what lacked a profile/trace/repro and why>
 Positive: <1-3 things done right>
