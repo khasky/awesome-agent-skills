@@ -98,7 +98,7 @@ Then, for each finding:
 - **Reproduction:** [Minimal steps or PoC that trigger it. Omit only when reading the code is itself the proof.]
 - **Existing mitigations:** [What already limits this — partial throttle, framework escaping, a downstream check. Sets residual risk; "none found" is a valid answer.]
 - **Recommendation:** [Concrete fix or mitigation.]
-- **Regression test:** [When proposing a fix: the test that fails without it and passes with it. Omit for review-only findings.]
+- **Regression test:** [When proposing a fix: the test that fails without it and passes with it (write it with awesome-test-writing). Omit for review-only findings.]
 - **Severity:** Critical | High | Medium | Low | Informational
 - **Confidence:** High (pattern + attacker input confirmed) | Medium (goes to "Needs verification" instead)
 - **Compliance:** [optional — the control this maps to, e.g. SOC2 CC6.1, PCI-DSS 3.4, ASVS V2.1.1, WSTG-ATHN-03, alongside the CWE]

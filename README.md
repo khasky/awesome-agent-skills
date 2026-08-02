@@ -132,6 +132,8 @@ The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent â
 | GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | [docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
 | opencode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
 | Amp | `.agents/skills/` | `~/.agents/skills/` | [docs](https://ampcode.com/manual#agent-skills) |
+| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
+| Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
 
 - **Claude.ai (web):** zip a skill folder and upload it under **Settings â†’ Skills**.
 - **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.

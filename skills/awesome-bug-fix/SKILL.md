@@ -156,7 +156,7 @@ Environment:     [exact versions where reproduced: runtime, OS, key deps, config
 Root cause:      [one sentence]
 Fix:             [what changed and where]
 Evidence:        [the passing run: command + result]
-Regression test: [test that fails without the fix, passes with it]
+Regression test: [test that fails without the fix, passes with it — placement and design: awesome-test-writing]
 Status:          DONE | DONE_WITH_CONCERNS (name them) | BLOCKED (on what)
 ```
 

@@ -1,6 +1,6 @@
 ---
 name: awesome-api-design
-description: "Designs or reviews the shape of an HTTP API before code exists — resource modeling, versioning strategy, pagination, idempotency, filtering, and how the error contract plugs in. Use when asked to 'design the API', 'review my API design', 'how should we version / paginate', 'add an endpoint' at the design stage, or when awesome-design-doc needs the API contract detailed. Do not use for the error envelope internals and retry semantics — use awesome-error-standards; not for auth/injection review of implemented handlers — use awesome-security-audit."
+description: "Designs or reviews the shape of an HTTP API before code exists — resource modeling, versioning strategy, pagination, idempotency, filtering, and how the error contract plugs in. Use when asked to 'design the API', 'review my API design', 'how should we version / paginate', 'add an endpoint' at the design stage, or when awesome-design-doc needs the API contract detailed. Do not use for the error envelope internals and retry semantics — use awesome-error-standards; not for auth/injection review of implemented handlers — use awesome-security-audit; not for auditing an implemented codebase's architecture — use awesome-architecture-audit."
 license: MIT
 metadata:
   author: Khasky
@@ -56,6 +56,14 @@ Spec: <OpenAPI/schema skeleton or diff, when producing one>
 Deviations from incumbent conventions: <each with its justification, or "none">
 Open questions: <decisions needing the user, with a recommended default each>
 ```
+
+## Self-check before delivering
+
+- Run the design review checklist above against your own output — a finding in your own design gets fixed before delivery, not shipped with a caveat.
+- Every contract decision names the consumer consequence it buys; "because best practice" is not a justification — delete or justify.
+- Step 1 has evidence: name the incumbent spec, routes, or client code actually inspected. Defaults applied to an API that has conventions is the failure mode.
+- Every mutation in the design answers the retry question (idempotency key or naturally idempotent — stated which); every list endpoint answers the growth question.
+- Each open question carries a recommended default; a bare question pushes the design work back to the reader.
 
 ## Anti-patterns
 

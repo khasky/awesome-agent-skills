@@ -57,6 +57,14 @@ Non-goals: <what this decision deliberately does not cover>
 
 Full design doc: Title → Problem & requirements (with numbers) → Proposed design (contract first, then internals) → Alternatives & trade-offs → Recommendation → Non-goals → Risks & mitigations → Rollout & rollback → Open questions (marked, not hidden). Deliver as a Markdown file in the repo's docs convention (`docs/adr/`, `docs/design/`, or where existing docs live — discover, don't invent).
 
+## Self-check before delivering
+
+- The three-condition test verdict is stated in one line — why this decision earned a document at all.
+- Every scale number traces to a stated assumption a reader can re-run; a number with no assumption is a vibe with digits.
+- A recommendation exists, cites the requirements that drove it by name, and states what new information would flip it.
+- Re-read each alternative as its advocate: if one collapses under its own best case, it was a straw man — replace it or drop it.
+- Non-goals, rollback, and marked open questions are present; any requirement you invented rather than confirmed is moved to Open questions or deleted.
+
 ## Anti-patterns
 
 | Anti-pattern | Instead |

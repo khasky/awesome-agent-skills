@@ -64,7 +64,7 @@ Reuse whichever fits; all three are already in the collection, so match the incu
 
 Two, so two reports never mean different things by the same word:
 
-- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. Use only the top three where the lower tiers carry no meaning.
+- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. A skill may truncate the scale from the bottom — top four where `Informational` carries no meaning, top three where `Low` doesn't either — and its output section states which tiers it uses. Never reorder or rename tiers.
 - **Verdict** — `SHIP / FIX / BLOCK` for audits that gate a release, always paired with `NOT ASSESSED`.
 
 `awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those address an author, not a release gate. Do not invent a fourth scale.
@@ -77,7 +77,7 @@ Skills are self-contained: each one is installed and read alone, so a rule that 
 
 ## Verification
 
-Every skill ends in a check that proves its own claim: the command to run, the output to read, and only then the conclusion. A skill that produces findings says how each one would be confirmed or killed; a skill that changes code names the test that fails without the change.
+Every skill carries a check that proves its own claim before it delivers: the command to run, the output to read, and only then the conclusion — as the final workflow step or a closing checklist. Reference material (Anti-patterns, Integration) may follow that check in the file; what may not happen is a skill whose process reaches its output with no self-check anywhere. A skill that produces findings says how each one would be confirmed or killed; a skill that changes code names the test that fails without the change.
 
 ## Before opening a PR
 

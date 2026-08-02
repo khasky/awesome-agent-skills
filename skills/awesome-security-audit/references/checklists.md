@@ -83,6 +83,9 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 - **Tool surface** — Agent tools follow least privilege; destructive tools sit behind an approval gate; no admin credentials in agent context — short-lived scoped tokens instead.
 - **Cost and abuse** — Per-user token/cost caps and timeouts on completion endpoints.
 - **Agentic setups** — MCP servers and plugins pinned and allowlisted (tool poisoning is supply chain); generated code executed only in a sandbox; inter-agent messages authenticated; a kill switch / circuit breaker exists.
+- **Tool shadowing** — A tool description on one connected server that references, redefines, or redirects a tool on another server; review the tool roster across servers together — per-server review misses the cross-server attack.
+- **Toxic tool combinations** — Grade compositions, not single tools: a reader of untrusted content plus any outbound channel (mail, HTTP, commit) composes into exfiltration even when each tool alone looks benign. Map tools to untrusted-input / sensitive-data / external-write and flag the flows that chain all three.
+- **Runtime-fetched instructions** — A skill, plugin, or tool that downloads instructions or code from a URL at run time defeats version pinning; finding unless the fetched content is hash-pinned and fails closed. Also sweep tool descriptions and skill files for hidden Unicode (zero-width, bidi overrides, tag block `\U000E0000-\U000E007F`) and decode what's found as the evidence.
 - **Cross-user memory / context leakage** — Shared caches, vector stores, and conversation memory key on the user/tenant, so one user's data never surfaces in another's context or retrieval results.
 
 ## 8. Business logic and abuse (product-abuse paths)

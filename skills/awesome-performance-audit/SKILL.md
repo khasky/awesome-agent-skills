@@ -98,7 +98,7 @@ How the service behaves when a dependency is slow, dead, or delivers twice — t
 
 Run only when the scope includes a web frontend. Field data over lab data: a lab run on a dev machine is a lead, not a verdict.
 
-- **Core Web Vitals at field p75** — LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1, measured at the 75th percentile of real users (CrUC/RUM) where available; a lab-only number is reported as lab-only. The LCP element is named, never guessed.
+- **Core Web Vitals at field p75** — LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1, measured at the 75th percentile of real users (CrUX/RUM) where available; a lab-only number is reported as lab-only. The LCP element is named, never guessed.
 - **Bundle weight and splitting** — the initial JS payload is measured (build output, not vibes); route-level code splitting exists; a dependency that dominates the bundle for one utility function is a finding with its measured share.
 - **Hydration cost** — server-rendered pages that re-execute the whole app to become interactive: measure main-thread blocking time during hydration; islands/partial hydration absent where the framework offers it is a lead, not automatically a finding.
 - **Render-path blockers** — render-blocking scripts/styles in `<head>`, unsized images causing layout shifts, LCP image lazy-loaded, missing `font-display` — each cited from the actual HTML, with the metric it moves.
@@ -128,7 +128,7 @@ Not assessed: <what lacked a profile/trace/repro and why>
 Positive: <1-3 things done right>
 ```
 
-Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` is unused here: a note with no measured impact is not a finding).
+Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` is unused here: a note with no measured impact is not a finding). Each finding also carries a confidence bucket — **High** (measured: profile, trace, field data) or **Medium** (inferred from code without a measurement); Medium findings list under **Needs verification** with the measurement that would confirm them, and never drive the verdict on their own.
 
 - **SHIP** — no confirmed blocking/leak/OOM path under the target load; only micro notes remain.
 - **FIX** — a real tail-latency, memory, or reliability issue with a clear owner and fix direction; ships after.

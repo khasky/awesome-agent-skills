@@ -31,7 +31,7 @@ This is not a copy critique. "The headline is weak" is out of scope; "there are 
 | 4 | **Message match** | Compare inbound intent (ad text, `utm_campaign`, query) to the `<h1>`/hero | Scent break — ad promises "50% off invoicing", hero says "Welcome to Acme" |
 | 5 | **Form-field friction** | Count `required` inputs; check for email-first + hidden attribution fields | Long required form on first touch; UTM/source *asked of the user* instead of captured as hidden inputs |
 | 6 | **Trust / social-proof presence** | DOM elements + JSON-LD: logos, testimonials with attribution, case studies, `Review`/`AggregateRating`, security badges | No trust element of any kind on a page asking for money or contact details |
-| 7 | **CLS-safe banners/interstitials** | Layout behavior on inject: does the top strip / cookie bar / promo reserve height? | Banner injected into normal flow pushes content after paint (layout shift); or an interstitial covers content on first paint (mobile) |
+| 7 | **CLS-safe banners/interstitials** | Layout behavior on inject: does the top strip / cookie bar / promo reserve height? | Banner injected into normal flow pushes content after paint (layout shift); or an interstitial covers content on first paint (mobile). This mechanic audits the structural cause (unreserved space); measuring the CLS metric itself at field p75 is **awesome-performance-audit** Track F |
 | 8 | **Image specificity and integrity** | `<img>`/`<picture>` attributes and subjects: dimensions or `aspect-ratio` present; hero/product imagery shows the actual product/UI | Product or hero imagery is generic atmospheric stock where the visitor needs to inspect the offer; images lack width/height (shift on load); a failed image leaves a raw broken-image icon in a conversion-critical slot |
 
 Detail on the non-obvious ones:
@@ -77,7 +77,7 @@ Intentional (not flagged): <business choices observed, e.g. contact-sales flow>
 Positive: <1-3 mechanics done right>
 ```
 
-Severity uses the top three tiers of the shared finding scale — `Critical / High / Medium` (lower tiers carry no meaning for conversion mechanics).
+Severity uses the top three tiers of the shared finding scale — `Critical / High / Medium` (lower tiers carry no meaning for conversion mechanics). Each finding also carries a confidence bucket — **High** (observed in the rendered DOM/markup) or **Medium** (inferred, signal partly unavailable); Medium findings list under **Needs verification** and never drive the verdict on their own.
 
 Rules for the report:
 

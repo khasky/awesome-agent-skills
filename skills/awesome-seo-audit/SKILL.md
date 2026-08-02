@@ -81,7 +81,7 @@ Not assessed: <what couldn't be verified and why>
 Positive: <1–3 things done right>
 ```
 
-Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` for hygiene notes like llms.txt formatting).
+Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` for hygiene notes like llms.txt formatting). Each finding also carries a confidence bucket — **High** (the header/tag/URL was fetched and read) or **Medium** (inferred without fetching); Medium findings list under **Needs verification** with the check that would confirm them, and never drive the verdict on their own.
 
 Rules for the report:
 - **Evidence per finding** — quote the header/tag/URL; no "potentially".
