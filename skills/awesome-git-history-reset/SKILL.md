@@ -169,11 +169,12 @@ git checkout <branch>
 If `gitleaks` is available:
 
 ```
-gitleaks detect --source . --no-banner
+gitleaks git . --no-banner
 ```
 
+- `gitleaks git` scans commit history — that is the command this step needs. `gitleaks directory .` scans the working tree instead and would miss committed-then-removed keys, which are exactly what a history rewrite is usually about. On gitleaks older than 8.19 the spelling is `gitleaks detect --source . --no-banner`; 8.19 renamed `detect` → `git` and `detect --no-git` → `directory`, keeping the old names working but hidden from `--help`.
 - Findings → **stop and tell the user to rotate the exposed credentials.** The rewrite can still proceed afterward, but rotation is the part that actually protects them; the force-push is cosmetic for an exposed secret.
-- Clean → continue.
+- Clean → continue — for the *tracked* history only. Neither command sees `.gitignore`d paths, so a secret in `secrets/` or `*.local` is unscanned either way; say so rather than reporting a blanket clean.
 - No `gitleaks` → state that history was **not** scanned and recommend installing it if secrets in old commits are a concern: `winget install gitleaks` (Windows), `brew install gitleaks` (macOS/Linuxbrew), the distro package on Linux (`apt install gitleaks`, `pacman -S gitleaks`, `dnf install gitleaks`), or a release binary from the project's GitHub releases where the distro has none.
 
 ---

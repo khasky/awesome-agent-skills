@@ -52,6 +52,8 @@ In vendored/third-party code, add a supply-chain quick pass for obfuscation patt
 
 Also pre-scan the repo for hidden instructions an attacker planted for *your* agent: `grep -rn "<!--" --include=*.md` (HTML-comment instructions in docs the agent reads), base64 blobs in comments, `jq '.scripts' package.json` (install-time hooks), and `.claude/`/agent-config files calling `curl|wget|nc|base64|eval|exec`.
 
+When the repo ships agent configuration of its own — a hook manifest, an MCP server list, a plugin or skill folder — audit it as shipped executable code, because that is what it is on the next contributor's machine. Enumerate every hook as `EVENT:path — gated|ungated — network:yes(host)|no` and treat three shapes as findings: a hook that fires on every tool call with no project-relevance gate; an outbound call to a host the README never mentions, with no opt-out; and a manifest description a reader could believe while the code does more (broader file access, an install step, a data upload). Two more belong here: a skill, hook, or tool that fetches its instructions or code from a URL at run time defeats every version pin unless the fetched content is hash-pinned and fails closed, and a marketplace or plugin source referenced by branch rather than a release tag or SHA re-installs whatever that ref points to today.
+
 Frame leaks as taint chains — source→sink data flow — not just "a secret is present": credential→network sink (exfiltration), file-read→network sink, external-input→code-exec. Distinguish direct flow from variable-mediated flow (the secret passes through one or more intermediates before the sink).
 
 Two novel lenses worth a dedicated pass:
