@@ -71,3 +71,19 @@ Follow-up        — open items, what to watch
 - **Evidence over narrative.** Every root cause cites what shows it (a log line, a ticket, a timeline entry). A plausible story is a hypothesis until the evidence backs it.
 - **No coverage, no verdict.** If the timeline or data needed to reach a root cause is missing, say what's missing and stop at candidate causes — don't manufacture a tidy root cause to close the report.
 - **One class, not one instance.** A countermeasure that only fixes this exact occurrence, not the class, is incomplete — say so.
+
+## Example A3
+
+Recurring failure: nightly deploys rolling back at the migration step.
+
+```text
+Nightly deploy failures / 2026-03-14 / owner: platform on-call
+
+Background       — 6 of 14 nightly deploys rolled back in two weeks; each burns ~40 min of on-call time and delays the release train.
+Current condition — 6/14 failed, all at the migration step, all with `lock timeout` on `orders` (pipeline runs 812, 817, 819, 823-825; timeline in #deploys).
+Target           — zero migration-caused rollbacks across 4 consecutive weeks.
+Root cause(s)    — the nightly analytics job holds a long transaction on `orders`, and nothing sequences it against the deploy, so overlap is chance (run logs 812/817/823 overlap by 4-11 min). The migrate step sets no lock wait, so one contended statement fails the whole deploy (`deploy.yml`, migrate step).
+Countermeasures  — analytics publishes a completion gate the deploy waits on | platform | overlap becomes impossible, not unlikely. Migrate step sets an explicit lock timeout and retries once | platform | contention degrades to a retry, not a rollback.
+Verification plan — criterion: 0 migration rollbacks over 4 weeks, read from pipeline run records, not on-call recall; PDCA check 2026-04-11.
+Follow-up        — audit other jobs holding long transactions on `orders`; open question: can analytics move off the primary?
+```

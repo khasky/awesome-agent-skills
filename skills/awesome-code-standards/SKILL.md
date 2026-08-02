@@ -139,10 +139,12 @@ function getMarket(id: any): Promise<any> { /* ... */ }
 
 ## Comments and docs
 
-- **Explain why, not what** — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count."
-- **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`/`–`, `...` not `…`, straight `"`/`'` not curly quotes, `->` not `→`, and no decorative bullet glyphs (`▸ ● ◦`) or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Applies to comment text only — never to string literals, identifiers, or data.)
+- **Explain why, not what** — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
+- **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
 - **JSDoc for public APIs** — Summary, @param, @returns, @throws, optional @example. Match project style.
 - **No commented-out code** — Remove or explain in a ticket; use version control for history.
+
+That is the bar for code you are writing or touching now. For a repo-wide pass over existing comments — deciding what to delete, condense, or fix, with the false-positive boundaries and the behavior-preserving verification gate — use **awesome-code-cleanup**, which owns that procedure.
 
 ## File and project structure
 

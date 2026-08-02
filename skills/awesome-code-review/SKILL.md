@@ -56,6 +56,8 @@ Structured review of changes so they are correct, secure, and maintainable befor
 4. **Sensitive data** — No PII or secrets in logs, error messages, or client responses.
 5. **Removed code** — `git blame` deleted security-relevant lines (validation, auth checks, limits, timeouts). If the removed code came from a commit mentioning "security", "CVE", or "fix", treat the removal as a regression until proven otherwise.
 
+**This phase is triage, not adjudication.** It flags candidates on the diff's surface; it does not settle them. Hand off to **awesome-security-audit** — and say so in the review rather than ruling inline — whenever the change touches authentication or authorization logic, opens a new trust boundary (a new endpoint, upload path, deserializer, or subprocess call), reaches an injection sink, moves or introduces a secret, or adds/bumps a dependency with a known CVE. Report the candidate with its location and why it needs the deeper pass; a surface finding you can fully trace (a hardcoded token, an obvious missing ownership check) still belongs in this review's Critical bucket.
+
 ### Phase 4: Standards and Maintainability
 
 1. **Naming and structure** — Match project conventions (see existing files). Descriptive names; consistent casing (camelCase, PascalCase, snake_case per project).
@@ -168,6 +170,7 @@ Before submitting the review:
 ## Integration
 
 - If the project has CONTRIBUTING.md, a code-review doc, or required checklist, follow it.
+- Phase 3 is a triage pass over the diff, not a security review. Route auth/authz changes, new trust boundaries, injection sinks, secrets, and CVE-bearing dependencies to **awesome-security-audit**; this skill names the candidate and its location, that skill adjudicates it.
 - When reviewing after each task (e.g. in plan execution), use the same process; keep feedback actionable so the author can fix and proceed.
 
 **When in doubt:** If the codebase is in a language or framework you’re less familiar with, focus on the phases you can apply (correctness, security, structure) and note "I didn’t check X in depth; consider a second pair of eyes for [area]." Review is a team habit—small teams might do lighter reviews; larger or regulated teams may need stricter checklists. Adapt depth to context; the principle of "review the code, not the author" and "be specific" holds everywhere.

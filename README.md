@@ -22,6 +22,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
   - [Design principles](#design-principles)
+    - [Which layer to install](#which-layer-to-install)
   - [Related](#related)
   - [Contributing](#contributing)
   - [License](#license)
@@ -36,7 +37,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 19 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 20 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -77,6 +78,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
+| [awesome-architecture-audit](skills/awesome-architecture-audit) | Read-only whole-project audit: architecture and module boundaries, docs-vs-code fidelity, YAGNI/KISS/SOLID, and extensibility (build-from-source, add-a-provider), with a SHIP/FIX/BLOCK verdict and a prioritized recommendations report |
 | [awesome-security-audit](skills/awesome-security-audit) | Checks for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and crypto misuse |
 | [awesome-leak-audit](skills/awesome-leak-audit) | Keeps a public client (extension, app, SPA, CLI) from leaking backend internals; client hardening |
 | [awesome-accessibility-audit](skills/awesome-accessibility-audit) | WCAG-oriented a11y checks and fixes |
@@ -158,6 +160,10 @@ Two rating vocabularies are shared across the collection, so two reports never m
 - **Few, not many** — a small set that covers repeated engineering work, not a hundred micro-skills nobody remembers.
 - **Portable** — plain `SKILL.md` per the open spec, stack-agnostic, nothing vendor-specific baked in.
 - **Verification-first** — skills end with the check that proves the claim: run the command, read the output, then say "done".
+
+### Which layer to install
+
+A rule is a standing constraint the agent honors without being asked; a skill is a procedure you invoke, with phases and an output contract. The two layers overlap by design: `rules/code-review.md` in [Awesome AGENTS.md](https://github.com/khasky/awesome-agents-md) sets the bar every review must meet, `awesome-code-review` here runs the review and produces the report. Install both — rules keep everyday work in line, skills handle the jobs you name.
 
 ## Related
 

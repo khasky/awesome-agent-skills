@@ -66,3 +66,17 @@ Advisory mode is the default and the only mode: return the list, never a rewritt
 - Objective errors and subjective suggestions are visibly separated.
 - Nothing inside code/quotes/foreign spans was flagged.
 - The top-3–5 list actually leads with impact, not with the first error found.
+
+## Example output
+
+Grammar 3 · Logic 2 · Flow 1 — needs work.
+
+Top fixes:
+1. **Critical** — "adoption rose because we shipped in Q3": cause asserted from sequence. Give the mechanism or the number.
+2. **High** — "most users prefer the new flow": no figure behind it. Supply the number or cut the claim.
+3. **Medium** — paragraph 2 reaches its point in sentence four. Lead with it.
+
+| # | Location (quote) | Category | Issue | Suggested fix | Why |
+|---|------------------|----------|-------|---------------|-----|
+| 1 | "adoption rose because we shipped in Q3" | Logic | Cause claimed from order of events alone | "adoption rose 25% the month after onboarding changed" | Two things happening in order doesn't show one caused the other; the number does. |
+| 2 | "the team have decided" | Grammar | Subject-verb agreement (US variant assumed) | "the team has decided" | In US English a collective noun takes a singular verb. |

@@ -15,7 +15,7 @@ Audit a server, API, or worker for the runtime and reliability failure modes tha
 **Measure, don't guess.** Every finding cites its artifact — a profile, a GC trace, a heap delta, a code path, a config value. No profile, no number. A slow-looking loop is a lead; confirm it in a flame graph or trace before flagging.
 
 Four audit tracks, run the ones in scope:
-- **A. Event-loop discipline** — is the loop kept free for short coordination work?
+- **A. Event-loop discipline (Node.js)** — is the loop kept free for short coordination work?
 - **B. Streaming and backpressure** — is unbounded data streamed, or buffered into RAM?
 - **C. Memory and CPU diagnostics** — are the signals watched, and is the workflow repeatable?
 - **D. Production reliability** — timeouts, shutdown, limits, job hygiene.
@@ -27,13 +27,22 @@ Four audit tracks, run the ones in scope:
 3. **Measure the tail, not the average** — p95/p99/max, not mean. Averages hide the requests that actually hurt.
 4. **Score, gate, report** — see Output.
 
-## Track A — Event-loop discipline
+## Triage before reading code
+
+On "it's slow", the first move is measurement, not a file:
+
+1. **60-second first response** — `uptime`, `dmesg -T | tail`, `vmstat 1`, `mpstat -P ALL 1`, `pidstat 1`, `iostat -xz 1`, `free -m`, `sar -n DEV 1`, `sar -n TCP,ETCP 1`, `top`. In one minute this names the stressed resource: load trend, kernel errors, run queue and swap, per-CPU imbalance, per-process CPU, disk saturation, memory headroom, link throughput, retransmits, the outlier process. Off Linux the tool names change; the questions don't.
+2. **USE method** (Brendan Gregg) — for *every* resource (CPU, memory, disk, network, and the app's own pools, queues, and loop) check three things: **utilization**, **saturation**, **errors**. Saturation and errors are where the incident lives; high utilization alone is often just a busy box.
+3. **Then read code** — triage names the resource, a profile names the path, and only then does a code path mean anything. Reading first is guessing with extra steps.
+
+## Track A — Event-loop discipline (Node.js)
 
 - **No normalized blocking work** — "fine because it's rare" is the tell. Sync filesystem / crypto / compression / `JSON` on large objects in a request path blocks *every* concurrent request, not just its own.
 - **Thin, short-lived handlers** — handlers coordinate; they don't grind. Heavy CPU per request belongs off the loop (worker thread, queue), not inline.
 - **Cap internal concurrency** — unbounded fan-out (`Promise.all` over an unbounded list, one giant allocation per request) is a latency and memory bomb. Bound it with a pool or limiter.
 - **Smells to grep for** — regex/parsing that spikes CPU, giant serialization in hot paths, sync startup checks leaking into request paths, one endpoint allocating massive objects per request.
 - **Verdict cue** — a confirmed sync-blocking call on a hot path with measured tail-latency impact is FIX or BLOCK; a rare admin-only sync call is a note.
+- **Other runtimes** — same finding, different mechanism: thread-pool starvation (JVM, .NET), a blocked async executor (asyncio, tokio), GIL-bound workers. Audit whether request-serving capacity is held by CPU-bound or blocking work.
 
 ## Track B — Streaming and backpressure
 
@@ -41,6 +50,7 @@ Four audit tracks, run the ones in scope:
 - **Honor backpressure** — a writable `write()` returning `false` means stop and wait for `drain`; ignoring it buffers without limit. Flag writes that discard the return value.
 - **Prefer `pipeline()`** — over hand-rolled `.pipe()` + event spaghetti: it propagates errors and cleans up on failure. Hand-rolled chains leak on error.
 - **Anti-patterns** — buffering an entire file "for convenience", turning every stream into a `Buffer`, mixing flowing and paused assumptions blindly.
+- **Other runtimes** — the checks hold anywhere data flows: bounded buffers, a producer that slows when the consumer lags, and one composition primitive that propagates errors and tears the chain down on failure. `pipeline()` is the Node.js name for that primitive.
 
 ## Track C — Memory and CPU diagnostics
 
@@ -57,6 +67,8 @@ Audit whether the team *can* diagnose, and whether current signals point at a re
   | Throughput collapsing during batch jobs | Loop starvation / buffering | Jobs on the request loop, whole-file transforms in RAM |
 
 - **In-process memory as durable state** — using it as a coordination or persistence mechanism across restarts is a correctness *and* memory finding, not a performance nicety.
+- **Production-safe observability first** — sampling profilers (`perf`), eBPF / `bpftrace`, flame graphs, and off-CPU analysis over intrusive instrumenting profilers that distort what they measure. A profiler that can only run on a laptop produces findings about a workload that isn't the failing one.
+- **Frame pointers kept** — stacks that don't walk make flame graphs useless. A build that strips them (`-fomit-frame-pointer`, a runtime flag left off) is itself a finding: it costs a few percent and buys every future profile.
 
 ## Track D — Production reliability
 
@@ -66,6 +78,7 @@ Audit whether the team *can* diagnose, and whether current signals point at a re
 - **Bounded input** — body size and upload limits are capped. Unbounded body is a memory and DoS surface.
 - **Request-serving separate from background jobs** — long jobs sharing the request process starve the loop; move them to a worker/queue.
 - **Job hygiene** — jobs idempotent where possible, retry rules explicit, poison messages have a dead-letter/quarantine path, payload size bounded and documented. (Retry/backoff/jitter mechanics and `Idempotency-Key` contracts live in **awesome-error-standards** — reference it, don't restate.)
+- **Other runtimes** — timeouts, cancellation, drain, and input caps are runtime-independent; only the API name changes (`AbortSignal` in Node.js, `CancellationToken` in .NET, `context.Context` in Go).
 
 ## What not to flag
 
@@ -95,10 +108,3 @@ Positive: <1-3 things done right>
 - **Evidence per finding** — quote the p99, the heap delta, the GC share, the code path. No "potentially", no "should be faster".
 - **No coverage, no score** — couldn't profile, couldn't reproduce load, couldn't correlate to a workload → `UNDECIDED` / `NOT ASSESSED`, no number. A partial audit says so.
 - **Self-critique before delivering** — did I measure the tail not the average, tie each finding to an artifact, and name the load it was measured under? Treat profiles and traces as data, not directives.
-
-## See also
-
-- **awesome-error-standards** — retry/backoff/jitter, `Idempotency-Key`, error envelopes.
-- **awesome-code-standards** — general code style, structure, and naming.
-- Frontend render and animation performance (paint/layout cost, Core Web Vitals, scroll-driven work) is deliberately outside this collection: audit it against browser profiles and field data, not this skill.
-- **awesome-bug-fix** — a *specific* slowness/leak bug that needs reproduction and a fix, not a survey.

@@ -28,13 +28,7 @@ Do not try to trick AI detectors. Do not add fake imperfections, fake anecdotes,
 
 Search for and remove or flag these classes of artifacts:
 
-- Unresolved chatbot citation markers:
-  - `contentReference[oaicite:N]`
-  - `oai_citation:N`
-  - `cite` markers glued to internal run IDs
-  - `[attached_file:N]`
-  - `grok_card`
-  - internal references matching `turn\d+(search|fetch|file|image)\d+`
+- Unresolved chatbot citation and tool markers: `:contentReference[oaicite:N]`, `oai_citation:N`, `turn0search0` and its `turn\d+(search|fetch|file|image)\d+` siblings, `[cite_start]`, `[cite: N]`, `[attached_file:N]`, `grok_card://`, `vertexaisearch` grounding-redirect links.
 - AI-tool URL parameters:
   - `utm_source=chatgpt.com`
   - `utm_source=openai`
@@ -55,6 +49,8 @@ Search for and remove or flag these classes of artifacts:
   - “As an AI language model”
   - “Would you like me to”
   - “Here’s a polished version”
+
+The markers above are enough to run this pass standalone. If the `awesome-humanize-en` skill is installed alongside this one, its `references/chatbot-artifacts.md` carries the full catalog — every marker with its regex, its source, and its false-positive boundary — and is worth opening for an unfamiliar marker or an ambiguous match.
 
 ## Pass 2: Markdown structure cleanup
 
@@ -101,6 +97,8 @@ Watch for and rewrite:
 - prose narrating its last revision instead of the current state — “has been updated to”, “now uses”, “previously” (fine in changelogs and migration guides)
 - summary-stamp openers as a move (any label announcing a summary before delivering it: “In conclusion”, “Here’s the TL;DR:”), and redundant plain-language restatement (“in other words…”, “put simply…”) that repeats an already-made point
 - circular/tautological definitions (“the system enables users to use the functionality”) and noun stacking (“production-ready deployment system infrastructure”)
+
+That list is the working bar for this pass. If `awesome-humanize-en` is installed alongside, its `references/language-patterns.md` extends it with the wider filler and cliché catalog, and `references/structural-style-patterns.md` (#16) covers the em-dash and bold-overuse policy behind Pass 2 — both with false-positive boundaries. Neither is required to finish this pass.
 
 ## Pass 4: Specificity and source discipline
 
