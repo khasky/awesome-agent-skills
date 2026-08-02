@@ -86,6 +86,9 @@ CI runs these — running them locally takes seconds:
 - Frontmatter is valid: `name` matches the folder, `description` present, ≤1024 chars, balanced quoting, `license` and `metadata` present.
 - The skill count matches `skills/`, the README table, the README install line, and `llms.txt` — a new skill is added to all three.
 - Code fences are balanced, and every `skills/<name>` link in the catalogue resolves.
+- Every `awesome-*` skill named inside a skill body resolves to an existing skill folder, and every `references/`/`scripts/` file a `SKILL.md` names exists on disk.
+- Single-language skills carry a per-language mapping: three or more same-language examples require an `Other languages`/`Other runtimes` block.
+- The two `leak-sweep` scripts (`.sh`/`.ps1`) keep identical category labels.
 - `python3 skills/awesome-humanize-en/scripts/check_markers.py` passes.
 
 State in the PR which repeated engineering task the skill covers and which existing skill you checked it against first.

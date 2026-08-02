@@ -77,6 +77,8 @@ Intentional (not flagged): <business choices observed, e.g. contact-sales flow>
 Positive: <1-3 mechanics done right>
 ```
 
+Severity uses the top three tiers of the shared finding scale — `Critical / High / Medium` (lower tiers carry no meaning for conversion mechanics).
+
 Rules for the report:
 
 - **Evidence per finding** — point at the concrete signal (the three button selectors, the count of `required` inputs, the measured shift, the `<h1>` text vs the ad text). No "seems", no "potentially".

@@ -1,6 +1,6 @@
 ---
 name: awesome-performance-audit
-description: "Read-only audit of server/runtime performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, production shutdown/timeout/job habits, and cross-service resilience topology (circuit breakers, retry budgets, queue bounds, dual-writes) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', 'review this for throughput', or 'will this survive a dependency outage'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency header contracts (use awesome-error-standards — this skill audits the failure topology, that one owns the contract format). Frontend render and animation performance is out of scope — this skill audits server and runtime only."
+description: "Read-only audit of performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, production shutdown/timeout/job habits, cross-service resilience topology (circuit breakers, retry budgets, queue bounds, dual-writes), and frontend delivery (Core Web Vitals, bundle size, hydration) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'why is my page slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', 'review this for throughput', or 'will this survive a dependency outage'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency header contracts (use awesome-error-standards — this skill audits the failure topology, that one owns the contract format) or for animation/render style standards (use awesome-code-standards — this skill measures, that one prescribes)."
 license: MIT
 metadata:
   author: Khasky
@@ -14,12 +14,13 @@ Audit a server, API, or worker for the runtime and reliability failure modes tha
 
 **Measure, don't guess.** Every finding cites its artifact — a profile, a GC trace, a heap delta, a code path, a config value. No profile, no number. A slow-looking loop is a lead; confirm it in a flame graph or trace before flagging.
 
-Five audit tracks, run the ones in scope:
+Six audit tracks, run the ones in scope:
 - **A. Event-loop discipline (Node.js)** — is the loop kept free for short coordination work?
 - **B. Streaming and backpressure** — is unbounded data streamed, or buffered into RAM?
 - **C. Memory and CPU diagnostics** — are the signals watched, and is the workflow repeatable?
 - **D. Production reliability** — timeouts, shutdown, limits, job hygiene.
 - **E. Resilience and failure paths** — circuit breakers, retry budgets, queue topology, cross-service failure containment.
+- **F. Frontend delivery (web)** — Core Web Vitals, bundle weight, hydration and render cost.
 
 ## Scope and method
 
@@ -93,6 +94,18 @@ How the service behaves when a dependency is slow, dead, or delivers twice — t
 - **Blast-radius isolation** — per-dependency pools and concurrency limits (bulkhead) so one slow downstream saturates its own pool, not the shared one; one shared pool serving both critical and bulk traffic is a finding when the shared resource is the measured bottleneck.
 - **Verdict cue** — a confirmed lost-event dual-write or an unbounded retry-amplification path is BLOCK for the affected flow; a missing breaker or DLQ on a hot path is FIX; bounded queues with idempotent consumers earn a Positive line.
 
+## Track F — Frontend delivery (web)
+
+Run only when the scope includes a web frontend. Field data over lab data: a lab run on a dev machine is a lead, not a verdict.
+
+- **Core Web Vitals at field p75** — LCP ≤ 2.5s, INP ≤ 200ms, CLS ≤ 0.1, measured at the 75th percentile of real users (CrUC/RUM) where available; a lab-only number is reported as lab-only. The LCP element is named, never guessed.
+- **Bundle weight and splitting** — the initial JS payload is measured (build output, not vibes); route-level code splitting exists; a dependency that dominates the bundle for one utility function is a finding with its measured share.
+- **Hydration cost** — server-rendered pages that re-execute the whole app to become interactive: measure main-thread blocking time during hydration; islands/partial hydration absent where the framework offers it is a lead, not automatically a finding.
+- **Render-path blockers** — render-blocking scripts/styles in `<head>`, unsized images causing layout shifts, LCP image lazy-loaded, missing `font-display` — each cited from the actual HTML, with the metric it moves.
+- **Runtime render cost** — layout thrash (interleaved reads/writes), scroll handlers doing layout work, animation off the compositor — confirmed in a performance trace, not inferred from code style. The style rules themselves live in **awesome-code-standards**; this track measures their violation cost.
+- **Verdict cue** — a field CWV failing its threshold on a money page is FIX; a page whose primary content cannot load without a multi-MB bundle on the measured connection class is BLOCK for that cohort; passing field CWV earns a Positive line.
+- **Handoffs** — crawl/indexability impact of the same signals belongs to **awesome-seo-audit**; animation/interaction style standards to **awesome-code-standards**.
+
 ## What not to flag
 
 - **Premature micro-optimization** — a `for` vs `.map`, a stray allocation off the hot path, string-concat style. No measured impact = not a finding.
@@ -109,11 +122,13 @@ Performance Audit - <scope / workload> - <date>
 Verdict: SHIP | FIX | BLOCK   (per track or per endpoint/job class)
 
 Findings (highest impact first):
-- [track A/B/C/D/E] <file:line or profile/trace ref> - <issue> - <evidence: p99, heap delta, GC %, retry amplification> - <fix direction> - severity
+- [track A/B/C/D/E/F] <file:line or profile/trace ref> - <issue> - <evidence: p99, heap delta, GC %, retry amplification, CWV value> - <fix direction> - severity
 
 Not assessed: <what lacked a profile/trace/repro and why>
 Positive: <1-3 things done right>
 ```
+
+Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` is unused here: a note with no measured impact is not a finding).
 
 - **SHIP** — no confirmed blocking/leak/OOM path under the target load; only micro notes remain.
 - **FIX** — a real tail-latency, memory, or reliability issue with a clear owner and fix direction; ships after.

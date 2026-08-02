@@ -127,7 +127,7 @@ If the reviewer suggests a more complete or "proper" implementation (e.g. full v
 
 - Use **after** awesome-code-review skill has been used (when you are the one receiving the review).
 - Use **before** marking "review feedback addressed" — implement in order, test each change, then verify.
-- Use with **verification-before-completion** — run tests after implementing feedback before claiming "all feedback addressed."
+- Run the full test suite after implementing feedback, before claiming "all feedback addressed" — the claim without a fresh run is unverified. A reviewer-requested regression test is designed with **awesome-test-writing**.
 
 ## Checklist (before marking feedback "done")
 

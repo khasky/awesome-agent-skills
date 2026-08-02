@@ -35,9 +35,9 @@ Three audit tracks, run the ones in scope:
 - **Internal linking** — every important page is reachable by links (no orphans); anchor text is descriptive.
 - **Outbound link hygiene** — paid, affiliate, and UGC links carry the right `rel` (`sponsored` / `ugc` / `nofollow`); sponsored or affiliate content shows an FTC-style disclosure near the content, not buried in a footer.
 - **Structured data** — JSON-LD present and valid for the page type (Article, Product, FAQ, Breadcrumb); types match the visible content (no Product schema on a blog post).
-- **Core signals** — HTTPS, mobile viewport, no render-blocking that buries content, reasonable LCP surface (flag obvious offenders; defer real perf work to a perf pass).
+- **Core signals** — HTTPS, mobile viewport, no render-blocking that buries content, reasonable LCP surface (flag obvious offenders; defer measured perf work to **awesome-performance-audit** Track F).
 - **Intrusive interstitials** (rendered) — flag full-screen gates, overlays, or app-install takeovers that block the main content on first paint, especially on mobile — a documented ranking risk. A slim cookie/consent banner is not this.
-- **Minor static signals** (Low) — no mixed-content `http://` subresources on HTTPS pages; name INP and CLS alongside LCP as the field metrics to flag-but-defer, not measure here.
+- **Minor static signals** (Low) — no mixed-content `http://` subresources on HTTPS pages; name INP and CLS alongside LCP as the field metrics to flag here and measure in **awesome-performance-audit** Track F.
 
 ## Track B — Programmatic-SEO quality gate
 
@@ -80,6 +80,8 @@ Findings (most impactful first):
 Not assessed: <what couldn't be verified and why>
 Positive: <1–3 things done right>
 ```
+
+Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` for hygiene notes like llms.txt formatting).
 
 Rules for the report:
 - **Evidence per finding** — quote the header/tag/URL; no "potentially".

@@ -100,6 +100,47 @@ jobs:
           done
           exit $status
 
+      # Every awesome-* skill named inside a skill body must exist — a sibling
+      # handoff to a skill that was never written is how dangling references
+      # survived four commits. Repo names are the known non-skill tokens.
+      - name: skill cross-references resolve
+        run: |
+          status=0
+          for name in $(grep -rhoE 'awesome-[a-z0-9-]+' skills/*/SKILL.md skills/*/references/*.md skills/*/README.md 2>/dev/null | sort -u); do
+            case "$name" in awesome-agent-skills|awesome-agents-md) continue ;; esac
+            [ -d "skills/$name" ] || { echo "dangling skill reference: $name"; status=1; }
+          done
+          exit $status
+
+      - name: referenced asset files exist
+        run: |
+          # A named references/ or scripts/ file must exist in the skill's own
+          # folder — or in a sibling skill's, for cross-skill mentions that the
+          # prose qualifies ("if awesome-humanize-en is installed, its ...").
+          status=0
+          for f in skills/*/SKILL.md; do
+            dir=$(dirname "$f")
+            for p in $(grep -ohE '(references|scripts)/[A-Za-z0-9._-]+\.[a-z0-9]+' "$f" | sort -u); do
+              if [ ! -e "$dir/$p" ] && ! ls skills/*/"$p" >/dev/null 2>&1; then
+                echo "$f: names missing asset $p"; status=1
+              fi
+            done
+          done
+          exit $status
+
+      # The two sweep scripts are pattern-for-pattern twins by convention;
+      # this keeps the category lists from silently diverging.
+      - name: leak-sweep scripts stay in sync
+        run: |
+          sh_labels=$(grep -ohE '"[0-9]+\. [^"]+"' skills/awesome-leak-audit/scripts/leak-sweep.sh | sort)
+          ps_labels=$(grep -ohE '"[0-9]+\. [^"]+"' skills/awesome-leak-audit/scripts/leak-sweep.ps1 | sort)
+          if [ "$sh_labels" != "$ps_labels" ]; then
+            echo "leak-sweep.sh and leak-sweep.ps1 category labels diverge:"
+            diff <(printf '%s\n' "$sh_labels") <(printf '%s\n' "$ps_labels") || true
+            exit 1
+          fi
+          echo "leak-sweep parity OK ($(printf '%s\n' "$sh_labels" | grep -c .) categories)"
+
       # Partial guard for the "Framework- and stack-agnostic" rule in CONTRIBUTING.
       # Only the mechanical half is checkable: a skill whose worked examples are all
       # in one language must also carry the per-language mapping the rule requires.

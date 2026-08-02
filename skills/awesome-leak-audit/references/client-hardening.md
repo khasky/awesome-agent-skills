@@ -71,7 +71,7 @@ For a browser extension, SPA, or web SDK, read [`browser-client.md`](browser-cli
 
 - Install- and build-time hooks execute with the developer's or runner's privileges before any of your code does. Find this ecosystem's version: npm lifecycle scripts (→ `browser-client.md`), `setup.py`/PEP 517 build backends in Python, `build.rs` in Rust, Gradle build scripts and plugins on Android, CocoaPods/SwiftPM plugin phases, Makefiles invoked by the build.
 - Pin risky transitive dependencies and block unexpected build scripts where the package manager allows it.
-- This is a quick pass, not a full dependency audit — hand deep dependency review to a dedicated tool or skill.
+- This is a quick pass, not a full dependency audit — hand deep dependency review to **awesome-dependency-audit**.
 
 ## Severity guide
 

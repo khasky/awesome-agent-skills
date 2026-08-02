@@ -4,7 +4,7 @@ description: "Applies structured logging, levels, PII handling, and wide-event (
 license: MIT
 metadata:
   author: Khasky
-  tags: ["logging", "observability", "reliability", "pii"]
+  tags: ["logging", "reliability", "pii"]
   documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-logging-standards"
 ---
 

@@ -10,7 +10,7 @@ metadata:
 
 # Dependency Audit
 
-Audit the third-party dependency graph — manifests, lockfiles, and the packages they resolve to — for supply-chain risk, before it ships with the product. Read-only: it reports findings and a verdict; it does not upgrade, pin, or remove anything. Hand the report to the normal dev workflow to act on.
+Audit the third-party dependency graph — manifests, lockfiles, and the packages they resolve to — for supply-chain risk, before it ships with the product. Read-only: it reports findings and a verdict; it does not upgrade, pin, or remove anything. Hand the report to **awesome-dependency-upgrade** to act on.
 
 Two phases: **passive** (reading manifests, lockfiles, license files, changelogs already on disk — no gate) and **active** (anything that reaches a registry or scanner: `npm audit`, `pip-audit`, `osv-scanner`, registry metadata lookups — propose the commands and wait for approval first). Default to passive; say what staying passive leaves unverified.
 
@@ -40,7 +40,7 @@ Two phases: **passive** (reading manifests, lockfiles, license files, changelogs
 - **Maintenance status is a security property** — an unmaintained package with zero CVEs is still a finding: no upstream means no patch on the day one lands. Cite last release date and open-issue staleness.
 - **Provenance** — where the registry supports it, verify (`npm audit signatures`, sigstore attestations); prefer packages that publish from a traceable build.
 - **Install-time execution** — postinstall scripts run with the developer's or runner's privileges before any import; check whether installs use `--ignore-scripts`, and treat a dependency that requires scripts as a reviewed exception, named in the report.
-- **Weight and reachability** — a dependency pulled in for one function the stdlib covers is attack surface with no upside; flag it as a lead for removal (the fix belongs to the dev workflow, not this audit).
+- **Weight and reachability** — a dependency pulled in for one function the stdlib covers is attack surface with no upside; flag it as a lead for removal (the fix belongs to **awesome-dependency-upgrade**, not this audit).
 
 ## Track D — Vulnerabilities (CVE reachability)
 

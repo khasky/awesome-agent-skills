@@ -2,7 +2,7 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Web Reactions](https://api.webreactions.app/badge/github/khasky/awesome-agent-skills.svg)](https://webreactions.app/?utm_source=github&utm_channel=repository&utm_medium=awesome-agent-skills)
 
-Skills for AI coding agents: code review, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a `SKILL.md` in the [Agent Skills](https://agentskills.io) format — install by copying it into your agent's skills directory.
+Skills for AI coding agents: code review, test writing, design docs, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a `SKILL.md` in the [Agent Skills](https://agentskills.io) format — install by copying it into your agent's skills directory.
 
 Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, and any other agent that supports the standard. See [Install](#install) for exact paths.
 
@@ -14,6 +14,8 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Skills](#skills)
     - [Code review](#code-review)
     - [Code quality and refactoring](#code-quality-and-refactoring)
+    - [Testing](#testing)
+    - [Design and planning](#design-and-planning)
     - [Debugging and reliability](#debugging-and-reliability)
     - [Audits](#audits)
     - [Git and repository operations](#git-and-repository-operations)
@@ -37,7 +39,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 22 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 26 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -64,6 +66,20 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | --- | --- |
 | [awesome-code-standards](skills/awesome-code-standards) | Naming, structure, and patterns for consistent code across a team |
 | [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide cleanup of AI-like code noise: comments by default, plus a read-only audit mode and a refactor mode for vague names, dead code, and over-abstraction — behavior-preserving |
+| [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades safely: risk-classified batches, changelog-driven majors, overrides with removal conditions, verification between steps |
+
+### Testing
+
+| Skill | What it does |
+| --- | --- |
+| [awesome-test-writing](skills/awesome-test-writing) | Designs and writes tests that catch real regressions: placement ladder, behavior-first assertions, characterization tests, property/fuzz for parsers — every test proven able to fail |
+
+### Design and planning
+
+| Skill | What it does |
+| --- | --- |
+| [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, non-goals and rollout |
+| [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resource modeling, versioning by layering, cursor pagination, idempotency keys |
 
 ### Debugging and reliability
 
@@ -151,7 +167,7 @@ The frontmatter `description` tells the agent when to activate the skill; the bo
 
 Two rating vocabularies are shared across the collection, so two reports never mean different things by the same word:
 
-- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. A skill may use only the top three where lower tiers are meaningless (accessibility, copy-editing).
+- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. A skill may truncate the scale from the bottom — top four where `Informational` carries no meaning (architecture, database), top three where `Low` doesn't either (accessibility, copy-editing, landing mechanics) — and its output section states which tiers it uses. Never reorder or rename tiers.
 - **Verdict** — `SHIP / FIX / BLOCK`, for read-only audits that gate a release (landing, performance, SEO), always paired with `NOT ASSESSED` for anything that could not be checked.
 
 `awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those are addressed to an author, not to a release gate.
