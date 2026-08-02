@@ -17,7 +17,8 @@ This skill produces three things: a **findings list** (leaks + client-side secur
 **Reference files** (load on demand — read the one you need, don't inline all of them):
 - [`references/leak-taxonomy.md`](references/leak-taxonomy.md) — the categories of disclosure to hunt, why each matters, and starter search patterns.
 - [`references/rewrite-rules.md`](references/rewrite-rules.md) — the comment/string rewrite rule with before/after examples; how to decide keep-vs-cut.
-- [`references/client-hardening.md`](references/client-hardening.md) — client-side security checklist (permissions, IPC, tokens, DOM, network, build config, supply chain).
+- [`references/client-hardening.md`](references/client-hardening.md) — runtime-independent client-side security checklist (capabilities, cross-context entry points, tokens, network, build config, supply chain).
+- [`references/browser-client.md`](references/browser-client.md) — the browser half of that checklist (extension permissions, storage tiers, DOM/CSS sinks, bundler config, npm lifecycle scripts). Load it *with* `client-hardening.md` for an extension, SPA, or web SDK; skip it for a native, desktop, or CLI client.
 - [`references/report-template.md`](references/report-template.md) — the output report structure.
 - [`scripts/leak-sweep.sh`](scripts/leak-sweep.sh) — a parameterized ripgrep sweep to seed the search (customize the pattern arrays per product).
 
@@ -64,14 +65,9 @@ Pay special attention to two high-value, easy-to-miss classes:
 
 ### Phase 3 — Client-side hardening
 
-Run `references/client-hardening.md`. This is orthogonal to leaks: it's about the client being exploitable regardless of what it discloses. Prioritize sender/origin validation on privileged IPC, auth-token storage and egress, DOM/XSS sinks fed by page- or server-derived data, over-broad permissions, and build-time config that lets a poisoned build repoint the backend or bundle a secret.
+Run `references/client-hardening.md`. This is orthogonal to leaks: it's about the client being exploitable regardless of what it discloses. Prioritize caller validation on privileged cross-context entry points, auth-token storage and egress, untrusted data reaching an interpreter, over-broad capabilities, and build-time config that lets a poisoned build repoint the backend or bundle a secret.
 
-DOM work runs source→sink: enumerate attacker-influenced sources (`location.hash`, `location.search`, `window.name`, `document.referrer`, `postMessage` data), grep the sinks (`innerHTML`, `insertAdjacentHTML`, `eval`, `dangerouslySetInnerHTML`, and the CSS-value sinks `style.cssText` / `insertRule` — untrusted CSS enables exfiltration and timing tricks), then walk each sink back to its source — server-side escaping ends where the URL fragment begins. `postMessage` handlers must check `event.origin` against an allowlist, not a substring.
-
-Browser-extension specifics:
-- Map each requested permission to its install-warning weight: `storage`, `alarms`, `activeTab`, and `scripting` alone are warning-silent; broad host access and `tabs` scare users at install. Request `tabs` only if you read `.url`/`.title` — tab id/index doesn't need it. The standard fix is point-of-use `optional_permissions` escalation.
-- Storage tiers for sensitive values: `session` (ephemeral) over `local` (on-device, readable in page contexts) over `sync` — sync replicates to Google's servers and every signed-in device; never tokens or PII there.
-- Privileged extension/app pages set `frame-ancestors 'none'` in their CSP (clickjacking).
+**Pick the mechanism file for the client type.** `client-hardening.md` states each rule runtime-independently and names where the mechanism lives per platform. For a browser extension, SPA, or web SDK, read `references/browser-client.md` alongside it — that file carries the extension permission model, storage tiers, DOM/CSS sink list, bundler config gating, and npm lifecycle-script pass. For a native mobile, desktop, CLI, or server-side SDK client, skip it and follow the per-platform pointers in the main checklist instead (exported components and Intents, XPC and URL schemes, `ipcMain` and preload bridges, local sockets and ports, the OS keychain, the platform's build-metadata and symbol stripping). Say in the report which of the two you ran, so a reader knows what was and wasn't in scope.
 
 Keep three adversaries in mind while hardening: the **scoundrel** (controls config or input maliciously), the **lazy developer** (copy-pastes the first example — are the safe defaults also the easy ones?), and the **confused developer** (swaps parameters — is misuse loud or silent?).
 

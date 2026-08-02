@@ -38,11 +38,21 @@ If the user invokes the skill without a URL, ask for one before doing anything e
 
 ## Tooling check (run first)
 
-- `git --version` — required.
-- `gh --version` — optional but strongly preferred: it verifies write/admin permission, branch protection, open PRs, and fork count *before* the destructive step. Without it, write access can't be confirmed until the push itself, and the protection/PR/fork warnings are unavailable — say so explicitly and proceed only after the user accepts that blind spot.
+- `git --version` — required. Everything destructive is plain git; the host tooling below only powers the *preflight gates*.
+- **A host CLI** — optional but strongly preferred: it verifies write/admin permission, branch protection, open pull/merge requests, and fork count *before* the destructive step. Without one, write access can't be confirmed until the push itself, and the protection/PR/fork warnings are unavailable — say so explicitly and proceed only after the user accepts that blind spot.
 - `gitleaks version` — optional: scans history for secrets before the rewrite. Without it, note that history was **not** scanned.
 
-Confirm each is on `PATH` (exit 0) before relying on it. Never assume `gh` or `gitleaks` is installed.
+Confirm each is on `PATH` (exit 0) before relying on it. Never assume a host CLI or `gitleaks` is installed.
+
+**Which host CLI.** Detect the host from the remote URL, then use its tool. The gates in Phase 0 give the command for each:
+
+| Host | CLI | Check it's present | Generic escape hatch |
+|---|---|---|---|
+| GitHub | `gh` | `gh --version` | `gh api <endpoint>` |
+| GitLab (SaaS or self-managed) | `glab` | `glab --version` | `glab api <endpoint>` (`--hostname` for self-managed) |
+| Bitbucket, Gitea/Forgejo, Azure DevOps, plain SSH remote | none assumed | — | the host's REST API over `curl` with a token, if the user supplies one |
+
+For a host with no CLI and no token, treat every gate below that needs one as **unavailable**, not as passed: list which checks you could not run, and get the user's explicit acceptance before Phase 1. An unrunnable gate is a blind spot to disclose, never a gate to skip silently.
 
 ---
 
@@ -62,9 +72,11 @@ Do every check that your available tools allow. Each failure is a hard stop, not
    ```
    git config user.name
    git config user.email
-   gh api user -q .login          # if gh available — the account that will actually push
+
+   gh api user -q .login              # GitHub — the account that will actually push
+   glab api user                      # GitLab — read `username` from the JSON
    ```
-   The repo owner is `<owner>` (from the URL, or `gh repo view <owner>/<repo> --json owner`). With `gh` present, the authoritative comparison is `<owner>` vs `gh api user -q .login`, case-insensitive; for an org-owned repo the logins won't match by name — fall back to the write-permission check in step 6 as proof of ownership. Without `gh`, match `<owner>` against `git config user.name` or the local-part of `git config user.email`.
+   `glab api` has no field-selection flag: it prints JSON, so read the field yourself rather than piping through a `jq` you haven't confirmed is installed. The repo owner is `<owner>` (from the URL, or `gh repo view <owner>/<repo> --json owner` / the `namespace.full_path` field of `glab api projects/<url-encoded-path>`). With a host CLI present, the authoritative comparison is `<owner>` vs the authenticated login, case-insensitive; for an org- or group-owned repo the logins won't match by name — fall back to the write-permission check in step 6 as proof of ownership. With no host CLI, match `<owner>` against `git config user.name` or the local-part of `git config user.email`.
    Mismatch → **stop and report it**: name the repo owner and your local git identity side by side, and do not proceed until the user *explicitly* confirms they intend to rewrite a repo owned by a different account. Hard stop, not a warning to skip.
 
 4. **Detect the default branch** (unless a branch was passed):
@@ -79,25 +91,30 @@ Do every check that your available tools allow. Each failure is a hard stop, not
    ```
    More than one branch → **stop, list every branch, and offer the user the choice explicitly: continue anyway (only `<branch>` is rewritten; the other branches keep their full history) or abort.** Do not decide this yourself. Exactly one branch → continue.
 
-6. **Write / admin permission** (needs `gh`):
+6. **Write / admin permission** (needs a host CLI):
    ```
    gh repo view <owner>/<repo> --json viewerPermission,isFork,parent,forkCount
+   glab api projects/<url-encoded-path>       # read permissions, forked_from_project, forks_count
    ```
-   `viewerPermission` must be `WRITE`, `MAINTAIN`, or `ADMIN`. `READ` / `null` → stop: you cannot push. Note `isFork` — rewriting a fork's history is fine but doesn't touch the upstream; make sure that's what the user wants.
+   GitHub: `viewerPermission` must be `WRITE`, `MAINTAIN`, or `ADMIN`; `READ` / `null` → stop, you cannot push. GitLab: the effective `access_level` under `permissions.project_access` (or `permissions.group_access`) must be ≥ `40` (Maintainer) — `30` (Developer) cannot force-push a protected branch and usually cannot push to the default one. Note whether the repo is a fork (`isFork` / `forked_from_project`) — rewriting a fork's history is fine but doesn't touch the upstream; make sure that's what the user wants.
 
-7. **Branch protection** (needs `gh`) — force-push to a protected default branch will be *rejected at push time*, after the backup and squash are already done:
+   URL-encode the GitLab project path: `group/sub/repo` → `group%2Fsub%2Frepo`. Inside a checkout of that project, `glab api projects/:fullpath` substitutes it for you.
+
+7. **Branch protection** (needs a host CLI) — force-push to a protected default branch will be *rejected at push time*, after the backup and squash are already done:
    ```
    gh api repos/<owner>/<repo>/branches/<branch>/protection
+   glab api projects/<url-encoded-path>/protected_branches/<branch>
    ```
-   A `200` with force-push disallowed, or required reviews / linear-history / status checks → stop and tell the user to lift protection (Settings → Branches) or grant a bypass first. A `404` means unprotected — good.
+   A `200` with force-push disallowed, or required reviews / linear-history / status checks → stop and tell the user to lift protection or grant a bypass first (GitHub: Settings → Branches; GitLab: Settings → Repository → Protected branches, where `allow_force_push` is the field that matters). A `404` means the branch is unprotected — good.
 
-8. **Open pull requests** (needs `gh`) — they reference old commits and break on a wholesale rewrite:
+8. **Open pull / merge requests** (needs a host CLI) — they reference old commits and break on a wholesale rewrite:
    ```
    gh pr list --repo <owner>/<repo> --state open
+   glab mr list --repo <owner>/<repo>         # defaults to open MRs; --all would add closed and merged
    ```
-   Any open PR → surface the list. The user should close or merge them first; proceeding will orphan their base commits.
+   Any open PR/MR → surface the list. The user should close or merge them first; proceeding will orphan their base commits.
 
-9. **Forks** (from step 6's `forkCount`) — a rewrite cannot reach a fork; every forker keeps a full copy of the old history. If `forkCount > 0`, say so plainly: this is not a way to make the old history unrecoverable.
+9. **Forks** (from step 6 — `forkCount` on GitHub, `forks_count` on GitLab) — a rewrite cannot reach a fork; every forker keeps a full copy of the old history. If the count is above zero, say so plainly: this is not a way to make the old history unrecoverable.
 
 10. **Commit message.** Ask the user what to name the single commit the whole history collapses into — unless `--message` was already passed on invocation. Offer `Initial commit` as the default so they can accept it in one word. Record the answer as `<message>`; Phase 3 commits with it verbatim, and the confirmation gate below quotes it back.
 
@@ -139,7 +156,7 @@ Report the backup's absolute path. **Never delete it as part of this skill.**
 
 ## Phase 2 — Secret scan of history (before the rewrite)
 
-A force-push does **not** remove a leaked secret: it survives in forks, in GitHub's dangling-commit cache, and in anyone's existing clone. Finding one now changes the plan from "rewrite" to "rewrite **and rotate**."
+A force-push does **not** remove a leaked secret: it survives in forks, in the host's dangling-commit cache, and in anyone's existing clone. Finding one now changes the plan from "rewrite" to "rewrite **and rotate**."
 
 Clone a normal (non-mirror) working copy — you'll reuse it for the squash:
 
@@ -234,7 +251,7 @@ git ls-remote --heads --tags origin
   ```
   git push origin --delete <branch-or-tag>
   ```
-  **Deleting a tag orphans its GitHub Release** — the release object and its notes/assets survive, but its tag link goes dead. Warn the user per tag before deleting, and note the tradeoff: keeping the tag leaves the old history reachable through it (the reset stays cosmetic for `<branch>`); deleting it completes the wipe but breaks the release.
+  **Deleting a tag orphans the release built on it** — on GitHub and GitLab alike the release object and its notes/assets survive, but its tag link goes dead. Warn the user per tag before deleting, and note the tradeoff: keeping the tag leaves the old history reachable through it (the reset stays cosmetic for `<branch>`); deleting it completes the wipe but breaks the release.
 - Tidy local remote-tracking refs:
   ```
   git remote prune origin
@@ -261,7 +278,7 @@ Verified:     ls-remote tip = <NEW_SHA>; local rev-list = 1; fsck clean
 
 - **Open PRs** — close or recreate; they reference commits that no longer exist.
 - **Forks** — keep a full copy of the old history; a rewrite can't reach them.
-- **Full erasure guarantee** — the only way GitHub fully drops old commits is to delete the repository (Settings → Delete repository) and recreate it; force-push leaves them dangling and cache-reachable for a while.
+- **Full erasure guarantee** — a force-push leaves the old commits dangling and cache-reachable for a while on every major host. The only reliable way to drop them is to delete the repository and recreate it (GitHub: Settings → Delete repository; GitLab: Settings → General → Advanced → Delete project, which is a delayed deletion on some plans). On a self-managed host, ask the administrator what its garbage-collection schedule actually is rather than assuming.
 - **Leaked secret** — if the scan (or the user) found one, rotate it. The rewrite does not make it unrecoverable.
 - **Backup** — tell the user where it is and that they can delete it once they've confirmed the remote is good. The skill never deletes it.
 

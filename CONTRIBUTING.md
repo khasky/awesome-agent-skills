@@ -35,6 +35,31 @@ Two body templates are in use — follow whichever matches the skill:
 
 Every audit skill needs a *What not to flag* section. False positives are the failure mode that makes a report unusable, and they are cheaper to prevent in the skill than to argue about in review.
 
+## Framework- and stack-agnostic
+
+A skill is installed once and fires on whatever repo the user happens to be in. It must be useful there. The rule:
+
+**A skill is stack-agnostic unless its domain *is* a stack — and where the domain is a stack, the description says so.**
+
+A *domain* boundary is legitimate: `awesome-accessibility-audit`, `awesome-seo-audit`, and `awesome-landing-audit` are about the web because accessibility, search indexing, and landing pages are web things; `awesome-git-history-reset` is about git because that is the artifact it rewrites. A *stack* boundary inside a general domain is not: error handling, logging, naming, dependency risk, and client hardening exist in every language, so a skill covering them may not be a TypeScript skill wearing a general title.
+
+### Three patterns that satisfy it
+
+Reuse whichever fits; all three are already in the collection, so match the incumbent shape rather than inventing a fourth.
+
+1. **The "other runtimes" line** — a section whose mechanism is runtime-bound ends with one bullet mapping the same rule onto the other runtimes. `awesome-performance-audit` does this per track (`**Other runtimes** — same finding, different mechanism: thread-pool starvation (JVM, .NET), a blocked async executor (asyncio, tokio), GIL-bound workers`), and `awesome-code-standards` does it per core section.
+2. **The detect-the-stack step** — the method's early phase reads the indicator files and picks the applicable checks before any checking starts. `awesome-security-audit` step 3: `Indicator files (package.json, requirements.txt, go.mod, framework configs) tell you which checks matter`. `awesome-dependency-audit` names its six ecosystems in step 1; `awesome-db-audit` requires naming the engine and version and marking engine-specific findings.
+3. **The mechanism-file split** — when one platform's mechanisms would otherwise dominate a checklist, the rules go in the main file runtime-independently and the platform mechanics go in their own `references/` file, loaded only when that platform is the target. `awesome-leak-audit` splits `client-hardening.md` (rules) from `browser-client.md` (browser mechanisms).
+
+### What a reviewer checks
+
+- **Examples don't all share one language.** A single language may carry the worked example, but then the rule around it gets the per-language mapping. Count the code fences: all one language in a skill whose title says "universal" is the failure.
+- **The description doesn't claim wider coverage than the body delivers.** If the frontmatter says "extension, mobile app, SPA, CLI, SDK", a CLI author has to get something out of the body. Narrow the description or widen the body — a description writing cheques the body doesn't cash is the bug.
+- **Vendor tooling names its alternative.** A skill that leans on a host CLI (`gh`, `glab`) or a vendor API gives the equivalent for the other hosts, or declares that gate **unavailable** for them — never silently passed. Same for package managers, formatters, and test runners: `tsc --noEmit` is fine as an example when it reads "or the project's equivalent".
+- **Anything genuinely universal stays unqualified.** Don't bolt a per-language list onto a rule that has no per-language variation — that's noise, and it dilutes the lines that carry real mapping.
+
+This one is enforced in review, not in CI: no check counts code-fence languages or reads a description against a body. If a PR trips it, say so in review with the specific section and the pattern above that fixes it.
+
 ## Rating vocabularies
 
 Two, so two reports never mean different things by the same word:

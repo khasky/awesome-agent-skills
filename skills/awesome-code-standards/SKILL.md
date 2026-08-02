@@ -70,6 +70,16 @@ function similarity(a, b) {}
 - Utilities/hooks: camelCase (`formatDate.ts`, `useAuth.ts`).
 - Types: camelCase with `.types` or `.d` as project uses (`market.types.ts`).
 
+### Other languages
+
+The examples above are TypeScript; the rule is "follow the language's own published convention", and that convention differs. Each language's style guide wins over the casing shown here:
+
+- **Python** (PEP 8) — `snake_case` functions, variables, modules; `PascalCase` classes; `UPPER_SNAKE` constants; a leading `_` marks non-public.
+- **Go** (Effective Go) — `MixedCaps`, never underscores; a capital initial *is* the export marker. The package name is part of the name: `chi.NewRouter`, not `chi.NewChiRouter`.
+- **Rust** (RFC 430) — `snake_case` functions, variables, modules; `UpperCamelCase` types and traits; `SCREAMING_SNAKE_CASE` consts and statics.
+- **Java / Kotlin** — `camelCase` methods and fields, `PascalCase` types, one public type per file named after it.
+- **C#** — `PascalCase` for methods, properties, and types; `camelCase` for locals and parameters; interfaces prefixed `I`.
+
 ## Immutability (critical)
 
 ```typescript
@@ -81,6 +91,14 @@ const updatedArray = [...items, newItem];
 user.name = 'New Name';
 items.push(newItem);
 ```
+
+**Other languages** — same rule, different mechanism:
+
+- **Python** — never mutate an argument the caller still owns, and never use a mutable default (`def f(xs=[])` shares one list across calls; use `None` + build inside). Prefer tuples and `frozenset` for fixed collections; `dataclasses.replace(obj, field=…)` for a modified copy.
+- **Go** — a slice you store keeps its caller's backing array, so `append` can write through to it later; copy before retaining (`slices.Clone`). Value receivers for methods that shouldn't mutate.
+- **Rust** — bindings are immutable by default and the borrow checker enforces it; `mut` is the exception you justify, not the default you type.
+- **Java** — `record` for data carriers, `List.copyOf`/`Map.copyOf` for defensive copies at the boundary.
+- **C#** — `record` types plus `with` expressions; `ImmutableArray`/`ImmutableList` for shared collections.
 
 ## Error Handling
 
@@ -106,6 +124,14 @@ async function fetchData(url: string) {
 }
 ```
 
+**Other languages** — the shape changes, "add context, never swallow" does not:
+
+- **Python** — raise a specific exception type, never a bare `except:` (it eats `KeyboardInterrupt` too). Re-raise with the chain intact: `raise ParseError(...) from err`.
+- **Go** — errors are values: check every one, wrap with context using `%w` so `errors.Is`/`errors.As` still work (`fmt.Errorf("fetch %s: %w", url, err)`). Discarding one with `_ =` needs a comment saying why it's safe.
+- **Rust** — return `Result<T, E>` and propagate with `?`; a typed error enum (or `thiserror`) at library boundaries, `anyhow` only in the binary. `unwrap()`/`expect()` in library code is a panic you shipped.
+- **Java** — one exception type per failure mode, never an empty `catch`; keep the cause (`throw new X(msg, err)`).
+- **C#** — catch the specific exception, rethrow with bare `throw;` (not `throw ex;`, which resets the stack trace).
+
 ## Async and concurrency
 
 ```typescript
@@ -122,6 +148,14 @@ const markets = await fetchMarkets();
 const stats = await fetchStats();
 ```
 
+**Other languages** — run independent work concurrently, and give every concurrent unit a way to be cancelled:
+
+- **Python** — `asyncio.gather(*coros)` for independent awaits; `asyncio.TaskGroup` (3.11+) when a failure should cancel the siblings. Blocking calls go to `run_in_executor`, never inline in a coroutine.
+- **Go** — `errgroup.Group` (`golang.org/x/sync`) for fan-out that must fail as a unit, `sync.WaitGroup` when it must not. `context.Context` is the first parameter of anything that can block, and it is *passed down*, not stored in a struct.
+- **Rust** — `tokio::join!` for independent futures, `try_join!` when the first error should abort; a `CancellationToken` or dropping the `JoinHandle` for teardown.
+- **Java** — `CompletableFuture.allOf(...)`, or structured concurrency (`StructuredTaskScope`) where available.
+- **C#** — `Task.WhenAll(...)`, with a `CancellationToken` threaded through every async signature.
+
 ## Type Safety
 
 ```typescript
@@ -137,11 +171,21 @@ function getMarket(id: string): Promise<Market> { /* ... */ }
 function getMarket(id: any): Promise<any> { /* ... */ }
 ```
 
+**Other languages** — the goal is the same: make an invalid value unrepresentable, and check it at the boundary rather than at every call site.
+
+- **Python** — annotate every public signature and run `mypy`/`pyright` in strict mode in CI; a type hint nothing checks is a comment. `TypedDict`/`dataclass`/Pydantic model at API and parse boundaries, not raw `dict[str, Any]`.
+- **Go** — concrete types over `any`; accept interfaces, return structs. An `any` in a signature is a parse boundary, and it gets a type switch or `errors.As` immediately.
+- **Rust** — newtypes over bare primitives (`struct UserId(u64)`, not `u64`) so the compiler catches a swapped argument; enums over stringly-typed state.
+- **Java / Kotlin** — Kotlin's nullable types, or `Optional` plus nullability annotations in Java; no `Object` in a public signature.
+- **C#** — nullable reference types enabled project-wide (`<Nullable>enable</Nullable>`), warnings as errors.
+
+**Dynamically-typed languages without a checker** (plain JS, Ruby, PHP, Lua) do the same job at runtime: validate at the trust boundary with a schema, and let internal calls stay unguarded.
+
 ## Comments and docs
 
 - **Explain why, not what** — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
 - **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
-- **JSDoc for public APIs** — Summary, @param, @returns, @throws, optional @example. Match project style.
+- **Doc comments on public APIs** — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
 - **No commented-out code** — Remove or explain in a ticket; use version control for history.
 
 That is the bar for code you are writing or touching now. For a repo-wide pass over existing comments — deciding what to delete, condense, or fix, with the false-positive boundaries and the behavior-preserving verification gate — use **awesome-code-cleanup**, which owns that procedure.
