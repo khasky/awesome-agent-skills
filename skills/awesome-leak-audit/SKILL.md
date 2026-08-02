@@ -20,7 +20,7 @@ This skill produces three things: a **findings list** (leaks + client-side secur
 - [`references/client-hardening.md`](references/client-hardening.md) — runtime-independent client-side security checklist (capabilities, cross-context entry points, tokens, network, build config, supply chain).
 - [`references/browser-client.md`](references/browser-client.md) — the browser half of that checklist (extension permissions, storage tiers, DOM/CSS sinks, bundler config, npm lifecycle scripts). Load it *with* `client-hardening.md` for an extension, SPA, or web SDK; skip it for a native, desktop, or CLI client.
 - [`references/report-template.md`](references/report-template.md) — the output report structure.
-- [`scripts/leak-sweep.sh`](scripts/leak-sweep.sh) — a parameterized ripgrep sweep to seed the search (customize the pattern arrays per product).
+- [`scripts/leak-sweep.sh`](scripts/leak-sweep.sh) / [`scripts/leak-sweep.ps1`](scripts/leak-sweep.ps1) — the same parameterized ripgrep sweep, for POSIX shells and for native Windows PowerShell (customize the pattern arrays per product). Run whichever matches the shell you are in; their output matches.
 
 ## The core mental model
 
@@ -44,7 +44,7 @@ Before searching, establish what "private" means for *this* product. Do not skip
 
 ### Phase 2 — Sweep for leaks
 
-Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Run `scripts/leak-sweep.sh <target-dir>` as a starting sweep, then read the hits in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. Also keep a "checked, clean" list so the report shows coverage.
+Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Run `scripts/leak-sweep.sh <target-dir>` (or `scripts/leak-sweep.ps1 <target-dir>` on native Windows) as a starting sweep, then read the hits in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. Also keep a "checked, clean" list so the report shows coverage.
 
 For each confirmed leak, sketch the attacker's next step as a one-line attack path — leaked detail → what it enables → why it matters — and rate severity by how *easy* the abuse is, not only how bad the worst case would be.
 

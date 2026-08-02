@@ -223,11 +223,22 @@ This section only places the layers. Designing the error envelope, HTTP status m
 | Magic numbers | Extract named constants (e.g. `MAX_RETRIES`, `DEBOUNCE_MS`) |
 | Long parameter list | Use options object or split into smaller types |
 | Duplicate logic in two places | Extract to shared function or module |
+
+The smells above hold in any language. Numeric thresholds are a starting point, not a law; a documented repo standard always wins, and don't re-flag what a linter or type-checker already enforces. Before inventing a pattern, search the codebase — the problem is often already solved somewhere; reuse it rather than adding a second way to do the same thing.
+
+## Framework-specific correctness (when applicable)
+
+Separate from the universal smells above: every framework has a short list of footguns that look correct and fail at runtime. Learn the list for the framework in front of you rather than assuming another framework's list transfers — the authority is that framework's own documentation (React's Rules of Hooks and "You Might Not Need an Effect", Vue's reactivity caveats, Angular's change-detection guide, Svelte's store and reactivity notes).
+
+React, as the worked example:
+
+| Smell | Action |
+|-------|--------|
 | `{count && <X/>}` in JSX | Renders literal `0`/`NaN` when falsy — use an explicit ternary `count > 0 ? <X/> : null` |
 | Component defined inside another component | Hoist it out — a nested definition is a new type each render and remounts, losing state |
 | State derivable from props/state kept in `useState`+`useEffect` | Derive it during render (or use a keyed reset) — no effect needed |
 
-Numeric thresholds are a starting point, not a law; a documented repo standard always wins, and don't re-flag what a linter or type-checker already enforces. Before inventing a pattern, search the codebase — the problem is often already solved somewhere; reuse it rather than adding a second way to do the same thing.
+The transferable part is the *shape* of the class, not these three rows: a falsy value rendering as visible output, an identity that changes every render and silently discards state, and state duplicated instead of derived. Look for that shape in whatever framework the project uses.
 
 ## Frontend rendering and motion (when applicable)
 
@@ -249,7 +260,7 @@ Numeric thresholds are a starting point, not a law; a documented repo standard a
 - [ ] No direct mutation of arguments or shared state
 - [ ] Errors handled and propagated with context
 - [ ] No unnecessary `any`; types explicit at boundaries
-- [ ] Public APIs documented (JSDoc or project standard)
+- [ ] Public APIs documented (the language's doc-comment format, or the project standard)
 - [ ] Files and structure match existing layout
 - [ ] No magic numbers; constants named
 - [ ] Lint and format rules pass (if project has them)
@@ -261,7 +272,7 @@ Numeric thresholds are a starting point, not a law; a documented repo standard a
 | "It's just a small script" | Apply same naming and structure; future readers will thank you |
 | Commenting out code "for later" | Delete; use git history or a ticket |
 | Fixing only the file in scope | If touching a pattern, suggest project-wide convention or follow-up |
-| Adding style rules without tooling | Prefer ESLint/Prettier/editorconfig so format is automatic |
+| Adding style rules without tooling | Put them in the language's formatter and linter so format is automatic (`gofmt`, `ruff`/`black`, `rustfmt`+`clippy`, `ktlint`, `dotnet format`, ESLint/Prettier), plus `.editorconfig` for what crosses languages |
 
 ## Integration
 

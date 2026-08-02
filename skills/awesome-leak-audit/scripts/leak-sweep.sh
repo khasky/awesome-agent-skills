@@ -10,6 +10,12 @@
 # generic sweep into a product-specific one.
 #
 # Requires ripgrep (rg). Falls back to grep -rInE if rg is absent.
+#
+# leak-sweep.ps1 is the native-Windows PowerShell twin of this script, with the
+# same patterns and the same output. KEEP THEM IN SYNC — change one, change the
+# other. The one deliberate divergence: category 7 keeps the em-dash literal here
+# so the grep fallback works (POSIX ERE has no \x{...} escape); the .ps1, which
+# has no fallback, writes it as \x{2014}.
 
 set -uo pipefail
 

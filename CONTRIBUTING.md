@@ -58,7 +58,7 @@ Reuse whichever fits; all three are already in the collection, so match the incu
 - **Vendor tooling names its alternative.** A skill that leans on a host CLI (`gh`, `glab`) or a vendor API gives the equivalent for the other hosts, or declares that gate **unavailable** for them — never silently passed. Same for package managers, formatters, and test runners: `tsc --noEmit` is fine as an example when it reads "or the project's equivalent".
 - **Anything genuinely universal stays unqualified.** Don't bolt a per-language list onto a rule that has no per-language variation — that's noise, and it dilutes the lines that carry real mapping.
 
-This one is enforced in review, not in CI: no check counts code-fence languages or reads a description against a body. If a PR trips it, say so in review with the specific section and the pattern above that fixes it.
+**Half of this is enforced in CI, half in review.** The `single-language skills carry a per-language mapping` job fails a skill with three or more worked examples that are all in one language and no `Other languages`/`Other runtimes` block — that is the failure mode that actually happened, so it has a guard. The threshold is deliberate: one or two examples may sit in a single language. Everything else — a description claiming wider coverage than the body delivers, a vendor CLI with no named alternative, a per-language list bolted onto a rule that has no per-language variation — is a review check. If a PR trips one of those, say so in review with the specific section and the pattern above that fixes it.
 
 ## Rating vocabularies
 

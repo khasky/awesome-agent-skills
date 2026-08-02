@@ -174,7 +174,7 @@ gitleaks detect --source . --no-banner
 
 - Findings → **stop and tell the user to rotate the exposed credentials.** The rewrite can still proceed afterward, but rotation is the part that actually protects them; the force-push is cosmetic for an exposed secret.
 - Clean → continue.
-- No `gitleaks` → state that history was **not** scanned and recommend installing it (`winget install gitleaks` / `brew install gitleaks`) if secrets in old commits are a concern.
+- No `gitleaks` → state that history was **not** scanned and recommend installing it if secrets in old commits are a concern: `winget install gitleaks` (Windows), `brew install gitleaks` (macOS/Linuxbrew), the distro package on Linux (`apt install gitleaks`, `pacman -S gitleaks`, `dnf install gitleaks`), or a release binary from the project's GitHub releases where the distro has none.
 
 ---
 
@@ -210,7 +210,7 @@ git push --force-with-lease=<branch>:<OLD_SHA> origin <branch>
 ```
 
 - Rejected as *stale info* → a new commit landed after your backup. Stop, re-run from Phase 1 against the new tip; do not switch to `--force` to steamroll it.
-- Rejected as *protected branch* → Phase 0 step 5 was skipped or protection was added since; lift it and retry.
+- Rejected as *protected branch* → Phase 0 step 7 was skipped or protection was added since; lift it and retry.
 
 Verify the remote tip is now the new commit:
 

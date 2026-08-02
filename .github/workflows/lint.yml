@@ -100,5 +100,49 @@ jobs:
           done
           exit $status
 
+      # Partial guard for the "Framework- and stack-agnostic" rule in CONTRIBUTING.
+      # Only the mechanical half is checkable: a skill whose worked examples are all
+      # in one language must also carry the per-language mapping the rule requires.
+      # The other half (description not claiming wider coverage than the body
+      # delivers, vendor tooling naming its alternative) stays a review check.
+      - name: single-language skills carry a per-language mapping
+        run: |
+          python3 - <<'PY'
+          import pathlib, re, sys
+
+          LANGS = {"typescript","ts","javascript","js","jsx","tsx","python","py","go","golang",
+                   "rust","rs","java","kotlin","csharp","cs","ruby","rb","php","swift","cpp","c"}
+          # The structural form CONTRIBUTING prescribes: a heading or a bold lead,
+          # not the phrase buried in a sentence.
+          MARKER = re.compile(r"^(#{1,6} |[-*] )?\*{0,2}other (languages|runtimes|ecosystems|stacks|frameworks)\*{0,2}", re.I | re.M)
+          THRESHOLD = 3   # one or two worked examples may sit in a single language
+
+          fail = []
+          for folder in sorted(pathlib.Path("skills").iterdir()):
+              if not folder.is_dir():
+                  continue
+              seen, text = {}, ""
+              for path in [folder / "SKILL.md"] + sorted((folder / "references").glob("*.md")):
+                  if not path.exists():
+                      continue
+                  body = path.read_text(encoding="utf-8")
+                  text += body
+                  for lang in re.findall(r"^```([A-Za-z+#]+)", body, re.M):
+                      lang = lang.lower()
+                      if lang in LANGS:
+                          seen[lang] = seen.get(lang, 0) + 1
+              total = sum(seen.values())
+              if total >= THRESHOLD and len(seen) == 1 and not MARKER.search(text):
+                  only = next(iter(seen))
+                  fail.append(
+                      f"{folder.name}: {total} code examples, all {only}, and no per-language mapping. "
+                      f"Add an 'Other languages'/'Other runtimes' block per CONTRIBUTING "
+                      f"(Framework- and stack-agnostic), or drop to fewer than {THRESHOLD} examples."
+                  )
+
+          print("\n".join(fail) if fail else "stack-agnostic OK")
+          sys.exit(1 if fail else 0)
+          PY
+
       - name: humanize-en marker regexes still match their fixtures
         run: python3 skills/awesome-humanize-en/scripts/check_markers.py

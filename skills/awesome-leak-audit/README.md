@@ -27,6 +27,7 @@ The rewrite rule it applies to comments, strings, and docs:
 | `references/browser-client.md` | The browser half of that checklist — extension permissions, storage tiers, DOM/CSS sinks, bundler config, npm lifecycle scripts |
 | `references/report-template.md` | Output report structure |
 | `scripts/leak-sweep.sh` | Parameterized ripgrep sweep to seed the audit — customize its `PRODUCT_TERMS` with the product's own private vocabulary |
+| `scripts/leak-sweep.ps1` | The same sweep for native Windows PowerShell; same `rg` binary, same patterns, same output |
 
 ## Usage
 
@@ -36,7 +37,7 @@ Ask in your own words — the skill triggers on intent:
 - "Does the extension disclose our rate limits or server internals?"
 - "Is this client safe to publish? Check secrets and comments."
 
-Or run the sweep standalone: `scripts/leak-sweep.sh path/to/public/client`
+Or run the sweep standalone: `scripts/leak-sweep.sh path/to/public/client` (POSIX shell) or `scripts/leak-sweep.ps1 path/to/public/client` (Windows PowerShell).
 
 Defensive by design: it reduces a client's public attack surface; it does not build exploits. Run it on code you own or are authorized to audit.
 
