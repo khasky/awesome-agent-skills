@@ -44,6 +44,8 @@ Two, so two reports never mean different things by the same word:
 
 `awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those address an author, not a release gate. Do not invent a fourth scale.
 
+Confidence is separate from severity, and three scales are sanctioned — each tied to what it gates: `awesome-code-review` scores findings 1–10 (≤6 becomes a question, not a finding); `awesome-security-audit` uses High/Medium buckets (Medium goes to "Needs verification"); `awesome-code-cleanup` uses Strong / Worth exploring / Speculative for refactor leads. A new skill reuses whichever of these matches its gating need — it does not invent a fourth confidence scale either.
+
 ## Deliberate duplication
 
 Skills are self-contained: each one is installed and read alone, so a rule that must fire in two skills is written in both. That is a design choice, not drift — do not "fix" it by extracting a shared file. What is not acceptable is two skills contradicting each other; when a shared rule changes, update every copy in the same PR.

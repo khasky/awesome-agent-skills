@@ -18,10 +18,10 @@ This is not a copy critique. "The headline is weak" is out of scope; "there are 
 
 1. **Establish scope** — one page, or a set of variants / audience pages. Audit each page as its own unit; a template shared across many URLs is audited once per distinct layout.
 2. **Gather evidence** — pull the rendered HTML (the state a visitor sees), the form markup, and the inbound context you were given (ad copy, `utm_*` params, referring query). Note the viewport you evaluated the fold at (e.g. `1366×768` desktop, `390×844` mobile) — "above the fold" is meaningless without one.
-3. **Check the seven mechanics below** — each maps to an observable signal. A signal you cannot observe (no ad copy supplied → can't judge message match) is `NOT ASSESSED`, never a guess.
+3. **Check the eight mechanics below** — each maps to an observable signal. A signal you cannot observe (no ad copy supplied → can't judge message match) is `NOT ASSESSED`, never a guess.
 4. **Score, gate, report** — one **SHIP / FIX / BLOCK** verdict per page. See Output.
 
-## The seven mechanics
+## The eight mechanics
 
 | # | Check | Observable signal | Fails when |
 |---|-------|-------------------|-----------|
@@ -32,6 +32,7 @@ This is not a copy critique. "The headline is weak" is out of scope; "there are 
 | 5 | **Form-field friction** | Count `required` inputs; check for email-first + hidden attribution fields | Long required form on first touch; UTM/source *asked of the user* instead of captured as hidden inputs |
 | 6 | **Trust / social-proof presence** | DOM elements + JSON-LD: logos, testimonials with attribution, case studies, `Review`/`AggregateRating`, security badges | No trust element of any kind on a page asking for money or contact details |
 | 7 | **CLS-safe banners/interstitials** | Layout behavior on inject: does the top strip / cookie bar / promo reserve height? | Banner injected into normal flow pushes content after paint (layout shift); or an interstitial covers content on first paint (mobile) |
+| 8 | **Image specificity and integrity** | `<img>`/`<picture>` attributes and subjects: dimensions or `aspect-ratio` present; hero/product imagery shows the actual product/UI | Product or hero imagery is generic atmospheric stock where the visitor needs to inspect the offer; images lack width/height (shift on load); a failed image leaves a raw broken-image icon in a conversion-critical slot |
 
 Detail on the non-obvious ones:
 
@@ -39,6 +40,7 @@ Detail on the non-obvious ones:
 - **Form friction (5)** — the bar is *fields required to submit*, not fields present. Email-only first touch with progressive profiling later is the low-friction pattern. Hidden `<input type="hidden" name="utm_source">` fields are a *good* signal (attribution captured silently); the failure is making the visitor type what you could capture.
 - **Trust (6)** — audit *presence and wiring*, not credibility. "Logo wall exists, testimonials carry name/role/company, `AggregateRating` is in JSON-LD" is auditable. Whether the testimonial is *convincing* is copy, not structure — out of scope.
 - **Interstitials (7)** — a full-screen takeover blocking content on first paint (mobile) is the hard failure; a dismissible strip that reserved its height is fine. This is a layout-shift / content-blocking check, not a WCAG check — defer keyboard/focus/contrast to awesome-accessibility-audit.
+- **Images (8)** — "specificity over atmosphere": where the visitor must evaluate the product (pricing, product, demo pages), a real screenshot/product shot is structure and stock atmosphere is a conversion defect you can point at. Brand/mood imagery on a page that sells nothing directly is a business choice — note, don't flag. Missing dimensions and unhandled load-error states are mechanical failures regardless of subject. Aesthetic quality of the image is copy-territory — out of scope.
 
 ## Verdicts
 

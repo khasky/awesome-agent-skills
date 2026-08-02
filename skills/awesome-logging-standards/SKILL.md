@@ -1,6 +1,6 @@
 ---
 name: awesome-logging-standards
-description: "Applies structured logging, levels, PII handling, and wide-event (canonical log line) patterns. Use when adding or reviewing logs, choosing log levels, designing request logging, after an incident where logs were insufficient or leaked data, or when the user says 'logging', 'log format', 'what should we log', 'логирование'."
+description: "Applies structured logging, levels, PII handling, and wide-event (canonical log line) patterns. Use when adding or reviewing logs, choosing log levels, designing request logging, after an incident where logs were insufficient or leaked data, or when the user says 'logging', 'log format', 'what should we log', 'логирование'. Do not use for designing the error contract or retry policy itself — use awesome-error-standards."
 license: MIT
 metadata:
   author: Khasky

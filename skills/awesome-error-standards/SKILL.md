@@ -1,6 +1,6 @@
 ---
 name: awesome-error-standards
-description: "Applies consistent error handling, logging, and user-facing messages: typed errors, operational-vs-programmer classification, API error envelopes, HTTP status mapping. Use when adding or refactoring error handling, designing an API error contract, reviewing failure paths, or when the user says 'error handling', 'consistent errors', 'обработка ошибок'."
+description: "Applies consistent error handling, logging, and user-facing messages: typed errors, operational-vs-programmer classification, API error envelopes, HTTP status mapping. Use when adding or refactoring error handling, designing an API error contract, reviewing failure paths, or when the user says 'error handling', 'consistent errors', 'обработка ошибок'. Do not use for log format, levels, or PII redaction — use awesome-logging-standards."
 license: MIT
 metadata:
   author: Khasky

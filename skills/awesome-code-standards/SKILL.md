@@ -1,6 +1,6 @@
 ---
 name: awesome-code-standards
-description: "Universal coding standards: naming, structure, immutability, error handling, and type-safety patterns for consistent code. Use when starting a project or module, refactoring to team conventions, setting up lint/format rules, onboarding, or when the user says 'coding standards', 'naming conventions', 'code style'. Discovers and follows the project's own conventions first; these rules fill the gaps."
+description: "Universal coding standards: naming, structure, immutability, error handling, type safety, plus backend layering and frontend architecture/motion patterns for consistent code. Use when starting a project or module, refactoring to team conventions, setting up lint/format rules, onboarding, or when the user says 'coding standards', 'naming conventions', 'code style', 'стандарты кода'. Discovers and follows the project's own conventions first; these rules fill the gaps. Do not use for a repo-wide comment/noise cleanup pass (use awesome-code-cleanup) or for designing the API error contract (use awesome-error-standards)."
 license: MIT
 metadata:
   author: Khasky
@@ -167,6 +167,8 @@ throw new NotFoundError('market', id);
 // BAD: business logic reaches into HTTP transport
 return res.status(404).json({ error: 'not found' });
 ```
+
+This section only places the layers. Designing the error envelope, HTTP status mapping, and retry policy in depth is **awesome-error-standards**' job — go there when the task is the error contract itself.
 
 ## Code smells to fix
 

@@ -152,12 +152,15 @@ Close with a structured debug report:
 
 ```text
 Symptom:         [what was observed]
+Environment:     [exact versions where reproduced: runtime, OS, key deps, config that mattered]
 Root cause:      [one sentence]
 Fix:             [what changed and where]
 Evidence:        [the passing run: command + result]
 Regression test: [test that fails without the fix, passes with it]
 Status:          DONE | DONE_WITH_CONCERNS (name them) | BLOCKED (on what)
 ```
+
+One report covers one bug. A second failure discovered on the way gets its own report (or a note), never a second root cause bolted onto this one.
 
 - For systemic bugs, add a two-line post-mortem: why wasn't this caught earlier, and what change prevents the *class* of bug (not just this instance).
 - Any follow-up (similar patterns elsewhere, tech debt) as a separate note. Do not bundle unrelated changes in the fix.
