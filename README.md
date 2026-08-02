@@ -161,10 +161,11 @@ Each skill follows the [Agent Skills specification](https://agentskills.io/speci
 ```text
 skills/<skill-name>/
 ├── SKILL.md          # required: YAML frontmatter (name, description) + instructions
-├── README.md         # only where the folder holds more than SKILL.md
 ├── references/       # optional: detailed docs the agent loads on demand
 └── scripts/          # optional: helper scripts
 ```
+
+**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening 27 folders. Where a skill ships `references/` or `scripts/`, `SKILL.md` itself maps them — an agent that skips the map skips the files.
 
 The frontmatter `description` tells the agent when to activate the skill; the body loads only after activation, and `references/` files only when needed — so a large skill still costs little context until used.
 

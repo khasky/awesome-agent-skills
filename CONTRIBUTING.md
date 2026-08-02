@@ -28,6 +28,10 @@ metadata:
 
 ## Structure
 
+A skill folder contains `SKILL.md` and nothing but the files `SKILL.md` names — `references/` and `scripts/`. **No `README.md`, no CHANGELOG, no per-skill docs.** Those describe the skill to a human browsing GitHub, and that job belongs to the root README, where all skills sit side by side; inside the folder they duplicate `SKILL.md`, drift from it, and leave the next contributor guessing which file is authoritative. A skill that ships `references/` or `scripts/` maps them in `SKILL.md` itself — that map is what makes the agent load them, so it cannot live in a file the agent never opens.
+
+Adding a skill therefore means writing two things: `SKILL.md` for the agent, and one row in the root README table for the reader.
+
 Two body templates are in use — follow whichever matches the skill:
 
 - **Process skills** (standards, review, debugging): mission line → When to Activate → Work Process as numbered phases → domain checklists → Output Format with a populated example → verification/checklist → Anti-patterns.

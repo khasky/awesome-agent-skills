@@ -106,11 +106,19 @@ jobs:
       - name: skill cross-references resolve
         run: |
           status=0
-          for name in $(grep -rhoE 'awesome-[a-z0-9-]+' skills/*/SKILL.md skills/*/references/*.md skills/*/README.md 2>/dev/null | sort -u); do
+          for name in $(grep -rhoE 'awesome-[a-z0-9-]+' skills/*/SKILL.md skills/*/references/*.md 2>/dev/null | sort -u); do
             case "$name" in awesome-agent-skills|awesome-agents-md) continue ;; esac
             [ -d "skills/$name" ] || { echo "dangling skill reference: $name"; status=1; }
           done
           exit $status
+
+      # A skill folder holds only what the agent reads. Per-skill READMEs
+      # duplicate SKILL.md, drift from it, and hide the folder map in a file
+      # the agent never opens — skills are described in the root README.
+      - name: no per-skill README
+        run: |
+          found=$(ls skills/*/README.md 2>/dev/null || true)
+          [ -z "$found" ] || { echo "remove; describe the skill in the root README instead:"; echo "$found"; exit 1; }
 
       - name: referenced asset files exist
         run: |

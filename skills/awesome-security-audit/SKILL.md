@@ -30,9 +30,10 @@ Split the work into a **passive** phase (reading source, config, and dependency 
 5. **Gate findings by confidence** — Report a finding only when the vulnerable pattern AND attacker-controlled input are both confirmed by reading the code. Medium-confidence items go to a separate "Needs verification" section with the specific open question. "Potentially" or "theoretically" in a finding means it is not one yet — every reported issue needs a concrete attacker, input, and result. Defense-in-depth suggestions go to a "Hardening notes" section, never into findings.
 6. **Design-intent gate** — Before flagging a boundary as unhandled, check whether the code *explicitly* returns/rejects there (`errors.New("cache full")`, HTTP 429, buffer-full reject). An explicit designed return is not a bug; a `panic`/crash at the boundary still is. Deduplicate a repeated pattern into one finding with a count, not N findings.
 7. **Escalate criticals immediately** — Don't hold a confirmed Critical (RCE, auth bypass, exposed live secret, bulk-PII exposure) for the final report; surface it to the user the moment it's confirmed, with the immediate containment step.
-8. **Document findings** — Location (file:line or area), issue, impact, and recommended fix. Do not claim "secure"; frame as "no obvious issues in reviewed scope" and suggest further steps (e.g. dependency scan, pentest) if relevant.
-9. **Remediate** — Suggest concrete fixes. Do not introduce new secrets or log sensitive data in fixes.
-10. **Stop on impact** — If an active step shows signs of affecting the running system or its data (errors, state changes, account lockouts), stop that step and report before continuing.
+8. **Sweep for variants** — a confirmed finding is a class, not an instance. Before writing it up, search the repo for the same shape: the same sink reached from a different caller, the same missing check on sibling routes, the same pattern copy-pasted into another module. Grep the sink, the vulnerable call, and the fix's absence (`execute(f"` after finding one f-string query; every route file after finding one without an ownership check), then read each hit in context. Report the class as **one finding listing every location**; split it out only where a variant's severity or reachability genuinely differs. Fixing the one caller the report named and leaving four siblings live is the failure this step exists to prevent.
+9. **Document findings** — Location (file:line or area), issue, impact, and recommended fix. Do not claim "secure"; frame as "no obvious issues in reviewed scope" and suggest further steps (e.g. dependency scan, pentest) if relevant.
+10. **Remediate** — Suggest concrete fixes. Do not introduce new secrets or log sensitive data in fixes.
+11. **Stop on impact** — If an active step shows signs of affecting the running system or its data (errors, state changes, account lockouts), stop that step and report before continuing.
 
 ## What not to flag (false-positive control)
 
@@ -57,6 +58,18 @@ When the scope is a diff, triage by change type before reading line-by-line:
 | Env var / config | Hardcoded secret, fail-open default | not committed, no `or 'default'` |
 | CI workflow / lockfile / build script | Pipeline compromise | actions pinned by SHA, `permissions` scoped, no untrusted interpolation, lockfile diff reviewed |
 
+## Static analysis and its output
+
+Scanners are an **active** step (step 2 gate) — they execute rules over the tree and some resolve dependencies. Once approved, treat their output as leads, not findings:
+
+- **Every hit passes the same confidence gate** as a hand-read finding: vulnerable pattern *and* attacker-controlled input confirmed by reading the code. A scanner ID in a report with no source trace behind it is a false positive waiting to be argued about in review.
+- **Cite the real rule ID and its CWE** (`python.flask.security.injection.sql-injection-with-format-string` → CWE-89), never a paraphrase — a reader must be able to re-run the exact rule.
+- **When a confirmed class has no rule, write one.** A rule ships with two fixtures: the vulnerable snippet it must match and the fixed snippet it must not. A rule with no failing fixture has never been proven to fire; a rule with no passing fixture will flag the fix.
+- **Port a rule before re-deriving it** — the same class in a second language is usually the same rule with different syntax, and the fixture pair carries over.
+- **SARIF is the interchange format** when the output has to reach CI, a code-scanning tab, or another tool. Emit it there; keep the human report separate — a SARIF dump is not an audit report.
+- **Every suppression carries a reason and an expiry** (`# nosec B608 — table name is an enum, not input; revisit 2026-Q4`). A bare `.semgrepignore` line, `# noqa`, or baseline file that nobody can date is how a real finding gets inherited as "already triaged".
+- **Know the blind spots.** Parsers under-report on templated code (Jinja2, ERB, JSX) and on anything reached through metaprogramming, ORMs, or decorators. A clean scan over those paths is `NOT ASSESSED`, not "clean" — read them by hand.
+
 ## Trust boundaries first
 
 Before the category checklist, map where data crosses a trust boundary (client→server, service→service, user→admin) and run a quick STRIDE pass per boundary — Spoofing, Tampering, Repudiation, Information disclosure, Denial of service, Elevation of privilege. Walk each boundary against the attacker models that can reach it — anonymous, authenticated user, **user from another tenant**, privileged user, **compromised account**, **malicious integration**, insider, automated bot, resource-exhaustion attacker — the cross-tenant, compromised-account, and malicious-integration models surface bugs a per-boundary STRIDE pass alone misses. Prioritize findings where data crosses a boundary; the categories below are the concrete checks. For a design-level review, capture the result as a Threat Register (`ID | Component | STRIDE | Threat | Risk | Mitigation`); when CVSS doesn't fit, DREAD (Damage, Reproducibility, Exploitability, Affected users, Discoverability) is a quick alternative score.
@@ -72,11 +85,11 @@ The detailed checklists live in [references/checklists.md](references/checklists
 | 3 | Authentication and authorization | authn vs authz, forgeable client session state, IDOR, multi-tenant, TOCTOU, workflow bypass, replay, step-up, impersonation, refresh tokens |
 | 4 | Sensitive data | in transit, in responses, in logs, in errors |
 | 5 | Dependencies | known CVEs and reachability, install-time execution, supply chain |
-| 6 | Configuration and deployment | safe defaults, CORS/headers, uploads, serverless IAM, WAF blind spots, cloud posture |
+| 6 | Configuration and deployment | safe defaults, fail-open control paths, unsafe-by-default APIs, CORS/headers, uploads, serverless IAM, WAF blind spots, cloud posture |
 | 7 | LLM / AI integration | output-to-sink flows, prompt assembly, tool surface, cost caps, agentic setups, cross-user memory |
 | 8 | Business logic and abuse | rate-limit bypass, duplicate/concurrent actions, coupon/refund abuse, denial-of-wallet, privilege laundering, scraping, moderation bypass |
 | 9 | CI/CD and build pipeline | unpinned actions, privileged triggers, expression injection, token scope, cross-trust caches, runner exposure |
-| 10 | Cryptographic misuse | broken primitives, weak randomness, nonce reuse, timing oracles, password hashing, JWT, rotation, certificate validation |
+| 10 | Cryptographic misuse | broken primitives, weak randomness, nonce reuse, timing oracles and compiler-defeated constant time, secret lifetime in memory, password hashing, JWT, rotation, certificate validation |
 
 ## Output Format
 
