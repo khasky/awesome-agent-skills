@@ -31,6 +31,7 @@
 - [awesome-document-style](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-document-style/SKILL.md): Line-edits Markdown into clear, specific, publication-ready prose without fabricating facts.
 - [awesome-grammar-check](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-grammar-check/SKILL.md): Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text.
 - [awesome-translate-ru-en](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-translate-ru-en/SKILL.md): Russian-to-English translation preserving structure, formatting, identifiers, and the author's voice.
+- [awesome-style-mimic](https://github.com/khasky/awesome-agent-skills/blob/main/skills/awesome-style-mimic/SKILL.md): Learns a website's writing style into a reusable style guide (live-browser deep crawl), then rewrites documents in that voice with a cross-document consistency pass.
 
 ## Docs
 
