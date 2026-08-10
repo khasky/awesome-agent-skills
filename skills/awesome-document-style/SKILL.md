@@ -1,6 +1,6 @@
 ---
 name: awesome-document-style
-description: "Clean and line-edit Markdown documents for clear, specific, publication-ready prose. Use when asked to de-bloat, de-template, remove chatbot artifacts, fix vague wording, or make Markdown read like careful human editorial writing. Do not use to fabricate facts or bypass detectors."
+description: "Clean and line-edit Markdown documents for clear, specific, publication-ready prose. Use when asked to de-bloat, de-template, remove chatbot artifacts, fix vague wording, settle whether numbers are written as digits or spelled out, or make Markdown read like careful human editorial writing. Do not use to fabricate facts or bypass detectors."
 license: MIT
 metadata:
   author: Khasky
@@ -64,6 +64,11 @@ The markers above are enough to run this pass standalone. If the `awesome-humani
   - Renaming a heading breaks its anchor links: check for inbound `#anchor` links and a TOC first; when they exist, flag the rename as a suggestion instead of applying it.
 - Remove decorative horizontal rules unless they separate distinct document sections.
 - Prefer straight quotes (`'` `"`) and a hyphen or comma-set clause over a gratuitous em-dash (`—`) in the prose you write or rewrite — flawless hand-set typography reads as machine output in plain text. Do not touch: quotes/dashes inside code, commands, or fenced blocks; a deliberate typographic document (a published/formatted article) where the style is consistent and intentional; or a glyph inside a quotation or proper name. Never convert to guillemets or any national style. This is about the characters, not meaning — do not change wording to remove a dash.
+- Write a number a reader could count or verify as digits, not words — `9 supported sites`, `4 permissions`, `2 clicks`, `12 months` — including 0–9 and at the start of a sentence. A group of digits has a different shape from a group of letters, so it survives the scan that skips the words around it ([NN/g eyetracking](https://www.nngroup.com/articles/web-writing-show-numbers-as-numerals/)); spelled out, the same fact dissolves into the sentence. Headings, table cells, and any one-line summary take digits first — those are the lines a reader lands on.
+  - Keep words where the number is not data: `one` as a pronoun or inside a fixed term (“one person, one vote”, “which one”, “one-time code”, “one-click”), a bare pronoun pair (“the two agree”, “all three”), vague scale used as rhetoric (“thousands of throwaway profiles”, “by the hundred”), and magnitudes whose zeros stop being readable (“24 billion”, not `24,000,000,000`).
+  - Never mix the two forms in one sentence: “600 emoji, not six defaults” is the bug. When a rhetorical `one` sits next to the count, recast the sentence or leave both as words rather than digit-plus-word.
+  - Keep one thousands separator per document (`50,000`, not `50 000` in one paragraph and `40,000` in the next), and hyphenate compound modifiers: `2-day-old post`, `6-digit code`.
+  - The print style guides say the opposite for 1–9 (AP spells out one–nine, Chicago one–one hundred) because they are print rules. If the document declares a house style, or the author ran `awesome-grammar-check` with a `style-guide` argument, that declaration wins over this bullet — say which rule you applied.
 - Remove excessive bold. Use bold for UI labels or essential emphasis only.
 - Convert tiny tables into prose unless the table contains comparable data.
 - Use ordered lists only for sequences. Use unordered lists only for genuinely parallel items.
