@@ -26,7 +26,6 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Design principles](#design-principles)
     - [Which layer to install](#which-layer-to-install)
   - [Related](#related)
-  - [Contributing](#contributing)
   - [License](#license)
 
 ## Quick start
@@ -200,10 +199,6 @@ Part of a set of agent tooling — pick the layer you need:
 - [Agent MCP Integrations](https://github.com/khasky/agent-mcp-integrations) — MCP servers that connect agents to browsers, cloud, databases, infra, and domain APIs.
 - [Claude Code Token Optimization](https://github.com/khasky/claude-code-token-optimization) — the token-efficiency layer (RTK, LSP, Context7, `codebase-memory-mcp`, claude-mem, Caveman, Ponytail).
 - [Claude Code Security Audit](https://github.com/khasky/claude-code-security-audit) — the layered security-audit workflow (deep audit, continuous guardrails, scanners).
-
-## Contributing
-
-A new skill is justified only when no existing one covers the trigger — otherwise it becomes a section in the skill that already fires. [CONTRIBUTING.md](CONTRIBUTING.md) has the frontmatter contract, the two body templates, the shared rating vocabularies, and the checks CI runs.
 
 ## License
 
