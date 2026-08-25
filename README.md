@@ -39,7 +39,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 28 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 30 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -73,6 +73,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-test-writing](skills/awesome-test-writing) | Designs and writes tests that catch real regressions: placement ladder, behavior-first assertions, characterization tests, property/fuzz for parsers — every test proven able to fail |
+| [awesome-regression-sweep](skills/awesome-regression-sweep) | Read-only multi-layer verification sweep against a recorded baseline: aspect pass, live wire contract, cross-implementation parity, deployed-vs-committed drift, nine rotating deep angles |
 
 ### Design and planning
 
@@ -104,6 +105,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | [awesome-db-audit](skills/awesome-db-audit) | Read-only database-layer audit: schema anti-patterns (EAV, imprecise types), query/index fit, integrity and concurrency, migration hygiene and tenancy, with a SHIP/FIX/BLOCK verdict |
 | [awesome-dependency-audit](skills/awesome-dependency-audit) | Read-only supply-chain audit of the dependency graph: lockfile discipline, typosquats and hallucinated package names, install-script exposure, CVE reachability, licenses — with a SHIP/FIX/BLOCK verdict |
 | [awesome-landing-audit](skills/awesome-landing-audit) | Read-only structural audit of landing/marketing pages: single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics, not copy |
+| [awesome-claims-audit](skills/awesome-claims-audit) | Audits public claims (site, README, store listing, privacy policy, docs) against the constants, manifests and catalogs that decide them — mechanical checks with a mutation proof, then a fix phase |
 
 ### Git and repository operations
 
