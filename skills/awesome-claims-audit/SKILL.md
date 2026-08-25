@@ -29,6 +29,7 @@ applied mid-audit changes the surface you are still reading.
 **Scripts** (Node ≥18, no dependencies):
 - [`scripts/check-claims.mjs`](scripts/check-claims.mjs) — runs the mechanical checks from a config you write for the product.
 - [`scripts/prove-checks.mjs`](scripts/prove-checks.mjs) — breaks one claim at a time and asserts the owning check names it.
+- [`scripts/map-coverage.mjs`](scripts/map-coverage.mjs) — cross-checks the claim-source map against the config, both directions.
 - [`scripts/stage-json-keys.mjs`](scripts/stage-json-keys.mjs) — stages only named JSON keys when the file also carries someone else's unfinished work.
 
 - **Other runtimes** — the runner is Node because that is what most public-facing
@@ -73,7 +74,7 @@ of output per check, findings tallied at the end, non-zero exit on drift.
 node scripts/check-claims.mjs --config claims.config.json
 ```
 
-Five check kinds cover most of them (schema and worked examples in
+Six check kinds cover most of them (schema and worked examples in
 `references/checker-recipes.md`):
 
 | Kind | Catches |
@@ -81,14 +82,19 @@ Five check kinds cover most of them (schema and worked examples in
 | `value` | prose that states a number, duration, or name that drifted from its constant |
 | `mentions` | a declared item the copy never names — or worse, one it **denies** |
 | `list-parity` | two lists that must agree — a catalog vs a copy table, three repos naming the same platforms, a label map vs a closed enum |
+| `proximity` | two statements that must not share a neighbourhood — a gated endpoint folded into an "open to anyone" claim, a guarantee that lost its qualifier |
 | `exists` | a link, slug, page, or asset the copy offers that resolves to nothing |
 | `retired` | a sentence that was false once, coming back |
 
-Two rules make the difference between a checker and decoration:
+Three rules make the difference between a checker and decoration:
 
 - **A parse that finds nothing fails loudly.** When the regex that extracts the
   constant stops matching, the check must throw, not pass. Silent zero-match is
   how a check file turns into a green rubber stamp.
+- **A check whose claim was deleted says so.** Give each target the `anchor`
+  sentence it is asserting about: when the copy is rewritten away, the check
+  reports "re-point me" instead of guarding nothing. Same for the reverse
+  direction — `requireUse` fails a quoted-label pair whose quote left the site.
 - **A check that has only ever passed has proven nothing.** After writing or
   editing checks, run the mutation pass:
 
@@ -104,6 +110,17 @@ second map still holding it. Add a mutation whenever you add a check.
 
 Green here means the *mechanical* claims hold. It says nothing about prose, which
 is where most of the drift lives.
+
+**Keep the map and the config in step.** The map marks which rows are automated;
+the config says what is really asserted. They drift apart the same way copy drifts
+from code:
+
+```bash
+node scripts/map-coverage.mjs --map claim-source-map.md --config claims.config.json
+```
+
+It names both directions — a row promising coverage that no check provides, and a
+check no row accounts for.
 
 ## Phase 2 — harvest the claims
 
@@ -182,8 +199,10 @@ Use `references/claim-source-map.md`. The traps that recur:
   README fidelity (`awesome-architecture-audit`), a vulnerability
   (`awesome-security-audit`).
 - **A claim you could not settle from source.** A tracking id that lives in a tag
-  manager, a figure owned by a third party — say so under `NOT ASSESSED`. That is
-  worth more than a guess.
+  manager, a figure owned by a third party — say so under `NOT ASSESSED`. Record it
+  in the config's `notAssessed` list so the same gap appears in every report
+  instead of only the one written by whoever remembered it. That is worth more than
+  a guess.
 
 One class is a finding but not a *copy* finding: **a claim that is accurate and
 still discloses too much** — public text explaining the *mechanism* of an

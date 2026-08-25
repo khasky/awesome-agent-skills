@@ -25,7 +25,7 @@ and stop rather than doing it.
 - [`references/deployment-and-infrastructure.md`](references/deployment-and-infrastructure.md) — proving the deployed code is the tested code, and the infrastructure layer that fails with no code change at all.
 
 **Scripts** (Node ≥18, no dependencies):
-- [`scripts/sweep.mjs`](scripts/sweep.mjs) — runs the aspect list from a config, one line per aspect, deltas-friendly output, a `SKIP` where a prerequisite is absent.
+- [`scripts/sweep.mjs`](scripts/sweep.mjs) — runs the aspect list from a config: one line per aspect, deltas against a stored baseline, per-aspect timeouts, output assertions for tools whose exit code lies, and a `SKIP` where a prerequisite is absent.
 - [`scripts/http-contract.mjs`](scripts/http-contract.mjs) — black-box probe of a public read endpoint: cache-key canonicalization, validation before work, CORS, ETag/`304`, `HEAD` parity, security headers.
 
 - **Other runtimes** — the runner is Node so one file works on every platform; the
@@ -53,7 +53,7 @@ those, never a guessed equivalent.
 ## Phase 1 — the aspect sweep
 
 ```bash
-node scripts/sweep.mjs --config sweep.config.json
+node scripts/sweep.mjs --config sweep.config.json --baseline baseline.json
 ```
 
 Nine aspects, one line each, then a verdict. Include the ones that exist:
@@ -70,9 +70,28 @@ Nine aspects, one line each, then a verdict. Include the ones that exist:
 | end-to-end audit | the system does not verify end to end |
 | downstream consumer build | a consumer of the contract no longer builds |
 
-**Baseline discipline.** Record the tally lines from the first pass and compare
-every later pass to them. "846 passed" is not a result; "846 passed, same as the
-baseline" is. Report deltas.
+**Baseline discipline.** The first pass writes `baseline.json`; every later pass
+compares against it and prints a `DELTAS` block, or `no deltas`. "846 passed" is not
+a result; "846 passed, same as the baseline" is. Only a line the aspect declares as
+its `tally` is compared — a bare last line carries timings and would report a delta
+every pass. Re-baseline deliberately with `--update-baseline`, never to make a
+red pass look green.
+
+**Four config options that decide whether the sweep can be trusted:**
+
+- `expect` — a pattern the output must contain. **Exit codes lie**: wrapper
+  scripts, shell shims, and some suites report `0` while printing a failure, and a
+  filtered summary has reported "clean" while the underlying tool failed. When an
+  aspect prints its own verdict, assert on that verdict; and when a wrapper
+  compresses output, run the tool's binary directly rather than the wrapper.
+- `timeoutMs` — a ceiling per aspect. A hung live check otherwise stalls the pass
+  forever, and a sweep that never finishes verified nothing.
+- `failLines` — the pattern that marks a failing case, so a red aspect prints the
+  failing names instead of a blind tail.
+- `env` — **derive environment parameters from the application's own config**
+  rather than re-typing them in the harness. A key, an endpoint, or a limit copied
+  into the sweep drifts from the code it is supposed to check, and then the harness
+  is what is wrong.
 
 **Running it repeatedly is the point.** One pass proves the code compiles. Several
 passes spread over time catch flakes, state leaking between tests, and drift caused
@@ -130,8 +149,15 @@ and expensive to discover in production.
 
 ```bash
 node scripts/http-contract.mjs --base https://api.example.com --path /v1/status \
-  --collection "/v1/items?from=1&to=3" --origin https://example.org
+  --collection "/v1/items?from=1&to=3" --origin https://example.org \
+  --bad "/v1/items?from=abc" --bad "/v1/items?from=9&to=1" --bad "/v1/items?from=1&to=99999" \
+  --moving "/v1/feed?from=1" --private /v1/account --unknown /v1/no-such-route
 ```
+
+Repeat `--bad` per malformed shape — non-numeric, reversed, zero, oversize, too
+many items, over-long value, missing separator. Each takes a different branch
+through the validator, and the branch that forgets to reject is the one that
+reaches the database before validation finishes.
 
 ## What not to flag
 

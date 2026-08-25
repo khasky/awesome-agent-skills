@@ -7,14 +7,20 @@
 // service, and each is invisible until a client, a CDN, or an attacker finds it.
 //
 //   node http-contract.mjs --base https://api.example.com --path /v1/status \
-//     [--collection "/v1/items?from=1&to=3"] [--bad "/v1/items?from=9&to=1"] \
-//     [--moving "/v1/feed?from=1"] [--private /v1/private] [--origin https://example.org]
+//     [--collection "/v1/items?from=1&to=3"] [--bad "…" --bad "…"] \
+//     [--moving "/v1/feed?from=1"] [--private /v1/private] [--unknown /v1/no-such-route] \
+//     [--origin https://example.org]
 //
 // --path        a stable public read endpoint (the ETag/cache/HEAD subject)
 // --collection  a path with at least two query parameters (canonicalization subject)
-// --bad         a request that MUST be rejected (validation and CORS-on-error subject)
+// --bad         a request that MUST be rejected. Repeatable, and worth repeating:
+//               non-numeric, reversed range, zero/negative, oversize range, too many
+//               items, over-long value, and a value missing its separator each take a
+//               different branch through the validator.
 // --moving      an open-ended view that must not be immutable
 // --private     a path that must NOT hand CORS to an unlisted origin
+// --unknown     a route that does not exist; its 404 must carry CORS too (derived
+//               from --path when omitted)
 //
 // Exit 0 when every check passes; WARN lines never fail the run.
 //
@@ -26,13 +32,16 @@ const flag = (name, fallback) => {
   return i === -1 ? fallback : argv[i + 1];
 };
 
+const flags = (name) => argv.reduce((out, arg, i) => (arg === `--${name}` && argv[i + 1] ? [...out, argv[i + 1]] : out), []);
+
 const BASE = (flag("base") ?? "").replace(/\/$/, "");
 const PATH = flag("path");
 const COLLECTION = flag("collection");
-const BAD = flag("bad");
+const BADS = flags("bad");
 const MOVING = flag("moving");
 const PRIVATE = flag("private");
 const ORIGIN = flag("origin", "https://probe.invalid");
+const UNKNOWN = flag("unknown", PATH ? `${PATH.split("?")[0].replace(/\/[^/]*$/, "")}/no-such-route-probe` : "");
 
 if (!BASE || !PATH) {
   console.error("usage: http-contract.mjs --base <url> --path </public/read/path> [--collection …] [--bad …] [--moving …] [--private …] [--origin …]");
@@ -83,7 +92,11 @@ async function get(p, { method = "GET", headers = {} } = {}) {
 
 // --- canonical cache key -----------------------------------------------------
 console.log("== canonical cache key ==");
-const base = await get(PATH);
+const base = await get(PATH).catch((error) => {
+  // Unreachable is not a contract failure — it is a run that never happened.
+  console.error(`could not reach ${url(PATH)}: ${error.cause?.code ?? error.message}`);
+  process.exit(2);
+});
 ok(`${PATH} answers (${base.status})`);
 
 const noisy = await get(withQuery(PATH, junk()));
@@ -115,16 +128,18 @@ if (COLLECTION) {
 
 // --- validation before work --------------------------------------------------
 console.log("== validation before any query ==");
-if (BAD) {
-  const rejected = await get(BAD);
-  is(`${BAD} is rejected`, rejected.status >= 400 && rejected.status < 500, true);
+if (BADS.length) {
+  for (const bad of BADS) {
+    const rejected = await get(bad);
+    is(`${bad} is rejected`, rejected.status >= 400 && rejected.status < 500, true);
+  }
 } else {
   skip("validation", "no --bad given");
 }
 
 // --- CORS on every branch ----------------------------------------------------
 console.log("== CORS on every branch ==");
-for (const [label, target] of [["success", PATH], ["error", BAD]].filter(([, t]) => t)) {
+for (const [label, target] of [["success", PATH], ["error", BADS[0]]].filter(([, t]) => t)) {
   const response = await get(target, { headers: { Origin: ORIGIN } });
   const acao = response.header("access-control-allow-origin");
   if (acao) ok(`CORS header present on the ${label} branch (${acao})`);
@@ -138,6 +153,16 @@ const preflight = await get(PATH, { method: "OPTIONS", headers: { Origin: ORIGIN
 is("OPTIONS preflight succeeds", preflight.status >= 200 && preflight.status < 300, true);
 if (preflight.header("access-control-allow-origin")) ok("OPTIONS preflight carries the CORS header");
 else no("OPTIONS preflight carries the CORS header", `status ${preflight.status}, no access-control-allow-origin`);
+
+// A 404 leaves the handler by a third route — the one that forgets the headers.
+if (UNKNOWN) {
+  const missing = await get(UNKNOWN, { headers: { Origin: ORIGIN } });
+  if (missing.status < 400) skip("unknown-path CORS", `${UNKNOWN} answered ${missing.status}; pass --unknown with a route that 404s`);
+  else if (missing.header("access-control-allow-origin")) ok(`CORS header present on the unknown-path branch (${missing.status})`);
+  else no("CORS header present on the unknown-path branch", `no access-control-allow-origin on ${UNKNOWN} (${missing.status})`);
+} else {
+  skip("unknown-path CORS", "no --unknown given and none derivable");
+}
 
 if (PRIVATE) {
   const guarded = await get(PRIVATE, { headers: { Origin: ORIGIN } });

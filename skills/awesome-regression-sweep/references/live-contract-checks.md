@@ -21,12 +21,16 @@ the fewest tests, because every one of them is invisible from inside the process
   once, in a stable order.
 - **Nothing reads the database before validation finishes.** A `4xx` is never
   cached, so a query that runs *before* the input is rejected is a free
-  amplification lever. Prove it: send the malformed variants and confirm they fail
-  fast.
-- **CORS is uniform across every branch** — success, error, `304`, and the
-  `OPTIONS` preflight alike. A header that appears only on `200` breaks every
-  browser client the moment something goes wrong. And confirm the inverse: a path
-  that is *not* public still refuses an unlisted origin.
+  amplification lever. Prove it with every malformed shape separately, because each
+  takes a different branch: a non-numeric value, a reversed range, zero or negative,
+  a range wider than the cap, more list items than the cap, a value longer than the
+  cap, and a compound value missing its separator. One of those branches is the one
+  that forgets.
+- **CORS is uniform across every branch** — success, error, `304`, an unknown path's
+  `404`, and the `OPTIONS` preflight alike. A header that appears only on `200`
+  breaks every browser client the moment something goes wrong, and the `404` leaves
+  the handler by a third route that is easy to forget. Confirm the inverse too: a
+  path that is *not* public still refuses an unlisted origin.
 - **Never credentialed on a public path.** `Access-Control-Allow-Credentials`
   beside a wildcard origin is a bug even when browsers reject the pair.
 - **A strong `ETag` and a bodiless `304`.** The `304` keeps the `ETag` and the CORS

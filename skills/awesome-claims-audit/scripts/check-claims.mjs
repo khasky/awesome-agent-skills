@@ -6,7 +6,9 @@
 // constant leaves a sentence somewhere else that is simply false — nothing fails,
 // the page just lies. Each check below encodes one claim. A check whose pattern
 // stops matching THROWS rather than passing: a parser that silently finds nothing
-// would turn this file into decoration.
+// would turn this file into decoration. The same rule covers the copy side — a
+// target may declare the `anchor` sentence it is asserting about, so a check whose
+// claim was deleted reports "re-point me" instead of a green line.
 //
 //   node check-claims.mjs --config claims.config.json
 //
@@ -38,6 +40,11 @@ const at = (rel) => (isAbsolute(rel) ? rel : join(ROOT, rel));
 const read = (rel) => readFileSync(at(rel), "utf8");
 const rx = (pattern, flags = "") => new RegExp(pattern, flags);
 const escape = (s) => String(s).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+
+/** Typographic quotes, wrapped lines and a trailing period are copy decisions, not
+ *  claims. Normalizing both sides keeps a curly apostrophe from reading as drift. */
+const norm = (s) => String(s).replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, " ");
+const normValue = (v) => norm(v).replace(/\.$/, "").trim();
 
 /** A check that cannot read its own source is broken, never passing. */
 class BrokenCheck extends Error {}
@@ -96,13 +103,34 @@ function corpus(paths) {
   return text;
 }
 
-/** `{value}` / `{item}` are data — escaped before they meet the regex. */
-const fill = (pattern, token, value) => rx(pattern.split(token).join(escape(value)));
+const bodyOf = (target) => (target.normalize ? norm(read(target.file)) : read(target.file));
 
-function assertPattern(id, target, pattern, subject) {
-  const hit = pattern.test(read(target.file));
+/** A target may name the sentence it asserts about. When that sentence is gone the
+ *  check has nothing to guard — say so instead of reporting a pass. */
+function anchored(id, target) {
+  if (!target.anchor) return true;
+  if (rx(target.anchor).test(bodyOf(target))) return true;
+  add(id, `${target.file}: the claim this check anchors on is gone (/${target.anchor}/) — re-point the check or delete it`);
+  return false;
+}
+
+/** `{value}` / `{item}` are data — escaped before they meet the regex. */
+function assertPattern(id, target, rawPattern, token, value, subject) {
+  if (!anchored(id, target)) return;
+  const shown = target.normalize ? normValue(value) : String(value);
+  const pattern = rx(rawPattern.split(token).join(escape(shown)));
+  const hit = pattern.test(bodyOf(target));
   if (target.absent && hit) add(id, `${target.file} matches /${pattern.source}/ — ${target.why ?? `it contradicts ${subject}`}`);
   if (!target.absent && !hit) add(id, `${target.file} no longer matches /${pattern.source}/ — ${target.why ?? `the copy drifted from ${subject}`}`);
+}
+
+/** The other direction: a pair whose copy side vanished guards nothing. */
+function requireUse(check, items) {
+  if (!check.requireUse) return;
+  const text = norm(corpus(check.requireUse));
+  for (const item of items) {
+    if (!text.includes(normValue(item))) add(check.id, `nothing in the corpus quotes "${item}" any more — drop the pair from this check or restore the copy`);
+  }
 }
 
 const KINDS = {
@@ -110,7 +138,12 @@ const KINDS = {
   value(check) {
     const value = extractValue(check.source);
     const subject = `${check.source.file} (= ${value})`;
-    for (const target of check.targets) assertPattern(check.id, target, fill(target.pattern, "{value}", value), subject);
+    for (const target of check.targets) {
+      // A value of 1 usually renders as an idiom ("about a minute"), not as a digit.
+      const pattern = target.patternWhen?.[String(value)] ?? target.pattern;
+      assertPattern(check.id, target, pattern, "{value}", value, subject);
+    }
+    requireUse(check, [value]);
   },
 
   /** Two lists that have to name the same things — a catalog and a copy table, a
@@ -131,7 +164,28 @@ const KINDS = {
   mentions(check) {
     const items = extractList(check.source, "the mentioned list");
     for (const item of items) {
-      for (const target of check.targets) assertPattern(check.id, target, fill(target.template, "{item}", item), `\`${item}\` in ${check.source.file}`);
+      for (const target of check.targets) assertPattern(check.id, target, target.template, "{item}", item, `\`${item}\` in ${check.source.file}`);
+    }
+    requireUse(check, items);
+  },
+
+  /** Two statements that must not share a neighbourhood — an openness claim with a
+   *  gated endpoint folded into it, a guarantee that lost its qualifier. */
+  proximity(check) {
+    const body = check.normalize ? norm(read(check.file)) : read(check.file);
+    const anchor = rx(check.anchor).exec(body);
+    if (!anchor) {
+      add(check.id, `${check.file}: the claim this check anchors on is gone (/${check.anchor}/) — re-point the check or delete it`);
+      return;
+    }
+    const before = check.window?.before ?? check.window ?? 600;
+    const after = check.window?.after ?? check.window ?? 600;
+    const window = body.slice(Math.max(0, anchor.index - before), anchor.index + anchor[0].length + after);
+    for (const forbidden of check.forbid ?? []) {
+      if (rx(forbidden).test(window)) add(check.id, `${check.file}: /${forbidden}/ sits within ${before}/${after} characters of "${anchor[0]}" — ${check.why ?? "the two claims contradict each other"}`);
+    }
+    for (const required of check.require ?? []) {
+      if (!rx(required).test(window)) add(check.id, `${check.file}: /${required}/ no longer sits near "${anchor[0]}" — ${check.why ?? "the qualifier this claim depends on is gone"}`);
     }
   },
 
@@ -146,8 +200,8 @@ const KINDS = {
 
   /** Sentences that were false once. Cheap insurance against a revert. */
   retired(check) {
-    const text = corpus(check.corpus);
-    for (const phrase of check.phrases) if (text.includes(phrase.text)) add(check.id, `"${phrase.text}" is back — ${phrase.why}`);
+    const text = norm(corpus(check.corpus));
+    for (const phrase of check.phrases) if (text.includes(norm(phrase.text))) add(check.id, `"${phrase.text}" is back — ${phrase.why}`);
   },
 };
 
@@ -187,6 +241,10 @@ for (const check of config.checks) {
 }
 
 for (const note of notes) console.log(`      skipped: ${note}`);
+
+// Carried in the config so the same gaps appear in every report, not only the one
+// written by whoever remembered them.
+for (const gap of config.notAssessed ?? []) console.log(`NOT ASSESSED  ${gap.claim} — ${gap.why}`);
 
 if (findings.length === 0) {
   console.log("\nno drift: every mechanically checkable claim matches its source");

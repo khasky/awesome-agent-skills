@@ -20,28 +20,34 @@ re-derives where a fact lives, and the second pass reaches a different answer.
 3. **Find the single decider for each class.** One file, one symbol. If a class
    needs two files to settle, that is itself a finding: the product has two sources
    of truth and they will diverge.
-4. **Mark the rows a script can check** — those become the `check-claims.mjs`
-   config. The rest need a person, because the claim is prose or because only a
-   person can tell which quoted phrase is claiming to *be* a UI label.
+4. **Mark the rows a script can check, by check id** — write `**auto:<check-id>**`
+   at the head of the row, so `scripts/map-coverage.mjs` can cross-check the map
+   against the config in both directions. The rest need a person, because the claim
+   is prose or because only a person can tell which quoted phrase is claiming to
+   *be* a UI label.
 5. **Record the trap in the note column** whenever the obvious file is the wrong
    one. Those notes are the value of the map.
 
 ## Template
 
 ```text
-| Claim | Source of truth | auto | Note |
-| --- | --- | --- | --- |
-| which capabilities the app requests | build config → manifest permissions | yes | negative claims here are the highest-risk sentences on the site |
-| which hosts/domains the manifest matches | registry → each row's `hosts` | yes | NOT the parse-only superset next to it |
-| which platforms are supported, and their spelling | catalog module | yes | three lists exist (client, server, site) and all three must name the same set |
-| every UI label the site quotes | source string catalog | yes | read the generated bundle, edit the source, regenerate |
-| the one-time-code lifetime | auth module → TTL constant | yes | advice to "wait N minutes" must not exceed the code's own lifetime |
-| whether an action is rate-limited | config → the tier table | yes | "no caps" is the sentence that is false most often |
-| which endpoints are open to any client | the gate module | yes | an endpoint the copy calls open must not sit behind the gate |
-| what a bug report carries | the reporting module | no | prose claim; read the payload builder |
-| what is actually published | the destination repo/bucket working tree | no | an empty destination makes the instructions false whatever the publisher says |
-| licenses | each artifact's LICENSE | no | a data-only artifact often carries a different license from the code |
+| Claim | Source of truth | Note |
+| --- | --- | --- |
+| **auto:permissions** which capabilities the app requests | build config → manifest permissions | negative claims here are the highest-risk sentences on the site |
+| **auto:manifest-hosts** which hosts/domains the manifest matches | registry → each row's `hosts` | NOT the parse-only superset next to it |
+| **auto:platforms** which platforms are supported, and their spelling | catalog module | three lists exist (client, server, site) and all three must name the same set |
+| **auto:ui-labels** every UI label the site quotes | source string catalog | read the generated bundle, edit the source, regenerate |
+| **auto:code-lifetime** the one-time-code lifetime | auth module → TTL constant | advice to "wait N minutes" must not exceed the code's own lifetime |
+| **auto:rate-limits** whether an action is rate-limited | config → the tier table | "no caps" is the sentence that is false most often |
+| **auto:open-endpoints** which endpoints are open to any client | the gate module | an endpoint the copy calls open must not sit behind the gate |
+| what a bug report carries | the reporting module | prose claim; read the payload builder |
+| what is actually published | the destination repo/bucket working tree | an empty destination makes the instructions false whatever the publisher says |
+| licenses | each artifact's LICENSE | a data-only artifact often carries a different license from the code |
 ```
+
+A row with no `**auto:…**` marker is a claim a person settles. Keep the split
+honest: `scripts/map-coverage.mjs` fails when the map promises a check that does not
+exist, and when a check exists that no row accounts for.
 
 Keep a second, short table for **surface-internal contracts** — pairs that must
 say the same thing and have no build-time link:

@@ -11,7 +11,10 @@
 // store and written to the index. The working tree is never touched, so the
 // unrelated edits stay exactly where they were, uncommitted.
 //
-//   node stage-json-keys.mjs --repo <dir> --keys keyA,keyB -- locales/*/messages.json
+//   node stage-json-keys.mjs --repo <dir> --keys keyA,nested.path.key -- locales/*/messages.json
+//
+// A key may be a dotted path into nested objects (`settings.privacy.consent`); a key
+// whose own name contains a dot is not addressable this way.
 //
 // --indent must match the file's own formatting (default 2). A mismatch stages the
 // whole file reformatted and buries the real change.
@@ -40,6 +43,18 @@ if (keys.length === 0 || files.length === 0) {
 
 const git = (args, opts = {}) => execFileSync("git", args, { cwd: repo, encoding: "utf8", ...opts });
 
+const readPath = (node, path) => path.split(".").reduce((o, k) => (o === null || o === undefined ? undefined : o[k]), node);
+const writePath = (node, path, value) => {
+  const parts = path.split(".");
+  const last = parts.pop();
+  let cursor = node;
+  for (const part of parts) {
+    if (typeof cursor[part] !== "object" || cursor[part] === null) cursor[part] = {};
+    cursor = cursor[part];
+  }
+  cursor[last] = value;
+};
+
 for (const rel of files) {
   // A path handed in by the shell may be absolute after glob expansion.
   const path = (rel.startsWith(repo) ? rel.slice(repo.length + 1) : rel).replace(/\\/g, "/");
@@ -48,12 +63,13 @@ for (const rel of files) {
 
   let changed = 0;
   for (const key of keys) {
-    if (!(key in current)) {
+    const value = readPath(current, key);
+    if (value === undefined) {
       console.error(`${path}: the working copy has no key \`${key}\``);
       process.exit(1);
     }
-    if (JSON.stringify(head[key]) !== JSON.stringify(current[key])) changed++;
-    head[key] = current[key];
+    if (JSON.stringify(readPath(head, key)) !== JSON.stringify(value)) changed++;
+    writePath(head, key, value);
   }
   if (changed === 0) {
     console.log(`skip  ${path} (named keys already match HEAD)`);

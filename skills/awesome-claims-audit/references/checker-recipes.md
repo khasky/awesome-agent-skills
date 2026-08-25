@@ -15,13 +15,38 @@ the directory every path is relative to.
   "root": ".",                    // every `file` below is relative to this (default: the config's own folder)
   "extensions": [".md", ".html"],// which files a `retired` corpus walk reads (default: common source and copy types)
   "checks": [ /* … */ ],
-  "mutations": [ /* … */ ]        // read by prove-checks.mjs
+  "mutations": [ /* … */ ],       // read by prove-checks.mjs
+  "notAssessed": [                // printed on every run, so the gaps are reproducible
+    { "claim": "the analytics id on the live site", "why": "injected by a tag manager, not present in source" }
+  ]
 }
 ```
 
 Every check has an `id` (used in findings and in mutations), a `kind`, and an
 optional `"optional": true` — which turns a missing file into a `SKIP` line instead
 of a broken check, for repos that are not always checked out.
+
+**Options every target understands:**
+
+- `"absent": true` — assert the pattern is *gone* rather than present.
+- `"why": "…"` — the sentence that lands in the finding. Write it as the defect,
+  not as the rule.
+- `"normalize": true` — compare through typographic quotes, collapsed whitespace,
+  and a trailing period. Copy uses `’` and `“ ”` where the catalog uses `'` and
+  `"`; without this a curly apostrophe reads as drift.
+- `"anchor": "<regex>"` — the sentence this target asserts about. When it stops
+  matching, the check reports *the claim this check anchors on is gone — re-point
+  the check* instead of passing. Use it on every check whose subject is one
+  sentence rather than a whole page: a rewritten page otherwise turns the check
+  green while removing what it guarded.
+- `"patternWhen": { "1": "about a minute" }` — an alternative pattern for a
+  specific value. English renders `1` as an idiom, not a digit, and a check that
+  only knows `{value} minutes` breaks the day the constant drops to one.
+
+And one option at check level: `"requireUse": ["site/src", "README.md"]` — after
+asserting, confirm the value or item still appears somewhere in that corpus. It is
+the other half of a quoted-label pair: when the site stops quoting the label, the
+check is guarding nothing and should be deleted, not left green.
 
 Patterns are JavaScript regular expressions **inside JSON**, so every backslash is
 doubled: `"([0-9_]+)"` stays as is, `"\\s*"` needs two. Capture group 1 is used
@@ -91,6 +116,29 @@ reject is `a-subset-of-b`; a label map that must cover a closed enum is
 
 With three lists (client, server, site), write three pairwise checks. Any two
 agreeing proves nothing about the third.
+
+### `proximity` — two statements that must not share a neighbourhood
+
+Some claims are false only in company. "The endpoints are open to any client" is
+true of the list it introduces — until someone folds a gated one into the same
+paragraph. No single pattern catches that; the window does.
+
+```jsonc
+{
+  "id": "openness-claim",
+  "kind": "proximity",
+  "file": "site/src/pages/acceptable-use.html",
+  "anchor": "open for any legitimate use",
+  "window": { "before": 600, "after": 400 },
+  "forbid": ["live counts", "/v1/count"],
+  "require": ["no key is needed"],
+  "why": "a gated endpoint folded into an openness claim"
+}
+```
+
+`window` is a number for a symmetric window, or `{ before, after }`. `forbid`
+patterns must not appear near the anchor; `require` patterns must. A missing anchor
+is reported, never passed — the claim moved and the check needs re-pointing.
 
 ### `exists` — a link the copy offers that resolves to nothing
 
@@ -192,6 +240,18 @@ Read the result as three distinct signals:
 `prove-checks.mjs` runs the checker once more at the end and expects it green. A
 `RESTORE-FAIL` means either a mutation did not restore (check `git diff`) or the
 tree already had findings before the run — fix those first, then re-prove.
+
+## Keeping the map and the config in step
+
+```bash
+node scripts/map-coverage.mjs --map claim-source-map.md --config claims.config.json
+```
+
+Mark each automated row in the map with the check that owns it —
+`| **auto:permissions** which capabilities the app requests | … |` — and this
+reports both directions: a row promising coverage no check provides, and a check no
+row accounts for. The map is what the next audit reads before deciding where a
+claim lives; a map that over-promises sends it to the wrong file.
 
 ## Keeping the config honest
 
