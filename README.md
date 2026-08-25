@@ -39,7 +39,7 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 30 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) symlinks all 31 skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
 
 Keep them current:
 
@@ -112,6 +112,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's git history to a single Initial commit and force-pushes — safely: access checks, verified mirror backup, secret scan, and a confirmation gate before anything irreversible |
+| [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites the author/committer identity on a commit (or every commit with a wrong identity) from its URL and force-pushes — account-ownership and access checks, verified mirror backup, counted hash blast radius, host-side attribution proof |
 
 ### Writing and text
 
