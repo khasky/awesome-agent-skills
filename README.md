@@ -64,7 +64,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-code-standards](skills/awesome-code-standards) | Naming, structure, and patterns for consistent code across a team |
-| [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide cleanup of AI-like code noise: comments by default, plus a read-only audit mode and a refactor mode for vague names, dead code, and over-abstraction — behavior-preserving |
+| [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide cleanup of AI-like code noise: comments by default, plus read-only audit, refactor, and dead-code/inconsistency detection modes — cleanup passes behavior-preserving, detection findings execution-verified |
 | [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades safely: risk-classified batches, changelog-driven majors, overrides with removal conditions, verification between steps |
 
 ### Testing
