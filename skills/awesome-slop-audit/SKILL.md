@@ -140,6 +140,11 @@ mechanical cleanup, and tells you exactly where to sweep next.
 4. Inventory line counts; beyond ~5k lines split into **disjoint** partitions
    (~5–10k each along directory boundaries) and run one read-only subagent per
    partition in parallel. Disjoint is what makes the later parallel fix safe.
+   **Resource preflight** before spawning them: cap concurrency at
+   `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these
+   read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent;
+   recompute before each wave; if the runtime caps sub-agent concurrency itself,
+   defer to it.
 
 ## Phase 1 — Audit (read-only)
 

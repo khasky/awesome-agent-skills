@@ -117,6 +117,9 @@ concurrently. Each reads its files and writes STYLE observations (not content su
 `style-crawl/<host>/analysis/batch-N.md` with fixed sections: **Lexicon / Voice & POV /
 Rhythm / Structure / Formatting / Genre notes / Golden-sample candidates** (3–5 verbatim
 excerpts ≤120 words with source file and why), returning only a 5-line summary.
+**Resource preflight** before spawning: cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`,
+`per_agent` ≈ 0.7 GB for these read-only agents; go serial if CPU load > 85% or free RAM <
+2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
 
 ### 4. Synthesis
 
@@ -173,7 +176,10 @@ source path, one output path, the file mode (markdown/html/component), and the F
 `references/rewriter-contract.md` — identical guide + identical contract per file is what
 keeps one authorial voice across the batch. Never relay a summary of the guide; each
 subagent reads the guide file itself. A failed file gets one retry, then is reported — never
-silently dropped.
+silently dropped. **Resource preflight** before spawning: cap concurrency at
+`min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read/write
+agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if
+the runtime caps sub-agent concurrency itself, defer to it.
 
 After all rewrites land (2+ files), run ONE consistency-pass subagent over the whole output
 set (for >15 files: first/last 3 paragraphs plus a middle excerpt each): find cross-document

@@ -33,7 +33,7 @@ Sort every disclosure into one of two buckets:
 
 ## Workflow
 
-Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first.
+Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first, and pass every agent the public/private boundary from phase 1 or an unavoidable disclosure gets mis-flagged. Keep phase 4 remediation single-writer and serial — parallel editors of the same files collide. **Resource preflight** (before fan-out): cap concurrent read-only agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
 
 ### Phase 1 — Scope the public/private boundary
 

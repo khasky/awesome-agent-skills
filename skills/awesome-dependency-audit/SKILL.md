@@ -21,6 +21,8 @@ Two phases: **passive** (reading manifests, lockfiles, license files, changelogs
 3. **Walk the five tracks below** — a track whose signal you cannot observe (no lockfile committed, no registry access approved) is `NOT ASSESSED`, never a guess.
 4. **Score, gate, report** — one **SHIP / FIX / BLOCK** verdict for the audited scope. See Output.
 
+**Parallelizing the passive tracks (large graph).** Tracks A–E are independent lenses, and Tracks B (name authenticity) and C (health/provenance) are per-package — embarrassingly parallel. Fan out read-only sub-agents: one per ecosystem manifest, or one per batch of newly-added packages for the per-package tracks, each reading manifests, lockfiles, and unpacked tarballs off disk. Keep **every active step in the parent** — a sub-agent must never run a Track-D scanner or reach a registry, those are gated once (the passive/active split) by the parent, not N times by N agents. Barrier before the verdict: the parent dedupes to one finding per `package@version` and resolves transitive license/CVE reachability, which is graph-wide, not per-package. **Resource preflight** (before fan-out): cap concurrent sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+
 ## Two different risks — keep them separate
 
 A known-vulnerable dependency and a malicious one need different responses and run on different clocks. Most programs handle the first and are blind to the second; give the second explicit attention.

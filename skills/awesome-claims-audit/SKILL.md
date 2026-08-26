@@ -65,6 +65,21 @@ redesign folders, and pages behind a dev-only route carry claims that ship the d
 the flag flips. A wrong command can sit in one for weeks precisely because nothing
 renders it.
 
+**Parallelizing harvest and resolve (many surfaces / claims).** Phase 2 harvest is
+per public surface (site, README, listing, docs, privacy, in-product copy) and
+Phase 3 resolve is per claim — both read-only. Build the claim-source map first
+(step 2): it is the shared frozen brief every sub-agent needs. Then fan out one
+harvester per surface, then one resolver per claim (or per batch), each with read
+access to *all* deciding repos so a cross-repo `list-parity` pair — surface in repo
+A, decider in repo B — is never split across agents that each see only one side.
+Barrier before Output: the parent classifies and dedupes the same wrong sentence in
+six places into one finding with six locations, not six findings. The hard phase
+gate holds — report everything first, fix (Phases 4–5) second, single-writer.
+**Resource preflight** (before fan-out): cap concurrent sub-agents at
+`min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only
+agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before
+each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+
 ## Phase 1 — the mechanical pass
 
 Every claim whose truth is a *value* in code becomes an executable check. One line

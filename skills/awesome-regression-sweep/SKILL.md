@@ -104,6 +104,29 @@ login walls, and missing credentials into skips, and the skip set varies run to
 run. Attribute every non-green line to *code*, *environment*, or *harness* before
 reporting it.
 
+## Parallelizing the sweep — with care
+
+Split the aspects into two lanes by **resource contention**, not just independence
+— this is the one skill where careless fan-out manufactures the very failures it
+hunts.
+
+- **Safe to fan out concurrently:** the static/read-only aspects (typecheck, lint,
+  generated-artifact drift, docs-vs-code constants — angle 7) and the black-box
+  HTTP probes (`http-contract.mjs`, one sub-agent per endpoint or `--bad` shape).
+  They share no port, database, or browser.
+- **Must stay serial:** the unit / integration / e2e suites and any live browser
+  suite. Concurrent runs fight over ports, test databases, and browsers and
+  manufacture the exact flakes **angle 1 exists to catch** — so run heavy suites
+  one at a time, and **angle 1 (order-dependent flakes) always runs alone**.
+
+The barrier is the verdict: one agent merges all deltas against the single
+`baseline.json` and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or
+emits a verdict. **Resource preflight** (before fan-out): cap concurrent
+sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB
+for the static/HTTP agents; go serial if CPU load > 85% or free RAM < 2×per_agent;
+recompute before each wave; if the runtime caps sub-agent concurrency itself,
+defer to it.
+
 ## Phase 2 — the nine angles
 
 The sweep is the same every time; these are not. Rotate one per iteration so a long
