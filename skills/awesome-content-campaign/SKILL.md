@@ -65,6 +65,7 @@ Ask in one round (use the agent's structured-question UI when available; plain q
 7. **Media** — does the user have images or videos for the posts? Collect folder path(s) and any explicit per-post wishes ("the demo video goes with the launch post" — an explicit mapping always wins in Phase 4). `instagram`, `tiktok`, `pinterest` cannot post without media — none available and none planned → recommend excluding those platforms rather than shipping unpostable drafts.
 8. **Link tracking** — ask explicitly, never silently default: append UTM parameters to campaign links? Options: no (default) · yes. On yes: `utm_source` is the platform slug, `utm_medium` matches the platform kind (social / article / community), and the `utm_campaign` value is the user's call — one value for the whole campaign, every post. Propose 2–3 candidates (the campaign slug, slug + month, a launch tag) and let the user pick one or type their own; never silently derive it.
 9. **Own-voice calibration** (yes/no, default no) — analyze the user's existing posts on the selected platforms through their logged-in browser and distill a personal style file applied on top of the chosen voice. Yes requires the Playwright MCP `--extension` bridge and runs Phase 2b; no skips Phase 2b entirely — the rest of this skill needs no browser bridge.
+10. **Emoji** (pick one): sparing — an emoji only where the platform's genre genuinely uses one (default) · none — zero emoji in any post · custom (the user states their own rule, e.g. "only in hashtag lines on instagram"). The choice binds every post; Phase 5 and the self-audit enforce it.
 
 Per-platform targets that posting requires — collect now, not at write time: group URL for `facebook-group`, subreddit for `reddit`, instance domain for `mastodon`, board for `pinterest`, wall/community for `vk`.
 
@@ -123,7 +124,7 @@ Human-style rules, distilled from `awesome-humanize-en`, `awesome-document-style
 - Vary sentence rhythm; a post of uniform medium sentences reads machine-made.
 - No AI-vocabulary tier-1 words (delve, seamless, robust, tapestry, testament, boasts, leverage-as-verb), no "it's not X, it's Y" contrast frames, no forced rule-of-three, no negative-parallelism countdowns ("No X. No Y. Just Z.").
 - No em-dash saturation; prefer straight quotes, hyphens, comma-set clauses.
-- No emoji-bullet walls and no bold-lead list stacks; an emoji where the platform's genre genuinely uses one (a single one on a casual platform) is fine, decoration is not.
+- Emoji per the interview choice (question 10): "none" means zero, everywhere; "sparing" means an emoji only where the platform's genre genuinely uses one — never emoji-bullet walls, never decoration; a custom rule is applied as stated. Bold-lead list stacks stay banned regardless.
 - No summary-stamp openers ("In conclusion", "TL;DR:" as a stamp), no fake-candor openers ("Let's be honest"), no hype closers ("The future looks bright").
 - Counts and versions as digits; claims from the knowledge map only, with the map's exact numbers.
 - Hashtags per the platform's researched norm — a handful where they drive discovery (mastodon, instagram), few-to-none where they read as spam (reddit has none at all).
