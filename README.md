@@ -113,6 +113,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | --- | --- |
 | [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's git history to a single Initial commit and force-pushes — safely: access checks, verified mirror backup, secret scan, and a confirmation gate before anything irreversible |
 | [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites the author/committer identity on a commit (or every commit with a wrong identity) from its URL and force-pushes — account-ownership and access checks, verified mirror backup, counted hash blast radius, host-side attribution proof |
+| [awesome-git-history-rebuild](skills/awesome-git-history-rebuild) | Erases a history and replays the same tree as a curated commit series — source analysis, an approved split plan (re-splittable), the repo's own commit rules and hooks, paced timestamps, permission/ruleset preflight, verified backup, and a fresh-clone tree-hash proof that nothing was lost |
 
 ### Writing and text
 
