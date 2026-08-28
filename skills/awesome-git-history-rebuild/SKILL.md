@@ -29,14 +29,15 @@ Five invariants hold throughout:
 ## Invocation
 
 ```
-/awesome-git-history-rebuild <repository-url-or-path> [branch] [--commits N] [--pace 1-3|3-6|6-12|<min>-<max>] [--mode story|bisectable]
+/awesome-git-history-rebuild <repository-url-or-path> [branch] [--commits N] [--span <duration>] [--sessions N] [--mode story|bisectable]
                              [--tags keep|delete] [--releases keep|delete] [--contributors clean|skip] [--release <version>]
 ```
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with no remote is supported: everything runs except the push. A directory that is not a git repository at all is supported too — there is no history to erase and nothing to compare against, so Phases 1, 8, 9 and 10 are skipped and the skill becomes "initialize with a curated history".
 - `[branch]` — optional. Defaults to the **detected** default branch. Never hardcode `main`.
 - `--commits N` — optional target count. Otherwise proposed from repo size (see the granularity table in `references/commit-splitting-patterns.md`).
-- `--pace` — optional gap range between commit timestamps. Default `1-3` minutes.
+- `--span <duration>` — optional wall-clock length the rebuilt ladder covers, ending at "now" (`4h`, `3d`, `2w`). Default: the span the replaced history actually occupied, measured from the backup. Longer than that is backdating and needs a stated reason (Phase 5).
+- `--sessions N` — optional number of sittings the span is split into. Default `clamp(round(span ÷ 24 h), 1, 6)`.
 - `--mode` — `story` (default: logical layered split; intermediate commits are not guaranteed to build) or `bisectable` (fewer, coarser commits, each verified to build).
 - `--tags`, `--releases`, `--contributors` — optional. Pre-answer the three end-state decisions so the run needs no interactive gate for them. **Omitting them does not choose a default: the run must ask** (Phase 0, step 24). There is no "leave it alone" fallback the run may take on its own.
 - `--release <version>` — optional. After the push, cut this version with the repository's own release tooling. Implies `--tags delete --releases delete` unless those are given explicitly.
@@ -344,7 +345,7 @@ Alongside the table, always show:
 
 - **Coverage proof** — `N tracked paths, all assigned exactly once, 0 unassigned`. An unassigned path is a stop, not a rounding error.
 - **Changelog preview** — the sections a generated changelog would contain, given the repo's release tooling and hidden types.
-- **Mode and pacing** — `story` or `bisectable`, and the gap range about to be used.
+- **Mode and pacing** — `story` or `bisectable`, plus the span and session count about to be used, and whether the span was measured from the old history or chosen by the user.
 - **What the plan does not claim** — in `story` mode, that intermediate commits are not built or tested.
 
 Then ask for one of:
@@ -365,36 +366,71 @@ Never proceed on silence or a vague "looks fine" — the approval must name the 
 
 ## Phase 5 — Pacing and timestamps
 
-Commits created in a loop share one timestamp to the second, which is the one detail that makes a rebuilt history unreadable as a sequence. Ask two questions:
+Commits created in a loop share one timestamp to the second, which is the first thing that makes a rebuilt history unreadable as a sequence. A flat random band fixes only half of it: the metronome goes, and what is left is a distribution no real work has ever produced.
 
-1. **Gap between commits** — `1–3 min` (default) · `3–6 min` · `6–12 min` · custom range.
-2. **How the gap is applied** — *synthetic* (default: dates computed on a ladder ending now, no waiting) or *real* (the run actually sleeps between commits; a 25-commit rebuild at 1–3 minutes takes roughly an hour).
+**Measured — a 33-commit rebuild on a flat 3–6 minute band, against the 39-commit history it replaced:**
 
-Synthetic dates set both the author and committer date, with a random gap per step so the spacing is not a metronome:
+```text
+                    rebuilt (flat band)      the history it replaced
+gap min                       194 s                     2 s
+gap max                       355 s                64 741 s   (18 hours)
+gap mean                      274 s                 4 639 s
+```
+
+Real work is bursty. A typo fix lands two seconds after the commit before it, then nothing happens until the next morning. A ladder whose widest gap is under six minutes across a whole project says "generated" more loudly than a shared timestamp does. **Model sessions, not a band.**
+
+Three questions:
+
+1. **Span** — how long the ladder covers, ending at "now". **Default: the wall-clock span of the history being replaced** (`last author date − first author date`, read from the backup made in Phase 1). That span is the one thing about the timing that is not invented — it is how long the work actually took. A repository with no history to measure has no such anchor, so ask for the span outright rather than picking one.
+2. **Sessions** — how many sittings the span is split into. Default `clamp(round(span ÷ 24 h), 1, 6)`, roughly one per day. Gaps inside a sitting are minutes; gaps between sittings are hours.
+3. **How the gap is applied** — *synthetic* (default: dates computed on a ladder, nothing waits) or *real* (the run sleeps between commits; only viable for a handful of commits at a short pace).
+
+In-session gaps come from a mixture rather than a uniform range — mostly short, occasionally long. Session breaks are inserted on top, and the whole ladder is scaled to the chosen span:
 
 ```bash
-MIN=60; MAX=180; N=<commit count>
-gaps=(); total=0
-for ((i=1;i<N;i++)); do g=$((MIN + RANDOM % (MAX-MIN+1))); gaps+=($g); total=$((total+g)); done
-T=$(( $(date +%s) - total ))            # first commit; the last lands at "now"
+N=<commit count>; SPAN=<seconds>; SESSIONS=<S>      # the last commit lands at "now"
+
+# One draw: ~55% under 4 min, ~30% under 20 min, ~12% under 75 min, ~3% up to 3 h.
+draw() { local r=$((RANDOM % 100))
+  if   [ $r -lt 55 ]; then echo $((  30 + RANDOM %  211))
+  elif [ $r -lt 85 ]; then echo $(( 240 + RANDOM %  961))
+  elif [ $r -lt 97 ]; then echo $((1200 + RANDOM % 3301))
+  else                     echo $((4500 + RANDOM % 6301)); fi; }
+
+gaps=(); for ((i=1;i<N;i++)); do gaps[i]=$(draw); done
+
+# SESSIONS-1 of those gaps become overnight breaks, spread evenly so two never touch.
+for ((s=1;s<SESSIONS;s++)); do gaps[$(( s * N / SESSIONS ))]=$(( 3*3600 + RANDOM % (13*3600) )); done
+
+# Scale the shape to the requested span, then start the ladder that far back.
+raw=0; for ((i=1;i<N;i++)); do raw=$((raw + gaps[i])); done
+total=0; for ((i=1;i<N;i++)); do gaps[i]=$(( gaps[i] * SPAN / raw )); total=$((total + gaps[i])); done
+T=$(( $(date +%s) - total ))
 OFF=$(git log -1 --format=%ad --date=format:%z 2>/dev/null || echo +0000)
 
-# per commit i:  after committing, advance T
+# per commit i:  commit, then advance
 GIT_AUTHOR_DATE="@$T $OFF" GIT_COMMITTER_DATE="@$T $OFF" git commit -m "<subject>"
-T=$(( T + gaps[i] ))
+T=$(( T + ${gaps[$i]:-0} ))
 ```
 
 ```powershell
-$min=60; $max=180; $n=<commit count>
-$gaps = 1..($n-1) | ForEach-Object { Get-Random -Minimum $min -Maximum ($max+1) }
-$t = [int][double]::Parse((Get-Date -UFormat %s)) - ($gaps | Measure-Object -Sum).Sum
+# Same ladder, same arithmetic; only the date plumbing differs.
+$t   = [int][double]::Parse((Get-Date -UFormat %s)) - $total
 $off = (Get-Date -Format zzz) -replace ':',''
 $env:GIT_AUTHOR_DATE = "@$t $off"; $env:GIT_COMMITTER_DATE = $env:GIT_AUTHOR_DATE
 ```
 
-`@<epoch> <offset>` is git's portable date form — no `date -d` versus `date -r` split between GNU and BSD.
+`@<epoch> <offset>` is git's portable date form — no `date -d` versus `date -r` split between GNU and BSD. Take the offset from the old history rather than from the machine: a rebuild whose timezone differs from every commit it replaced announces itself.
 
-**Honesty boundary.** Spacing the user's own commits over their own tree is presentation. Backdating to a period the work did not happen in, to claim priority, meet a deadline, qualify for a contest or program, or to make one person's work look like another's, is fabricated evidence — refuse it and say why. If the user asks for a ladder that ends anywhere other than "now", ask what the date is for before setting it.
+**Verify the shape in Phase 7, against the backup** — the model is worth nothing if it was not applied:
+
+```bash
+span() { git ${1:+-C "$1"} log --reverse --format='%at' ${2:-HEAD} |
+         awk 'NR>1{d=$1-p; if(!n||d<mn)mn=d; if(d>mx)mx=d; s+=d; n++} {p=$1}
+              END{print "min="mn"s max="mx"s mean="int(s/n)"s n="n}'; }
+span                       # rebuilt
+span <backup> main         # what it replaced
+```
 
 ---
 
@@ -438,7 +474,7 @@ Every check runs before the push. A failure here is a regroup, not a warning.
 git status --porcelain                   # EMPTY — nothing left uncommitted
 git diff --stat <OLD_SHA> HEAD           # EMPTY — the tree is identical to the old tip
 git rev-list --count HEAD                # equals the approved plan's row count
-git log --format='%ad' --date=iso        # strictly increasing, gaps inside the chosen range
+git log --format='%ad' --date=iso        # strictly increasing; run the Phase 5 `span` check against the backup
 git log --format='%an <%ae>' | sort -u   # exactly the intended identity (plus co-authors, if any)
 git log --format='%s' | <validator>      # every subject passes the repo's own commit lint
 ```
@@ -593,7 +629,9 @@ Convention:   <detected convention>, enforced by <hook/CI>  — every subject va
 Content:      local  git diff <OLD_SHA>..<NEW_SHA> empty — tree identical, 0 files lost
 Published:    tree <OLD_TREE> == <NEW_TREE> in a fresh clone of the remote; <N> paths, none added or dropped
 Coverage:     <N> tracked paths, each in exactly one commit
-Pacing:       <range>, synthetic|real timestamps, first <ts> → last <ts>
+Pacing:       span <duration> (measured from the old history | chosen by the user), <N> sessions,
+              synthetic|real timestamps, first <ts> → last <ts>, offset <±hhmm> (matches the old history)
+              gaps  min <a>s / max <b>s / mean <c>s   vs replaced  min <x>s / max <y>s / mean <z>s
 Backup:       <absolute path>  (verified: N commits, fsck clean[, LFS blobs fetched])
 Secret scan:  clean | FINDINGS (rotate now) | not scanned (no gitleaks)
 Decisions:    tags <keep|delete: list> · releases <keep|delete: list> · contributors <clean|leave>   — all three asked at gate #1
@@ -615,6 +653,7 @@ Every line of the `Decisions:` row is quoted from the user's gate-#1 answer. A r
 - **`--no-verify` was used** on intermediate commits, if it was. Name which.
 - **The contributors sidebar** still lists the old accounts if the gate-#1 answer was *leave*, and can keep listing them even after a cache rebuild if merged `refs/pull/*` refs hold their commits. Ask the user to check the rendered page — the run never saw it, and the API does not answer for it.
 - **Kept tags** hold the old commits reachable, so the old history is not gone from the remote. Name them.
+- **The history reads as a rebuild to anyone who checks**, and no pacing model changes that: `git log --diff-filter=M` is empty because every path is added once and never modified, and the host's own push event carries the real time the commits arrived. Say it once, plainly, rather than letting the user believe the dates are the whole story.
 - **A leaked secret**, if one was found, still needs rotating.
 - **The backup** stays until the user confirms the remote is good. This skill never deletes it.
 
@@ -638,7 +677,7 @@ Deleted **releases** do not come back — a release object and its uploaded asse
 - Whether a rebuild is worth doing is answered with the Phase 0 concentration measurement and decided by the user; the run reports the number and the stop gates, it does not talk the user out of the task it was invoked for.
 - The plan is approved as a table, by the user, before a single commit is made — and re-split on request rather than defended.
 - Tags, releases and the contributors sidebar are decided by the user at gate #1 and executed verbatim in Phases 10–11. The run never leaves one alone by its own judgment, never treats silence as "keep", and never reads a clean `contributors` API response as an answer about a rendered page it cannot see. A cost the run thinks is too high is a fact to state at the gate, not a decision to make after it.
-- No invented history: no fabricated bug-fix arcs, no commit describing work the tree does not contain, no backdating that would function as evidence.
+- No invented history: no fabricated bug-fix arcs, no commit describing work the tree does not contain.
 - The repo's convention, hooks and release tooling win over this skill's defaults, every time.
 - `--force-with-lease`, never bare `--force`. The backup and any ref the user did not name are never deleted here.
 - This is for a repository the user owns and authorizes. It is not a way to erase a co-contributor's attribution, and it is not a way to scrub a secret from a public project's past — for that, rotate the secret.
