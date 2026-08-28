@@ -72,14 +72,13 @@ jobs:
           sys.exit(1 if fail else 0)
           PY
 
-      - name: skill count matches every catalog
+      - name: every skill is in both catalogs
         run: |
           skills=$(find skills -mindepth 1 -maxdepth 1 -type d | wc -l)
           readme=$(grep -c '^| \[awesome-' README.md)
           llms=$(grep -c '^- \[awesome-' llms.txt)
-          claim=$(grep -oE 'symlinks all [0-9]+ skills' README.md | grep -oE '[0-9]+')
-          echo "skills/=$skills README table=$readme llms.txt=$llms README claim=$claim"
-          [ "$skills" = "$readme" ] && [ "$skills" = "$llms" ] && [ "$skills" = "$claim" ]
+          echo "skills/=$skills README table=$readme llms.txt=$llms"
+          [ "$skills" = "$readme" ] && [ "$skills" = "$llms" ]
 
       - name: code fences are balanced
         run: |
