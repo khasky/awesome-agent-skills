@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-rebuild
-description: "Erases a repository's git history and rebuilds it as a curated commit series over the same tree — source analysis, a split plan the user approves or re-splits another way, the repo's own commit rules obeyed (commitlint, hooks, CONTRIBUTING, the existing log), paced timestamps, and safety throughout: permission and ruleset preflight, a verified mirror backup, a confirmation gate before every irreversible step, and a fresh-clone tree-hash proof that no file was lost; optionally clears the stale contributors cache and re-cuts tags and releases. Use when asked to 'clean the history and commit it in parts', 'rewrite the history as readable commits', 'split the codebase into proper commits', 'redo the commit log so the changelog reads well', or in Russian 'очистить историю и закоммитить по частям', 'разбить проект на нормальные коммиты', 'переписать историю для changelog'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to fix commit authorship (awesome-git-author-rewrite)."
+description: "Erases a repository's git history and rebuilds it as a curated commit series over the same tree — source analysis, a split plan the user approves or re-splits another way, the repo's own commit rules obeyed (commitlint, hooks, CONTRIBUTING, the existing log), paced timestamps, and safety throughout: permission and ruleset preflight, a verified mirror backup, a confirmation gate before every irreversible step, and a fresh-clone tree-hash proof that no file was lost; tags, releases and the contributors cache decided by the user, not the run. Use when asked to 'clean the history and commit it in parts', 'rewrite the history as readable commits', 'split the codebase into proper commits', 'redo the commit log so the changelog reads well', or in Russian 'очистить историю и закоммитить по частям', 'разбить проект на нормальные коммиты', 'переписать историю для changelog'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to fix commit authorship (awesome-git-author-rewrite)."
 license: MIT
 metadata:
   author: Khasky
@@ -16,19 +16,21 @@ Discard a repository's published history and replay the **same file tree** as a 
 
 ## Core principle
 
-**NOTHING IRREVERSIBLE UNTIL FIVE THINGS HOLD:** write access is confirmed, a mirror backup exists and is verified, the repository's own commit rules are read and obeyed, the user has approved the exact commit plan, and the user has confirmed the force-push itself. If any one is missing, stop at that gate.
+**NOTHING IRREVERSIBLE UNTIL SIX THINGS HOLD:** write access is confirmed, a mirror backup exists and is verified, the repository's own commit rules are read and obeyed, the user has approved the exact commit plan, the user has answered what happens to the existing tags, releases and contributors sidebar, and the user has confirmed the force-push itself. If any one is missing, stop at that gate.
 
-Four invariants hold throughout:
+Five invariants hold throughout:
 
 - **Never operate on the user's existing checkout.** All work happens in a *fresh clone* in a scratch directory. If the result is wrong, the scratch clone is disposable and the user's working copy was never touched.
 - **The tree is sacred; only the history is rewritten.** Every tracked path lands in exactly one commit, and the tree must diff clean against the old tip — once locally before the push, and once more in a fresh clone of the remote afterwards. A rebuild that changes a file has failed, however good the log looks.
 - **Never invent work that did not happen.** Split along seams that exist in the final tree. A `fix:` commit is honest only when the tree actually carries the fix; a fabricated bug-and-repair arc is a lie in the changelog, and this skill does not write one. See `references/commit-splitting-patterns.md`.
 - **The repository's rules outrank this skill's defaults.** If `CONTRIBUTING.md`, a commitlint config, a hook, or the existing log says commits look a certain way, that is the format — always, including when this skill's default is nicer.
+- **What survives the rebuild is the user's call, not the run's.** Tags, releases and the contributors sidebar outlive the rewritten branch. Each is asked at gate #1 and executed as answered. "I checked and there was nothing to do" is the failure mode this exists to prevent: an API response is not the rendered page, and a cost the run judges too high is a fact to report, not a decision to take.
 
 ## Invocation
 
 ```
-/awesome-git-history-rebuild <repository-url-or-path> [branch] [--commits N] [--pace 1-3|3-6|6-12|<min>-<max>] [--mode story|bisectable] [--release <version>]
+/awesome-git-history-rebuild <repository-url-or-path> [branch] [--commits N] [--pace 1-3|3-6|6-12|<min>-<max>] [--mode story|bisectable]
+                             [--tags keep|delete] [--releases keep|delete] [--contributors clean|skip] [--release <version>]
 ```
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with no remote is supported: everything runs except the push. A directory that is not a git repository at all is supported too — there is no history to erase and nothing to compare against, so Phases 1, 8, 9 and 10 are skipped and the skill becomes "initialize with a curated history".
@@ -36,9 +38,12 @@ Four invariants hold throughout:
 - `--commits N` — optional target count. Otherwise proposed from repo size (see the granularity table in `references/commit-splitting-patterns.md`).
 - `--pace` — optional gap range between commit timestamps. Default `1-3` minutes.
 - `--mode` — `story` (default: logical layered split; intermediate commits are not guaranteed to build) or `bisectable` (fewer, coarser commits, each verified to build).
-- `--release <version>` — optional. After the push, delete the old releases and tags and cut this version. Omitted means tags and releases are left alone.
+- `--tags`, `--releases`, `--contributors` — optional. Pre-answer the three end-state decisions so the run needs no interactive gate for them. **Omitting them does not choose a default: the run must ask** (Phase 0, step 24). There is no "leave it alone" fallback the run may take on its own.
+- `--release <version>` — optional. After the push, cut this version with the repository's own release tooling. Implies `--tags delete --releases delete` unless those are given explicitly.
 
 If the user invokes the skill without a target, ask for one before doing anything else.
+
+**Three things outlive the rebuild, and none of them is the run's to decide:** what happens to the existing **tags**, to the **releases** attached to them, and to the **contributors sidebar**. All three are asked at gate #1, before the backup, and executed in Phases 10–11 exactly as answered. A run that reaches Phase 12 having quietly left any of them alone has skipped a decision, not made one.
 
 ## Tooling check (run first)
 
@@ -193,7 +198,22 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     ```
     Split the result before judging it. **Bots have no attribution to erase** — `dependabot[bot]`, `github-actions[bot]`, `renovate[bot]`, anything whose name ends in `[bot]` or whose address is an app's `users.noreply.github.com` alias: report their commit count as a matrix line and move on. Two or more **human** authors → **stop**. Erasing someone else's commits erases their attribution, breaks a DCO/CLA audit trail, and in a repo that took outside contributions is not the user's call to make alone. Continue only if the user explicitly confirms they own or have permission for every contribution, and offer the honest alternative: keep the other authors as `Co-authored-by:` trailers on the commits that carry their code (`references/repo-convention-discovery.md` has the trailer format).
 
-20. **Published version tags** — check before promising anything about releases. If any tag matches a version published to an immutable registry (npm, PyPI, crates.io, the Go module proxy, Maven Central, NuGet), deleting or moving it is a **hard stop** in Phase 11: those registries freeze a version to a content hash, and a re-tagged version makes consumers fail checksum verification rather than upgrade. Note the finding now; enforce it there.
+20. **Tags, releases and what deleting them would cost** — the facts behind the step 24 decision, gathered before the gate rather than argued after the push:
+
+    ```bash
+    git ls-remote --tags <repository-url>
+    gh release list --repo <owner>/<repo>                       # tag, latest flag, published date
+    gh release view <tag> --repo <owner>/<repo> --json assets --jq '.assets[] | "\(.name) \(.downloadCount)"'
+    glab release list --repo <owner>/<repo>
+    ```
+
+    Three findings, each of which changes the answer the user should give:
+
+    - **Immutable-registry publication.** If any tag matches a version published to npm, PyPI, crates.io, the Go module proxy, Maven Central or NuGet, deleting or moving it is a **hard stop** in Phase 11: those registries freeze a version to a content hash, and a re-tagged version makes consumers fail checksum verification rather than upgrade. Check the name rather than assuming (`https://registry.npmjs.org/<name>`, `https://index.crates.io/…`); a manifest with `private: true` or `publish = false` settles it too.
+    - **Uploaded assets and their download counts**, per release. They do not come back — a mirror backup restores tags, never a release object or its binaries.
+    - **Anything that reads "the latest release"** — an auto-updater endpoint (Tauri, Sparkle, electron-updater), an install script, a docs badge. Deleting every release breaks it until a new one is cut. Grep the tree for the updater endpoint before claiming otherwise.
+
+    Note all three now, quote them at step 24, enforce the hard stop in Phase 11.
 
 21. **Secret scan of the history being discarded** (if `gitleaks` is present) — this is the last moment anyone will look at those commits:
     ```
@@ -219,14 +239,23 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     protection: none · rulesets: <none | required_signatures | …> · push rules: <none | unavailable>
     history <N> commits · largest commit <F>/<T> tracked paths (<P>%) · bot commits <B>
     branches 1 (+<M> merged, strand nothing) · open PRs 0 · merged PR refs <N> · forks 3
-    human authors 1 · bot authors <list> · published tags <list> · push triggers <N workflows, deploys?>
+    human authors 1 · bot authors <list> · push triggers <N workflows, deploys?>
+    tags <list> · releases <N> (assets <n>, downloads <n>) · registry-published <none|list> · reads-latest-release <updater|none>
     ```
 
-24. **Confirmation gate #1.** State the scope and the measured shape, then get an explicit yes:
+24. **Collect the three end-state decisions — before the backup, not after the push.** The rebuild replaces a branch; it does not replace what hangs off the old history. Three things survive it, each is the user's call, each is irreversible or outward-facing, and each is far cheaper to answer now than to discover in Phase 12. Ask all three together with gate #1, quote the step-20 findings as the cost, and carry the answers verbatim into Phases 10 and 11.
 
-    > This will erase all `N` commits on `<branch>` of `<owner>/<repo>` and replace them with a rebuilt series over the identical file tree. `<F>` of `<T>` tracked paths currently land in one commit (`<subject>`). Nothing is touched yet — the next steps are a verified backup and a read-only analysis, and you will approve the exact commit list before anything is pushed. Proceed?
+    - **Tags** — delete every tag that points into the old history, delete a named subset, or keep them. Say what keeping costs: those tags hold the old commits reachable, so the wipe is not total, and a tag that is no longer an ancestor of the new tip breaks any tooling that computes a range from the last release (`git describe`, changelog generators, "commits since"). Say what deleting costs: the hard stop of step 20 applies per tag, and a tag cannot be re-pointed honestly at a rebuilt commit that was never the tree that release shipped.
+    - **Releases** — delete the releases attached to those tags, or keep them. Per release, state the cost **before** the answer: the uploaded assets and their download counts are gone for good, the mirror backup restores the tag but never the release object, and anything reading "the latest release" finds nothing until a new one is cut.
+    - **Contributors sidebar** — run the Phase 10 cache rebuild after the push, or leave it. Say plainly that the push is the only moment it is cheap, and that **no API call can answer this question**: `repos/<owner>/<repo>/contributors` and the rendered sidebar are fed by different caches, so a clean API read is not evidence the page is clean. Only the user can open `https://github.com/<owner>/<repo>` and see who is still listed there.
 
-    Report the facts — the concentration number, every stop gate, what the push sets off — and let the user weigh them. The user invoked this skill on purpose: a low concentration number is a finding to state plainly, not a case to argue, and an impression that "the log already looks conventional" is not a finding at all.
+    **None of these has a default the run may take.** Silence is not "keep", a clean API read is not "nothing to clear", and a cost the run judges too high is not a decision — it is a fact to state and hand over. Record the three answers verbatim in the Phase 12 report; a deferred answer is reported as deferred, never as a choice.
+
+25. **Confirmation gate #1.** State the scope and the measured shape, then get an explicit yes:
+
+    > This will erase all `N` commits on `<branch>` of `<owner>/<repo>` and replace them with a rebuilt series over the identical file tree. `<F>` of `<T>` tracked paths currently land in one commit (`<subject>`). Nothing is touched yet — the next steps are a verified backup and a read-only analysis, and you will approve the exact commit list before anything is pushed. Proceed? And: tags — `<delete | keep>`? releases — `<delete | keep>` (`<N>` releases, `<n>` assets, `<n>` downloads)? contributors sidebar — `<clean | leave>`?
+
+    Report the facts — the concentration number, every stop gate, what the push sets off, what each of the three end-state answers costs — and let the user weigh them. The user invoked this skill on purpose: a low concentration number is a finding to state plainly, not a case to argue, and an impression that "the log already looks conventional" is not a finding at all.
 
 ---
 
@@ -472,13 +501,19 @@ Report the two tree hashes verbatim. `<OLD_TREE> == <NEW_TREE>` is the line that
 
 ---
 
-## Phase 10 — Contributors cache (optional, ask)
+## Phase 10 — Contributors cache (the user's answer from gate #1, executed)
 
-The rebuild re-authored every commit to the person running it, so after Phase 9 the commit graph holds exactly one identity. GitHub's **Contributors** sidebar does not follow: it is a cached index, not a live read of the graph, and a force-push replaces the refs without ever invalidating it. The old account keeps appearing — for days, in reported cases — and the REST endpoints and the rendered sidebar are fed by *different* caches, so the API can read clean while the page still lists the account.
+The rebuild re-authored every commit to the person running it, so after Phase 9 the commit graph holds exactly one identity. GitHub's **Contributors** sidebar does not follow: it is a cached index, not a live read of the graph, and a force-push replaces the refs without ever invalidating it. The old account keeps appearing — for days, in reported cases.
 
-Ask whether to clear it; never do it unasked. Skipping is a legitimate answer — the entry is cosmetic and does expire on GitHub's own schedule, while the fix renames the default branch of a shared repository.
+Run this phase, or skip it, according to the answer collected at gate #1 (step 24). Skipping is a legitimate answer *the user gives*; it is never one the run makes for them, and "the fix renames the default branch, which seemed like a lot for a cosmetic entry" is a cost to have stated at step 24, not a decision to take in Phase 10.
 
-**First, prove the graph is actually clean.** No cache trick helps while an old author still owns a reachable commit:
+**The API is not the sidebar — this is the trap this phase exists to avoid.** `repos/<owner>/<repo>/contributors`, `stats/contributors` and the rendered repository page are fed by *different* caches. The API commonly answers with the new, correct list within seconds of the push while `https://github.com/<owner>/<repo>` still shows every account that ever committed. So:
+
+- A clean API read is **not** evidence that the page is clean, and reporting "the API returns only `<login>`, nothing to clear" is reporting the wrong cache.
+- The run cannot see the rendered page. Only the user can — that is exactly why the question belongs to them and is asked at gate #1.
+- If the user answered *clean* at gate #1, run the rename regardless of what the API says. If they answered *leave*, say in Phase 12 that the sidebar was left as it is and may still list the old accounts.
+
+**Diagnostics — what they are and are not for.** These read the *graph*, so they say whether a cache rebuild can succeed at all; they never say whether the sidebar currently needs one:
 
 ```bash
 REPO=<owner>/<repo>
@@ -488,7 +523,7 @@ gh api "repos/$REPO/contributors"       --jq '.[] | "\(.login) \(.contributions)
 gh api "repos/$REPO/stats/contributors" --jq '.[] | "\(.author.login) \(.total)"'
 ```
 
-`stats/contributors` answers `202` with an empty body while GitHub recomputes it — retry a few seconds later rather than reading the blank as a result. A non-zero `refs/pull/*` count is the usual reason an entry never clears: those refs live outside the branch, the rebuild does not touch them, and this skill does not delete them. Say so instead of promising the sidebar will clear.
+`stats/contributors` answers `202` with an empty body while GitHub recomputes it — retry a few seconds later rather than reading the blank as a result. A non-zero `refs/pull/*` count is the usual reason an entry never clears: those refs live outside the branch, the rebuild does not touch them, and this skill does not delete them. Say so instead of promising the sidebar will clear — and say it as a caveat on the attempt, not as a reason to skip an attempt the user asked for.
 
 **The fix — rename the default branch, then rename it back.** This is what forces the index to rebuild; force-pushing, deleting and recreating the branch, and pushing empty commits do not:
 
@@ -503,9 +538,11 @@ Before running it:
 
 - Re-check protection — `gh api "repos/$REPO/branches/<branch>/protection"`. A `404 Branch not protected` means there is nothing to lose; otherwise verify the rules again after the second rename.
 - **Do not push between the two commands.** In that window the branch does not exist under its real name.
-- Workflows keyed to `push: branches: [<branch>]` do not fire — a rename is not a push.
+- **The rename does fire workflow events. Verify, never assume it is silent.** Observed on a public repo: `main` → `main-tmp` → `main` produced two `delete`-event runs *and* a `push`-event run on the restored branch — `head_sha` unchanged, no commit involved. Anything keyed to `on: push: branches: [<branch>]` or `on: delete` runs. Re-read the triggers from Phase 0, step 18 and say what will fire before renaming.
+- **A mirror or cleanup job that prunes is the real hazard in that window.** While the branch is renamed away, a `--prune` mirror sees it as deleted and tries to delete it downstream. In the observed run the downstream refused — `remote: GitLab: The default branch of a project cannot be deleted.` — and the mirror survived on the luck of both sides naming the default branch the same. A downstream whose default branch is named differently loses the branch. If a mirror exists: pause it, or accept the risk deliberately, and re-verify the downstream tip and tags afterwards.
+- **`422 Validation Failed — New branch already exists` on the second rename is usually a stale read, not a conflict.** Check `git ls-remote --heads origin`; if it shows only `<branch>-tmp`, the rename simply has not propagated and the call retries clean. Treating the 422 as a hard failure abandons the repository on the temporary name — the worst outcome this phase has.
+- **After the second rename, `git ls-remote --heads` can list both names.** Re-read before touching anything: the extra ref is normally a stale response that is gone on the next call, and deleting on the first reading risks deleting the branch that was just restored.
 - Open pull requests are retargeted automatically by GitHub.
-- The branch listing may briefly show both names; trust `git ls-remote --heads origin`.
 - Local clones need nothing as long as the name comes back unchanged.
 
 Still listed afterwards → escalate in cost order, and state the cost of each before doing it: **block the account** (reported as immediate, reversible), **transfer the repository to another account and back** (reported as instantaneous; a transfer drops Actions secrets), **contact Support** (the standing answer is that no manual recompute trigger exists). Deleting and recreating the repository costs every release and its uploaded assets, the Actions history, the watchers and the creation date — last resort, rarely warranted.
@@ -521,9 +558,11 @@ Background, sources and the community threads behind each escalation: <https://g
 
 ---
 
-## Phase 11 — Tags and releases (optional, per item)
+## Phase 11 — Tags and releases (the user's answer from gate #1, executed)
 
-Only if the user asked for it. Skipping this phase leaves every existing tag pointing into the old history, which keeps those objects alive — say so rather than implying the wipe was total.
+Execute the tag and release answers collected at gate #1 (step 24) — that is what this phase is, and there is no branch of it where the run decides for itself. *Keep* is a legitimate answer and needs no action beyond the report; it is legitimate because the user gave it, not because the run judged deletion too expensive. If the answer names a subset, delete exactly that subset.
+
+Keeping tags leaves every one of them pointing into the old history, which keeps those objects reachable — say so in Phase 12 rather than implying the wipe was total.
 
 **Hard stop first:** any tag whose version is published to an immutable registry (npm, PyPI, crates.io, the Go module proxy, Maven Central, NuGet, a signed container tag) must not be deleted or moved. Those registries pin a version to content; re-tagging makes consumers fail checksum verification instead of upgrading. The only safe move is a **new, higher version**.
 
@@ -536,7 +575,11 @@ git tag -d <tag>                                # local
 git push origin :refs/tags/<tag>                # remote, if the host CLI did not
 ```
 
-Ask per item; never batch-delete tags. Then cut the new version with **the repository's own tooling**, not by hand — `pnpm release`/`commit-and-tag-version`, `semantic-release`, `release-please`, `changeset publish`, `cargo release`, `poetry version`, or the plain `git tag -a v<version> -m` the repo already uses. Follow its documented runbook if `docs/` has one, and let CI publish if that is how the repo publishes.
+Confirm each item against the gate-#1 answer before deleting it; never batch-delete a set wider than the one named there. A tag the user did not name is not deleted, and a tag whose version turned out to be registry-published is refused with the reason, even if the answer said "delete all" — that is the one stop this phase applies against the user's own instruction, and it is reported, not silently honoured.
+
+**Re-pointing a tag instead of deleting it is usually dishonest, and the run must say so rather than offer it as a middle path.** A rebuilt commit was never the tree that release shipped, so moving `v0.1.0` onto one makes the release page claim a provenance it does not have. Offer it only where the rebuilt series genuinely contains a commit whose tree matches that release, and say which check proved it.
+
+Then cut the new version with **the repository's own tooling**, not by hand — `pnpm release`/`commit-and-tag-version`, `semantic-release`, `release-please`, `changeset publish`, `cargo release`, `poetry version`, or the plain `git tag -a v<version> -m` the repo already uses. Follow its documented runbook if `docs/` has one, and let CI publish if that is how the repo publishes.
 
 ---
 
@@ -553,11 +596,16 @@ Coverage:     <N> tracked paths, each in exactly one commit
 Pacing:       <range>, synthetic|real timestamps, first <ts> → last <ts>
 Backup:       <absolute path>  (verified: N commits, fsck clean[, LFS blobs fetched])
 Secret scan:  clean | FINDINGS (rotate now) | not scanned (no gitleaks)
-Contributors: untouched | cache rebuilt via branch rename — <accounts cleared | still listed, N refs/pull/* keep them>
-Releases:     untouched | <tags deleted>, <version> cut via <tooling>
+Decisions:    tags <keep|delete: list> · releases <keep|delete: list> · contributors <clean|leave>   — all three asked at gate #1
+Contributors: left as answered (leave) | cache rebuilt via branch rename — <accounts cleared | still listed, N refs/pull/* keep them>
+Tags:         kept as answered <list> (they keep the old commits reachable) | deleted <list> | refused <tag: registry-published>
+Releases:     kept as answered <list, assets intact> | deleted <list, N assets and their download counts gone>
+              <version> cut via <tooling>, if one was
 Verified:     ls-remote tip = <NEW_SHA>; status clean; N commits; lint pass; changelog dry run OK
               fresh clone re-checked against the backup — root tree hashes equal
 ```
+
+Every line of the `Decisions:` row is quoted from the user's gate-#1 answer. A run that cannot fill one in did not ask — say "not asked", never "untouched", because the two read the same to a reader and mean opposite things about who chose.
 
 **Manual residuals — say these plainly, they cannot be done by command:**
 
@@ -565,7 +613,8 @@ Verified:     ls-remote tip = <NEW_SHA>; status clean; N commits; lint pass; cha
 - **Forks and existing clones** keep the old history; a rewrite cannot reach them.
 - **Intermediate commits are not built** in `story` mode — `git bisect` across this history is unreliable by construction.
 - **`--no-verify` was used** on intermediate commits, if it was. Name which.
-- **The contributors sidebar** still lists the old accounts if Phase 10 was skipped, and can keep listing them even after it if merged `refs/pull/*` refs hold their commits.
+- **The contributors sidebar** still lists the old accounts if the gate-#1 answer was *leave*, and can keep listing them even after a cache rebuild if merged `refs/pull/*` refs hold their commits. Ask the user to check the rendered page — the run never saw it, and the API does not answer for it.
+- **Kept tags** hold the old commits reachable, so the old history is not gone from the remote. Name them.
 - **A leaked secret**, if one was found, still needs rotating.
 - **The backup** stays until the user confirms the remote is good. This skill never deletes it.
 
@@ -578,7 +627,7 @@ git push --force <repository-url> OLD_SHA:refs/heads/<branch>
 git -C <backup> push --force origin 'refs/tags/*:refs/tags/*'    # if tags were deleted
 ```
 
-Deleted **releases** do not come back — a release object and its uploaded assets are gone once deleted, even when the tag is restored. That asymmetry is why Phase 11 is opt-in, last, and per item.
+Deleted **releases** do not come back — a release object and its uploaded assets are gone once deleted, even when the tag is restored. That asymmetry is why Phase 11 runs last, item by item, and only on an answer the user gave before the backup existed.
 
 ## Guardrails
 
@@ -588,6 +637,7 @@ Deleted **releases** do not come back — a release object and its uploaded asse
 - The published result is proved, not assumed: a fresh clone of the remote is compared to the backup by root tree hash, and a mismatch rolls back before anything else happens.
 - Whether a rebuild is worth doing is answered with the Phase 0 concentration measurement and decided by the user; the run reports the number and the stop gates, it does not talk the user out of the task it was invoked for.
 - The plan is approved as a table, by the user, before a single commit is made — and re-split on request rather than defended.
+- Tags, releases and the contributors sidebar are decided by the user at gate #1 and executed verbatim in Phases 10–11. The run never leaves one alone by its own judgment, never treats silence as "keep", and never reads a clean `contributors` API response as an answer about a rendered page it cannot see. A cost the run thinks is too high is a fact to state at the gate, not a decision to make after it.
 - No invented history: no fabricated bug-fix arcs, no commit describing work the tree does not contain, no backdating that would function as evidence.
 - The repo's convention, hooks and release tooling win over this skill's defaults, every time.
 - `--force-with-lease`, never bare `--force`. The backup and any ref the user did not name are never deleted here.
