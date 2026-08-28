@@ -4,6 +4,8 @@
 
 Skills for AI coding agents: code review, test writing, design docs, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a `SKILL.md` in the [Agent Skills](https://agentskills.io) format — install by copying it into your agent's skills directory.
 
+Distilled from the most-used public collections and the documented practice of large open-source projects, then sharpened over several rounds on real, production-ready repositories.
+
 Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, and any other agent that supports the standard. See [Install](#install) for exact paths.
 
 ## Contents
@@ -23,6 +25,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Install](#install)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
+  - [How these were built](#how-these-were-built)
   - [Design principles](#design-principles)
     - [Which layer to install](#which-layer-to-install)
   - [Related](#related)
@@ -181,8 +184,18 @@ Two rating vocabularies are shared across the collection, so two reports never m
 
 `awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those are addressed to an author, not to a release gate.
 
+## How these were built
+
+Three passes per skill:
+
+1. **Survey** — the widely-used public skill and prompt collections, plus the documented practice of projects that do the job at scale: kernel and git patch-series rules, OpenStack's commit guide, Conventional Commits, OWASP, WCAG, PTES, NIST 800-115.
+2. **Distill** — keep what changes an agent's output, drop what it already does untold. A rule that survives is one an agent gets wrong without it. Borrowed material is cited where it is used.
+3. **Iterate on real work** — every skill is run on production-ready repositories, revised from what it got wrong, and run again. The phases, stop gates and output formats here are what those rounds left standing, not what looked good in the draft.
+
 ## Design principles
 
+- **Distilled, not invented** — each skill starts from what large OSS projects and the most-used public collections already do, and keeps only the parts that change an agent's behavior.
+- **Field-tested** — every skill went through several rounds on real, production-ready repositories, revised after each one.
 - **Self-contained** — every skill is complete in this repo; no chasing external links or docs.
 - **Few, not many** — a small set that covers repeated engineering work, not a hundred micro-skills nobody remembers.
 - **Portable** — plain `SKILL.md` per the open spec, stack-agnostic, nothing vendor-specific baked in.

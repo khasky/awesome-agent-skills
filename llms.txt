@@ -1,6 +1,6 @@
 # Awesome Agent Skills
 
-> Skills for AI coding agents in the Agent Skills (agentskills.io) format: code review, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a SKILL.md; install by copying the folder into your agent's skills directory (`.claude/skills/`, `.agents/skills/`, or equivalent — see README).
+> Skills for AI coding agents in the Agent Skills (agentskills.io) format: code review, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a SKILL.md; install by copying the folder into your agent's skills directory (`.claude/skills/`, `.agents/skills/`, or equivalent — see README). Distilled from widely-used public collections and large-OSS practice, then iterated over several rounds on real, production-ready repositories.
 
 ## Skills
 
