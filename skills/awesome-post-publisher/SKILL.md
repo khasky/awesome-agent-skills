@@ -22,6 +22,7 @@ This is for the user's own accounts and own content — one account per platform
 
 Bundled files (load on demand):
 
+- `references/browser-interaction.md` — how to click, type, attach media and confirm submission on UIs that defeat ordinary Playwright actions: the click ladder, file-input scoping, submit polling, read-back baselines. **Read this before the first composer of a run**, not after the third timeout.
 - `references/platform-posting.md` — per-platform posting notes: login-state signal, composer location, flow outline, read-back verification, quirks — plus the generic flow for when the live UI has drifted from the notes.
 
 ## Invocation
@@ -45,7 +46,12 @@ Ask only what the flags didn't answer:
 
 ## Phase 1 — Preflight A: the bridge
 
-The Playwright MCP `--extension` bridge to the user's own Chrome is required — that is where the logged-in sessions live. List tabs first: a lone `about:blank` means the bridge is not attached — stop and have the user connect it; never proceed on a spawned clean browser, which has no sessions and would only hit login walls. Never touch the bridge's own `connect.html` tab. Open ONE working tab and reuse it for everything. Warn the user the browser is busy while a publishing pass runs.
+The Playwright MCP `--extension` bridge to the user's own Chrome is required — that is where the logged-in sessions live. List tabs first and read what you get:
+
+- A lone `about:blank` → the bridge is **not** attached; you are on a spawned clean browser with no sessions, which would only hit login walls. Stop and have the user connect it.
+- A lone `connect.html` (the bridge's own relay page) → the bridge **is** attached and the user simply has no other tab open. This is normal. Never touch that tab; open one working tab beside it.
+
+Open ONE working tab and reuse it for everything. Warn the user the browser is busy while a publishing pass runs.
 
 ## Phase 2 — Preflight B: source scan (hard stop on any defect)
 
@@ -60,6 +66,8 @@ Scan the source and validate every post file:
 **Zero posts found, or ANY validation error → hard stop.** List every defective file with what is wrong with it and how to fix it. A publisher that guesses its way past a malformed schedule posts the wrong thing at the wrong time.
 
 Output of this phase: the platform set, post count per platform, date range — the input to the next two phases.
+
+**Reconcile any platform list the user named against that set before planning anything.** `--platforms`, or a list given in conversation, is a *request*, not a fact about the folder. A user naming six platforms may be naming ones the campaign never wrote for, or one surface when the files target another. Report the difference explicitly and in the user's terms — "threads and telegram have zero posts in this campaign"; "the 28 facebook posts are `facebook-wall` targeting the Page, there are no `facebook-group` posts" — then plan only what exists. Never silently substitute a neighbouring slug, and never let a named-but-absent platform vanish from the report. If the gap means the user wants content that does not exist yet, say so: writing it is `awesome-content-campaign`'s job, not this skill's.
 
 ## Phase 3 — Preflight C: login per platform
 
@@ -77,7 +85,9 @@ Three timezones are in play and the ledger records all three: the publication ti
 
 `publish-state/ledger.json` beside the posts folder. Session memory is not state — a crashed or restarted session must resume without double-posting, and only a file on disk guarantees that.
 
-Per post: file, platform, scheduled time (pub TZ) and computed due time, status (`pending` · `posted` · `unverified` · `failed` · `skipped` · `pending-approval`), attempt count, posted-at, post URL when captured. Plus the timezone map and the interview answers.
+Per post: file, platform, scheduled time (pub TZ) and computed due time, status (`pending` · `posted` · `unverified` · `failed` · `skipped` · `pending-approval`), attempt count, posted-at, post URL when captured, the read-back evidence in one line, and `degraded` naming anything the post went out without (alt text, a prerequisite that was unmet). Plus the timezone map, the interview answers, and an `incidents` list.
+
+**`incidents` records outward-facing side effects this skill caused that were not one of the planned posts** — a stray upload, an edit, anything visible on the account that the run plan did not promise. Each entry: when, platform, what happened, the cause, the evidence that identified it, the artifact's URL, and how the user chose to resolve it. A side effect that is only in the transcript is lost the moment the session ends; the ledger is the only durable record the user can act on later.
 
 Rules: the ledger is consulted before EVERY post and written after EVERY state change. A post in `posted`, `pending-approval`, or `unverified` is never attempted again — `unverified` (submitted, but read-back could not confirm) is resolved by checking the platform feed first: found → promote to `posted`; provably absent → back to `pending`. On start, an existing ledger means resume: reconcile it against the folder (new files → `pending`; missing files → flag) and continue.
 
@@ -93,15 +103,22 @@ Strictly one post at a time, one platform at a time — never parallel tabs, nev
 
 1. Consult the ledger (Phase 5 rules).
 2. Re-verify login on the platform (sessions expire mid-campaign); logged out → pause, offer wait-or-skip for this post.
-3. Open the composer per `references/platform-posting.md`; when the live UI does not match the notes, re-derive from an accessibility snapshot — the notes are hints, the live DOM is the source of truth.
-4. Fill like a person works: type with natural cadence (the type tool's delay, not instant value injection), pauses of 2–8 seconds between distinct actions, scroll to elements rather than teleporting. Media goes through the real file input; wait for the platform's upload/processing state to finish before proceeding — a submit racing an unfinished upload posts the text without its image — and set alt text where the platform offers the field and the attachment carries an `alt`.
-5. Submit, wait for the platform's own confirmation state.
-6. **Read back:** navigate to the profile/feed/board and confirm the post is actually visible; capture its URL. Visible → `posted` with URL. Submitted into a review queue (group approval, hackernoon editorial) → `pending-approval`, which is success for this skill — say so, don't wait for moderation. Not findable → `unverified`, no automatic retry.
-7. Write the ledger.
+3. **Capture the read-back baseline** *before* composing: the profile post count, wall post count, or whatever counter Phase 6 of `references/platform-posting.md` names for that platform. Without a number taken beforehand, step 7 is guesswork.
+4. Open the composer per `references/platform-posting.md`; when the live UI does not match the notes, re-derive from an accessibility snapshot — the notes are hints, the live DOM is the source of truth. Mechanics for clicks that time out are in `references/browser-interaction.md`; climb its ladder instead of repeating a failing click.
+5. Fill like a person works: type with natural cadence (the type tool's delay, not instant value injection), pauses of 2–8 seconds between distinct actions, scroll to elements rather than teleporting.
+   - **Media goes through the composer's OWN file input, scoped to the composer's dialog subtree — never a page-wide `input[type=file]` lookup.** Pages carry album, avatar and cover uploaders too; the first match is routinely the wrong one, and uploading into an album is a public act you cannot take back by pretending. Verify the preview appears *inside* the composer and that the URL did not change before going on. A navigation right after the upload means you hit the wrong input: stop, establish what was created, and report it before anything else.
+   - Wait for the platform's upload/processing state to finish — a submit racing an unfinished upload posts the text without its image.
+   - Set alt text where the platform offers the field and the attachment carries an `alt`. **Alt text is best-effort: two attempts, then move on.** Some platforms' alt editors do not open through automation at all. Never let a stuck alt editor block a post, never delete-and-repost to add alt without the user's explicit request, and never drop it silently — record `degraded` in the ledger and name it in the report.
+   - Read back the field lengths and compare against the source file before submitting. Confirm any cross-post or paid-promotion toggle is off unless the post file asks for it.
+6. Submit, then **poll the composer's own confirmation state in-page until it confirms or the composer closes. Do not navigate away while a submit is in flight** — leaving mid-upload loses the post silently, and a transient network error in that window is exactly how a fully-prepared post ends up nowhere.
+7. **Read back:** navigate to the profile/feed/board and confirm the post is actually visible; capture its URL. The counter from step 3 must have moved by **exactly one** — that proves both existence and the absence of a duplicate. Never infer "newest" from the highest ID or from DOM order; both lie on paginated and virtualized surfaces. Lazy-loaded grids return nothing before they render, which is not evidence of absence — wait and re-query. Visible → `posted` with URL. Submitted into a review queue (group approval, hackernoon editorial) → `pending-approval`, which is success for this skill — say so, don't wait for moderation. Not findable → `unverified`, no automatic retry.
+8. Write the ledger.
 
 Spacing: minimum 3–10 minutes (randomized) between posts on different platforms, and at least 2 hours between two posts on the SAME platform unless the schedule itself says otherwise — an overdue backlog does not get to fire 10 posts into one feed in one minute. `--now` mode respects both.
 
-Failures: one retry after ≥ 10 minutes, and ONLY after a read-back proves the first attempt did not land (the duplicate check is the point of the ledger). Second failure → `failed`, move on, report. A captcha, challenge, or platform warning at any step → stop on that platform, tell the user, and let them resolve it in their own browser; never attempt to click through it.
+Failures: one retry after ≥ 10 minutes, and ONLY after a read-back proves the first attempt did not land (the duplicate check is the point of the ledger). Re-prove absence immediately before the retry, not just at the time of failure. Second failure → `failed`, move on, report. A captcha, challenge, or platform warning at any step → stop on that platform, tell the user, and let them resolve it in their own browser; never attempt to click through it.
+
+**Unintended outward-facing side effect → halt the run and disclose immediately.** If an action put something on the user's account that the plan did not promise — a stray upload, a wrong surface, an accidental edit — stop before the next post. Establish what actually happened with evidence rather than assumption (a count delta, the artifact's own page, its timestamp), report it plainly with the URL and the cause, write it to `incidents`, and ask the user how to resolve it. Do not delete or undo it on your own initiative: removal is itself an irreversible act on their account and needs the same explicit per-item request as any other deletion. Do not bury it in the final report either — the user needs it while they can still act, and burying it also robs them of the chance to stop the run before the same bug repeats on the next platform.
 
 ## Phase 8 — Waiting between posts (hours or days)
 
@@ -116,11 +133,13 @@ Pending:     <n> approval queues (facebook-group, hackernoon, …)
 Skipped:     <n> (<platforms and why — not logged in, user choice>)
 Failed:      <n> (<file: last error>)
 Unverified:  <n> (submitted, not found on read-back — resolve before any retry)
+Degraded:    <n> (posted, but missing something the file declared — e.g. alt text)
+Incidents:   <n> (side effects outside the plan, with URLs and how each was resolved)
 Remaining:   <n> pending, next due <time> (<pub TZ> / <local>)
 Ledger:      <absolute path>
 ```
 
-Every number comes from the ledger, not from memory. Anything unverified is named as unverified — a submitted post without a read-back URL is never reported as published.
+Every number comes from the ledger, not from memory. Anything unverified is named as unverified — a submitted post without a read-back URL is never reported as published. State plainly which posts went out degraded and what is now permanent about that (several platforms will not accept an image description after posting). Repeat any prerequisite the user chose to override — a stale bio link keeps mis-attributing every later post on that platform, not only the one just published. Finally, move screenshots and the Playwright server's working files out of the user's project tree; a clean working copy is part of finishing.
 
 ## Anti-patterns
 
@@ -132,3 +151,11 @@ Every number comes from the ledger, not from memory. Anything unverified is name
 - Treating a review-queue submission as a published post, or as a failure.
 - Editing or deleting published content as cleanup without an explicit per-item user request.
 - Guessing selectors when the UI has changed instead of re-deriving from a fresh snapshot.
+- Taking the first `input[type=file]` on the page. The album, avatar and cover uploaders sit on the same page as the composer, and picking the wrong one publishes to the wrong surface.
+- Navigating away while a submit is uploading, then reading the empty profile as proof of failure.
+- Treating a highest ID, a first DOM node, or an unrendered lazy grid as the answer to "did it post?" — only a count taken before and after, plus the opened permalink, settles it.
+- Repeating an identical failing click a third time instead of climbing the ladder in `references/browser-interaction.md`.
+- Matching UI text against English literals when the user's browser is in another language.
+- Publishing what the user asked for while quietly ignoring that some platforms they named have no content in the folder.
+- Letting a stuck alt-text editor block a post, or dropping the declared alt text without recording and reporting it.
+- Finishing a run with screenshots and `.playwright-mcp/` left untracked in the user's repository.
