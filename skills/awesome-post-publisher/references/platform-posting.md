@@ -25,6 +25,9 @@ Check: `linkedin.com/feed` — "Start a post" button. Compose: Start a post → 
 ## reddit
 Check: `reddit.com` — avatar in the header. Compose: `reddit.com/r/<subreddit>/submit` — title into the title field, body into the markdown/text field; set flair when frontmatter names one (some subs require it — an unset required flair blocks submission). Read-back: the subreddit's /new listing AND the user's profile — automod can remove a post seconds after it lands; removed = report to the user, never repost the same content at the same sub.
 
+## lemmy
+Check: `https://<instance-from-frontmatter>/` — avatar in the header (each instance is a separate login; `lemmy.world` being logged in says nothing about another instance). Compose: the community's own create-post page (`/create_post?community_name=<community>` on most instances, or the community page's Create Post control) — title, URL field when the post file carries a link submission, markdown body. Read-back: the community's /new listing and the user's profile; community moderators and instance admins both remove, so a post gone from the listing is a removal to report, never to repost.
+
 ## tumblr
 Check: `tumblr.com/dashboard` — compose (pencil) button. Compose: text post → title/body; tags go into the dedicated tags field, not inline. Read-back: own blog page.
 
@@ -41,6 +44,9 @@ Selectors: editor `[data-testid="tweetTextarea_0"]` (Draft.js — click it with 
 
 **Alt text is a known dead end from the inline composer.** `[data-testid="altTextWrapper"]` is an `<a role="link">` pointing at `/compose/post/media`; the route changes but the description modal never mounts. Four approaches failed: coordinate click, manual `down`/`up`, focus+Enter, and navigating to the full-page composer. Treat X alt text as best-effort: try twice, then record the post as `degraded` in the ledger and say so in the report — **X does not allow adding a description after posting**, so the only fix is delete-and-repost, which needs the user's explicit request. Navigating away while a draft exists raises a `beforeunload` modal — dismiss it with `accept: false` to keep the draft. SPA back (`goBack`) preserves composer text and attachments; a full `goto` does not.
 
+## truthsocial
+Check: `truthsocial.com` — own avatar and the composer on the home column. Mastodon-derived UI, so the flow reads like Mastodon's (composer, attach, publish) but the selectors are the fork's own: snapshot before acting rather than reusing Mastodon's. Read-back: own profile.
+
 ## wonderful-dev
 Check: `wonderful.dev` — logged-in header state. Small platform; use the generic flow: snapshot the feed, locate the compose affordance, proceed. Read-back: own profile/feed.
 
@@ -49,6 +55,9 @@ Check: `app.hackernoon.com` — writer dashboard reachable. Compose: new draft �
 
 ## devto
 Check: `dev.to` — avatar / "Create Post" button. Compose: Create Post → markdown editor (title, tags up front — via the editor UI or its front-matter format) → Publish. Read-back: the article URL it lands on; capture it.
+
+## hackernews
+Check: `news.ycombinator.com` — the header carries the username and a `logout` link when logged in. Compose: `/submit` — title, plus either url or text (the form takes one, not both; filling both is a submission error). No media, no markdown, no tags. Read-back: `/submitted?id=<user>` and the item permalink; a submission can be killed by the site's own filters within minutes, and `/newest` not showing it while the profile does means exactly that — report it, never resubmit the same URL. New accounts and repeat domains draw the filter hardest.
 
 ## patreon
 Check: `patreon.com` — creator session (creator dashboard reachable). Compose: Create → post → title/body/media; set the visibility (public vs members) frontmatter names — no frontmatter value → ask, don't default. Read-back: the creator page feed.
@@ -97,3 +106,10 @@ Check: `vk.com` — own page reachable. Compose: the wall composer on the target
 Publishing is two steps: **Next** ("Далі"/"Далее") → a settings screen → **Publish** ("Опублікувати"/"Опубликовать") — match the *exact* label, since "Publish as story" sits beside it. Opening the composer from the community page posts as the community; there is no author selector to set. VK autosaves drafts, so a composer reopened after an interruption comes back with its text — check what is already in the field before typing, or you will double it. A URL in the text auto-attaches a link snippet card, which the image attachment then replaces; that is expected and the URL stays in the body.
 
 Read-back: the newest `article` on the wall, its `/wall-<owner>_<id>` permalink and its "just now" timestamp. Album ordering is **not** ID-ordered — the highest photo ID in a long album was item #40 of 233 — so for anything album-related use a count baseline instead.
+
+## discord
+Check: `discord.com/channels/@me` — the web app loads with the server rail; a redirect to `/login` means logged out. The browser app is the only surface this skill uses: no bot token, no webhook, no developer application — those are a different integration and not what the user authorized.
+
+Compose: navigate to the server and channel from frontmatter (`discord.com/channels/<server>/<channel>`), then the message box at the bottom — a Slate editor, so click it with a real mouse click and `keyboard.type`, same handling as X's Draft.js. **Enter sends immediately and there is no submit button**: a multi-line post typed with plain newlines publishes as one fragment per line, spamming the channel and leaving nothing to delete cleanly. Type multi-line bodies with `Shift+Enter` for every internal newline, then a single Enter to send. Attach media through the channel's file input before sending — an attachment sends with the message it is staged on. A missing message box means posting is restricted in that channel: report and skip, never hunt for another channel to post in.
+
+Read-back: the last message in the channel, matched by the user's own author name and its `time[datetime]`; message nodes carry `id="chat-messages-<channel>-<id>"`, which gives the permalink `/channels/<server>/<channel>/<id>`. Unlike most platforms here, Discord allows editing after posting — a typo is fixable in place, but only on the user's explicit request.
