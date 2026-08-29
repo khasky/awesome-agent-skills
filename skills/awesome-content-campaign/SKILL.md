@@ -129,7 +129,7 @@ Human-style rules, distilled from `awesome-humanize-en`, `awesome-document-style
 
 - Vary sentence rhythm; a post of uniform medium sentences reads machine-made.
 - No AI-vocabulary tier-1 words (delve, seamless, robust, tapestry, testament, boasts, leverage-as-verb), no "it's not X, it's Y" contrast frames, no forced rule-of-three, no negative-parallelism countdowns ("No X. No Y. Just Z.").
-- No em-dash saturation; prefer straight quotes, hyphens, comma-set clauses.
+- No em-dash saturation; prefer straight quotes, hyphens, comma-set clauses. No arrow glyph (`→`) as a prose connective (`problem → solution`, `before → after`) — say the relation in words; an arrow survives only as real notation or a UI path (`File → Save`).
 - Emoji per the interview choice (question 10): "none" means zero, everywhere; "sparing" means an emoji only where the platform's genre genuinely uses one — never emoji-bullet walls, never decoration; a custom rule is applied as stated. Bold-lead list stacks stay banned regardless.
 - No summary-stamp openers ("In conclusion", "TL;DR:" as a stamp), no fake-candor openers ("Let's be honest"), no hype closers ("The future looks bright").
 - Counts and versions as digits; claims from the knowledge map only, with the map's exact numbers.

@@ -6,23 +6,30 @@ The machine's habit of over-formatting, over-listing, and visual noise. Extensio
 
 ---
 
-## 16. 🔴 Em-dash and bold overuse
+## 16. 🔴 Em-dash, arrow and bold overuse
 
-**Problem.** The model mechanically reaches for the em-dash (—) to mark "strong" pauses and slathers key terms in **bold** to fake the look of professional copywriting.
+**Problem.** The model mechanically reaches for the em-dash (—) to mark "strong" pauses, drops the arrow glyph (→) wherever a sentence would need a verb, and slathers key terms in **bold** to fake the look of professional copywriting.
 
 **Example (AI style):**
 > This decision — the key to success — changes **everything**.
+>
+> Our process: research → prototype → launch.
 
 **After:**
 > This decision changes everything. With it, the project will succeed.
+>
+> We research first, prototype next, and launch last.
 
 **Markers:**
 - Three or more em-dashes in a single paragraph.
 - Every few sentences carries an "X — Y — Z" em-dash insert.
+- The arrow glyph as a prose connective: `input → output`, `problem → solution`, `2020 → 2026`, `old name → new name`, or an arrow-chained pipeline inside a running sentence. It compresses a relation the sentence should state, and no one types `→` on a keyboard.
 - More than five bolded terms per paragraph.
 - Bold falls not on the load-bearing concepts but on random words, purely for rhythm.
 
-**False-positive boundary.** The em-dash is a normal authorial device in literary prose and journalism — Emily Dickinson built a whole style on it, and plenty of modern essayists lean on it. An em-dash produced by iOS/Mac autocorrect is likewise not a tell. See `false-positives.md`.
+**How to fix an arrow.** Name the relation in words — `becomes`, `then`, `leads to`, `renamed to`, `from X to Y` — or, in technical prose where a symbol genuinely reads better, use ASCII `->`. Change the characters, not the facts.
+
+**False-positive boundary.** The em-dash is a normal authorial device in literary prose and journalism — Emily Dickinson built a whole style on it, and plenty of modern essayists lean on it. An em-dash produced by iOS/Mac autocorrect is likewise not a tell. The arrow is not a tell where it is real notation: diagrams and flowcharts, state machines, math and chemistry, quoted tool or log output, code and fenced blocks, and UI paths naming actual menus (`File → Save`). See `false-positives.md`.
 
 ---
 
@@ -163,6 +170,7 @@ The machine's habit of over-formatting, over-listing, and visual noise. Extensio
 | If detected | See also |
 |---|---|
 | #16 heavy em-dash use | `false-positives.md` — the em-dash is normal in fiction and journalism |
+| #16 arrow glyph | Real notation (diagram, state machine, math, quoted output, UI path) is not a tell |
 | #17 emoji bullet lists in a formal email | `chatbot-artifacts.md` — often a Gemini fingerprint |
 | #18 curly quotes from a Mac user | `false-positives.md` — autocorrect is not a marker |
 | #19 excessive tables | `llm-fingerprints.md` — Gemini is especially prone to them |
