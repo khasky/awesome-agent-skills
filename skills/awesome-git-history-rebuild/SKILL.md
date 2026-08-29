@@ -178,12 +178,25 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
 
     Ask the host, not the local clone: `git branch -r --merged` only sees remote-tracking refs this checkout happens to have fetched, so a branch that was never fetched reads as unmerged and produces exactly the false stop this step exists to avoid. Without a host CLI, fetch the heads first (`git fetch origin 'refs/heads/*:refs/remotes/origin/*'` — it writes remote-tracking refs, the one non-read-only act in this phase) or declare the classification **unavailable** and let the user judge the list.
 
-16. **Open pull / merge requests:**
+16. **Pull / merge requests — open ones block, and *all* of them outlive the rebuild:**
     ```
     gh pr list --repo <owner>/<repo> --state open
+    gh pr list --repo <owner>/<repo> --state all --limit 100 --json number,state
     glab mr list --repo <owner>/<repo>
     ```
-    Any open PR references commits that will not exist. Surface the list; the user closes or merges them first. Merged PRs leave `refs/pull/*` refs behind that keep their commits — and their authors — reachable after the rewrite; that is what defeats the contributors cleanup in Phase 10, so count them now (`git ls-remote origin 'refs/pull/*' | wc -l`).
+    Any open PR references commits that will not exist. Surface the list; the user closes or merges them first.
+
+    **Every PR record survives the rewrite permanently, and none of them can be deleted.** A pull request is a row in the host's database keyed by repository and number — title, author, timeline, and its own `refs/pull/N/*` refs — and not one of its fields depends on the branch's commit graph. Rewriting `refs/heads/<branch>` cannot reach it. GitHub has no deletion path either: the GraphQL schema carries `deleteIssue`, `deletePullRequestReview` and `deletePullRequestReviewComment` but **no `deletePullRequest`**, and `DELETE /repos/{owner}/{repo}/pulls/{n}` answers `404` because the endpoint does not exist. So **Insights → Pulse keeps listing the merged PRs**, the PR tab keeps its full list, and the only way to clear either is deleting and recreating the repository — which also costs every issue, star, watcher, release and its assets, the Actions history and secrets, the traffic stats and the creation date. Say this at gate #1, in those terms, because a user who asked for a clean history usually believes it covers this too.
+
+    Those refs are also the reason the wipe is never total. Count the refs, then count what they keep alive that the branch does not. Run the fetch in the scratch bare clone from step 14, never in the user's checkout — it writes twenty-odd remote-tracking refs, the same non-read-only exception step 15 already carves out, and it does not belong in a working copy the user has to live with:
+    ```bash
+    git ls-remote origin 'refs/pull/*' | wc -l
+    git fetch origin 'refs/pull/*/head:refs/remotes/pr/*'
+    refs=$(git for-each-ref --format='%(refname)' refs/remotes/pr)
+    git rev-list $refs --not <branch> | wc -l                       # commits still served, absent from the tip
+    git rev-list $refs --not <branch> | while read h; do git log -1 --format='%an <%ae>' $h; done | sort | uniq -c
+    ```
+    Report both numbers. Old commits reachable this way are what defeats the contributors cleanup in Phase 10 — a bot or a co-author whose commits sit on a PR ref stays reachable no matter how the branch is rebuilt.
 
 17. **Forks** (`forkCount` / `forks_count` from step 7). Above zero → say plainly that every forker keeps the old history and the rewrite cannot reach them.
 
@@ -239,7 +252,9 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     owner match ✓ · write ✓ (API + dry-run push) · archived ✗ · mirror ✗
     protection: none · rulesets: <none | required_signatures | …> · push rules: <none | unavailable>
     history <N> commits · largest commit <F>/<T> tracked paths (<P>%) · bot commits <B>
-    branches 1 (+<M> merged, strand nothing) · open PRs 0 · merged PR refs <N> · forks 3
+    branches 1 (+<M> merged, strand nothing) · open PRs 0 · forks 3
+    PR records <N> — survive permanently, undeletable; Pulse and the PR tab keep showing them
+    refs/pull/* <N> keeping <C> commits reachable that <branch> will not contain · authors <list>
     human authors 1 · bot authors <list> · push triggers <N workflows, deploys?>
     tags <list> · releases <N> (assets <n>, downloads <n>) · registry-published <none|list> · reads-latest-release <updater|none>
     ```
@@ -254,7 +269,9 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
 
 25. **Confirmation gate #1.** State the scope and the measured shape, then get an explicit yes:
 
-    > This will erase all `N` commits on `<branch>` of `<owner>/<repo>` and replace them with a rebuilt series over the identical file tree. `<F>` of `<T>` tracked paths currently land in one commit (`<subject>`). Nothing is touched yet — the next steps are a verified backup and a read-only analysis, and you will approve the exact commit list before anything is pushed. Proceed? And: tags — `<delete | keep>`? releases — `<delete | keep>` (`<N>` releases, `<n>` assets, `<n>` downloads)? contributors sidebar — `<clean | leave>`?
+    > This will erase all `N` commits on `<branch>` of `<owner>/<repo>` and replace them with a rebuilt series over the identical file tree. `<F>` of `<T>` tracked paths currently land in one commit (`<subject>`). What it will **not** touch: `<N>` pull request records and their Insights → Pulse history — those cannot be deleted at all, and `<C>` commits stay reachable through `refs/pull/*`. Nothing is touched yet — the next steps are a verified backup and a read-only analysis, and you will approve the exact commit list before anything is pushed. Proceed? And: tags — `<delete | keep>`? releases — `<delete | keep>` (`<N>` releases, `<n>` assets, `<n>` downloads)? contributors sidebar — `<clean | leave>`?
+
+    The PR line is a disclosure, not a fourth decision — there is no action to offer, which is exactly why it has to be said before the backup rather than discovered in Phase 12.
 
     Report the facts — the concentration number, every stop gate, what the push sets off, what each of the three end-state answers costs — and let the user weigh them. The user invoked this skill on purpose: a low concentration number is a finding to state plainly, not a case to argue, and an impression that "the log already looks conventional" is not a finding at all.
 
@@ -502,7 +519,9 @@ git ls-remote origin <branch>            # sha equals the new HEAD
 
 ## Phase 9 — Prove the published tree matches the old one
 
-Phase 7 proved the *local* rebuild. This proves what the host actually serves — a separate fact, and the one the user cares about: after the republication, is the code on the remote still exactly the code that was there before the history was erased. Push failures are loud, but a partial push, a filter that rewrote files on the way out (`.gitattributes` renormalization, an LFS misconfiguration), or a branch that was not the one everyone reads are all quiet.
+Phase 7 proved the *local* rebuild. This proves what the host actually serves — a separate fact, and the one the user cares about: after the republication, is the code on the remote still exactly the code that was there before the history was erased. Push failures are loud, but a partial push, LFS objects that never reached the LFS server, a branch that was not the one everyone reads, and someone else's push landing between the backup and the force-push are all quiet.
+
+A push does not rewrite anything in flight: `git push` transfers objects that already exist, byte for byte, and `.gitattributes` renormalization runs back at `git add`. So what this phase catches is *which objects arrived and under which ref* — never an object that changed on the way out.
 
 Clone the pushed result fresh — never re-check the workspace that produced it, which would only prove it agrees with itself:
 
@@ -519,17 +538,21 @@ Then four checks, cheapest and strongest first:
 git rev-parse refs/backup/<branch>^{tree}        # old root tree hash
 git rev-parse HEAD^{tree}                        # new root tree hash — MUST be identical
 git diff --stat refs/backup/<branch> HEAD        # EMPTY (names the files if the hashes differ)
-diff <(git ls-tree -r --name-only refs/backup/<branch> | sort) \
-     <(git ls-tree -r --name-only HEAD | sort)   # EMPTY — no path added, dropped or renamed
+diff <(git ls-tree -r refs/backup/<branch> | sort) \
+     <(git ls-tree -r HEAD | sort)               # EMPTY — same paths, same modes, same blob shas
 git ls-files | wc -l                             # equals the Phase 3 inventory count
 ```
 
-Equal root tree hashes are a complete proof of content identity: a git tree hash covers every path, every blob's content, and every file mode, recursively. Two histories with the same root tree hash are the same code, byte for byte. The other three checks exist to *localize* a mismatch, not to add certainty.
+Compare the full `ls-tree` lines, not `--name-only`. A mode-only change — `100644` to `100755`, which a `chmod` or a checkout on a filesystem that reports the exec bit will produce — moves the root hash while leaving a name-only diff empty, so the localizer goes silent at exactly the moment it is needed. `mode sha path` costs the same and names the offending blob.
+
+Equal root tree hashes are a complete proof of content identity for everything git stores itself: a tree hash covers every path, every blob's content, and every file mode git records (`100644`, `100755`, `120000` for a symlink, `160000` for a submodule gitlink), recursively. Two histories with the same root tree hash carry the same code, byte for byte. The other three checks exist to *localize* a mismatch, not to add certainty.
 
 Any mismatch → **stop and roll back before touching anything else** (the Rollback section below), then report what differed. Do not attempt to patch the difference forward on the remote; restore the old tip, and re-run from Phase 6 once the cause is understood.
 
-Two things this proof does not cover, and both belong in the report rather than in a claim of completeness:
+Four things this proof does not cover, and all four belong in the report rather than in a claim of completeness. The first two are the ones that can actually lose data, so check them whenever the repo has LFS or submodules and give each its own line in Phase 12:
 
+- **LFS content.** Under Git LFS the tracked blob is a ~130-byte pointer and the bytes live on the LFS server. Equal tree hashes prove the *pointers* match and say nothing about whether the objects were uploaded — the one case where "the hashes match" and "the files are there" genuinely come apart, and the reason a rebuild can pass every check above and still serve broken files. Repo has LFS → verify separately in the fresh clone (`git lfs fsck`, and `git lfs ls-files -s` against the same listing from the backup) and report that result on its own line.
+- **Submodule contents.** A gitlink entry carries the submodule's commit sha, so an equal tree proves the *pointer* is unchanged. It says nothing about the submodule repository still serving that commit. Run `git submodule update --init` in the verification clone and report it, or state the submodules as unverified.
 - **Untracked and ignored files** were never in the history and are not on the remote either — before and after are equally empty of them, which is correct, not a loss.
 - **Working-tree bytes after checkout** can legitimately differ from the old checkout when `.gitattributes` renormalizes line endings or LFS smudges pointers. That is a checkout-filter difference, not a content loss — but if the repo has such filters, verify one representative file by hand (`git show refs/backup/<branch>:<path> | git hash-object --stdin` against `git rev-parse HEAD:<path>`) so the report says which it was.
 
@@ -636,6 +659,8 @@ Backup:       <absolute path>  (verified: N commits, fsck clean[, LFS blobs fetc
 Secret scan:  clean | FINDINGS (rotate now) | not scanned (no gitleaks)
 Decisions:    tags <keep|delete: list> · releases <keep|delete: list> · contributors <clean|leave>   — all three asked at gate #1
 Contributors: left as answered (leave) | cache rebuilt via branch rename — <accounts cleared | still listed, N refs/pull/* keep them>
+Pull requests: <N> records untouched and undeletable; Insights → Pulse still lists <M> merged
+              <C> commits still served via refs/pull/* that the new tip does not contain, by <authors>
 Tags:         kept as answered <list> (they keep the old commits reachable) | deleted <list> | refused <tag: registry-published>
 Releases:     kept as answered <list, assets intact> | deleted <list, N assets and their download counts gone>
               <version> cut via <tooling>, if one was
@@ -652,6 +677,7 @@ Every line of the `Decisions:` row is quoted from the user's gate-#1 answer. A r
 - **Intermediate commits are not built** in `story` mode — `git bisect` across this history is unreliable by construction.
 - **`--no-verify` was used** on intermediate commits, if it was. Name which.
 - **The contributors sidebar** still lists the old accounts if the gate-#1 answer was *leave*, and can keep listing them even after a cache rebuild if merged `refs/pull/*` refs hold their commits. Ask the user to check the rendered page — the run never saw it, and the API does not answer for it.
+- **The pull request history is untouched and cannot be cleaned.** Every PR keeps its number, title, author and timeline, **Insights → Pulse** keeps reporting the merged ones, and no API deletes a PR — only deleting and recreating the repository would, at the cost of every issue, star, watcher, release and asset, the Actions history and secrets, the traffic stats and the creation date. Give the counts from Phase 0 step 16: `<N>` PR records, and `<C>` commits still served through `refs/pull/*` that the new tip does not contain, by `<authors>`. That last number is why the wipe is not total and why a bot can stay in the sidebar.
 - **Kept tags** hold the old commits reachable, so the old history is not gone from the remote. Name them.
 - **The history reads as a rebuild to anyone who checks**, and no pacing model changes that: `git log --diff-filter=M` is empty because every path is added once and never modified, and the host's own push event carries the real time the commits arrived. Say it once, plainly, rather than letting the user believe the dates are the whole story.
 - **A leaked secret**, if one was found, still needs rotating.
