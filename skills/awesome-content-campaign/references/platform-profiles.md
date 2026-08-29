@@ -36,7 +36,10 @@ Federated — the cap and culture depend on the user's instance; verify on that 
 Short posts, hard cap (verify current), no markdown. Link cards from pasted URLs; threads for anything longer. Casual, tech-adjacent culture.
 
 ### x
-Short posts; cap differs sharply by account tier — verify which tier the user has before writing a single post. Threads are the native long form. Hashtags in moderation; media boosts reach.
+Short posts; cap differs sharply by account tier — verify which tier the user has before writing a single post. Reply chains are the native long form. Hashtags in moderation; media boosts reach.
+
+### threads
+Meta's text feed, bound to an Instagram account: the handle and the login are Instagram's, so wherever an Instagram presence exists a Threads one usually does too — check for it rather than assuming its absence. Conversational register close to `x`. Unlike Instagram, links in the post body are clickable and media is optional. Verify the current character cap and which domain the account answers on.
 
 ### wonderful-dev
 Developer community feed. Small platform whose conventions are best read from its live feed during Phase 3 — check what natives post, length norms, and code-snippet support before writing.
@@ -70,3 +73,6 @@ A pin is image + title + description + destination link, filed to a board. Image
 
 ### vk
 Wall posts, medium prose, hashtags in use, images common. Personal wall vs community differ in tone and in who may post — target detail required: which wall/community.
+
+### telegram
+A channel or group broadcast rather than a social feed: no ranking algorithm and no discovery surface, so subscribers see every post in order and frequency is felt directly — over-posting reads as noise here faster than on an algorithmic feed. Clickable links with previews that can be suppressed, light markup, media optional. Publishing needs admin rights on the target. Target detail required: channel or group. Verify the current message cap and the media-caption cap, which are not the same number.
