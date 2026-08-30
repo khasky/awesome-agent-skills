@@ -50,10 +50,10 @@ Ask only what the flags didn't answer:
 
 The Playwright MCP `--extension` bridge to the user's own browser is required — that is where the logged-in sessions live. Extension mode attaches to Chrome or Edge; nothing else. List tabs first and read what you get:
 
-- A lone `about:blank` → the bridge is **not** attached; you are on a spawned clean browser with no sessions, which would only hit login walls. Stop and have the user connect it.
+- A lone `about:blank` → the bridge is **not** attached; you are on a spawned clean browser with no sessions, which would only hit login walls. Stop and have the user connect it. Extension missing entirely → point them at the install, in Chrome or Edge: <https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm> (source and setup: <https://github.com/microsoft/playwright/tree/main/packages/extension>), then re-run the preflight rather than proceeding on a spawned browser.
 - A lone `connect.html` (the bridge's own relay page) → the bridge **is** attached and the user simply has no other tab open. This is normal. Never touch that tab; open one working tab beside it.
 
-**Establish WHICH browser you are attached to before acting, and say so.** A user may run one browser for daily work and another holding the accounts this campaign posts to, each paired to its own Playwright MCP server with its own extension token — and the two are indistinguishable from a tab list alone. Identify the browser per `references/browser-interaction.md` (a user-agent read tells Edge from Chrome; the open tabs tell whose session it is) and name it in the run plan, so the user can stop a run about to post from the wrong profile. **More than one browser bridge available → ask which one; never pick by tool order.** The pairing token itself is the agent's MCP configuration, not this skill's business: never read it, print it, or ask the user to paste it into the conversation.
+**Run the target gate before anything else, and get a yes.** A user may keep one browser for daily work and another holding the accounts this run posts to, each paired to its own Playwright MCP server with its own extension token — and the two are indistinguishable from a tab list. The full procedure is in `references/browser-interaction.md`: ask which bridge when the session exposes more than one, probe the engine and the signed-in identity, then state the browser and the profile and wait for confirmation. Naming it later in the run plan is not enough; by then the preflights have already run in whatever browser answered. **Wrong browser, or no bridge at all → ask for that browser's `PLAYWRIGHT_MCP_EXTENSION_TOKEN`**, shown on the extension's status page opened in it, put it in the MCP server entry for that browser, restart, and re-run the gate — the procedure and the status-page URL are in `references/browser-interaction.md`. Continuing in whatever browser happens to be attached is the one thing that is not allowed.
 
 Open ONE working tab and reuse it for everything. Warn the user the browser is busy while a publishing pass runs.
 
@@ -165,6 +165,7 @@ This phase never touches the engagement itself. No liking, no commenting, no fol
 - Retrying a failure without first proving via read-back that it failed — that is how duplicates happen.
 - Trusting session memory over the ledger, or keeping the ledger only in memory.
 - Typing credentials, storing tokens, automating login or 2FA, or clicking through captchas and warning interstitials.
+- Starting on whichever bridge answered first, or carrying on in the wrong browser instead of asking for the intended profile's extension token and restarting.
 - A fixed UTC offset instead of per-date IANA conversion — half the campaign lands an hour off after a DST switch.
 - Treating a review-queue submission as a published post, or as a failure.
 - Editing or deleting published content as cleanup without an explicit per-item user request.

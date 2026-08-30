@@ -4,16 +4,31 @@ Hard-won mechanics for driving real social UIs through Playwright MCP `--extensi
 
 ## Which browser are you attached to
 
-Extension mode attaches to **Chrome or Edge only**. Both look identical from a tab list, and a machine can run one bridge per browser — a separate Playwright MCP server entry, its own extension pairing, its own token — so the tools you happen to have are not proof of which profile is on the other end.
+Extension mode attaches to **Chrome or Edge** — the Playwright extension ships on the Chrome Web Store and its own prerequisites name Chrome, Edge and Chromium; Firefox and Safari are not part of this mode. Both look identical from a tab list, and a machine can run one bridge per browser profile — the pairing token is per profile, so a second browser (or a second profile in the same one) is a separate server entry with a separate token. The tools you happen to have are not proof of which profile is on the other end.
 
-Settle it before the first action, in this order:
+Not installed yet, or the user wants a second browser dedicated to these accounts: the extension is <https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm> (published by the Playwright team; Edge installs it from that same Chrome Web Store listing), and its source and setup notes are at <https://github.com/microsoft/playwright/tree/main/packages/extension>. Each browser profile gets its own token from the extension's status page, and that token goes into the MCP server entry for that browser — by the user, in their own configuration, never through this conversation.
 
-1. **Ask, when there is a choice.** Two or more browser-automation tool namespaces exposed in the session means two possible destinations. Ask which one; picking the first is how a post lands from the wrong profile.
-2. **Probe the engine.** `navigator.userAgent` distinguishes them: Edge carries `Edg/<version>` after the Chrome token, Chrome does not. Read it once, in the working tab.
-3. **Probe the identity.** The open tabs and the platform pages themselves say whose session this is — the account handle in a header is the real answer to "which profile", and it is what the per-platform login check reads anyway.
-4. **Report it.** Name the browser and the handle in the run plan. The user is the only one who knows whether that is the account they meant.
+### The target gate — mandatory, before the first navigation
 
-The extension pairing token belongs to the agent's MCP configuration. Never read it out of a config file, never print it, never ask for it in the conversation — it grants control of a browser holding live sessions, and a transcript is not a place to keep one.
+Never begin on whichever bridge answers first. Run these four steps and get a yes:
+
+1. **Ask, when there is a choice.** Two or more browser-automation tool namespaces in the session means two possible destinations. Ask which one, by name. Picking the first is how a post lands from the wrong profile.
+2. **Probe the engine.** `navigator.userAgent` separates them: Edge carries `Edg/<version>` after the Chrome token, Chrome does not. Read it once in the working tab.
+3. **Probe the identity.** Whose session is this? The account handle a platform shows in its own header is the answer — the same read the per-platform login check makes anyway. One platform is enough to identify the profile; on a run touching several, collect them all.
+4. **Confirm with the user before anything else happens.** State the browser, the profile it is signed in as, and what is about to be done in it, then wait. This gate is not satisfied by mentioning the browser in a later report — by then the work has run in it.
+
+### Pointing the bridge at the right browser
+
+The destination is decided by one value: `PLAYWRIGHT_MCP_EXTENSION_TOKEN` in the `env` of the MCP server entry, read when that server starts. It is **per browser profile** and it exists to bypass the extension's connection dialog — with no token the extension asks for approval on every connect, which is the user's click to make, never one to automate.
+
+Each profile shows its own token on the extension's status page, at `extension://mmlmfjhmonkocbjadbfplnigmagldckm/status.html` **opened in that browser**. The same page is the diagnostic: `No clients are currently connected` there means the running server is paired to some other browser, whatever the tab list of the attached one suggests. The page also carries a regenerate control, so a token can be rolled at any time — after which the config holding the old one is stale until updated.
+
+So when the bridge is missing, or the target gate says the wrong browser answered:
+
+1. **Ask which browser should be driven**, and have the user open that status page in it.
+2. **Ask them for the token line it shows.** This is ordinary configuration, not a credential to protect from the conversation: it authorizes a *local* process to attach to a browser on the same machine, and anyone able to run that process can read the browser's session data directly anyway. Take it, do not paraphrase it, and do not print it back.
+3. **Put it where it is read** — the `env` of the MCP server entry for that browser. A second browser is a second entry under its own name, so both stay available and the gate's step 1 becomes a real choice. Editing the agent's configuration is the user's call: offer to do it, or hand them the exact block to paste.
+4. **Restart so the server picks it up**, then re-run the gate and confirm the browser and profile before any work starts. A token set but not restarted looks exactly like a token that did not work.
 
 ## The bridge's two constraints
 

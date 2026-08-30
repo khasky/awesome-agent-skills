@@ -45,8 +45,16 @@ Learn mode drives a real browser through whatever automation the agent has — P
 browser tool; without one, say so and stop (a plain HTTP fetch tool cannot render JS-heavy
 sites and silently misses content — do not degrade to it without telling the user).
 
-With the Playwright MCP bridge: list tabs first (a lone `about:blank` means the bridge is not
-attached — stop and have the user fix it); never touch the bridge's own `connect.html` tab;
+With the Playwright MCP bridge, run the **target gate** first (the procedure is in
+`references/browser-interaction.md`, shipped with `awesome-post-publisher`): ask which bridge
+when the session exposes more than one, probe which browser and profile answered, and confirm
+with the user before the crawl starts. Wrong browser or no bridge → ask for that browser's
+`PLAYWRIGHT_MCP_EXTENSION_TOKEN` from the extension's status page, set it in the MCP entry,
+restart, re-run the gate. Then list tabs (a lone `about:blank`
+means the bridge is not attached — stop and have the user fix it; no extension installed at all
+→ the install for Chrome or Edge is
+<https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm>);
+never touch the bridge's own `connect.html` tab;
 open ONE working tab and reuse it. Warn the user the browser is busy while the crawl runs.
 Dismiss cookie/consent banners once on the first page — they pollute extracted text.
 
