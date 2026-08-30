@@ -1,11 +1,11 @@
 ---
-name: awesome-voice-profile
+name: awesome-content-voice
 description: "Builds a durable, reusable author-voice profile from whatever evidence exists — the user's own posts read through their logged-in browser, files of past writing, pasted samples, a website (via awesome-style-mimic), or an interview alone — and writes one profile file other skills read instead of re-deriving a voice per task: presence signals, absence signals with per-sample counts, per-platform register, protected personal tics, verbatim samples, and a source-and-confidence stamp. Thin evidence is handled, not faked: an interview plus a tuned archetype produces a low-confidence profile that says so and improves incrementally. Use when asked to 'build my voice profile', 'learn how I write', 'update my voice profile', or in Russian 'собери мой авторский стиль', 'изучи как я пишу', 'обнови профиль голоса'. Do not use to learn a website's brand voice — use awesome-style-mimic; not to write posts — use awesome-content-campaign; not to strip AI voice from text — use awesome-humanize-en."
 license: MIT
 metadata:
   author: Khasky
   tags: ["writing", "voice", "style", "profile", "personalization", "content"]
-  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-voice-profile"
+  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-content-voice"
 ---
 
 # Voice profile — learn how this author writes, once
@@ -21,7 +21,7 @@ Bundled files (load on demand):
 ## Invocation
 
 ```
-/awesome-voice-profile [<source> …] [--update] [--name <profile-name>]
+/awesome-content-voice [<source> …] [--update] [--name <profile-name>]
 ```
 
 Sources are optional and mixed freely: file paths, folders, a site URL, pasted text, or nothing at all (then the interview and archetype path carry the run). `--update` appends new evidence to an existing profile instead of rebuilding it.
@@ -60,7 +60,7 @@ Then collect, from whichever of these the user has, in descending order of what 
 
    **The archive is usually not the profile page.** A profile URL shows a bio and a sample; the authored posts live behind a separate path or tab — LinkedIn keeps them at `/in/<handle>/recent-activity/all/`, X and Mastodon separate posts from replies, most platforms mix reshares into the default view. Navigate to whatever that platform calls the user's own posts, take the URL from the user when they know it, and prefer the filter that excludes reshares over sorting them out afterwards.
 
-   **Level (c) starts with the target gate, always.** Before a single navigation: ask which bridge when the session exposes more than one; probe the engine (`navigator.userAgent`) and the signed-in identity; then state the browser, the profile and what will be read, and **put the go/no-go through the structured-question UI** (proceed here · use the other bridge · stop) rather than ending on a sentence the user has to answer in prose. The full procedure is the target gate in `references/browser-interaction.md` (ships with `awesome-post-publisher`). **No bridge, or the wrong browser answered → ask the user for the intended browser's `PLAYWRIGHT_MCP_EXTENSION_TOKEN`** from the extension's status page opened in that browser, put it in the MCP server entry for it, restart, re-run the gate. Reading someone's posts out of whatever browser happened to attach is how a profile gets built from the wrong account.
+   **Level (c) starts with the target gate, always.** Before a single navigation: ask which bridge when the session exposes more than one; probe the engine (`navigator.userAgent`) and the signed-in identity; then state the browser, the profile and what will be read, and **put the go/no-go through the structured-question UI** (proceed here · use the other bridge · stop) rather than ending on a sentence the user has to answer in prose. The full procedure is the target gate in `references/browser-interaction.md` (ships with `awesome-content-publisher`). **No bridge, or the wrong browser answered → ask the user for the intended browser's `PLAYWRIGHT_MCP_EXTENSION_TOKEN`** from the extension's status page opened in that browser, put it in the MCP server entry for it, restart, re-run the gate. Reading someone's posts out of whatever browser happened to attach is how a profile gets built from the wrong account.
 
    Bridge preflight: list tabs — a lone `about:blank` means the bridge is not attached, so offer to fix it or continue without this source, never degrade silently; no extension installed at all → the install is <https://chromewebstore.google.com/detail/playwright-extension/mmlmfjhmonkocbjadbfplnigmagldckm> (Chrome or Edge), and public profiles can be read meanwhile without it; a lone `connect.html` is the bridge's own relay page and means it *is* attached. Never touch that tab; open ONE working tab and reuse it; warn the user the browser is busy. Then, per platform, read the logged-in state read-only (a login form versus the user's avatar — no clicks into settings, no typing). Logged out → offer to wait while the user logs in themselves, or skip that platform. Login is never automated. Collect their own authored posts only — not reshares, not replies written by others — up to ~20 per platform.
 2. **Files and folders** — drafts, published articles, exported newsletters, README and docs the user wrote, exported chat or email text. Folders get an inventory first, then the prose-bearing files. Private correspondence is often the truest sample of an unguarded voice; it is also the most sensitive, so it is used only when the user offers it, and excerpts from it never become published samples (Phase 4's sample policy).

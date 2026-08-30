@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Repurposes one existing text — a published URL, a file, or pasted notes — into platform-native posts, then files them and optionally publishes: source notes every claim traces back to, an interview for platforms, voice, language and length, per-genre registers and dated platform limits reused from awesome-content-campaign, a two-stage anti-slop audit, and one dated file per platform in the format awesome-post-publisher takes, so publishing is a handoff, not a second implementation. Use when asked to 'repurpose this article into posts', 'adapt this for linkedin and x', 'turn this text into social posts', or in Russian 'адаптируй статью под соцсети', 'сделай посты из этого текста', 'перепиши текст под платформы'. Do not use to build a scheduled campaign from product sources — use awesome-content-campaign; not to publish a folder that exists — use awesome-post-publisher; not to build the voice profile — use awesome-voice-profile."
+description: "Repurposes one existing text — a published URL, a file, or pasted notes — into platform-native posts, then files them and optionally publishes: source notes every claim traces back to, an interview for platforms, voice, language and length, per-genre registers and dated platform limits reused from awesome-content-campaign, a two-stage anti-slop audit, and one dated file per platform in the format awesome-content-publisher takes, so publishing is a handoff, not a second implementation. Use when asked to 'repurpose this article into posts', 'adapt this for linkedin and x', 'turn this text into social posts', or in Russian 'адаптируй статью под соцсети', 'сделай посты из этого текста', 'перепиши текст под платформы'. Do not use to build a scheduled campaign from product sources — use awesome-content-campaign; not to publish a folder that exists — use awesome-content-publisher; not to build the voice profile — use awesome-content-voice."
 license: MIT
 metadata:
   author: Khasky
@@ -20,8 +20,8 @@ This skill owns the repurposing craft and orchestrates the rest. It reuses, by r
 - `references/genre-micro-post.md`, `references/genre-long-article.md`, `references/genre-community-post.md` (same skill) — the register each genre demands.
 - `references/media-graphics.md` (same skill) — offline HTML/CSS graphics when a platform requires media and none exists.
 - `awesome-humanize-en` — the structure pass and pattern catalogs the Phase 5 audit runs.
-- `awesome-voice-profile` — the author's voice, when a profile exists.
-- `awesome-post-publisher` — everything about publishing: bridge, login, ledger, pacing, read-back.
+- `awesome-content-voice` — the author's voice, when a profile exists.
+- `awesome-content-publisher` — everything about publishing: bridge, login, ledger, pacing, read-back.
 - `awesome-translate-ru-en` — when the source language is not the output language.
 
 ## Invocation
@@ -34,17 +34,18 @@ No source given → ask for one before anything else. `--publish` is a preferenc
 
 ## Phase 1 — Read the source, write the source notes
 
-Get the text onto disk first — working state lives in `repurpose/<slug>/`, and that one folder holds everything this skill writes:
+Get the text onto disk first. **Working state never lands in the invocation directory** — it goes to the agent's own scratch or session directory for this run (whatever the runtime provides: a session scratchpad, a temp path under the agent's home such as `~/.claude/`, or `TMPDIR`), in a `repurpose/<slug>/` folder there. The user asked for posts, not for a folder appearing in whatever repository they happened to be standing in. Only the final deliverable moves to a place the user names (Phase 6), and the run states both paths.
 
-- **URL** — a plain fetch first; a live browser when the page is a JS app that returns an empty shell, so rendered content is not silently missed. **Driving a browser means driving one of the user's, so it is not a silent step**: when the session exposes more than one browser bridge, ask which one before the first navigation and remember the answer for the run; either way, name the browser that was used and warn that it is busy while the read runs. A page that turns out to need a logged-in session is no longer a public read — run the full target gate in `references/browser-interaction.md` (ships with `awesome-post-publisher`) before touching it. Save the extracted text to `repurpose/<slug>/source/`.
+- **URL** — a plain fetch first; a live browser when the page is a JS app that returns an empty shell, so rendered content is not silently missed. **Driving a browser means driving one of the user's, so it is not a silent step**: when the session exposes more than one browser bridge, ask which one before the first navigation and remember the answer for the run; either way, name the browser that was used and warn that it is busy while the read runs. A page that turns out to need a logged-in session is no longer a public read — run the full target gate in `references/browser-interaction.md` (ships with `awesome-content-publisher`) before touching it. Save the extracted text to `source/` inside the working folder.
 - **File** — read it directly; a folder gets an inventory first, then the prose.
 - **Pasted text** — save it to `source/` on arrival, like everything else. Long source text stays out of the conversation context.
 
-Then write `repurpose/<slug>/source-notes.md`, which every later phase is checked against:
+Then write `source-notes.md` beside it, which every later phase is checked against:
 
 - **The point** — one sentence: what this text argues or reports. Compression that contradicts this line is a defect, not an interpretation.
 - **Supporting claims** — one line each, in the source's own terms.
 - **Numbers** — verbatim, with the conditions the source attaches to them. A number without its condition is not repurposable.
+- **Provenance** — what this text actually is and where it came from: which release, which changelog, whose announcement, what date. Two sentences at most, and every post needs one of them, because a reader who does not know what is being discussed cannot use the rest.
 - **Quotable lines** — 3 to 5 verbatim excerpts worth keeping intact, with their location.
 - **Named things** — people, products, versions, places the source names, spelled the way it spells them.
 - **What the source does NOT say** — the tempting adjacent claims a shorter version would drift into. This section exists because compression invents.
@@ -56,7 +57,7 @@ Present the point and the notes in one screen, then ask through the structured-q
 One round, structured-question UI when available, custom answer always allowed.
 
 1. **Platforms** — show the full slug table from `references/platforms.md`, nothing pre-selected, and collect the target detail each selected platform requires (subreddit, group URL, instance, board, channel, workspace, site). Two annotations, when the data exists: mark platforms where `publish-state/performance.md` shows the user's own median engagement, and mark platforms where the publisher's ledger already carries this source — repurposing into a feed that already has this piece is usually a mistake worth surfacing.
-2. **Voice** — first person singular · first person plural · neutral third person · a voice profile from `awesome-voice-profile` (path; `voice/*.md` is where to look) · a style guide from `awesome-style-mimic`.
+2. **Voice** — first person singular · first person plural · neutral third person · a voice profile from `awesome-content-voice` (path; `voice/*.md` is where to look) · a style guide from `awesome-style-mimic`.
 3. **Output language** — same as the source (default) · another language. A different language means the posts are written in it, not translated word for word; where the pair is Russian and English, `awesome-translate-ru-en` carries the rules.
 4. **Length and shape per platform** — native to the platform (default) · deliberately short · thread or multi-part where the platform supports it and the content is genuinely sequential.
 5. **Emoji and hashtags** — sparing per the platform's genre (default) · none · a rule the user states.
@@ -72,9 +73,15 @@ For every selected platform, confirm the current constraints: length cap and whe
 
 Load the genre file for each selected platform first; the register belongs to the genre, and this phase adds the repurposing craft on top.
 
-**Compression is selection, not summarizing.** A 2,000-word article becomes one post about its sharpest single idea — not a synopsis, not a table of contents, not "here are the 5 takeaways" unless the source genuinely is five takeaways. The reader who never opens the original should still get something whole.
+**One post, adapted per platform — not one post per platform.** The run picks ONE idea out of the source and writes it once; every selected platform then gets that same post adjusted for its mechanics: trimmed to the verified cap, hashtags in that platform's norm, the title-and-body split where the platform has one, the hook above the fold where the feed cuts. A reader following the author on three of them should recognise the same post three times, not discover three unrelated ones. Producing a different extract per platform is the failure this rule exists to prevent: it multiplies the work, dilutes the message, and leaves nothing that can be pointed at as "the post".
 
-**One source, several angles.** Unlike a campaign fanning one unit across platforms, different platforms may legitimately take *different* ideas out of the same text: the argument goes where argument lives, the practical step goes where practitioners are, the number goes where numbers travel. Say in the manifest which idea each platform took.
+The user asks for more than one idea → that is more than one run, or an explicit list of units decided together up front and stated in the manifest. It is never a side effect of having several platforms selected.
+
+**Choosing the idea: compression is selection, not summarizing.** A 2,000-word article becomes one post about its sharpest single point — not a synopsis, not a table of contents, not "here are the 5 takeaways" unless the source genuinely is five takeaways. The reader who never opens the original should still get something whole.
+
+**What makes an idea worth the post.** Prefer the mechanism, the consequence, the thing that changes how someone works — and skip the inventory. A list of version numbers, a table of names, a feature roll-call carries no insight even though it is factual and easy to extract: it tells a reader what exists, never what it means for them. "Messages carry text, not files, so two sessions stay informed and still overwrite each other" is a post; "2.1.224+ on Linux and macOS, 2.1.234+ on Windows" is a footnote to one. Where a number genuinely matters, it belongs inside the mechanism it constrains, not as the subject.
+
+**Every post carries its provenance.** One clause, early, saying what is being talked about and where it came from — the release, the changelog, the announcement. Without it a post about a mechanism reads as an opinion out of nowhere, and the reader cannot tell whether it is news, a manual, or a thought.
 
 Rules that hold across every platform:
 
@@ -90,7 +97,7 @@ Rules that hold across every platform:
 List every finding across all posts first, then fix. Detection mixed into rewriting collapses onto one dimension, and a rewrite done without the full list leaves the structural tells more visible, not fewer. One pass at a time:
 
 1. **Fidelity** — the post's point matches `source-notes.md`; every claim and number traces to it with its condition; quotations verbatim; nothing from the "does NOT say" section present. A post that fails here is rewritten, not patched.
-2. **Structure** — the discourse pass from `awesome-humanize-en` (`references/structure-pass.md`): outline test across the batch, question sequence, position tells, stance, opener and closer variety.
+2. **Structure** — the discourse pass from `awesome-humanize-en` (`references/structure-pass.md`): the outline test, question sequence, position tells and stance, run on the unit itself. Across platforms the posts are deliberately the same post, so what is checked there is different: every version still carries the same point, the same provenance and the same numbers, and no adaptation quietly turned into a second claim.
 3. **Slop** — vocabulary and syntax against that skill's catalogs, with the voice profile's protected tics excluded.
 4. **Length** — counted, not eyeballed, against the Phase 3 cap for each platform, hashtags included.
 5. **Media** — every declared attachment exists, matches the platform's verified formats, has alt text describing what the image says.
@@ -100,7 +107,7 @@ List every finding across all posts first, then fix. Detection mixed into rewrit
 
 ## Phase 6 — Files, always
 
-`repurpose/<slug>/posts/`, one file per platform, in the format `awesome-post-publisher` reads, named exactly as it expects:
+`repurpose/<slug>/posts/`, one file per platform, in the format `awesome-content-publisher` reads, named exactly as it expects:
 
 ```
 YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.md
@@ -108,7 +115,7 @@ YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.md
 
 The scheduled time is the publish time chosen in Phase 2 (now, or the time the user named). Frontmatter carries `platform`, `scheduled`, `timezone`, `title`, `target` where the platform needs one, `attachments` with alt text, `links`, `hashtags`, `status: draft`.
 
-Beside them, `campaign.md` — the name is the publisher's contract, not a claim that this was a campaign. It records the source, the notes the posts were checked against, per-platform limits with their checked-on dates, which idea each platform took, and any Profile prerequisite (a bio link a "link in bio" post depends on).
+Beside them, `campaign.md` — the name is the publisher's contract, not a claim that this was a campaign. It records the source and its provenance, the notes the posts were checked against, the one idea the unit carries, per-platform limits with their checked-on dates, what each platform's version had to cut or reshape, and any Profile prerequisite (a bio link a "link in bio" post depends on).
 
 Files exist before anything is published. A run that fails at the third platform leaves seven finished posts on disk, and the publisher's ledger knows which two already went out.
 
@@ -116,10 +123,10 @@ Files exist before anything is published. A run that fails at the third platform
 
 Files only → the skill reports where they are and stops.
 
-Publish now, or at a named time → hand the folder to `awesome-post-publisher`:
+Publish now, or at a named time → hand the folder to `awesome-content-publisher`:
 
 ```
-/awesome-post-publisher repurpose/<slug>/posts --now
+/awesome-content-publisher repurpose/<slug>/posts --now
 ```
 
 Everything about publishing belongs to that skill and is not reimplemented here: the browser-bridge preflight, the login check with wait-or-skip, the ledger that survives a restart and prevents duplicates, the confirmation gate, the human pacing, the read-back of every post, the incident handling. Drop the `--now` when the posts carry real future times; it will wait for them.
@@ -128,10 +135,13 @@ That skill not installed → say so, leave the files, and print the command to r
 
 ## Verification
 
-The report states: the source, the point extracted from it, N posts across M platforms with the idea each one took, all lengths counted against limits checked on their dates (naming cache reuse), every audit pass with its findings and the gate row each post landed on, filenames parse-verified, the folder path, and — when publishing ran — the publisher's own report rather than a restatement of it. Anything skipped (a platform dropped for want of media, a community whose rules forbid the post) is named, never implied.
+The report states: the source and its provenance, the one idea extracted from it, the N platform versions of that single post and what each had to cut, all lengths counted against limits checked on their dates (naming cache reuse), every audit pass with its findings and the gate row each post landed on, filenames parse-verified, the folder path, and — when publishing ran — the publisher's own report rather than a restatement of it. Anything skipped (a platform dropped for want of media, a community whose rules forbid the post) is named, never implied.
 
 ## Anti-patterns
 
+- Writing a different post for each platform. One unit, adapted — a reader who follows the author on three of them should meet the same post three times.
+- Building the post out of an inventory: version numbers, feature roll-calls, lists of names. Factual, easy to extract, and worth nothing to a reader who wanted to know what changed for them.
+- A post with no provenance, leaving the reader unable to tell what is being discussed or where it came from.
 - Summarizing instead of selecting — the "5 key takeaways" post that reproduces the source's table of contents and gives the reader nothing whole.
 - Inverting the source's point by cutting the qualifier that carried it.
 - A number without the condition the source attached to it, or a paraphrase inside quotation marks.

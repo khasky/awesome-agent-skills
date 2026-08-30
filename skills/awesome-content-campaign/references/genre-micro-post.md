@@ -8,7 +8,7 @@ One idea, landed fast. A person posting on their own feed opens where the intere
 
 ## Read the feed first
 
-Before writing for a platform, read a handful of recent posts that natives — not brands — publish there, and match their length norms, punctuation habits and formatting. Half of what reads as machine-written is register mismatch rather than word choice. When a voice profile from `awesome-voice-profile` is in play it outranks this observation for the author's own habits; the feed still sets what the platform's readers expect.
+Before writing for a platform, read a handful of recent posts that natives — not brands — publish there, and match their length norms, punctuation habits and formatting. Half of what reads as machine-written is register mismatch rather than word choice. When a voice profile from `awesome-content-voice` is in play it outranks this observation for the author's own habits; the feed still sets what the platform's readers expect.
 
 ## AI tells in this genre
 

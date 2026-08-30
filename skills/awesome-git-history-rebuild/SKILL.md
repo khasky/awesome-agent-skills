@@ -346,7 +346,7 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
 
     **None of these has a default the run may take.** Silence is not "keep", a clean API read is not "nothing to clear", and a cost the run judges too high is not a decision — it is a fact to state and hand over. Record all five answers verbatim in the Phase 13 report; a deferred answer is reported as deferred, never as a choice.
 
-27. **Confirmation gate #1.** State the scope and the measured shape, then get an explicit yes:
+27. **Confirmation gate #1.** State the scope and the measured shape, then take the decision through the agent's **structured-question UI** — every gate in this skill is asked that way, never as a paragraph ending in a question mark. Proceed / stop is one question; the five end-state decisions are their own questions with their costs as the option descriptions, so the user picks rather than composes a reply. A gate answered in free prose is a gate whose record is a sentence someone has to re-read to know what was agreed:
 
     > This will erase all `N` commits on `<branch>` of `<owner>/<repo>` and replace them with a rebuilt series over the identical file tree. `<F>` of `<T>` tracked paths currently land in one commit (`<subject>`).
     >
@@ -672,7 +672,7 @@ If the repo has changelog tooling, run its dry run now (`npx commit-and-tag-vers
 
 ## Phase 8 — Force-push (the irreversible step)
 
-**Confirmation gate #2.** Quote the exact numbers back, then get an explicit yes:
+**Confirmation gate #2 — the last one before anything irreversible.** Quote the exact numbers back, then ask through the **structured-question UI**: *push now* · *stop and keep the local rebuild* · *show the commit list again first*. This is the point of no return for a shared remote, and "confirm the push and I'll run it" is the weakest possible way to ask for it — it reads as narration, it can be answered by a passing "ok", and it leaves no record of which of the three the user meant:
 
 > Pushing replaces `<N_old>` commits on `<branch>` of `<owner>/<repo>` with `<N_new>` rebuilt commits (`<OLD_SHA>` → `<NEW_SHA>`). The old commits become unreachable from the remote tip; the verified backup at `<path>` is the only way back. Open PRs break; forks keep the old history. Proceed?
 
@@ -913,6 +913,7 @@ Deleted **releases** do not come back — a release object and its uploaded asse
 
 - The user's own checkout is off-limits; all work happens in a scratch clone with a verified mirror backup beside it.
 - Read-only until confirmation gate #1; nothing leaves the machine until gate #2.
+- A gate written as a sentence the user answers in prose. Both gates and all five end-state decisions are structured questions with their options and costs on screen.
 - Every stop gate is a real stop: owner mismatch, multiple branches, multiple authors, no write access, protected branch, unassigned path, non-empty tree diff, a published tree that does not match the backup, published-version tag, or a missing approval — each halts the run.
 - The published result is proved, not assumed: a fresh clone of the remote is compared to the backup by root tree hash, and a mismatch rolls back before anything else happens.
 - Whether a rebuild is worth doing is answered with the Phase 0 concentration measurement and decided by the user; the run reports the number and the stop gates, it does not talk the user out of the task it was invoked for.

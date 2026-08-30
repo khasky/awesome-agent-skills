@@ -1,10 +1,10 @@
 # Platforms — the canonical vocabulary, structural notes, and the live-verify checklist
 
-**This file is the single source of the platform vocabulary.** The slugs below are what the interview offers, what filenames carry, and what `awesome-post-publisher` parses; adding a platform means adding a row here and a posting note in that skill's `references/platform-posting.md`, in the same change. No other file restates the list.
+**This file is the single source of the platform vocabulary.** The slugs below are what the interview offers, what filenames carry, and what `awesome-content-publisher` parses; adding a platform means adding a row here and a posting note in that skill's `references/platform-posting.md`, in the same change. No other file restates the list.
 
 Structural facts here are stable (what a platform *is*); everything volatile — character caps, media size limits, per-tier differences, algorithm behavior — is deliberately absent and MUST be verified live in Phase 3, recorded in the manifest with a checked-on date.
 
-Every platform on the list is reached as a website in a logged-in browser — `awesome-post-publisher` drives the real web UI through the Playwright MCP bridge and uses no platform APIs, developer apps, bots or webhooks. So Phase 3 verifies what the **web composer** does: a cap the mobile app enforces differently, a feature only the desktop client has, or an API-only capability is not what the posts must fit.
+Every platform on the list is reached as a website in a logged-in browser — `awesome-content-publisher` drives the real web UI through the Playwright MCP bridge and uses no platform APIs, developer apps, bots or webhooks. So Phase 3 verifies what the **web composer** does: a cap the mobile app enforces differently, a feature only the desktop client has, or an API-only capability is not what the posts must fit.
 
 ## The canonical table
 
@@ -45,7 +45,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `wordpress` | site URL (wordpress.com or self-hosted) | optional | `genre-long-article.md` |
 | `whop` | whop + feed or channel | optional | `genre-community-post.md` |
 
-A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-post-publisher` rather than leaving the vocabulary split between a file and a conversation.
+A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
 **Out of scope, deliberately:** sending to an email list (a newsletter tool, a self-hosted sender). Publishing exists there, but the medium is not a feed — consent and unsubscribe obligations govern it, nothing can be read back from a public page afterwards, and the pacing and duplicate rules these skills are built on do not map. A campaign that should also go to subscribers is written here and sent by the user's own mail tooling.
 

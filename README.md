@@ -135,10 +135,10 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-voice-profile](skills/awesome-voice-profile) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, pasted samples, or an interview plus a tuned archetype: counted absence signals, per-platform register, protected personal tics, and a source-and-confidence stamp |
+| [awesome-content-voice](skills/awesome-content-voice) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, pasted samples, or an interview plus a tuned archetype: counted absence signals, per-platform register, protected personal tics, and a source-and-confidence stamp |
 | [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): knowledge map with claim tracing, dated platform-limit and best-time checks, one content unit fanned out per platform with strict per-platform uniqueness, per-genre register, offline HTML/CSS graphics when a media-required platform has none, a two-stage self-audit, one dated file per slot plus a campaign manifest |
 | [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one existing text (a link, a file, pasted notes) into platform-native posts: source notes every claim traces to, selection over summary with a different idea per platform, per-genre registers and dated limits reused from the campaign skill, a two-stage audit, files first and publishing as a handoff |
-| [awesome-post-publisher](skills/awesome-post-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): bridge/format/login preflights, a persistent dedup ledger, timezone-aware scheduling with day-long waits, sequential human-paced posting with read-back verification, and an opt-in read-only engagement harvest |
+| [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): bridge/format/login preflights, a persistent dedup ledger, timezone-aware scheduling with day-long waits, sequential human-paced posting with read-back verification, and an opt-in read-only engagement harvest |
 
 ## Install
 
@@ -172,7 +172,7 @@ Skills trigger on intent — plain requests work. Explicit mentions make the cho
 - "**awesome-humanize-en**: remove the AI voice from this draft."
 - "**awesome-translate-ru-en**: mirror `docs-ru/` into `docs-en/` — same structure, translate each file."
 
-They also chain: implement → **awesome-code-cleanup** in audit mode (read-only findings) → apply the cleanup → **awesome-code-review** before merge. Or: **awesome-content-campaign** from your repo and site → review the drafts → **awesome-post-publisher** ships them on schedule.
+They also chain: implement → **awesome-code-cleanup** in audit mode (read-only findings) → apply the cleanup → **awesome-code-review** before merge. Or: **awesome-content-campaign** from your repo and site → review the drafts → **awesome-content-publisher** ships them on schedule.
 
 ## Skill format
 

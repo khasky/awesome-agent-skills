@@ -1,11 +1,11 @@
 ---
-name: awesome-post-publisher
+name: awesome-content-publisher
 description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP --extension bridge to Chrome or Edge): a preflight that names which browser and profile it attached to, post-source scan with hard-stop format validation, per-platform login checks with a wait-or-skip choice (login is never automated), a persistent ledger that survives restarts and prevents duplicate posts, timezone-mapped scheduling that can idle for days, strictly sequential human-paced posting with read-back verification of every post and a confirmation gate before anything goes public, plus an opt-in read-only harvest of what the published posts actually got. Use when asked to 'publish the campaign', 'post these files to my accounts', 'post on schedule', or in Russian 'опубликуй посты', 'публикуй по расписанию', 'запости в соцсети'. Do not use to write the posts — use awesome-content-campaign or awesome-content-repurpose; not to crawl or learn a site — use awesome-style-mimic."
 license: MIT
 metadata:
   author: Khasky
   tags: ["marketing", "publishing", "social-media", "browser-automation", "playwright", "scheduling", "safety"]
-  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-post-publisher"
+  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-content-publisher"
 ---
 
 # Post Publisher
@@ -29,13 +29,13 @@ Bundled files (load on demand):
 ## Invocation
 
 ```
-/awesome-post-publisher <posts-folder> [--dry-run] [--platforms <slug,slug>] [--now] [--harvest]
+/awesome-content-publisher <posts-folder> [--dry-run] [--platforms <slug,slug>] [--now] [--harvest]
 ```
 
 - `<posts-folder>` — folder of post files; a `campaign.md` manifest beside them is used when present. No argument → ask for the source (folder, or another location the user names).
 - `--dry-run` — run every preflight and print the full run plan; nothing is posted.
 - `--platforms` — restrict to a subset of the canonical slugs.
-- `--now` — ignore scheduled times; publish the backlog in order with safety spacing (still gated below).
+- `--now` — ignore scheduled times; publish the backlog in order, respecting the same-platform spacing in Phase 7 (still gated below).
 - `--harvest` — publish nothing; read the engagement of posts already in the ledger (Phase 10).
 
 ## Phase 0 — Interview
@@ -119,7 +119,7 @@ Strictly one post at a time, one platform at a time — never parallel tabs, nev
 7. **Read back:** navigate to the profile/feed/board and confirm the post is actually visible; capture its URL. The counter from step 3 must have moved by **exactly one** — that proves both existence and the absence of a duplicate. Never infer "newest" from the highest ID or from DOM order; both lie on paginated and virtualized surfaces. Lazy-loaded grids return nothing before they render, which is not evidence of absence — wait and re-query. Visible → `posted` with URL. Submitted into a review queue (group approval, hackernoon editorial) → `pending-approval`, which is success for this skill — say so, don't wait for moderation. Not findable → `unverified`, no automatic retry.
 8. Write the ledger.
 
-Spacing: minimum 3–10 minutes (randomized) between posts on different platforms, and at least 2 hours between two posts on the SAME platform unless the schedule itself says otherwise — an overdue backlog does not get to fire 10 posts into one feed in one minute. `--now` mode respects both.
+**Spacing is per platform, because rate limits are.** Two posts to the SAME platform stay at least 2 hours apart unless the schedule itself says otherwise — an overdue backlog does not get to fire ten posts into one feed. **Between different platforms there is no wait at all**: they are separate accounts on separate services, none of them can see the other's timing, and idling four minutes between a Mastodon post and a Bluesky post protects nobody while turning a nine-platform run into an hour of waiting. Move straight to the next platform once the read-back on the current one is done. `--now` mode follows the same rule.
 
 Failures: one retry after ≥ 10 minutes, and ONLY after a read-back proves the first attempt did not land (the duplicate check is the point of the ledger). Re-prove absence immediately before the retry, not just at the time of failure. Second failure → `failed`, move on, report. A captcha, challenge, or platform warning at any step → stop on that platform, tell the user, and let them resolve it in their own browser; never attempt to click through it.
 
@@ -156,13 +156,13 @@ Write `publish-state/performance.md`: one row per post (file, platform, posted-a
 
 **Sample-size honesty:** under roughly ten harvested posts on a platform, report the raw rows and say the sample is too thin to rank. A recommendation drawn from four posts is noise with a decimal point.
 
-What reads this file: `awesome-content-campaign` (which angles and times to favour next) and `awesome-voice-profile` (`--update`, as evidence of which register lands). Both consume it as one input among several — it says what got engagement, not what was true or well written.
+What reads this file: `awesome-content-campaign` (which angles and times to favour next) and `awesome-content-voice` (`--update`, as evidence of which register lands). Both consume it as one input among several — it says what got engagement, not what was true or well written.
 
 This phase never touches the engagement itself. No liking, no commenting, no following, no reading other people's accounts for comparison: that is a different activity from measuring one's own results, and this skill does not do it.
 
 ## Anti-patterns
 
-- Posting in parallel, or blasting an overdue backlog without spacing — the fastest way to make a legitimate account look like a bot.
+- Posting in parallel, or firing an overdue backlog into one feed without the same-platform gap — the fastest way to make a legitimate account look like a bot. The mirror-image mistake: idling between two different platforms, where nothing is being protected and the run just takes longer.
 - Retrying a failure without first proving via read-back that it failed — that is how duplicates happen.
 - Trusting session memory over the ledger, or keeping the ledger only in memory.
 - Typing credentials, storing tokens, automating login or 2FA, or clicking through captchas and warning interstitials.

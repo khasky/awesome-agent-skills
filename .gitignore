@@ -1,0 +1,3 @@
+# Playwright MCP writes snapshots, console logs and screenshots into the working
+# directory of whatever run drove the browser.
+.playwright-mcp/
