@@ -10,6 +10,8 @@ Not installed yet, or the user wants a second browser dedicated to these account
 
 ### The target gate — mandatory, before the first navigation
 
+**A tool that exists is not a bridge that is connected.** Three states, and only the first is ready: attached (tabs answer); *present but unauthenticated* — the browser tools are listed yet the session reports the MCP server needs authentication, or the extension's status page says `No clients are currently connected`, which is the token case below and not a reason to fall back to fetching; absent — no browser tool at all, or a lone `about:blank` from a spawned clean browser.
+
 Never begin on whichever bridge answers first. Run these four steps and get a yes:
 
 1. **Ask, when there is a choice.** Two or more browser-automation tool namespaces in the session means two possible destinations. Ask which one, by name. Picking the first is how a post lands from the wrong profile.
