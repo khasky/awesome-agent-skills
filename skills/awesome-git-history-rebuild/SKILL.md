@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-rebuild
-description: "Erases a repository's git history and rebuilds it as a curated commit series over the same tree: a split plan the user approves, the repo's own commit rules obeyed (commitlint, hooks, CONTRIBUTING, the existing log), paced timestamps and signed commits, and safety throughout — a verified mirror backup, a confirmation gate before every irreversible step, and a tree-hash proof no file was lost. It also repairs the files that describe the erased history (changelog links, badges, pinned shas) and states what the host records permanently. Use when asked to 'clean the history and commit it in parts', 'rewrite the history as readable commits', 'split the codebase into proper commits', 'redo the commit log so the changelog reads well', or in Russian 'очистить историю и закоммитить по частям', 'разбить проект на нормальные коммиты', 'переписать историю для changelog'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to fix commit authorship (awesome-git-author-rewrite)."
+description: "Erases a repository's git history and rebuilds it as a curated commit series over the same tree: a split plan the user approves — proposed here, or supplied as a plan file from awesome-commit-plan and validated against the tree before it is used — the repo's own commit rules obeyed (commitlint, hooks, CONTRIBUTING, the existing log), paced timestamps that can be anchored to the repository's earliest evidenced activity (recovered through awesome-git-history-salvage when the current refs do not reach it), signed commits, and safety throughout — a verified mirror backup, a confirmation gate before every irreversible step, and a tree-hash proof no file was lost. It also repairs the files that describe the erased history (changelog links, badges, pinned shas) and states what the host records permanently. Use when asked to 'clean the history and commit it in parts', 'rewrite the history as readable commits', 'split the codebase into proper commits', 'redo the commit log so the changelog reads well', or in Russian 'очистить историю и закоммитить по частям', 'разбить проект на нормальные коммиты', 'переписать историю для changelog'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to fix commit authorship (awesome-git-author-rewrite)."
 license: MIT
 metadata:
   author: Khasky
@@ -30,15 +30,16 @@ Five invariants hold throughout:
 ## Invocation
 
 ```
-/awesome-git-history-rebuild <repository-url-or-path> [branch] [--commits N] [--span <duration>] [--sessions N] [--mode story|bisectable]
-                             [--tags keep|delete] [--releases keep|delete] [--contributors clean|skip]
+/awesome-git-history-rebuild <repository-url-or-path> [branch] [--plan <file>] [--commits N] [--span <duration>] [--sessions N]
+                             [--mode story|bisectable] [--tags keep|delete] [--releases keep|delete] [--contributors clean|skip]
                              [--drift fix|disclose] [--merged-prs attribute|skip] [--sign auto|on|off] [--release <version>]
 ```
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with no remote is supported: everything runs except the push. A directory that is not a git repository at all is supported too — there is no history to erase and nothing to compare against, so Phases 1, 8, 9 and 10 are skipped and the skill becomes "initialize with a curated history".
 - `[branch]` — optional. Defaults to the **detected** default branch. Never hardcode `main`.
-- `--commits N` — optional target count. Otherwise proposed from repo size (see the granularity table in `references/commit-splitting-patterns.md`).
-- `--span <duration>` — optional wall-clock length the rebuilt ladder covers, ending at "now" (`4h`, `3d`, `2w`). Default: the span the replaced history actually occupied, measured from the backup. Longer than that is backdating and needs a stated reason (Phase 5).
+- `--plan <file>` — optional. A commit plan written before this run, usually by `awesome-commit-plan`: commits numbered `#1` to `#N`, each with its message and its exact file set. Given one, Phase 4 **validates and presents** it instead of proposing a split of its own, and Phase 3 narrows to what that validation needs. Without it, the split is built here exactly as before. Ask for a plan file at the start (see below) rather than assuming the user has none.
+- `--commits N` — optional target count, ignored under `--plan`. Otherwise proposed from repo size (see the granularity table in `references/commit-splitting-patterns.md`).
+- `--span <duration|anchored>` — optional wall-clock length the rebuilt ladder covers, ending at "now" (`4h`, `3d`, `2w`). Default: the span the replaced history actually occupied, measured from the backup. `anchored` instead starts the ladder at the repository's **earliest evidenced activity**, which can predate the history being replaced — the date is recovered in Phase 5, escalating to `awesome-git-history-salvage` when the current refs do not reach far enough. Any span longer than the measured one and not backed by such evidence is backdating and needs a stated reason (Phase 5).
 - `--sessions N` — optional number of sittings the span is split into. Default `clamp(round(span ÷ 24 h), 1, 6)`.
 - `--mode` — `story` (default: logical layered split; intermediate commits are not guaranteed to build) or `bisectable` (fewer, coarser commits, each verified to build).
 - `--tags`, `--releases`, `--contributors`, `--drift`, `--merged-prs` — optional. Pre-answer the five end-state decisions so the run needs no interactive gate for them. **Omitting them does not choose a default: the run must ask** (Phase 0, step 26). There is no "leave it alone" fallback the run may take on its own.
@@ -46,6 +47,13 @@ Five invariants hold throughout:
 - `--release <version>` — optional. After the push, cut this version with the repository's own release tooling. Implies `--tags delete --releases delete` unless those are given explicitly.
 
 If the user invokes the skill without a target, ask for one before doing anything else.
+
+**Ask where the split comes from, once, at the start.** Two paths reach the same Phase 6, and the user picks:
+
+- **A plan file they already have** (`--plan`) — written by `awesome-commit-plan`, or by hand. Its commits are already grouped and worded, and `awesome-commit-plan` additionally proves the ladder builds, which is the property `--mode bisectable` otherwise has to establish here. This run validates it against the tree, presents it as the Phase 4 table, and takes approval on that table like any other.
+- **No plan** — the split is proposed here, as it always was. This stays the default when the user has nothing prepared.
+
+Ask before the backup, alongside gate #1, and never assume the absence of `--plan` means the user has no file. A plan that exists and is not used costs the run its cheapest input.
 
 **Five things outlive the rebuild, and none of them is the run's to decide:** what happens to the existing **tags**, to the **releases** attached to them, to the **contributors sidebar**, to the **files whose content describes the erased history** (a generated changelog is the usual one), and to the **merged pull requests** whose commits leave the branch while their records do not. All five are asked at gate #1, before the backup, and executed in Phases 10–12 exactly as answered. A run that reaches Phase 13 having quietly left any of them alone has skipped a decision, not made one.
 
@@ -111,7 +119,7 @@ The push has to be *someone*, and every commit is stamped with that identity. Es
 
 7. **Write permission, stated by the host** (needs a host CLI):
    ```
-   gh repo view <owner>/<repo> --json viewerPermission,isFork,parent,forkCount,isArchived,visibility
+   gh repo view <owner>/<repo> --json viewerPermission,isFork,parent,forkCount,isArchived,visibility,createdAt
    glab api projects/<url-encoded-path>     # permissions, archived, forked_from_project, forks_count, mirror
    ```
    GitHub: `viewerPermission` must be `WRITE`, `MAINTAIN` or `ADMIN` — `READ` or `null` means the push cannot succeed. GitLab: the effective level under `permissions.project_access` or `permissions.group_access` must be ≥ `40` (Maintainer); `30` (Developer) cannot force-push a protected branch. URL-encode the GitLab path (`group/sub/repo` → `group%2Fsub%2Frepo`).
@@ -421,6 +429,8 @@ Whatever is chosen, Phase 7 verifies it against the objects (`%G?`) and Phase 9 
 
 Read the tree that will be committed. The unit of analysis is the tracked path, and the output is a module map the split is derived from.
 
+**Under `--plan`, this phase narrows but does not disappear.** The grouping is already decided, so steps 3 to 5 are not needed to *build* one — but step 1 is what proves the plan covers the tree that is actually here, and step 2 is what catches a plan written against a different revision. Run steps 1 and 2, skip the rest, and say in the report that the map was not rebuilt.
+
 1. **Inventory.** `git ls-files` is the authoritative list — the rebuild commits exactly these paths, nothing else:
    ```
    git ls-files | wc -l
@@ -441,7 +451,28 @@ Report the map in one screen: layers, module count, file count, line count, gene
 
 ---
 
-## Phase 4 — Propose the commit plan (approval loop)
+## Phase 4 — Propose or validate the commit plan (approval loop)
+
+### With `--plan` — validate what was supplied
+
+A plan file is an input, not an authority. It was written against a tree, and this run has to prove it is *this* tree. Parse it into rows of `#N`, subject, body, path set, then check all five before showing anything:
+
+1. **Coverage against the real tree.** Set-difference the plan's paths against `git ls-files`. Report both directions verbatim:
+   ```bash
+   comm -23 <(git ls-files | sort) <(plan_paths | sort)     # in the tree, not in the plan
+   comm -13 <(git ls-files | sort) <(plan_paths | sort)     # in the plan, not in the tree
+   ```
+   Either list non-empty is a **stop**. A path missing from the plan would never be committed; a path in the plan that does not exist means the plan predates the current tree, and every row after it is suspect. Offer the two honest options: regenerate the plan with `awesome-commit-plan` against this revision, or hand-patch the named rows and re-validate.
+2. **No path assigned twice** without a slice note. A duplicate assignment silently drops the earlier version.
+3. **Order satisfies dependency direction.** Read the imports (Phase 3, step 3) and check that no file lands before something it imports. A violation is not fatal — it is a warning that `--mode bisectable` will turn into a failed build at that commit — so name the row and let the user decide.
+4. **Messages pass the repository's own rules.** Feed every subject through the validator found in Phase 2 (`commitlint`, a `commit-msg` hook, a server-side pattern from step 11). A message the hook rejects is caught here, in a text file, not at commit 14 of the replay.
+5. **The types are honest against this tree.** A `fix:` row whose paths carry no fix, a `perf:` row with no such artifact — Phase 3's seam rule applies to a supplied plan exactly as it does to a generated one.
+
+Then present the parsed plan as the same table below, marked as *supplied*, and take the same approval. The user may still adjust or re-split; a re-split abandons the file and builds the plan here, which the report records.
+
+**What the plan file does not carry, and this run still decides:** timestamps and pacing (Phase 5 — a plan file has no dates by design), signing, sign-off, trailers, and every gate-#1 answer. A supplied plan shortens Phase 4, not the ceremony around it.
+
+### Without `--plan` — build one
 
 Build the default plan from the layered strategy in `references/commit-splitting-patterns.md`, then present it as a table. Nothing is executed from this phase; it repeats until the user approves.
 
@@ -469,7 +500,7 @@ Then ask for one of:
   - **C. Reconstructed** — follow the *real* old history from `old-history.txt`, condensed into its actual topics. The most honest shape available when the old log is rich.
   - **D. Coarse or fine** — the same strategy at a different granularity (5–9 commits versus 20–40).
   - **E. Changelog-first** — grouped so the generated release notes read as a feature list, hidden types swept into setup commits.
-  - **F. Manual** — the user supplies or edits the grouping directly; this skill only validates coverage and message format.
+  - **F. Manual** — the user supplies or edits the grouping directly; this skill only validates coverage and message format. A plan file passed with `--plan` is this strategy, already written down.
 
 Never proceed on silence or a vague "looks fine" — the approval must name the table.
 
@@ -492,7 +523,31 @@ Real work is bursty. A typo fix lands two seconds after the commit before it, th
 
 Three questions:
 
-1. **Span** — how long the ladder covers, ending at "now". **Default: the wall-clock span of the history being replaced** (`last author date − first author date`, read from the backup made in Phase 1). That span is the one thing about the timing that is not invented — it is how long the work actually took. A repository with no history to measure has no such anchor, so ask for the span outright rather than picking one.
+1. **Span** — how long the ladder covers, ending at "now". Offer all three, in this order, and say which evidence backs each:
+
+   - **A. Measured (default)** — the wall-clock span of the history being replaced (`last author date − first author date`, read from the backup made in Phase 1). The one thing about the timing that is not invented: it is how long the work in *this* history took.
+   - **B. Anchored to the repository's earliest evidenced activity** — the ladder starts at the first date the repository can be shown to have existed, which is often earlier than anything the backup reaches. Use it when the current history is not the repository's first: a history erased once before, a squash that collapsed months into one commit, an import. Recovering that date is step 1a below.
+   - **C. Stated by the user** — any duration. Longer than A or B without evidence is backdating; take it if the user asks, and record in the report that it was chosen rather than measured.
+
+   A repository with no history to measure has neither A nor B from git alone — B may still work from the host, and if both come back empty, ask for the span outright rather than picking one.
+
+   **Step 1a — recover the earliest date, cheapest source first.** Stop at the first one that answers; each later source costs more and reaches further back:
+
+   | Source | Command | What it proves |
+   | --- | --- | --- |
+   | The backup | `git -C <backup> log --reverse --format='%ad' --date=iso <branch> \| head -1` | first commit of the history being replaced |
+   | Every ref in the backup, not just the branch | `git -C <backup> log --reverse --all --format='%ad' --date=iso \| head -1` | an older commit on a tag or another branch |
+   | `refs/pull/*` | already fetched in Phase 0, step 16 — reuse `git rev-list $refs --not <branch> \| tail -1 \| xargs git log -1 --format='%ad' --date=iso` | commits kept alive by pull-request refs, frequently older than the branch |
+   | Repository creation | `gh repo view <owner>/<repo> --json createdAt` (step 7 already fetches it) | when the repository was made — a floor for anything not imported |
+   | The activity log | `gh api "repos/<owner>/<repo>/activity?per_page=100" --jq '.[-1].timestamp'` | the oldest push the host still records |
+   | Erased history | **`awesome-git-history-salvage`** | commits no ref reaches: the `before` SHAs in the activity log, fetched by SHA over the git protocol |
+
+   **When the cheap sources disagree with each other, that disagreement is the finding.** A repository created in April whose oldest reachable commit is dated August has had something erased between the two, and that gap is exactly what salvage reads. Report both dates and offer the escalation rather than silently taking the later one.
+
+   **Escalating to salvage.** Run `awesome-git-history-salvage` against the same repository. It is read-only and needs no gate of its own, it reconstructs every commit the repository has ever held from the activity log and the PR refs, and it returns their dates. Take its earliest and use it as the anchor. Two limits belong in the report: the activity log is what makes it possible, so a repository whose erased history predates the log's coverage cannot be reached this way, and a salvage that returns nothing is a fact to state, not a reason to invent a date.
+
+   **The anchor is evidence, not permission.** Starting the ladder at a date the repository can be shown to have existed is honest. Starting it earlier, or anchoring to a date salvage did not actually return, is backdating with extra steps — and the first commit of the rebuilt series carries that date forever, in a field anyone can read.
+
 2. **Sessions** — how many sittings the span is split into. Default `clamp(round(span ÷ 24 h), 1, 6)`, roughly one per day. Gaps inside a sitting are minutes; gaps between sittings are hours.
 3. **How the gap is applied** — *synthetic* (default: dates computed on a ladder, nothing waits) or *real* (the run sleeps between commits; only viable for a handful of commits at a short pace).
 
@@ -785,11 +840,12 @@ Then cut the new version with **the repository's own tooling**, not by hand — 
 Repository:   <owner>/<repo>  (branch <branch>)
 Rebuild:      <OLD_SHA> → <NEW_SHA>   (<N_old> commits → <N_new>)
 Strategy:     layered | feature-vertical | reconstructed | changelog-first | manual   (mode: story | bisectable)
+Plan source:  supplied <file> (validated: coverage exact, <N> rows, order clean) | built in Phase 4
 Convention:   <detected convention>, enforced by <hook/CI>  — every subject validated
 Content:      local  git diff <OLD_SHA>..<NEW_SHA> empty — tree identical, 0 files lost
 Published:    tree <OLD_TREE> == <NEW_TREE> in a fresh clone of the remote; <N> paths, none added or dropped
 Coverage:     <N> tracked paths, each in exactly one commit
-Pacing:       span <duration> (measured from the old history | chosen by the user), <N> sessions,
+Pacing:       span <duration> (measured from the old history | anchored to <date> via <source> | chosen by the user), <N> sessions,
               synthetic|real timestamps, first <ts> → last <ts>, offset <±hhmm> (matches the old history)
               gaps  min <a>s / max <b>s / mean <c>s   vs replaced  min <x>s / max <y>s / mean <z>s
 Dates:        author and committer both on the ladder — %ad == %cd on <N>/<N> commits, offset <±hhmm>
@@ -860,11 +916,12 @@ Deleted **releases** do not come back — a release object and its uploaded asse
 - Every stop gate is a real stop: owner mismatch, multiple branches, multiple authors, no write access, protected branch, unassigned path, non-empty tree diff, a published tree that does not match the backup, published-version tag, or a missing approval — each halts the run.
 - The published result is proved, not assumed: a fresh clone of the remote is compared to the backup by root tree hash, and a mismatch rolls back before anything else happens.
 - Whether a rebuild is worth doing is answered with the Phase 0 concentration measurement and decided by the user; the run reports the number and the stop gates, it does not talk the user out of the task it was invoked for.
-- The plan is approved as a table, by the user, before a single commit is made — and re-split on request rather than defended.
+- The plan is approved as a table, by the user, before a single commit is made — and re-split on request rather than defended. A plan supplied with `--plan` is validated against this tree first, and a coverage mismatch stops the run rather than being reconciled quietly.
 - Tags, releases, the contributors sidebar, the tree's references to the erased history and the merged pull requests are decided by the user at gate #1 and executed verbatim in Phases 10–12. The run never leaves one alone by its own judgment, never treats silence as "keep", and never reads a clean `contributors` API response as an answer about a rendered page it cannot see. A cost the run thinks is too high is a fact to state at the gate, not a decision to make after it.
 - File content is changed in Phase 10 only, as one commit on top of a tip whose tree was already proved identical, with the diff approved. Never inside the rebuild, never by amending a rebuilt commit, never with a second force-push.
 - No invented history: no fabricated bug-fix arcs, no commit describing work the tree does not contain, no synthesized merge for a PR whose diff is not in the final tree.
 - Both date fields carry the approved ladder, and Phase 7 checks them against it rather than assuming the loop applied them. Signing is offered and verified against the objects and the host, never assumed.
+- A span anchored to an earlier date is backed by a source that returned that date — the backup, a pull-request ref, the host's creation date or activity log, or a salvage run. An anchor no source produced is backdating, and the run says so instead of writing it into the first commit.
 - The host's record of the rewrite — the activity log, the rename rows, the tag deletions, the surviving PR refs — is measured before the push and reported after it. The run never tries to erase, overwrite or outrun it, and never implies to the user that it did.
 - The repo's convention, hooks and release tooling win over this skill's defaults, every time.
 - `--force-with-lease`, never bare `--force`. The backup and any ref the user did not name are never deleted here.
@@ -874,3 +931,5 @@ Deleted **releases** do not come back — a release object and its uploaded asse
 
 - `references/commit-splitting-patterns.md` — how large OSS projects split work into commits (git, the Linux kernel, OpenStack, Angular/Conventional Commits), the layer order, granularity by repo size, honest commit types, the six re-split strategies, per-ecosystem file mapping, and the anti-patterns.
 - `references/repo-convention-discovery.md` — where a repo states and enforces its commit rules, precedence between sources, inferring the format from the existing log, message templates per convention, DCO and signing, and how to handle hooks during the replay.
+- `awesome-git-history-salvage` (sibling skill) — read-only reconstruction of every commit the repository has ever held, erased history included. Phase 5 escalates to it for the `anchored` span when the current refs do not reach the repository's first activity.
+- `awesome-commit-plan` (sibling skill) — writes the plan file `--plan` takes: a navigation map from import direction, a split proven bisectable by replaying the ladder against the repository's own gates, and messages written to a strict anti-slop ruleset. Read-only, so it can run on a repository long before anyone decides to rewrite its history.
