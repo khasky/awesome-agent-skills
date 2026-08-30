@@ -100,7 +100,7 @@ Rules: the ledger is consulted before EVERY post and written after EVERY state c
 
 Present the plan: a table of upcoming posts (file, platform, scheduled pub-TZ time, computed local time, status), the overdue handling about to apply, per-platform counts, and the platforms being skipped. `--dry-run` stops here, having printed exactly what a real run would do.
 
-**Confirmation gate:** publishing is outward-facing and effectively irreversible — get an explicit yes on the plan before the first post of the run. One gate per run, not per post; the plan is what was approved, and any change to it (user edits a post, adds files) re-presents the plan.
+**Confirmation gate:** publishing is outward-facing and effectively irreversible — get an explicit yes on the plan before the first post of the run. **Ask it as a structured question** (publish this plan · change something first · cancel), like every other gate in this skill: the bridge target, the wait-or-skip on a logged-out platform, the bio-link decision. A gate phrased as a closing sentence — "say go and I'll start posting" — is narration the user can answer past without registering what they approved. One gate per run, not per post; the plan is what was approved, and any change to it (user edits a post, adds files) re-presents the plan.
 
 ## Phase 7 — Publishing loop (sequential, human-paced)
 

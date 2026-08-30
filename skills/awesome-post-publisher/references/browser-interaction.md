@@ -17,11 +17,31 @@ Never begin on whichever bridge answers first. Run these four steps and get a ye
 1. **Ask, when there is a choice.** Two or more browser-automation tool namespaces in the session means two possible destinations. Ask which one, by name. Picking the first is how a post lands from the wrong profile.
 2. **Probe the engine.** `navigator.userAgent` separates them: Edge carries `Edg/<version>` after the Chrome token, Chrome does not. Read it once in the working tab.
 3. **Probe the identity.** Whose session is this? The account handle a platform shows in its own header is the answer — the same read the per-platform login check makes anyway. One platform is enough to identify the profile; on a run touching several, collect them all.
-4. **Confirm with the user before anything else happens.** State the browser, the profile it is signed in as, and what is about to be done in it, then wait. This gate is not satisfied by mentioning the browser in a later report — by then the work has run in it.
+4. **Confirm with the user before anything else happens — as a structured question, not a sentence.** State the browser, the profile it is signed in as, and what is about to be done in it, then ask through the agent's structured-question UI with the choices spelled out: **proceed here** · **use the other bridge** (when one exists) · **stop**. A gate written as "say go and I'll start" is prose the user has to answer in prose; it reads as narration, gets skipped in a fast reply, and leaves no record of what was approved. Where the UI is unavailable, ask a numbered question and wait for the number. This gate is not satisfied by mentioning the browser in a later report — by then the work has run in it.
 
 ### Pointing the bridge at the right browser
 
-The destination is decided by one value: `PLAYWRIGHT_MCP_EXTENSION_TOKEN` in the `env` of the MCP server entry, read when that server starts. It is **per browser profile** and it exists to bypass the extension's connection dialog — with no token the extension asks for approval on every connect, which is the user's click to make, never one to automate.
+**Two values decide the destination, and both live in the MCP server entry.** How the bridge actually connects: the server opens the extension's relay page — `chrome-extension://<id>/connect.html?mcpRelayUrl=ws://[::1]:<port>/extension/<uuid>&token=<token>` — inside a browser, and the extension there dials back to that WebSocket. It proceeds without prompting only when the token in that URL matches the one that browser's extension holds.
+
+So:
+
+- `PLAYWRIGHT_MCP_EXTENSION_TOKEN` in `env` says *which extension will accept the connection*. It is per browser profile, taken from that profile's status page.
+- **`--browser` says which browser the relay page is opened in**, and without it the server uses the machine's default browser. Two servers with two correct tokens still both open their relay in the default browser, so the one whose token belongs to the *other* browser waits forever — starting cleanly, listening on its port, answering `initialize`, and never answering a tool call. Measured on this exact setup: adding `--browser msedge` turned a 120-second timeout into an immediate connection, verified as `Edg/152` through `navigator.userAgentData`.
+
+Both entries therefore name their browser explicitly:
+
+```jsonc
+"playwright":      { "args": ["...", "@playwright/mcp@latest", "--extension", "--browser", "chrome"],
+                     "env": { "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "<that Chrome profile's token>" } },
+"playwright-edge": { "args": ["...", "@playwright/mcp@latest", "--extension", "--browser", "msedge"],
+                     "env": { "PLAYWRIGHT_MCP_EXTENSION_TOKEN": "<that Edge profile's token>" } }
+```
+
+A skill still has no lever between calling a browser tool and being connected — the first call *is* the connection — so the gate can only **detect** which browser answered. Changing it is configuration plus a restart.
+
+**A hang is a symptom with a specific meaning.** A server that answers `initialize` but never answers `browser_tabs` is not broken and not slow: its relay page went to a browser whose extension holds a different token. Check `--browser` before anything else, and read the intended browser's status page — `No clients are currently connected` there confirms it.
+
+**`browser_tabs list` shows only the tabs the extension bridges, not everything open in that browser.** A lone `connect.html` is the normal steady state, and the user's own tabs not appearing says nothing about which browser this is. Identify it by user agent, never by what the tab list seems to contain. It is **per browser profile** and it exists to bypass the extension's connection dialog — with no token the extension asks for approval on every connect, which is the user's click to make, never one to automate.
 
 Each profile shows its own token on the extension's status page, at `extension://mmlmfjhmonkocbjadbfplnigmagldckm/status.html` **opened in that browser**. The same page is the diagnostic: `No clients are currently connected` there means the running server is paired to some other browser, whatever the tab list of the attached one suggests. The page also carries a regenerate control, so a token can be rolled at any time — after which the config holding the old one is stale until updated.
 

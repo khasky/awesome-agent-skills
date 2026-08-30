@@ -49,7 +49,7 @@ Then write `repurpose/<slug>/source-notes.md`, which every later phase is checke
 - **Named things** — people, products, versions, places the source names, spelled the way it spells them.
 - **What the source does NOT say** — the tempting adjacent claims a shorter version would drift into. This section exists because compression invents.
 
-Present the point and the notes in one screen. The user confirms or corrects before writing starts.
+Present the point and the notes in one screen, then ask through the structured-question UI whether they are right (correct · the point is wrong, here is the right one · stop). Every gate in this skill works that way — this one, the interview, and the publish-or-file decision. A gate written as a closing sentence the user must answer in prose reads as narration and gets passed over.
 
 ## Phase 2 — Interview
 
