@@ -118,7 +118,7 @@ Search the product's protocol vocabulary (from Phase 1): `epoch`, `checkpoint`, 
 
 ## Recording findings
 
-For every confirmed leak: `path:line` · short quote · one-clause reason · severity (see below). Keep a parallel **"checked, clean"** list of the areas you swept with nothing to report — it's what makes the audit credible.
+For every confirmed leak: `path:line` · short quote · one-clause reason · severity (see below). Record nothing for an area that swept clean — a roll-call of what turned out fine is filler the reader scrolls past. The one exception is an area you could **not** sweep: name it and say why.
 
 **Severity guide:**
 - **Critical** — live secret in-tree or one bundle-step from publication; a working backdoor (static test credential with server exemption).

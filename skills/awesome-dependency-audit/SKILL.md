@@ -97,8 +97,9 @@ Findings (most severe first):
 ...
 
 Not assessed: <track + why the signal was unavailable (no lockfile, active scan not approved, …)>
-Positive: <1-3 things done right — frozen CI installs, pinned registry, clean license posture>
 ```
+
+- **No "positive" line, no clean-track roll-call.** A track that came back clean is already implied by its absence from Findings; spelling it out costs the reader tokens and changes nothing they do. Only `Not assessed` earns a line, because a gap in coverage does change what they do next.
 
 - **Severity** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability: a reachable RCE advisory in a production path is Critical; an unreachable dev-only advisory is Low/Informational with the reachability note.
 - **Verdict cues** — a resolving install in CI plus an unpinned internal scope is FIX; a planted-package signal cluster (Track B) or a reachable Critical advisory is BLOCK; clean tracks with a stale-maintenance note is SHIP.

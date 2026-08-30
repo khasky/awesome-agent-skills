@@ -57,7 +57,7 @@ Name the violation *and* the concrete good — a report that only lists sins rea
 - **KISS** — incidental complexity: a hand-rolled thing the stdlib/platform does, elaborate caching/timing heuristics with magic constants, a config for a value that never changes. Distinguish this from *essential* complexity (see What not to flag).
 - **SOLID / SRP** — the god-modules from Track A. Prefer splits where the pure, testable seams are already carved out (low-risk).
 - **DRY on the rule of three** — the *same* block in three or more places earns a helper; two occurrences can wait. Before proposing a collapse, confirm the copies are truly identical — near-duplicates that differ in one flag are not the same code, and a wrong shared helper couples callers that only looked alike.
-- **Done-well, cited** — call out the genuinely strong choices (a clean contract, a validated trust boundary, a correct concurrency guard) with `file:line`. Balance is what makes the report trusted.
+- **No praise section.** What is already right needs no write-up: the reader acts on findings, and a "done well" list is tokens they scroll past. The one place a strong choice earns a sentence is inside a finding it constrains ("the trust boundary at `auth.ts:88` is validated, so the gap below is the only unguarded path") — never as a standalone roll-call.
 
 ## Track D — Extensibility & buildability
 
@@ -103,7 +103,6 @@ Recommendations (most valuable first, grouped by effort/risk):
   Leave as-is (essential complexity — do NOT touch, and why)
     - <file> — <why the size/complexity is earned>
 
-What's strong: <2–4 genuinely good design choices, cited>
 Not assessed: <what lacked evidence — unrun suite, unread subsystem — and why>
 ```
 

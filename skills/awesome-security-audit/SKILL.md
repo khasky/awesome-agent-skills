@@ -146,10 +146,11 @@ Then these sections after the findings:
 
 1. **Needs verification** — medium-confidence items, each with the specific question that would confirm or kill it.
 2. **Hardening notes** — defense-in-depth suggestions that are not vulnerabilities.
-3. **Positive patterns** — 1–3 things the code does right (parameterized queries throughout, centralized authz); this calibrates trust in the findings.
-4. **Scope and limitations** — what was reviewed and how: white-box static, time-boxed, not exhaustive. Name what this pass cannot see (runtime/dynamic behavior, deployed config, live traffic) and recommend the complementary check (DAST, dynamic pentest). This skill covers source, config, dependency, and cloud-posture review of code; network, mobile-dynamic, wireless, Active Directory, social-engineering, and physical testing need a separate dynamic engagement.
+3. **Scope and limitations** — what was reviewed and how: white-box static, time-boxed, not exhaustive. Name what this pass cannot see (runtime/dynamic behavior, deployed config, live traffic) and recommend the complementary check (DAST, dynamic pentest). This skill covers source, config, dependency, and cloud-posture review of code; network, mobile-dynamic, wireless, Active Directory, social-engineering, and physical testing need a separate dynamic engagement.
 
-Summary: "Reviewed: [scope]. Findings: X Critical, Y High, Z Medium. No obvious issues in [other areas]." Suggest next steps (e.g. dependency scan, pentest) if appropriate.
+No "positive patterns" section and no list of the areas that came back clean: a control that holds produces no finding, and writing it up anyway is tokens the reader scrolls past. What could not be reviewed stays — `NOT ASSESSED` is a gap, not praise.
+
+Summary: "Reviewed: [scope]. Findings: X Critical, Y High, Z Medium." Suggest next steps (e.g. dependency scan, pentest) if appropriate.
 
 **Report hygiene.** Redact live secrets, tokens, and PII in the report itself — mask evidence, never paste working credentials into a finding. Collect the minimum data needed to prove the issue.
 

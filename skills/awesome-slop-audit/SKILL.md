@@ -24,13 +24,18 @@ nobody read it". Three classes, in descending order of harm:
    author would type ASCII, em-dash saturation, "X, not Y" contrast in every third
    config comment, bold-lead + emoji bullet lists, rule-of-three phrasing.
 
-The core discipline: **verify before flagging, and prove absence too**. Dense
-commentary is not slop — a comment that checks out against the code (recount the
-constant, re-derive the number, grep the callers) is an *anti*-signal: machine
-writing narrates, incident-anchored writing survives verification. An audit that
-reports "cat 5 stale comments: zero confirmed — spot-checked 10 claims, all
-accurate" is worth as much as one that finds ten lies. Never flag what you have
-not checked; never "fix" a comment to say something you have not confirmed.
+The core discipline: **verify before flagging, and prove absence to yourself too**.
+Dense commentary is not slop — a comment that checks out against the code (recount
+the constant, re-derive the number, grep the callers) is an *anti*-signal: machine
+writing narrates, incident-anchored writing survives verification. Proving a
+category empty is what earns the right to say the repo is clean; it is not
+something to write up. Never flag what you have not checked; never "fix" a comment
+to say something you have not confirmed.
+
+**The proof stays internal.** A category that came back empty is not a report line,
+and the report carries no per-category clean table — the reader acts on findings,
+and everything else is scrolling. An audit that found nothing anywhere says so in
+one sentence and stops.
 
 Not for: judging code quality in general (awesome-code-review,
 awesome-architecture-audit), rewriting prose voice (awesome-humanize-en), or

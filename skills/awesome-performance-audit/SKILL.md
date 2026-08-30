@@ -125,8 +125,9 @@ Findings (highest impact first):
 - [track A/B/C/D/E/F] <file:line or profile/trace ref> - <issue> - <evidence: p99, heap delta, GC %, retry amplification, CWV value> - <fix direction> - severity
 
 Not assessed: <what lacked a profile/trace/repro and why>
-Positive: <1-3 things done right>
 ```
+
+No "positive" line and no roll-call of the tracks that measured fine: the verdict already carries them, and spelling them out is tokens the reader scrolls past. `Not assessed` stays, because a missing measurement changes what they do next.
 
 Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` is unused here: a note with no measured impact is not a finding). Each finding also carries a confidence bucket — **High** (measured: profile, trace, field data) or **Medium** (inferred from code without a measurement); Medium findings list under **Needs verification** with the measurement that would confirm them, and never drive the verdict on their own.
 

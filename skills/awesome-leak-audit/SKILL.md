@@ -44,7 +44,7 @@ Before searching, establish what "private" means for *this* product. Do not skip
 
 ### Phase 2 — Sweep for leaks
 
-Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Run `scripts/leak-sweep.sh <target-dir>` (or `scripts/leak-sweep.ps1 <target-dir>` on native Windows) as a starting sweep, then read the hits in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. Also keep a "checked, clean" list so the report shows coverage.
+Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Run `scripts/leak-sweep.sh <target-dir>` (or `scripts/leak-sweep.ps1 <target-dir>` on native Windows) as a starting sweep, then read the hits in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. An area that came back clean is not recorded and never reaches the report — it costs the reader tokens and gives them nothing to act on. Only an area you could **not** check gets written down, with the reason.
 
 For each confirmed leak, sketch the attacker's next step as a one-line attack path — leaked detail → what it enables → why it matters — and rate severity by how *easy* the abuse is, not only how bad the worst case would be.
 

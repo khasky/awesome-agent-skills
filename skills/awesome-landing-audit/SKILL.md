@@ -74,7 +74,6 @@ Findings (most impactful first):
 
 Not assessed: <mechanic + why the signal was unavailable>
 Intentional (not flagged): <business choices observed, e.g. contact-sales flow>
-Positive: <1-3 mechanics done right>
 ```
 
 Severity uses the top three tiers of the shared finding scale — `Critical / High / Medium` (lower tiers carry no meaning for conversion mechanics). Each finding also carries a confidence bucket — **High** (observed in the rendered DOM/markup) or **Medium** (inferred, signal partly unavailable); Medium findings list under **Needs verification** and never drive the verdict on their own.
@@ -98,5 +97,4 @@ Findings (most impactful first):
 
 Not assessed: mechanic 4 (message match) — no ad copy or `utm_*` params supplied
 Intentional (not flagged): contact-sales path on the enterprise tier
-Positive: email-only required field with hidden `utm_source`; consent strip reserves its height, no shift on inject
 ```

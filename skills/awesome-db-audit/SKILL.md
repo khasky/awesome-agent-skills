@@ -84,8 +84,9 @@ Findings (highest impact first):
 - [track A/B/C/D] <file:line or table.column> — <defect> — <evidence: schema line, query site, EXPLAIN> — <fix direction> — severity
 
 Not assessed: <no live connection / unread subsystem / unrun EXPLAIN — and why>
-Positive: <1–3 things the schema gets right, cited>
 ```
+
+- **No "positive" line.** What the schema already gets right is carried by the verdict; naming it costs the reader tokens and changes nothing they do. `Not assessed` stays, because a coverage gap does.
 
 - **SHIP** — schema and migrations are sound; only notes and unhit anti-patterns remain.
 - **FIX** — real integrity, type, or query defects with clear owners; address before the next schema change builds on them.

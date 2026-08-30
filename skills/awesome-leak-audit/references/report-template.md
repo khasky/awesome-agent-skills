@@ -48,9 +48,9 @@ Grouped by theme, each with the files touched and a one-line rationale.
    closed shadow root that would break e2e> with the reason each was deferred.
 4. …
 
-## Checked & clean (coverage)
-Areas swept with nothing to report — <adapters, UI, config, CI, etc.> — so the report shows
-what was covered, not just what was found.
+## Not assessed
+Only what could NOT be checked, and why — <no source access, scanner unavailable, area out of
+scope>. Omit the heading entirely when everything in scope was reachable.
 ```
 
 ---
@@ -60,5 +60,5 @@ what was covered, not just what was found.
 - **Lead with severity, not file order.** The reader wants the Critical/High items first.
 - **Every finding gets a `path:line`.** A finding without a location isn't actionable.
 - **Separate fixed from recommended.** "Applied changes" is done; "Recommendations" is the user's queue. Never silently fold a live action (rotation, history) into the applied section.
-- **Include the "checked & clean" list.** Without it, the reader can't tell thorough-and-clean from didn't-look.
+- **Never list what came back clean.** No coverage table, no per-area roll-call, no "verified / no issues" inventory: the reader acts on findings and on gaps, and everything else is scrolling. Coverage belongs in the one-line Scope at the top; a genuinely empty audit is one sentence.
 - **Be honest about git history and untracked secrets.** Say plainly what can't be undone and what needs rotation rather than implying the tree edit closed it.
