@@ -2,6 +2,19 @@
 
 Hard-won mechanics for driving real social UIs through Playwright MCP `--extension`. Read this **before** the first composer of a run, not after the third timeout. Every rule here cost a failed attempt on a live account.
 
+## Which browser are you attached to
+
+Extension mode attaches to **Chrome or Edge only**. Both look identical from a tab list, and a machine can run one bridge per browser — a separate Playwright MCP server entry, its own extension pairing, its own token — so the tools you happen to have are not proof of which profile is on the other end.
+
+Settle it before the first action, in this order:
+
+1. **Ask, when there is a choice.** Two or more browser-automation tool namespaces exposed in the session means two possible destinations. Ask which one; picking the first is how a post lands from the wrong profile.
+2. **Probe the engine.** `navigator.userAgent` distinguishes them: Edge carries `Edg/<version>` after the Chrome token, Chrome does not. Read it once, in the working tab.
+3. **Probe the identity.** The open tabs and the platform pages themselves say whose session this is — the account handle in a header is the real answer to "which profile", and it is what the per-platform login check reads anyway.
+4. **Report it.** Name the browser and the handle in the run plan. The user is the only one who knows whether that is the account they meant.
+
+The extension pairing token belongs to the agent's MCP configuration. Never read it out of a config file, never print it, never ask for it in the conversation — it grants control of a browser holding live sessions, and a transcript is not a place to keep one.
+
 ## The bridge's two constraints
 
 1. **Tool calls time out at ~5 seconds.** Anything slower — a multi-step click sequence, a screenshot of a heavy page, a wait — must run inside ONE `browser_run_code_unsafe` call, which has its own longer budget. Do not chain five 4-second tool calls when one script does the job.

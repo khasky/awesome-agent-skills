@@ -1,6 +1,6 @@
 ---
 name: awesome-post-publisher
-description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP --extension bridge to Chrome): bridge preflight, post-source scan with hard-stop format validation, per-platform login checks with a wait-or-skip choice (login itself is never automated), a persistent ledger that survives restarts and prevents duplicate posts, timezone-mapped scheduling that can idle for days between posts, strictly sequential human-paced posting with read-back verification of every post and a confirmation gate before anything goes public, plus an opt-in read-only harvest of what the published posts actually got. Use when asked to 'publish the campaign', 'post these files to my accounts', 'post on schedule', or in Russian 'опубликуй посты', 'публикуй по расписанию', 'запости в соцсети'. Do not use to write the posts — use awesome-content-campaign or awesome-content-repurpose; not to crawl or learn a site — use awesome-style-mimic."
+description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP --extension bridge to Chrome or Edge): a preflight that names which browser and profile it attached to, post-source scan with hard-stop format validation, per-platform login checks with a wait-or-skip choice (login is never automated), a persistent ledger that survives restarts and prevents duplicate posts, timezone-mapped scheduling that can idle for days, strictly sequential human-paced posting with read-back verification of every post and a confirmation gate before anything goes public, plus an opt-in read-only harvest of what the published posts actually got. Use when asked to 'publish the campaign', 'post these files to my accounts', 'post on schedule', or in Russian 'опубликуй посты', 'публикуй по расписанию', 'запости в соцсети'. Do not use to write the posts — use awesome-content-campaign or awesome-content-repurpose; not to crawl or learn a site — use awesome-style-mimic."
 license: MIT
 metadata:
   author: Khasky
@@ -48,10 +48,12 @@ Ask only what the flags didn't answer:
 
 ## Phase 1 — Preflight A: the bridge
 
-The Playwright MCP `--extension` bridge to the user's own Chrome is required — that is where the logged-in sessions live. List tabs first and read what you get:
+The Playwright MCP `--extension` bridge to the user's own browser is required — that is where the logged-in sessions live. Extension mode attaches to Chrome or Edge; nothing else. List tabs first and read what you get:
 
 - A lone `about:blank` → the bridge is **not** attached; you are on a spawned clean browser with no sessions, which would only hit login walls. Stop and have the user connect it.
 - A lone `connect.html` (the bridge's own relay page) → the bridge **is** attached and the user simply has no other tab open. This is normal. Never touch that tab; open one working tab beside it.
+
+**Establish WHICH browser you are attached to before acting, and say so.** A user may run one browser for daily work and another holding the accounts this campaign posts to, each paired to its own Playwright MCP server with its own extension token — and the two are indistinguishable from a tab list alone. Identify the browser per `references/browser-interaction.md` (a user-agent read tells Edge from Chrome; the open tabs tell whose session it is) and name it in the run plan, so the user can stop a run about to post from the wrong profile. **More than one browser bridge available → ask which one; never pick by tool order.** The pairing token itself is the agent's MCP configuration, not this skill's business: never read it, print it, or ask the user to paste it into the conversation.
 
 Open ONE working tab and reuse it for everything. Warn the user the browser is busy while a publishing pass runs.
 
