@@ -162,6 +162,8 @@ This file is a map. The detailed description of patterns and checks lives in the
 | `references/test-fixtures.md` | Reference "sample / expectation" pairs for every regex + full before/after edits | When updating the skill, for regression protection |
 | `scripts/check_markers.py` | Automated run of every regex across three sample levels; runs in CI and before release. The `--scan` mode checks arbitrary text for markers | When updating markers: `python3 scripts/check_markers.py`; to scan text: `python3 scripts/check_markers.py --scan file.md` |
 
+The interpreter's name is platform-dependent: `python3` on Linux and macOS, `py -3` or `python` on Windows, where a bare `python3` often resolves to nothing or to a store stub. Check which one answers (`python3 --version`, then `py -3 --version`) and use that, rather than assuming either. The script itself is standard-library-only and runs the same under all of them.
+
 ## The main rule
 
 **No single soft tell is sufficient grounds for the verdict "this text was written by AI".** Only these are sufficient:

@@ -46,6 +46,8 @@ Four invariants hold throughout:
 - **The repository's own toolchain** — needed for `--verify full` and `build`. Detect it from the manifests; never assume it. Missing toolchain is not a silent downgrade: report it and ask whether to continue at `--verify off`.
 - A host CLI (`gh`, `glab`) — not needed. This skill reads code, not a remote.
 
+**Shell.** Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. The `bash` blocks below are POSIX shell — they lean on `awk`, `sort`, `uniq`, `head`, and `2>/dev/null`, none of which PowerShell parses. On Windows run them in Git Bash, which ships with Git for Windows and carries all of them. The plain git commands run the same everywhere.
+
 ---
 
 ## Phase 0 — Target, scope and workspace

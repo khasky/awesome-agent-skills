@@ -62,6 +62,8 @@ Ask once, in Phase 0, before the clone; the level changes nothing about what get
 
 Confirm each is on `PATH` (exit 0) before relying on it.
 
+**Shell.** Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. The reporting pipelines below are POSIX shell — `awk`, `sed`, `sort`, `wc`, `fmt`, `while read` — and PowerShell parses none of it. On Windows run them in Git Bash, which ships with Git for Windows and carries every one of those tools. The `git` and `gh`/`glab` calls themselves run the same everywhere.
+
 ---
 
 ## Phase 0 — Identify the target and the host

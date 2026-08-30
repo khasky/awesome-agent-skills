@@ -57,7 +57,7 @@ Confirm each is on `PATH` (exit 0) before relying on it. Never assume `filter-re
 
 For a host with no CLI and no token, treat every gate below that needs one as **unavailable**, not as passed: list which checks you could not run, and get the user's explicit acceptance before Phase 1. An unrunnable gate is a blind spot to disclose, never a gate to skip silently.
 
-**Windows note.** The `filter-branch` fallback is a multi-line POSIX shell script; PowerShell quoting will mangle it. Run it in Git Bash (`bash -lc '…'` or a Git Bash window) — `filter-repo` invocations are safe in either shell.
+**Shell.** Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. On Windows the `filter-branch` fallback — a multi-line POSIX shell script — and the `xargs` cleanup in Phase 6 both need Git Bash, which ships with Git for Windows; PowerShell quoting mangles the first and has no `xargs` for the second. `filter-repo` invocations and the plain git commands are safe in either shell.
 
 ---
 

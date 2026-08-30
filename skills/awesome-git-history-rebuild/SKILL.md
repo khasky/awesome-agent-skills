@@ -68,6 +68,8 @@ Ask before the backup, alongside gate #1, and never assume the absence of `--pla
 
 Confirm each is on `PATH` (exit 0) before relying on it.
 
+**Shell.** Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. The `bash` blocks below are POSIX shell — arithmetic `for ((…))`, `RANDOM`, `awk`, `wc`, `xargs`, `while read` — and PowerShell parses none of it. On Windows run them in Git Bash, which ships with Git for Windows and carries every one of those tools. Where a PowerShell twin is given (the timestamp ladder in Phase 5), the two are equivalent: run the one matching the detected platform, never both.
+
 ---
 
 ## Phase 0 — Preflight and access verification (stop gates)
