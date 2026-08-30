@@ -21,6 +21,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Debugging and reliability](#debugging-and-reliability)
     - [Audits](#audits)
     - [Git and repository operations](#git-and-repository-operations)
+    - [Agent maintenance](#agent-maintenance)
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
   - [Install](#install)
@@ -120,6 +121,12 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites the author/committer identity on a commit (or every commit with a wrong identity) from its URL and force-pushes — account-ownership and access checks, verified mirror backup, counted hash blast radius, host-side attribution proof |
 | [awesome-git-history-rebuild](skills/awesome-git-history-rebuild) | Erases a history and replays the same tree as a curated commit series — source analysis, an approved split plan (re-splittable), the repo's own commit rules and hooks, paced timestamps, permission/ruleset preflight, verified backup, a fresh-clone tree-hash proof that nothing was lost, and an optional contributors-cache cleanup |
 | [awesome-git-history-salvage](skills/awesome-git-history-salvage) | Read-only reconstruction of every commit a repo has ever held, erased history included — merges current refs, pull-request refs, mirror backups and every ref state in the host's activity log, fetching unreachable commits by SHA over the git protocol, which serves what the REST API refuses |
+
+### Agent maintenance
+
+| Skill | What it does |
+| --- | --- |
+| [awesome-skills-purge](skills/awesome-skills-purge) | Removes installed skills from every agent on the machine behind a keep list (one collection, this skill alone, or named skills) — a home-wide sweep for skill roots, per-entry link-vs-real classification, links deleted as links, git work trees protected as sources, archive and confirmation gate before anything goes, platform detected at run time |
 
 ### Writing and text
 
