@@ -36,7 +36,7 @@ No source given → ask for one before anything else. `--publish` is a preferenc
 
 Get the text onto disk first — working state lives in `repurpose/<slug>/`, and that one folder holds everything this skill writes:
 
-- **URL** — read it in a live browser when one is available so JS-rendered content is not silently missed; a plain fetch is fine for static pages, and which was used gets said. Save the extracted text to `repurpose/<slug>/source/`.
+- **URL** — a plain fetch first; a live browser when the page is a JS app that returns an empty shell, so rendered content is not silently missed. **Driving a browser means driving one of the user's, so it is not a silent step**: when the session exposes more than one browser bridge, ask which one before the first navigation and remember the answer for the run; either way, name the browser that was used and warn that it is busy while the read runs. A page that turns out to need a logged-in session is no longer a public read — run the full target gate in `references/browser-interaction.md` (ships with `awesome-post-publisher`) before touching it. Save the extracted text to `repurpose/<slug>/source/`.
 - **File** — read it directly; a folder gets an inventory first, then the prose.
 - **Pasted text** — save it to `source/` on arrival, like everything else. Long source text stays out of the conversation context.
 

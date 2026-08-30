@@ -37,7 +37,7 @@ One self-contained `.html` file per graphic in `content-campaign/<slug>/media/sr
 - **Legible at thumbnail size**: body text no smaller than about 3% of the canvas height, strong contrast, wide margins. Read it at 25% zoom before accepting it — if the words blur, there are too many of them.
 - **Brand colours** when the user has them (from the interview or the knowledge map); otherwise one accent colour and neutrals. Two typefaces at most, and one is enough.
 
-Render with the browser automation already in use:
+**Render in a spawned browser, not the user's.** This step loads a local `file://` page and screenshots it — there is no account, no session and nothing to log into, so it has no business taking over a browser the user is working in. Prefer, in order: a headless browser the automation can launch itself, an installed CLI (`wkhtmltoimage` or a browser's own `--screenshot`, verified with `--version` exiting 0), and only then a live bridge. Using a live bridge means the user's window fills with `file://` tabs while the batch renders, so ask first when there is more than one bridge, say which browser is being used, and warn that it is busy.
 
 ```js
 await page.setViewportSize({ width: W, height: H });
@@ -45,7 +45,7 @@ await page.goto('file:///absolute/path/to/graphic.html');
 await page.screenshot({ path: 'media/<name>.png', scale: 'device', animations: 'disabled' });
 ```
 
-An installed headless-browser CLI or `wkhtmltoimage` is an acceptable substitute — verify it exists first (`--version` exits 0) and say which was used. None available and no browser bridge → say so and leave the post without an image rather than promising one.
+Say which renderer was used, in the report. None available at all → say so and leave the post without an image rather than promising one.
 
 ## After rendering
 

@@ -37,7 +37,7 @@ Working state lives in `content-campaign/<slug>/` (slug proposed from the produc
 
 Per source type:
 
-- **Website URL** — prefer a live browser (Playwright MCP or equivalent) so JS-rendered content is not silently missed; a plain HTTP fetch tool is acceptable for static pages but say which was used. Crawl only what the topic needs (product pages, docs, changelog, pricing, about) — this is targeted reading, not a full-site crawl. Dump extracted text per page into `sources/`.
+- **Website URL** — prefer a live browser (Playwright MCP or equivalent) so JS-rendered content is not silently missed; a plain HTTP fetch tool is acceptable for static pages but say which was used. **A browser here is one of the user's browsers**: when the session exposes more than one bridge, ask which before the first navigation and keep that answer for the run, name the browser used, and say it is busy while the crawl runs. Anything behind a login stops being a public read — run the target gate in `awesome-post-publisher`'s `references/browser-interaction.md` first. Crawl only what the topic needs (product pages, docs, changelog, pricing, about) — this is targeted reading, not a full-site crawl. Dump extracted text per page into `sources/`.
 - **Repository (URL or path)** — read `README`, docs, changelogs, release notes, manifests (`package.json` and kin), and the public surface of the code (exported APIs, CLI help strings, feature flags). Clone shallow if remote.
 - **Local files/folders** — read directly; folders get a file inventory first, then the prose-bearing and fact-bearing files.
 - **Pasted text** — save into `sources/` so it survives compaction like everything else.
