@@ -115,6 +115,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
+| [awesome-commit-plan](skills/awesome-commit-plan) | Reads a codebase and plans its commit history — a navigation map from import direction, a split where every commit builds and tests alone, proven by replaying the ladder in a scratch clone against the repo's own gates, messages written to a strict anti-slop ruleset, output as one plan file numbered #1 to #N with no dates. Read-only; feeds awesome-git-history-rebuild |
 | [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's git history to a single Initial commit and force-pushes — safely: access checks, verified mirror backup, secret scan, and a confirmation gate before anything irreversible |
 | [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites the author/committer identity on a commit (or every commit with a wrong identity) from its URL and force-pushes — account-ownership and access checks, verified mirror backup, counted hash blast radius, host-side attribution proof |
 | [awesome-git-history-rebuild](skills/awesome-git-history-rebuild) | Erases a history and replays the same tree as a curated commit series — source analysis, an approved split plan (re-splittable), the repo's own commit rules and hooks, paced timestamps, permission/ruleset preflight, verified backup, a fresh-clone tree-hash proof that nothing was lost, and an optional contributors-cache cleanup |
@@ -124,7 +125,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text: 36 patterns, regex markers, source-fabrication checks |
+| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text: 36 patterns, a discourse layer that fixes structure before style, regex markers, source-fabrication checks |
 | [awesome-document-style](skills/awesome-document-style) | Line-edits Markdown into clear, specific, publication-ready prose |
 | [awesome-grammar-check](skills/awesome-grammar-check) | Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text |
 | [awesome-translate-ru-en](skills/awesome-translate-ru-en) | Russian → English translation that preserves structure, formatting, and the author's voice |
@@ -134,8 +135,9 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): knowledge map with claim tracing, live platform-limit and best-time checks, one content unit fanned out per platform with strict per-platform uniqueness, a slop self-audit, one dated file per slot plus a campaign manifest |
-| [awesome-post-publisher](skills/awesome-post-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): bridge/format/login preflights, a persistent dedup ledger, timezone-aware scheduling with day-long waits, sequential human-paced posting with read-back verification |
+| [awesome-voice-profile](skills/awesome-voice-profile) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, pasted samples, or an interview plus a tuned archetype: counted absence signals, per-platform register, protected personal tics, and a source-and-confidence stamp |
+| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): knowledge map with claim tracing, dated platform-limit and best-time checks, one content unit fanned out per platform with strict per-platform uniqueness, per-genre register, offline HTML/CSS graphics when a media-required platform has none, a two-stage self-audit, one dated file per slot plus a campaign manifest |
+| [awesome-post-publisher](skills/awesome-post-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): bridge/format/login preflights, a persistent dedup ledger, timezone-aware scheduling with day-long waits, sequential human-paced posting with read-back verification, and an opt-in read-only engagement harvest |
 
 ## Install
 
