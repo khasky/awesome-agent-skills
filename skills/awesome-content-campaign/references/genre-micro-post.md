@@ -1,6 +1,6 @@
 # Genre — the short feed post
 
-Covers every platform whose native unit is a short post in a scrolling feed: `x`, `bluesky`, `threads`, `mastodon`, `linkedin`, `facebook-wall`, `tumblr`, `truthsocial`, `instagram`, `tiktok`, `pinterest`, `vk`, `telegram`, `patreon`, `ko-fi`, `buymeacoffee`, `bastyon`. Structural limits come from `platforms.md` plus the Phase 3 live check; this file is about register.
+Covers every platform whose Genre column in `platforms.md` names this file: the ones whose native unit is a short post in a scrolling feed. That table and the Phase 3 live check own the structural limits; this file is about register. It never restates which platforms those are — the table is the single list.
 
 ## Human baseline
 

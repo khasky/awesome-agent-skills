@@ -37,8 +37,17 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `vk` | wall or community | optional | `genre-micro-post.md` |
 | `telegram` | channel or group | optional | `genre-micro-post.md` |
 | `discord` | server + channel | optional | `genre-community-post.md` |
+| `slack` | workspace + channel | optional | `genre-community-post.md` |
+| `youtube` | channel, when the account has more than one | **required** for uploads (video); optional on the Community tab | `genre-micro-post.md` |
+| `google-business` | the business profile or location, when the account manages several | optional | `genre-micro-post.md` |
+| `nostr` | the web client the user posts through | optional | `genre-micro-post.md` |
+| `hashnode` | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
+| `wordpress` | site URL (wordpress.com or self-hosted) | optional | `genre-long-article.md` |
+| `whop` | whop + feed or channel | optional | `genre-community-post.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-post-publisher` rather than leaving the vocabulary split between a file and a conversation.
+
+**Out of scope, deliberately:** sending to an email list (a newsletter tool, a self-hosted sender). Publishing exists there, but the medium is not a feed — consent and unsubscribe obligations govern it, nothing can be read back from a public page afterwards, and the pacing and duplicate rules these skills are built on do not map. A campaign that should also go to subscribers is written here and sent by the user's own mail tooling.
 
 ## What to verify live, per selected platform
 
@@ -126,3 +135,24 @@ A channel or group broadcast rather than a social feed: no ranking algorithm and
 
 ### discord
 A chat message in one channel of one server, not a feed post: no discovery, no algorithm, no hashtags — the people in that channel see it in order, and a marketing message dropped into a conversation reads louder than anywhere else on this list. Servers other than the user's own gate promo through their own rules and usually confine it to a designated channel (`#self-promo`, `#showcase`); read those rules and the channel's recent messages before writing, exactly as with a subreddit, and expect that posting rights may simply not exist. Discord markdown (bold, italic, code blocks, no headings in the old style — verify what the current composer renders), links clickable with an embed preview, media optional. Target detail required: server and channel. Verify the current message cap on the **web** composer, and whether the account is on a tier with a longer one.
+
+### slack
+A message in one channel of one workspace: no discovery, no algorithm, no hashtags. Structurally Discord's twin, socially stricter — most workspaces are workplaces, and a promotional message outside a designated channel reads as an intrusion into someone's job. Posting rights and channel conventions are the workspace's, not the user's; read the channel's recent messages and any pinned rules first. Target detail required: workspace and channel. Threads are a first-class structure here — verify whether the post belongs in the channel or in a thread before writing.
+
+### youtube
+Two different surfaces on one account. **Uploads** (video, including Shorts) carry a title, a description and tags, and the campaign writes those fields rather than the video itself — the video must already exist. **Community posts** are text, image or poll, and behave like a short feed post; whether the channel has that tab at all has historically been gated by channel size, so verify it live for this account rather than assuming. Description links are clickable; the first lines are what shows before the fold. Target detail required when the account manages more than one channel or a brand account.
+
+### google-business
+Updates on a business profile, shown to people who find the business in search or on the map. The audience is local and transactional: opening hours, an offer, an event, something new in stock — a product-marketing post written for a social feed lands wrong here. Posts carry an optional image and a call-to-action button; several post types expire on their own schedule, which is volatile enough to verify live every campaign. Target detail required when the account manages several profiles or locations.
+
+### nostr
+A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
+
+### hashnode
+Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
+
+### wordpress
+The user's own site, so the rules are the user's: no platform promo policy, no character cap, no moderation. Which is exactly why it is easy to get wrong — a post here should be the canonical version other platforms point at, not a copy of a feed post. Editor differs between the block editor, the classic editor and whatever the theme adds; publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms rather than inventing new ones. Target detail required: the site URL.
+
+### whop
+A creator's own community storefront: posts land in a feed or chat that existing members and customers see, so the register is an update to insiders rather than acquisition copy, the same family as `patreon` and `ko-fi`. Documentation is thin and the product moves quickly — read the live UI during Phase 3 for what the composer supports, and verify caps, media handling and whether the target feed is member-only before writing. Target detail required: the whop and the feed or channel.

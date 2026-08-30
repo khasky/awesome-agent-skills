@@ -6,10 +6,10 @@ The fallback for posts that need an image and have none. It uses only what is al
 
 Offered, never automatic — the user says yes per campaign or per post:
 
-- A media-**required** platform (`instagram`, `pinterest`) is selected and the media library cannot cover its posts.
+- A platform the Media column of `platforms.md` marks **required** is selected, and the media library cannot cover its posts.
 - A post's content is genuinely structural — steps, a comparison, a framework, a single number, a short quotation from the sources — and would read better as an image than as more text.
 
-It does **not** run for `tiktok`: that platform needs video, which this path cannot produce. A campaign with `tiktok` selected and no video stays honest — recommend dropping the platform rather than shipping unpostable drafts.
+It does **not** run where the requirement is video (`tiktok`, and `youtube` uploads): this path produces a still image, and a still is not a video. A campaign that selected those platforms with no video stays honest — recommend dropping them rather than shipping unpostable drafts.
 
 Photographic or illustrative imagery is also out of scope. What this produces is typographic: text, rules, boxes, a number. Said plainly to the user, so nobody expects a rendered scene.
 

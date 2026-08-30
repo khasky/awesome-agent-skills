@@ -1,12 +1,12 @@
 # Genre — the long-form article
 
-Covers `devto` and `hackernoon`, plus any platform the user adds whose native unit is an article rather than a feed post. Structural facts (editor type, tags, canonical URL, editorial review) come from `platforms.md` and the Phase 3 live check; this file is about register.
+Covers every platform whose Genre column in `platforms.md` names this file: the ones whose native unit is an article rather than a feed post. That table is the single list and owns the structural facts (editor type, tags, canonical URL, editorial review), together with the Phase 3 live check; this file is about register.
 
 ## Human baseline
 
 Motivated by a problem the author actually hit. Uneven by design: five paragraphs on the part that turned out to be interesting, one line on the setup steps nobody argues about. Contains at least one dead end, at least one opinion the reader could disagree with, and numbers with their conditions attached. First person and contractions are normal. Code is real and was run, or is labeled as a sketch.
 
-**Frequency is per campaign, not per day.** Both platforms treat a stream of announcements as spam, and `hackernoon` submissions enter editorial review — submission is not publication, and the schedule must say so.
+**Frequency is per campaign, not per day.** These communities treat a stream of announcements as spam. Where a platform reviews submissions editorially, submission is not publication and the schedule must say so; the user's own site publishes instantly and still does not want an article a day.
 
 ## AI tells in this genre
 
@@ -30,5 +30,5 @@ Motivated by a problem the author actually hit. Uneven by design: five paragraph
 3. **Depth by interest, not symmetry.** The section that surprised you earns several times the words of the setup.
 4. **Numbers carry conditions, claims carry links, code carries a "this runs" guarantee or a disclaimer.** Everything factual traces to the knowledge map.
 5. **Question-sequence check** before writing: if the sections answer *what is X → why X matters → how to X → conclusion*, restructure around what actually happened.
-6. **Promotion is a disclosure, not a frame.** The product appears where the work touched it, the affiliation is stated plainly, and `devto` articles that mirror the user's blog set the canonical URL.
+6. **Promotion is a disclosure, not a frame.** The product appears where the work touched it, and the affiliation is stated plainly. An article that also exists on the user's own site sets the canonical URL on every copy that supports one — one piece syndicated, not several competing originals.
 7. **Tags per the platform's norm**, from the live check — not a keyword pile.

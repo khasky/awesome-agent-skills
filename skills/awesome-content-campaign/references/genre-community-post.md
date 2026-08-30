@@ -1,6 +1,6 @@
 # Genre — the post into someone else's community
 
-Covers `reddit`, `lemmy`, `hackernews`, `facebook-group`, `discord`, `wonderful-dev`. The defining fact: the audience is a community with its own moderators, its own rules, and its own memory — and a marketing post is a guest's behaviour there, judged as such.
+Covers every platform whose Genre column in `platforms.md` names this file; that table is the single list, and this file does not restate it. The defining fact: the audience is a community with its own moderators, its own rules, and its own memory — and a marketing post is a guest's behaviour there, judged as such.
 
 ## Human baseline
 
@@ -32,4 +32,4 @@ Fetch and read the target's own rules (subreddit sidebar and wiki, community sid
 4. **Flair, tags and required fields** are part of submitting — an unset required flair blocks the post.
 5. **Answer the replies.** A campaign that posts into a community and leaves is the behaviour these rules exist against; say so to the user when the schedule assumes nobody is home.
 6. **Frequency is per community**, and low. Several posts a week into one room is the pattern moderators ban for, whatever the campaign's global frequency says.
-7. **`discord` is a chat message, not a feed post.** No discovery, no algorithm: the people in the channel see it in order, so it reads louder than anywhere else on this list, and multi-line bodies must be typed as one message rather than one line per send.
+7. **Chat platforms are not feeds.** On `discord`, `slack` and any other channel-based surface there is no discovery and no algorithm: the people in that channel see it in order, so it reads louder than anywhere else on this list, and multi-line bodies must be sent as one message rather than one line per send. In a workspace that is somebody's job, the bar for posting at all is higher than the bar for posting well.
