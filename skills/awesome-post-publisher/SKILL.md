@@ -1,6 +1,6 @@
 ---
 name: awesome-post-publisher
-description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP --extension bridge to Chrome): bridge preflight, post-source scan with hard-stop format validation, per-platform login checks with a wait-or-skip choice (login itself is never automated), a persistent ledger that survives restarts and prevents duplicate posts, timezone-mapped scheduling that can idle for days between posts, and strictly sequential, human-paced posting with read-back verification of every post and a confirmation gate before anything goes public. Use when asked to 'publish the campaign', 'post these files to my accounts', 'post on schedule', or in Russian 'опубликуй посты', 'публикуй по расписанию', 'запости в соцсети'. Do not use to write the posts — use awesome-content-campaign; not to crawl or learn a site — use awesome-style-mimic."
+description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP --extension bridge to Chrome): bridge preflight, post-source scan with hard-stop format validation, per-platform login checks with a wait-or-skip choice (login itself is never automated), a persistent ledger that survives restarts and prevents duplicate posts, timezone-mapped scheduling that can idle for days between posts, strictly sequential human-paced posting with read-back verification of every post and a confirmation gate before anything goes public, plus an opt-in read-only harvest of what the published posts actually got. Use when asked to 'publish the campaign', 'post these files to my accounts', 'post on schedule', or in Russian 'опубликуй посты', 'публикуй по расписанию', 'запости в соцсети'. Do not use to write the posts — use awesome-content-campaign; not to crawl or learn a site — use awesome-style-mimic."
 license: MIT
 metadata:
   author: Khasky
@@ -24,17 +24,19 @@ Bundled files (load on demand):
 
 - `references/browser-interaction.md` — how to click, type, attach media and confirm submission on UIs that defeat ordinary Playwright actions: the click ladder, file-input scoping, submit polling, read-back baselines. **Read this before the first composer of a run**, not after the third timeout.
 - `references/platform-posting.md` — per-platform posting notes: login-state signal, composer location, flow outline, read-back verification, quirks — plus the generic flow for when the live UI has drifted from the notes.
+- `references/platforms.md` — **not in this skill's folder**: it ships with `awesome-content-campaign` and holds the canonical slug table with each platform's required target detail and media requirement. Phase 2 validates against it; the fallback when that skill is absent is the platform sections of `platform-posting.md`.
 
 ## Invocation
 
 ```
-/awesome-post-publisher <posts-folder> [--dry-run] [--platforms <slug,slug>] [--now]
+/awesome-post-publisher <posts-folder> [--dry-run] [--platforms <slug,slug>] [--now] [--harvest]
 ```
 
 - `<posts-folder>` — folder of post files; a `campaign.md` manifest beside them is used when present. No argument → ask for the source (folder, or another location the user names).
 - `--dry-run` — run every preflight and print the full run plan; nothing is posted.
 - `--platforms` — restrict to a subset of the canonical slugs.
 - `--now` — ignore scheduled times; publish the backlog in order with safety spacing (still gated below).
+- `--harvest` — publish nothing; read the engagement of posts already in the ledger (Phase 10).
 
 ## Phase 0 — Interview
 
@@ -57,11 +59,11 @@ Open ONE working tab and reuse it for everything. Warn the user the browser is b
 
 Scan the source and validate every post file:
 
-- Filename parses as `YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.<ext>` — exactly 5 `_`-separated fields, platform one of the canonical slugs: `facebook-wall` · `facebook-group` · `linkedin` · `reddit` · `lemmy` · `tumblr` · `mastodon` · `bluesky` · `x` · `threads` · `truthsocial` · `wonderful-dev` · `hackernoon` · `devto` · `hackernews` · `patreon` · `ko-fi` · `buymeacoffee` · `instagram` · `tiktok` · `pinterest` · `bastyon` · `vk` · `telegram` · `discord`. This list is shared with `awesome-content-campaign`; the two are edited together or a campaign produces files this skill rejects.
+- Filename parses as `YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.<ext>` — exactly 5 `_`-separated fields, platform one of the canonical slugs. **The slug table lives in `references/platforms.md`, shipped with `awesome-content-campaign`**, and that one file is also where each platform's required target detail and media requirement are recorded; read it and validate against it. When that skill is not installed, fall back to the platform sections of this skill's own `references/platform-posting.md` — a slug with no section there is a slug this skill cannot post, which is a defect to report rather than a platform to improvise.
 - Readable format: `.md` with frontmatter (preferred), `.txt`/`.html` with a metadata header block, `.csv` (header + row). `.pdf` is not machine-readable here — stop and point to the `.md` sources the campaign keeps alongside.
 - Frontmatter agrees with the filename (platform, date, time, timezone); frontmatter is authoritative, but a mismatch is a defect, not a tiebreak.
-- Required target detail present where the platform needs one (subreddit, `lemmy` instance + community, group URL, instance, board, wall, telegram channel, `discord` server + channel, and for `facebook-wall` the Page or personal-timeline URL — a `facebook-wall` post with no target does not say which surface it is for, and guessing between a Page, a personal timeline and a group is not allowed).
-- Declared `attachments` exist on disk — entries are a plain path or `{file, alt}`, resolved relative to the campaign folder; a media-required platform (`instagram`, `tiktok`, `pinterest`) with no attachment is a defect.
+- Required target detail present where the Target column of the slug table names one. A `facebook-wall` post with no target does not say which surface it is for, and guessing between a Page, a personal timeline and a group is not allowed.
+- Declared `attachments` exist on disk — entries are a plain path or `{file, alt}`, resolved relative to the campaign folder; a platform the table marks media-required with no attachment is a defect.
 
 **Zero posts found, or ANY validation error → hard stop.** List every defective file with what is wrong with it and how to fix it. A publisher that guesses its way past a malformed schedule posts the wrong thing at the wrong time.
 
@@ -141,6 +143,20 @@ Ledger:      <absolute path>
 
 Every number comes from the ledger, not from memory. Anything unverified is named as unverified — a submitted post without a read-back URL is never reported as published. State plainly which posts went out degraded and what is now permanent about that (several platforms will not accept an image description after posting). Repeat any prerequisite the user chose to override — a stale bio link keeps mis-attributing every later post on that platform, not only the one just published. Finally, move screenshots and the Playwright server's working files out of the user's project tree; a clean working copy is part of finishing.
 
+## Phase 10 — Performance harvest (optional, read-only)
+
+Runs only when the user asks (`--harvest`, or the offer made after a campaign's last post lands). It reads what the already-published posts did, so the next campaign is not written blind. Nothing is posted, edited, liked, or commented on in this phase — it is navigation and reading only.
+
+Take the ledger's `posted` entries whose permalink was captured and whose posted-at is at least a few days old (a post read hours after publication measures nothing). Open each permalink read-only, paced like the rest of this skill, and record whatever **the platform itself shows**: reactions, comments, reposts, views where the platform displays them to the author. A platform that shows the author no counts gets `not available` — never an estimate, never a number inferred from something else.
+
+Write `publish-state/performance.md`: one row per post (file, platform, posted-at, the raw counts, the permalink, harvested-on date), then a per-platform summary. The one derived number is an engagement weight — reactions plus three times comments — and it is labeled as this skill's own weighting, not a platform metric. Relative reads (which posts outperformed) are computed against that account's own median on that platform, never against a benchmark from someone else's account.
+
+**Sample-size honesty:** under roughly ten harvested posts on a platform, report the raw rows and say the sample is too thin to rank. A recommendation drawn from four posts is noise with a decimal point.
+
+What reads this file: `awesome-content-campaign` (which angles and times to favour next) and `awesome-voice-profile` (`--update`, as evidence of which register lands). Both consume it as one input among several — it says what got engagement, not what was true or well written.
+
+This phase never touches the engagement itself. No liking, no commenting, no following, no reading other people's accounts for comparison: that is a different activity from measuring one's own results, and this skill does not do it.
+
 ## Anti-patterns
 
 - Posting in parallel, or blasting an overdue backlog without spacing — the fastest way to make a legitimate account look like a bot.
@@ -159,3 +175,4 @@ Every number comes from the ledger, not from memory. Anything unverified is name
 - Publishing what the user asked for while quietly ignoring that some platforms they named have no content in the folder.
 - Letting a stuck alt-text editor block a post, or dropping the declared alt text without recording and reporting it.
 - Finishing a run with screenshots and `.playwright-mcp/` left untracked in the user's repository.
+- Recording an engagement number the platform did not display, ranking posts off a handful of samples, or turning a harvest pass into interaction with the feed.

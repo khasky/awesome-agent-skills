@@ -1,6 +1,6 @@
 ---
 name: awesome-style-mimic
-description: "Learns a website's writing style by deep-crawling it in a live browser and distills a reusable style guide (voice, tone rules, lexicon, rhythm, structure templates, verbatim golden samples), then rewrites any documents or page sources in that voice with a cross-document consistency pass. Use when the user says 'learn the style of <site>', 'изучи стиль сайта', 'create a style guide from my website', or wants text rewritten in a learned voice: 'rewrite this in the style of <site>', 'перепиши в стиле', 'apply this style guide to these docs'. Learn mode needs browser automation (Playwright MCP or equivalent); apply mode needs only a style-guide file and works on Markdown, HTML, and component sources. Do not use for removing AI voice from English text — use awesome-humanize-en; for line-editing Markdown without a target voice — use awesome-document-style; for translation — use awesome-translate-ru-en."
+description: "Learns a website's writing style by deep-crawling it in a live browser and distills a reusable style guide (voice, tone rules, lexicon, rhythm, structure, golden samples), then rewrites any documents or page sources in that voice with a cross-document consistency pass. Use when the user says 'learn the style of <site>', 'изучи стиль сайта', 'create a style guide from my website', or wants text rewritten in a learned voice: 'rewrite this in the style of <site>', 'перепиши в стиле', 'apply this style guide to these docs'. Learn mode needs browser automation; apply mode needs only the guide file and works on Markdown, HTML and component sources. Do not use for an author's own voice built from their posts and drafts — use awesome-voice-profile; for removing AI voice from English text — use awesome-humanize-en; for line-editing Markdown without a target voice — use awesome-document-style; for translation — use awesome-translate-ru-en."
 license: MIT
 metadata:
   author: Khasky
@@ -127,7 +127,9 @@ One agent (or the main context) reads all `analysis/batch-*.md`, reconciles (maj
 genre differences become sub-profiles, not contradictions), and writes `styles/<host>.md`
 with exactly these sections: **Voice profile · Tone rules (Do/Don't) · Lexicon · Rhythm &
 syntax · Structure (with the site's invariant CTA strings quoted verbatim) · Formatting
-habits · Genre notes · Samples · Rewrite instructions**. The guide must be self-contained —
+habits · Genre notes · Samples · Rewrite instructions**. `awesome-voice-profile` writes the
+same section set for an author's own voice, so either file can be handed to Apply mode or to
+`awesome-content-campaign` — keep the names exactly as listed rather than improving them. The guide must be self-contained —
 Apply sessions see only this file. See `references/example-styles/buffer.com.md` for the
 target shape and depth.
 

@@ -1,8 +1,44 @@
-# Platform profiles — structural notes and the live-verify checklist
+# Platforms — the canonical vocabulary, structural notes, and the live-verify checklist
 
-Structural facts here are stable (what a platform *is*); everything volatile — character caps, media size limits, per-tier differences, algorithm behavior — is deliberately absent and MUST be verified live in Phase 3, recorded in the manifest with a checked-on date. Slugs match the canonical vocabulary in `SKILL.md`.
+**This file is the single source of the platform vocabulary.** The slugs below are what the interview offers, what filenames carry, and what `awesome-post-publisher` parses; adding a platform means adding a row here and a posting note in that skill's `references/platform-posting.md`, in the same change. No other file restates the list.
+
+Structural facts here are stable (what a platform *is*); everything volatile — character caps, media size limits, per-tier differences, algorithm behavior — is deliberately absent and MUST be verified live in Phase 3, recorded in the manifest with a checked-on date.
 
 Every platform on the list is reached as a website in a logged-in browser — `awesome-post-publisher` drives the real web UI through the Playwright MCP bridge and uses no platform APIs, developer apps, bots or webhooks. So Phase 3 verifies what the **web composer** does: a cap the mobile app enforces differently, a feature only the desktop client has, or an API-only capability is not what the posts must fit.
+
+## The canonical table
+
+`Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` marks the platforms that cannot post without an attachment. `Genre` names the register file Phase 5 writes against.
+
+| Slug | Target the interview must collect | Media | Genre file |
+| --- | --- | --- | --- |
+| `facebook-wall` | Page URL or personal-timeline URL (ask which — different surfaces, different tone) | optional | `genre-micro-post.md` |
+| `facebook-group` | group URL | optional | `genre-community-post.md` |
+| `linkedin` | — | optional | `genre-micro-post.md` |
+| `reddit` | subreddit | optional | `genre-community-post.md` |
+| `lemmy` | instance domain + community | optional | `genre-community-post.md` |
+| `tumblr` | — | optional | `genre-micro-post.md` |
+| `mastodon` | instance domain | optional | `genre-micro-post.md` |
+| `bluesky` | — | optional | `genre-micro-post.md` |
+| `x` | — | optional | `genre-micro-post.md` |
+| `threads` | — | optional | `genre-micro-post.md` |
+| `truthsocial` | — | optional | `genre-micro-post.md` |
+| `wonderful-dev` | — | optional | `genre-community-post.md` |
+| `hackernoon` | — | optional | `genre-long-article.md` |
+| `devto` | — | optional | `genre-long-article.md` |
+| `hackernews` | — | none supported | `genre-community-post.md` |
+| `patreon` | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
+| `ko-fi` | — | optional | `genre-micro-post.md` |
+| `buymeacoffee` | — | optional | `genre-micro-post.md` |
+| `instagram` | — | **required** | `genre-micro-post.md` |
+| `tiktok` | — | **required** (video) | `genre-micro-post.md` |
+| `pinterest` | board | **required** | `genre-micro-post.md` |
+| `bastyon` | — | optional | `genre-micro-post.md` |
+| `vk` | wall or community | optional | `genre-micro-post.md` |
+| `telegram` | channel or group | optional | `genre-micro-post.md` |
+| `discord` | server + channel | optional | `genre-community-post.md` |
+
+A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-post-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
 ## What to verify live, per selected platform
 

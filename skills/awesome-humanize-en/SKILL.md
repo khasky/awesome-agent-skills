@@ -47,9 +47,13 @@ Any unambiguous marker found? — yes → delete it, check the rest of the text;
   ↓ no
 Count the soft tells by category (content, language, structural, communicative)
   ↓
+Longer than a few paragraphs? — yes → run the discourse pass (structure-pass.md), detection only
+  ↓
 0–2 tells → text is probably human, do not edit
 3–5 tells → selectively fix the critical ones (🔴), leave the rest
 6+ tells → rewrite wholesale while preserving the facts
+  ↓
+Any discourse finding (#26–31) → fix those first; the sentence-level work runs on the new shape
   ↓
 If there are source citations → run source-fabrication.md
   ↓
@@ -98,9 +102,11 @@ Count these as #12 variants. Repair: state the positive directly; if the distinc
 - **Diff-anchored prose** — text narrating its last revision ("has been updated to", "now uses", "previously") instead of the current state; fine in changelogs and migration guides.
 - **Reasoning-chain leakage** — "Let me think", "Step 1:", "Breaking this down" in connected prose (extends #22); Cyrillic/Greek letter homoglyphs inside Latin words (extends the A.10 marker class).
 
-## Edit order: rhythm before vocabulary
+## Edit order: structure, then rhythm, then vocabulary
 
-Restructure sentence rhythm first, then fix word choice — rhythm carries most of the achievable improvement, and deleting an intensifier *without* restructuring makes the shortened sentence fit AI cadence even better.
+Fix the discourse layer first, sentence rhythm second, word choice last. Each earlier layer changes what the later ones have to work on, and the order is not interchangeable: paraphrasing a text whose skeleton is machine-shaped leaves the structural cues intact and the vocabulary cues *more* prominent to expert readers. `references/structure-pass.md` carries the discourse patterns (#26–31), the two-stage protocol they require, and the over-correction advisory; it applies to anything longer than a few paragraphs.
+
+Restructure sentence rhythm second, then fix word choice — rhythm carries most of the remaining achievable improvement, and deleting an intensifier *without* restructuring makes the shortened sentence fit AI cadence even better.
 
 - Rhythm targets per suspicious paragraph: at least one short (5–8 words) and one long (20+ words) sentence. Machine-uniform spread (coefficient of variation of sentence lengths below ~0.30) reads as AI; repair toward ≥0.35 — and re-count after rewriting, surface word swaps don't fix rhythm.
 - Removing transition crutches must not produce choppy asyndeton — a run of short, connector-less sentences is itself a tell of automated cleanup. Repair menu: substitute a natural connective, echo a key noun from the previous sentence, or merge the sentences. Decision test per connective: does it inflate meaning (delete) or make logic explicit (keep)?
@@ -147,6 +153,7 @@ This file is a map. The detailed description of patterns and checks lives in the
 | `references/content-patterns.md` | Content patterns #1–9 + #6a: averaging, inflated significance, vague attributions, formulaic "challenges and prospects", officialese, text about the text | Always when analyzing content |
 | `references/language-patterns.md` | Language patterns #10–15 + extensions #15a–15f: dangling modifiers, hedging cascade, transition crutches, conclusion filler, abrupt style shift, formulaic collocations, lack of idiom | Always when analyzing connected prose |
 | `references/structural-style-patterns.md` | Structural and style patterns #16–21 + extension #21a: em-dash, arrow glyph, bold, emoji bullets, quotation marks, tables, Markdown residue, heading hierarchy, boilerplate section headings | When working with formatted text, or for direct publication |
+| `references/structure-pass.md` | Discourse patterns #26–31: summary-shaped skeleton (the outline test), templated question sequence, position uniformity, symmetric coverage without a stance, fractal summarization, the reflection tail — plus the two-stage protocol, the edit budget, and the over-correction advisory | Any text longer than a few paragraphs, before the sentence-level work |
 | `references/communication-patterns.md` | Communicative patterns #22–25 + extensions #23a, #24a, #25a: leftover chat turns, knowledge-limit disclaimers, sycophantic tone, pseudo-therapeutic register, generic positive conclusions, mid-sentence cutoff | When analyzing text copied out of a chat |
 | `references/chatbot-artifacts.md` | Unambiguous markers with regular expressions: `:contentReference[oaicite:N]`, `oai_citation:N‡`, `turn0search0`, `?utm_source=chatgpt.com`, `grok_card://`, `vertexaisearch…/grounding-api-redirect`, plus new-platform markers `[^N^]`, `【N†source】`, `citeturn0file0`, `](sandbox:/mnt/data/`, invisible chars `U+E200–E204`, `<think>` residue, "Source+digit" run-ons, file_search markers `turn0file2`, Gemini citation tags `[cite_start]` / `[cite: N]`, zero-width characters and Unicode watermarks, plus the old generation | When copy-paste from a chat is suspected |
 | `references/source-fabrication.md` | Citation checks: 404, DOI resolves to a different article, non-existent ISBN, author died before publication, book citation with no page, stale access date | Always when source citations are present |
