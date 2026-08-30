@@ -8,46 +8,56 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 
 ## The canonical table
 
-`Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` marks the platforms that cannot post without an attachment. `Genre` names the register file Phase 5 writes against.
+`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and **never a dot** — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` marks the platforms that cannot post without an attachment. `Genre` names the register file Phase 5 writes against.
 
-| Slug | Target the interview must collect | Media | Genre file |
-| --- | --- | --- | --- |
-| `facebook-wall` | Page URL or personal-timeline URL (ask which — different surfaces, different tone) | optional | `genre-micro-post.md` |
-| `facebook-group` | group URL | optional | `genre-community-post.md` |
-| `linkedin` | — | optional | `genre-micro-post.md` |
-| `reddit` | subreddit | optional | `genre-community-post.md` |
-| `lemmy` | instance domain + community | optional | `genre-community-post.md` |
-| `tumblr` | — | optional | `genre-micro-post.md` |
-| `mastodon` | instance domain | optional | `genre-micro-post.md` |
-| `bluesky` | — | optional | `genre-micro-post.md` |
-| `x` | — | optional | `genre-micro-post.md` |
-| `threads` | — | optional | `genre-micro-post.md` |
-| `truthsocial` | — | optional | `genre-micro-post.md` |
-| `wonderful-dev` | — | optional | `genre-community-post.md` |
-| `hackernoon` | — | optional | `genre-long-article.md` |
-| `devto` | — | optional | `genre-long-article.md` |
-| `hackernews` | — | none supported | `genre-community-post.md` |
-| `patreon` | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
-| `ko-fi` | — | optional | `genre-micro-post.md` |
-| `buymeacoffee` | — | optional | `genre-micro-post.md` |
-| `instagram` | — | **required** | `genre-micro-post.md` |
-| `tiktok` | — | **required** (video) | `genre-micro-post.md` |
-| `pinterest` | board | **required** | `genre-micro-post.md` |
-| `bastyon` | — | optional | `genre-micro-post.md` |
-| `vk` | wall or community | optional | `genre-micro-post.md` |
-| `telegram` | channel or group | optional | `genre-micro-post.md` |
-| `discord` | server + channel | optional | `genre-community-post.md` |
-| `slack` | workspace + channel | optional | `genre-community-post.md` |
-| `youtube` | channel, when the account has more than one | **required** for uploads (video); optional on the Community tab | `genre-micro-post.md` |
-| `google-business` | the business profile or location, when the account manages several | optional | `genre-micro-post.md` |
-| `nostr` | the web client the user posts through | optional | `genre-micro-post.md` |
-| `hashnode` | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
-| `wordpress` | site URL (wordpress.com or self-hosted) | optional | `genre-long-article.md` |
-| `whop` | whop + feed or channel | optional | `genre-community-post.md` |
+| Slug | Site | Target the interview must collect | Media | Genre file |
+| --- | --- | --- | --- | --- |
+| `facebook-wall` | facebook.com | Page URL or personal-timeline URL (ask which — different surfaces, different tone) | optional | `genre-micro-post.md` |
+| `facebook-group` | facebook.com/groups | group URL | optional | `genre-community-post.md` |
+| `linkedin` | linkedin.com | — | optional | `genre-micro-post.md` |
+| `reddit` | reddit.com | subreddit | optional | `genre-community-post.md` |
+| `lemmy` | any Lemmy instance | instance domain + community | optional | `genre-community-post.md` |
+| `tumblr` | tumblr.com | — | optional | `genre-micro-post.md` |
+| `mastodon` | any Mastodon instance | instance domain | optional | `genre-micro-post.md` |
+| `bluesky` | bsky.app | — | optional | `genre-micro-post.md` |
+| `x` | x.com | — | optional | `genre-micro-post.md` |
+| `threads` | threads.net | — | optional | `genre-micro-post.md` |
+| `truthsocial` | truthsocial.com | — | optional | `genre-micro-post.md` |
+| `nostr` | client-dependent | the web client the user posts through | optional | `genre-micro-post.md` |
+| `bastyon` | bastyon.com | — | optional | `genre-micro-post.md` |
+| `vk-wall` | vk.com | own wall or a community the user may post to | optional | `genre-micro-post.md` |
+| `telegram` | t.me | channel or group | optional | `genre-micro-post.md` |
+| `discord` | discord.com | server + channel | optional | `genre-community-post.md` |
+| `slack` | slack.com | workspace + channel | optional | `genre-community-post.md` |
+| `peerlist` | peerlist.io | — | optional | `genre-micro-post.md` |
+| `instagram` | instagram.com | — | **required** | `genre-micro-post.md` |
+| `tiktok` | tiktok.com | — | **required** (video) | `genre-micro-post.md` |
+| `pinterest` | pinterest.com | board | **required** | `genre-micro-post.md` |
+| `youtube` | youtube.com | channel, when the account has more than one | **required** for uploads (video); optional on the Community tab | `genre-micro-post.md` |
+| `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
+| `ko-fi` | ko-fi.com | — | optional | `genre-micro-post.md` |
+| `buymeacoffee` | buymeacoffee.com | — | optional | `genre-micro-post.md` |
+| `hackernews` | news.ycombinator.com | — | none supported | `genre-community-post.md` |
+| `daily-dev` | daily.dev | squad, when posting into one rather than submitting a link | optional | `genre-community-post.md` |
+| `wonderful-dev` | wonderful.dev | — | optional | `genre-community-post.md` |
+| `pikabu` | pikabu.ru | community, when posting into one | optional | `genre-community-post.md` |
+| `devto` | dev.to | — | optional | `genre-long-article.md` |
+| `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
+| `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
+| `dzone` | dzone.com | — | optional | `genre-long-article.md` |
+| `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
+| `substack` | substack.com | publication, when the account has more than one | optional | `genre-long-article.md` |
+| `wordpress-com` | wordpress.com | site, when the account has more than one | optional | `genre-long-article.md` |
+| `wordpress-blog` | self-hosted WordPress | site URL | optional | `genre-long-article.md` |
+| `habr` | habr.com | — | optional | `genre-long-article.md` |
+| `vc-ru` | vc.ru | subsite, when posting into one rather than a personal blog | optional | `genre-long-article.md` |
+| `dzen` | dzen.ru | channel, when the account has more than one | optional | `genre-long-article.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
-**Out of scope, deliberately:** sending to an email list (a newsletter tool, a self-hosted sender). Publishing exists there, but the medium is not a feed — consent and unsubscribe obligations govern it, nothing can be read back from a public page afterwards, and the pacing and duplicate rules these skills are built on do not map. A campaign that should also go to subscribers is written here and sent by the user's own mail tooling.
+**Out of scope, deliberately:** a mailing tool whose only output is email (a newsletter sender, a self-hosted list). Publishing exists there, but nothing can be read back from a public page afterwards, and the pacing and duplicate rules these skills are built on do not map. A campaign that should also go to a list is written here and sent by the user's own mail tooling.
+
+`substack` is on the list because a post there is a public page with a permalink that can be read back — but publishing it **also sends mail that cannot be recalled**, so it carries the strictest confirmation of any platform here: audience, section and the send toggle are read back against the post file before submitting, and a duplicate is not a downranked post but a second email in someone's inbox.
 
 ## What to verify live, per selected platform
 
@@ -127,8 +137,8 @@ Decentralized platform; account identity is a key pair and login flows differ fr
 ### pinterest
 A pin is image + title + description + destination link, filed to a board. Image required. Target detail required: board. Discovery is search-driven — the description carries keywords, not hashtag walls.
 
-### vk
-Wall posts, medium prose, hashtags in use, images common. Personal wall vs community differ in tone and in who may post — target detail required: which wall/community.
+### vk-wall
+Wall posts, medium prose, hashtags in use, images common. A personal wall and a community differ in tone and in who may post — target detail required: which one.
 
 ### telegram
 A channel or group broadcast rather than a social feed: no ranking algorithm and no discovery surface, so subscribers see every post in order and frequency is felt directly — over-posting reads as noise here faster than on an algorithmic feed. Clickable links with previews that can be suppressed, light markup, media optional. Publishing needs admin rights on the target. Target detail required: channel or group. Verify the current message cap and the media-caption cap, which are not the same number.
@@ -142,17 +152,41 @@ A message in one channel of one workspace: no discovery, no algorithm, no hashta
 ### youtube
 Two different surfaces on one account. **Uploads** (video, including Shorts) carry a title, a description and tags, and the campaign writes those fields rather than the video itself — the video must already exist. **Community posts** are text, image or poll, and behave like a short feed post; whether the channel has that tab at all has historically been gated by channel size, so verify it live for this account rather than assuming. Description links are clickable; the first lines are what shows before the fold. Target detail required when the account manages more than one channel or a brand account.
 
-### google-business
-Updates on a business profile, shown to people who find the business in search or on the map. The audience is local and transactional: opening hours, an offer, an event, something new in stock — a product-marketing post written for a social feed lands wrong here. Posts carry an optional image and a call-to-action button; several post types expire on their own schedule, which is volatile enough to verify live every campaign. Target detail required when the account manages several profiles or locations.
-
 ### nostr
 A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
 
 ### hashnode
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
 
-### wordpress
-The user's own site, so the rules are the user's: no platform promo policy, no character cap, no moderation. Which is exactly why it is easy to get wrong — a post here should be the canonical version other platforms point at, not a copy of a feed post. Editor differs between the block editor, the classic editor and whatever the theme adds; publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms rather than inventing new ones. Target detail required: the site URL.
+### wordpress-blog
+A self-hosted WordPress install, so the rules are the user's: no platform promo policy, no character cap, no moderation. Which is exactly why it is easy to get wrong — a post here should be the canonical version other platforms point at, not a copy of a feed post. Editor differs between the block editor, the classic editor and whatever the theme adds; publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms rather than inventing new ones. Target detail required: the site URL.
 
-### whop
-A creator's own community storefront: posts land in a feed or chat that existing members and customers see, so the register is an update to insiders rather than acquisition copy, the same family as `patreon` and `ko-fi`. Documentation is thin and the product moves quickly — read the live UI during Phase 3 for what the composer supports, and verify caps, media handling and whether the target feed is member-only before writing. Target detail required: the whop and the feed or channel.
+### peerlist
+Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Small platform — read the live feed during Phase 3 for length norms, link handling and whether the composer supports anything beyond plain text.
+
+### daily-dev
+Developer news aggregator. Two different acts: **submitting a link** to the public feed, where the title and the source do the work and self-promotion is judged the way an aggregator judges it, and **posting inside a squad**, which is a community with its own rules and moderators. The post file's target says which. Verify live what the composer accepts, how a submitted link is deduplicated against one already in the feed, and the squad's own promo rules before writing.
+
+### pikabu
+Russian community aggregator with votes, tags and moderation, structurally reddit-shaped but with its own culture: long-form storytelling and humour travel, marketing register is downvoted on sight, and accounts too new to have karma are limited in what they may post. Tags are mandatory and drive discovery. Target detail: the community when posting into one rather than the general feed; read its rules first, exactly as with a subreddit.
+
+### medium
+General-purpose article platform with a rich editor rather than raw markdown. An article can sit on the author's own profile or be submitted to a **publication**, which routes it to that publication's editors and their schedule — submission is not publication, and the campaign must not treat it as such. Canonical-URL support matters when the piece also lives on the user's blog. Some articles sit behind the platform's paywall; whether the user's do is an account setting to confirm, not to assume.
+
+### substack
+Newsletter platform where a post is simultaneously a web page and an email to subscribers. That second half changes the rules this file otherwise assumes: **publishing sends mail that cannot be recalled**, subscribers feel frequency directly, and a duplicate is not a downranked post but a second email. Sections and paywalled tiers decide who receives what. Target detail: the publication when the account has more than one.
+
+### wordpress-com
+Hosted WordPress: the same block editor as a self-hosted install, without server access. Publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms. Target detail: the site, when the account has more than one. Plan limits decide what the editor offers; check the live composer rather than assuming parity with self-hosted.
+
+### habr
+Russian-language technical community with articles filed into **hubs**, a karma system, and readers who audit claims in the comments within minutes. Hub selection is part of submitting, not an afterthought. Promotional articles belong to a separate paid company-blog format and an ordinary post written as marketing is flagged as such by the audience before a moderator arrives. New or low-karma accounts face posting limits — verify what the account may actually do before planning a slot. Long form is native; a feed-sized post reads as a draft.
+
+### vc-ru
+Russian business-and-tech media with user-written blogs. Register sits between an article platform and a community: posts are read for substance about a product, a market or a failure, comments are adversarial, and thin promotional posts are visibly punished. A post lands on the author's personal blog or in a **subsite** with its own audience and rules — target detail says which. Verify live what the editor supports and how the feed ranks a fresh post.
+
+### dzen
+Yandex's content platform: a channel publishes articles and short posts into an algorithmic recommendation feed rather than to followers, so the opening lines decide whether anything reaches anyone. Rich editor, images native, external links tolerated but weighted by the feed rather than by the reader. Target detail: the channel, when the account has more than one. The ranking rules are volatile and undocumented — verify current behaviour rather than repeating what worked before.
+
+### dzone
+Developer article platform with **editorial review**: a submitted draft is not a published article, and the schedule must treat submission time as submission time. Markdown or a rich editor depending on the flow, a required category, and a contributor agreement that governs republication — check the canonical-URL rules if the piece also lives on the user's own blog. Frequency is articles per campaign, never per day.

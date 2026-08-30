@@ -94,7 +94,7 @@ Check: `pinterest.com` — logged-in home. Compose: Create → Pin → image, ti
 ## bastyon
 Check: `bastyon.com` — logged-in state (key-pair auth; if a key prompt appears, that is the user's to handle — never request, read, or paste key material). Compose: use the generic flow from the live UI. Read-back: own profile feed.
 
-## vk
+## vk-wall
 Check: `vk.com` — own page reachable. Compose: the wall composer on the target from frontmatter (own wall or a community — for a community, posting rights must exist; a missing composer = report, skip). Read-back: the target wall.
 
 `vk.com` redirects to `vk.ru`; both appear in URLs and neither indicates a problem. Admin rights on a community show as a "Manage" / "Керування" link in the right column — that is the posting-rights probe.
@@ -125,23 +125,47 @@ Two surfaces, and the post file says which by whether it carries a video attachm
 
 Check: `youtube.com` — the avatar in the header, and the channel switcher when the account carries several (a brand account is a different channel; posting to the wrong one is not undoable by pretending). Read-back: the channel's Videos or Community tab, the new item's permalink opened and confirmed. A scheduled upload is not published — record it as `pending-approval` in spirit: the ledger entry says scheduled, with the time, and the run does not claim publication.
 
-## google-business
-Check: the Business Profile the user manages, reached while signed in (through Search or Maps on the profile itself, or the business-profile manager when the account holds several) — the owner controls are visible only to a signed-in manager. Compose: the profile's own Add update / Post control, then the update type the post file names, the text, an optional image and the call-to-action button with its URL. Several update types have their own expiry behaviour; that belongs to the campaign's Phase 3 research, not to a guess here. Target detail required: which profile or location. Read-back: the profile's Updates section, the new post visible with its timestamp; capture whatever permalink the profile exposes, and say so plainly when it exposes none — an update with no shareable URL is still `posted`, with the read-back evidence being the visible entry and the count delta.
-
 ## nostr
 Check: the web client named in frontmatter — the user's own profile and a composer are reachable, and the client reports a signing method. **Key material is never touched**: no seed, no `nsec`, no private key is requested, read, pasted, or stored, and a signing-extension prompt (NIP-07 style) is handed to the user exactly like a captcha. Compose: the client's composer; media is usually uploaded to a separate host by the client's own upload control. Publishing broadcasts to relays, so propagation is not instant and not uniform. Read-back: the user's own profile feed **on that same client**, since a note visible on one client's relay set may not have reached another's — that is normal propagation, not a failure, and the ledger records which client confirmed it.
 
 ## hashnode
 Check: `hashnode.com` — the avatar and the write control. Compose: the editor — title, markdown body, tags, optional cover image, canonical URL when the article mirrors the user's blog, and the choice between the personal blog and a publication (frontmatter's target; a publication may route the draft to its editors instead of publishing). Read-back: the published article URL it lands on, opened and confirmed; a draft submitted to a publication for review is `pending-approval`, not `posted`.
 
-## wordpress
+## wordpress-blog
 Check: the site URL from frontmatter — `/wp-admin` reachable with the user's session (a login form means logged out). Self-hosted and wordpress.com are the same shape from here, but the editor may be the block editor, the classic editor, or something a plugin replaced: snapshot before acting rather than assuming. Compose: new post — title, body (paste markdown only if the editor accepts it; otherwise the block editor's own paste handling), categories and tags reusing existing terms, featured image, then **Publish** — distinct from Save draft and from Schedule, and the post file decides which. Read-back: the published permalink, opened and confirmed. This is the user's own site: no moderation, no cap, and no undo beyond what they do themselves, so the confirmation gate matters more here, not less.
-
-## whop
-Check: `whop.com` — signed-in dashboard, and the whop from frontmatter reachable with a composer visible (no composer = no posting rights on that feed → report and skip). Compose: the feed or channel named in frontmatter, through whatever composer the live UI presents — take a snapshot and derive the flow rather than reusing another platform's, since this product changes shape often. Confirm before sending whether the destination is member-only or public: posting a public announcement into a paying-members feed, or the reverse, is a visibility mistake that cannot be taken back by editing. Read-back: the same feed, the new post with its timestamp, and the permalink when the UI exposes one.
 
 ## threads
 Check: the Threads web app — the user's avatar and the composer entry on the home column. The account is an Instagram account: the session usually rides along with Instagram's, and the handle is the same one, so an Instagram login check is a strong prior but not proof — verify on Threads itself. Compose: the composer, type, attach through its own file input (scope to the composer's dialog — the page carries other uploaders), publish. Unlike Instagram, links in the body are clickable and media is optional. A reply chain is separate sequential posts through the composer's add control, only when the post file is explicitly a thread. Read-back: the user's own profile feed, newest post, its permalink opened and confirmed.
 
 ## telegram
 Check: the Telegram web client — the chat list loads and the user's own account is present; a phone-number or QR screen means logged out, and **login here is never automated under any circumstance** (it is a phone code, and asking for one is asking for account access). Compose: open the channel or group from frontmatter — posting rights are required and their absence shows as a missing message box, which is a report-and-skip, not a UI drift. Type into the message box, attach media through the client's own attach control. **Enter sends by default** (the client's setting can invert it), so internal newlines are `Shift+Enter` and the send happens once, at the end — otherwise a multi-line post arrives as one message per line to every subscriber, and every one of them gets a notification. The media caption cap is a different number from the plain message cap; the campaign's Phase 3 research carries both. Read-back: the channel's last message, its timestamp, and its permalink — `t.me/<channel>/<id>` for a public channel, the `t.me/c/…` form for a private one. Telegram allows editing after posting; only on the user's explicit request.
+
+## peerlist
+Check: `peerlist.io` — the user's own profile and a composer reachable while signed in. Compose: the feed composer on the profile or home page; small platform, so snapshot and derive the flow from what is on screen rather than reusing another network's. Read-back: the user's own profile feed, newest post, its permalink opened and confirmed.
+
+## daily-dev
+Check: `app.daily.dev` — signed-in state, the user's avatar in the header. Compose: a link submission goes through the platform's own submit control; a squad post goes to that squad's page from frontmatter, where posting rights are required and their absence shows as a missing composer (report and skip). A link already present in the feed is deduplicated by the platform — resubmitting is not a fix, it is a report. Read-back: the squad feed or the user's profile, the item visible with its timestamp and permalink.
+
+## pikabu
+Check: `pikabu.ru` — signed-in header with the user's nickname. Compose: the new-post editor; **tags are required** and an unset one blocks submission, the same trap as a required subreddit flair. Community posting from frontmatter uses that community's own submit path and its rules apply. Read-back: the user's own profile listing and the post permalink; moderation and automatic filters remove posts minutes after they land, so a post gone from the listing is a removal to report, never to repost.
+
+## medium
+Check: `medium.com` — avatar and the write control. Compose: the editor — title, body, up to the platform's tag limit; a publication target routes the draft to that publication's editors instead of publishing, which is `pending-approval`, not `posted`. Set the canonical URL when the piece mirrors the user's own blog. Confirm the paywall setting matches what the post file expects before publishing. Read-back: the published article URL, opened and confirmed.
+
+## substack
+Check: the publication's dashboard while signed in. **This platform sends email.** Publishing is not only a page going live: subscribers receive it, and nothing recalls a sent issue. Before submitting, read back the audience and section selection and the send-to-email toggle against what the post file declares — a wrong audience is not editable after the fact. Compose: new post → title, subtitle, body, section; then publish. Read-back: the published post URL and the dashboard showing it as sent, both captured; the send count is the evidence that the email half happened.
+
+## wordpress-com
+Check: the site's admin while signed in (`<site>.wordpress.com/wp-admin` or the hosted editor). Compose: new post — title, body, categories and tags reusing the site's existing terms, featured image, then **Publish**, distinct from Save draft and from Schedule; the post file decides which. The editor may be the block editor or something the plan replaces, so snapshot before acting. Read-back: the published permalink, opened and confirmed.
+
+## habr
+Check: `habr.com` — signed-in header with the user's account. Compose: the article editor — title, body, **hubs** (required, and the choice is part of the submission), tags, and the article type where the form asks for one. A low-karma or new account may be blocked from publishing at all: that shows in the form, and it is a report-and-stop, not something to work around. Read-back: the article URL and the user's own profile listing; moderation can hide a published article, so confirm it is still visible rather than trusting the redirect.
+
+## vc-ru
+Check: `vc.ru` — signed-in state, the user's avatar. Compose: the editor — title, body, cover image where the post file has one; a subsite target from frontmatter posts into that subsite rather than the personal blog, and its rules apply. Read-back: the published URL and the personal-blog or subsite listing; new posts pass through moderation on some subsites, which is `pending-approval`.
+
+## dzen
+Check: `dzen.ru/profile/editor` — the channel editor reachable while signed in; with several channels, the one from frontmatter is selected explicitly before anything is typed. Compose: article or short post per the post file, title, body, cover. Publication is followed by the platform's own review before the feed distributes it — the post exists immediately, its reach does not, and that is not a failure to retry. Read-back: the channel's own list of publications and the post permalink.
+
+## dzone
+Check: `dzone.com` — signed-in contributor state, the submission form reachable. Compose: new article — title, body, the required category, and the canonical URL when the piece mirrors the user's blog. **Submission is the terminal state for this skill**: ledger `pending-approval`, since editorial review decides publication on its own clock. Read-back: the draft listed as submitted in the contributor dashboard.
