@@ -28,7 +28,7 @@ Fetch and read the target's own rules (subreddit sidebar and wiki, community sid
 
 1. **The useful part comes first**, and it must stand alone: a reader who never clicks the link still got something.
 2. **Disclose plainly**, in the post body, not in a comment added later.
-3. **Title carries the post** on the aggregators — `reddit`, `lemmy`, `hackernews`, `pikabu`, `daily-dev`. Editorializing titles sink submissions; the `hackernews` guidelines ban them outright, and a tag or flair the platform requires is part of submitting, not a detail.
+3. **Title carries the post** on the aggregators — `reddit`, `lemmy`, `hackernews`, `daily-dev`. Editorializing titles sink submissions; the `hackernews` guidelines ban them outright, and a tag or flair the platform requires is part of submitting, not a detail.
 4. **Flair, tags and required fields** are part of submitting — an unset required flair blocks the post.
 5. **Answer the replies.** A campaign that posts into a community and leaves is the behaviour these rules exist against; say so to the user when the schedule assumes nobody is home.
 6. **Frequency is per community**, and low. Several posts a week into one room is the pattern moderators ban for, whatever the campaign's global frequency says.

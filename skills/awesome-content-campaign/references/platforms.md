@@ -40,18 +40,11 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `hackernews` | news.ycombinator.com | — | none supported | `genre-community-post.md` |
 | `daily-dev` | daily.dev | squad, when posting into one rather than submitting a link | optional | `genre-community-post.md` |
 | `wonderful-dev` | wonderful.dev | — | optional | `genre-community-post.md` |
-| `pikabu` | pikabu.ru | community, when posting into one | optional | `genre-community-post.md` |
 | `devto` | dev.to | — | optional | `genre-long-article.md` |
 | `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
 | `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
-| `dzone` | dzone.com | — | optional | `genre-long-article.md` |
 | `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
 | `substack` | substack.com | publication, when the account has more than one | optional | `genre-long-article.md` |
-| `wordpress-com` | wordpress.com | site, when the account has more than one | optional | `genre-long-article.md` |
-| `wordpress-blog` | self-hosted WordPress | site URL | optional | `genre-long-article.md` |
-| `habr` | habr.com | — | optional | `genre-long-article.md` |
-| `vc-ru` | vc.ru | subsite, when posting into one rather than a personal blog | optional | `genre-long-article.md` |
-| `dzen` | dzen.ru | channel, when the account has more than one | optional | `genre-long-article.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
@@ -158,35 +151,14 @@ A protocol rather than a site: the account is a key pair, and posting happens th
 ### hashnode
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
 
-### wordpress-blog
-A self-hosted WordPress install, so the rules are the user's: no platform promo policy, no character cap, no moderation. Which is exactly why it is easy to get wrong — a post here should be the canonical version other platforms point at, not a copy of a feed post. Editor differs between the block editor, the classic editor and whatever the theme adds; publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms rather than inventing new ones. Target detail required: the site URL.
-
 ### peerlist
 Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Small platform — read the live feed during Phase 3 for length norms, link handling and whether the composer supports anything beyond plain text.
 
 ### daily-dev
 Developer news aggregator. Two different acts: **submitting a link** to the public feed, where the title and the source do the work and self-promotion is judged the way an aggregator judges it, and **posting inside a squad**, which is a community with its own rules and moderators. The post file's target says which. Verify live what the composer accepts, how a submitted link is deduplicated against one already in the feed, and the squad's own promo rules before writing.
 
-### pikabu
-Russian community aggregator with votes, tags and moderation, structurally reddit-shaped but with its own culture: long-form storytelling and humour travel, marketing register is downvoted on sight, and accounts too new to have karma are limited in what they may post. Tags are mandatory and drive discovery. Target detail: the community when posting into one rather than the general feed; read its rules first, exactly as with a subreddit.
-
 ### medium
 General-purpose article platform with a rich editor rather than raw markdown. An article can sit on the author's own profile or be submitted to a **publication**, which routes it to that publication's editors and their schedule — submission is not publication, and the campaign must not treat it as such. Canonical-URL support matters when the piece also lives on the user's blog. Some articles sit behind the platform's paywall; whether the user's do is an account setting to confirm, not to assume.
 
 ### substack
 Newsletter platform where a post is simultaneously a web page and an email to subscribers. That second half changes the rules this file otherwise assumes: **publishing sends mail that cannot be recalled**, subscribers feel frequency directly, and a duplicate is not a downranked post but a second email. Sections and paywalled tiers decide who receives what. Target detail: the publication when the account has more than one.
-
-### wordpress-com
-Hosted WordPress: the same block editor as a self-hosted install, without server access. Publish, schedule and draft are distinct actions. Categories and tags are the site's own taxonomy — reuse the existing terms. Target detail: the site, when the account has more than one. Plan limits decide what the editor offers; check the live composer rather than assuming parity with self-hosted.
-
-### habr
-Russian-language technical community with articles filed into **hubs**, a karma system, and readers who audit claims in the comments within minutes. Hub selection is part of submitting, not an afterthought. Promotional articles belong to a separate paid company-blog format and an ordinary post written as marketing is flagged as such by the audience before a moderator arrives. New or low-karma accounts face posting limits — verify what the account may actually do before planning a slot. Long form is native; a feed-sized post reads as a draft.
-
-### vc-ru
-Russian business-and-tech media with user-written blogs. Register sits between an article platform and a community: posts are read for substance about a product, a market or a failure, comments are adversarial, and thin promotional posts are visibly punished. A post lands on the author's personal blog or in a **subsite** with its own audience and rules — target detail says which. Verify live what the editor supports and how the feed ranks a fresh post.
-
-### dzen
-Yandex's content platform: a channel publishes articles and short posts into an algorithmic recommendation feed rather than to followers, so the opening lines decide whether anything reaches anyone. Rich editor, images native, external links tolerated but weighted by the feed rather than by the reader. Target detail: the channel, when the account has more than one. The ranking rules are volatile and undocumented — verify current behaviour rather than repeating what worked before.
-
-### dzone
-Developer article platform with **editorial review**: a submitted draft is not a published article, and the schedule must treat submission time as submission time. Markdown or a rich editor depending on the flow, a required category, and a contributor agreement that governs republication — check the canonical-URL rules if the piece also lives on the user's own blog. Frequency is articles per campaign, never per day.

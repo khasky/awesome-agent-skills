@@ -66,7 +66,7 @@ One round, structured-question UI when available, custom answer always allowed.
 2. **Voice** — first person, the author reporting their own experience with the thing (default) · first person plural · neutral third person, for a source the author has no standing to have used · a voice profile from `awesome-content-voice` (path; `voice/*.md` is where to look) · a style guide from `awesome-style-mimic`.
 3. **Output language** — same as the source (default) · another language. A different language means the posts are written in it by someone who thinks in it, never carried across word by word; Phase 4 holds the rules, and for the Russian and English pair they come from `awesome-translate-ru-en`, applied in whichever direction this run needs.
 4. **Length and shape per platform** — native to the platform (default) · deliberately short · thread or multi-part where the platform supports it and the content is genuinely sequential.
-5. **Emoji and hashtags** — sparing per the platform's genre (default) · none · a rule the user states.
+5. **Emoji and hashtags** — a light sprinkle, one or two per short post where they land naturally (default) · none · a rule the user states. Hashtags follow the platform's researched norm either way.
 6. **What happens after the files exist** — publish now · publish at a time the user names · files only. Whatever the answer, the files are written first.
 
 Media only comes up where a platform requires it: the library the user offers, an offline graphic per `references/media-graphics.md`, or dropping that platform. A platform needing video that has none is dropped; a still is not a video.
@@ -97,9 +97,11 @@ The frame is invented on purpose; the substance never is. Allowed: having read i
 
 **Cut the specification.** Version floors, per-OS build numbers, tier matrices and requirement tables are what release notes are for, and a person writing about an update says roughly what changed and how recently. "Needs a fairly recent version" is how that sentence sounds. Where a constraint genuinely decides whether the reader can use the thing at all, it gets one plain clause and never a matrix; a long-form platform may carry one line more, still as prose. Whatever number does survive keeps the condition `source-notes.md` recorded.
 
-**Energy is set by the genre, and it is read before writing rather than after.** A micro-post opens on the hook and may carry an emoji or two where that platform's natives use them; a community post opens on the problem and stays plain; a long article earns its first line. Where the genre supports it a post is allowed to sound like someone who found something good: an opener that promises a payoff, a sharp line, the question the reader already has. Still banned everywhere: emoji as bullets, hype closers, and a loud label such as "PRO TIP" stamped on a post that carries no tip.
+**Energy is set by the genre, and it is read before writing rather than after.** A micro-post opens on the hook and carries its emoji where that platform's natives use them; a community post opens on the problem and stays plain; a long article earns its first line. Where the genre supports it a post is allowed to sound like someone who found something good: an opener that promises a payoff, a sharp line, the question the reader already has. Still banned everywhere: emoji as bullets, hype closers, and a loud label such as "PRO TIP" stamped on a post that carries no tip.
 
-**One em dash per sentence, never two.** A second one in the same sentence is a fingerprint no reader unsees. It becomes a full stop, a comma or a parenthesis.
+**No em dash in a post. Zero, not "sparingly".** The `—` character (and its long siblings `–` and `―`) is the single most recognisable machine fingerprint in a feed, and hand-set typography is not what a person types into a composer anyway. Every one of them becomes a full stop, a comma, a colon, or a pair of parentheses, and the sentence is usually better for it. This covers the body, the title, hashtag lines, alt text, and any words on a graphic. Two exceptions and no others: a verbatim quotation that carries one (prefer quoting a different line), and text inside a code block or a command. A hyphen inside a compound word, a flag or a slug is not a dash and stays.
+
+**Emoji are part of how these platforms are written, so use them.** A short post carries one or two, a long one a few, placed where a person would actually react: at the hook, on the turn, next to the payoff. They break up a wall of text and they make a post look written by someone rather than assembled. Restraint still applies: never as bullet markers, never one per line, never a row of three, never in place of a word the sentence needs, and never on a platform whose natives do not use them (the genre file and the Phase 3 research decide that). The interview's emoji answer overrides this default in both directions.
 
 Rules that hold across every platform:
 
@@ -120,7 +122,7 @@ What runs, taking from each catalog the part that applies to a feed post rather 
 - `awesome-document-style` Pass 1 — chatbot artifacts: citation markers, `utm_source=chatgpt.com` and its siblings on any surviving link, visible placeholders, zero-width characters, chat-UI leftovers.
 - `awesome-document-style` Pass 3 — filler adverbs, inflated importance, "it is important to note", "not only X but also Y", forced groups of three, vague positive endings, summary-stamp openers, and restatement of a point the post already made.
 - `awesome-humanize-en` — the structure pass in `references/structure-pass.md`, the masked contrast patterns, and the vocabulary tiers with their density gating.
-- `awesome-slop-audit` — the four markers from its catalog that survive into prose: em-dash saturation and two dashes inside one sentence, negative parallelism as the default shape ("not X, but Y"), the emoji-plus-bold-lead list rhythm, and a closing line that restates the opening.
+- `awesome-slop-audit` — the four markers from its catalog that survive into prose: em-dash use of any kind (here the bar is zero, stricter than that catalog's), negative parallelism as the default shape ("not X, but Y"), the emoji-plus-bold-lead list rhythm, and a closing line that restates the opening.
 
 Then read it out loud. Uniform sentence length, every line engineered to land, no ordinary sentence anywhere: that text was scrubbed rather than written, and one plain observation goes back in.
 
@@ -132,7 +134,7 @@ The other-language version is written in that language, not carried across from 
 
 For Russian and English in either direction, `awesome-translate-ru-en` holds the rules, and the load-bearing ones here are semantic-over-literal, its connector map read in whichever direction this run needs, register matching, and its forbidden-phrase list. On top of that, the tells that give away a Russian post assembled out of English: English word order left intact, «это не X, это Y» negation frames, calqued connectors («более того», «важно отметить», «в современном мире»), passive constructions where Russian wants an active verb, participial chains nobody speaks in, and a formal «вы» register on a feed written on «ты». The test is reconstruction: if a native reader can rebuild the English sentence behind the Russian one, the sentence is rewritten rather than adjusted.
 
-Identifiers, commands, flags, product names and error text stay in the original, untranslated.
+Identifiers, commands, flags, product names and error text stay in the original, untranslated. One rule of that skill does not carry over: where it says to preserve em dashes as em dashes, the zero-dash rule above wins, because these outputs are composer text rather than formatted prose.
 
 ## Phase 5 — Audit, two stages
 
@@ -141,7 +143,7 @@ List every finding across all posts first, then fix. Detection mixed into rewrit
 1. **Fidelity** — the post's point matches `source-notes.md`; every claim and number traces to it with its condition; quotations verbatim; nothing from the "does NOT say" section present. A post that fails here is rewritten, not patched.
 2. **Structure** — the discourse pass from `awesome-humanize-en` (`references/structure-pass.md`): the outline test, question sequence, position tells and stance, run on the unit itself. Across platforms the posts are deliberately the same post, so what is checked there is different: every version still carries the same point, the same provenance and the same numbers, and no adaptation quietly turned into a second claim.
 3. **Slop** — vocabulary and syntax against that skill's catalogs, with the voice profile's protected tics excluded.
-4. **Human register** — the Phase 4 rules, checked one by one: no calendar date anywhere, including titles, graphics and alt text; the first-person experience frame present where the voice answer asked for it, with no invented result inside it; no version matrix or specification dump; emoji and openers matching the genre file and the interview's emoji rule; at most one em dash per sentence, counted.
+4. **Human register** — the Phase 4 rules, checked one by one: no calendar date anywhere, including titles, graphics and alt text; the first-person experience frame present where the voice answer asked for it, with no invented result inside it; no version matrix or specification dump; emoji present and placed per the interview answer and the genre file, never as bullets; zero em dashes, counted by search rather than by eye, in body, title, hashtags, alt text and graphics alike.
 5. **Language** — for every post not written in the source language: the nativeness test from Phase 4, no calques, register consistent across the post, technical tokens untranslated.
 6. **Links** — no assistant domain in body, frontmatter or alt text; the link that is there is the one Phase 1 settled on, it resolves, and it carries the claim the post makes. A post with no link is recorded as such in `campaign.md` rather than quietly given one.
 7. **Length** — counted, not eyeballed, against the Phase 3 cap for each platform, hashtags included.
@@ -194,7 +196,8 @@ The report states: the source and its provenance, the link the posts carry and h
 - The neutral-summary voice: a post that reports someone else's announcement instead of the author's own run at it.
 - Fanning the unit out to ten platforms before the humanity pass has touched it, then hunting the same tell ten times.
 - A Russian post with English sentence order and calqued connectors showing through, produced by translating the English one instead of writing it.
-- Two em dashes in one sentence.
+- An em dash anywhere in a post, including the title, the alt text and the graphic.
+- A post with no emoji at all on a platform whose feed is full of them, and the opposite failure: emoji as bullet markers or one on every line.
 - Inverting the source's point by cutting the qualifier that carried it.
 - A number without the condition the source attached to it, or a paraphrase inside quotation marks.
 - Adding the adjacent claim the source stopped short of — that is what the "What the source does NOT say" section is for.
