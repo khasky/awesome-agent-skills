@@ -69,7 +69,9 @@ One round, structured-question UI when available, custom answer always allowed.
 5. **Emoji and hashtags** — a light sprinkle, one or two per short post where they land naturally (default) · none · a rule the user states. Hashtags follow the platform's researched norm either way.
 6. **What happens after the files exist** — publish now · publish at a time the user names · files only. Whatever the answer, the files are written first.
 
-Media only comes up where a platform requires it: the library the user offers, an offline graphic per `references/media-graphics.md`, or dropping that platform. A platform needing video that has none is dropped; a still is not a video.
+**One image, and it goes everywhere the platform takes one.** Ask for media once: the library the user offers, or an offline graphic per `references/media-graphics.md` when a selected platform requires media and nothing covers it. Whatever image the run ends up with — supplied or generated — is then attached to **every selected platform whose Media column is `optional` as well as every platform where it is `required`**, not only to the ones that cannot post without it. A run that renders a graphic for `instagram` and ships text-only posts everywhere else has done the work and thrown most of it away; the same picture earns its keep on `linkedin`, `x`, `mastodon`, `tumblr`, `patreon` and the rest, and on the article platforms it becomes the cover image.
+
+Three exceptions, and only these: a platform whose Media column says media is not supported (`hackernews`) gets nothing; a platform whose requirement is **video** cannot be satisfied by a still, so it is dropped rather than given the graphic; and a post whose own text argues against the picture — the user says so, or the image contradicts what that version says — carries no attachment, with the reason recorded in `campaign.md`. Every attachment carries alt text describing what the image shows, the same text on every platform.
 
 ## Phase 3 — Platform check
 
@@ -147,7 +149,7 @@ List every finding across all posts first, then fix. Detection mixed into rewrit
 5. **Language** — for every post not written in the source language: the nativeness test from Phase 4, no calques, register consistent across the post, technical tokens untranslated.
 6. **Links** — no assistant domain in body, frontmatter or alt text; the link that is there is the one Phase 1 settled on, it resolves, and it carries the claim the post makes. A post with no link is recorded as such in `campaign.md` rather than quietly given one.
 7. **Length** — counted, not eyeballed, against the Phase 3 cap for each platform, hashtags included, and counted the way that platform counts: a URL that costs a fixed 23 characters (`x`), CJK and emoji that cost two, a title that shares the body's budget. Where the cap could not be verified, the unit is written short enough that the question does not arise rather than written to the edge and hoped for — `peerlist` published a 495-character body cut two characters into its closing URL, with no counter and no error anywhere in the composer. **A post that ends on its link is the worst shape for an unverified cap**: put the link where losing the tail would not destroy the post, or shorten until the margin is real.
-8. **Media** — every declared attachment exists, matches the platform's verified formats, has alt text describing what the image says.
+8. **Media** — every declared attachment exists, matches the platform's verified formats, has alt text describing what the image says. **And the coverage is checked the other way round**: when the run has an image, every selected platform whose Media column reads `optional` or `required` declares it, with only the three exceptions from Phase 2 allowed and each one named in `campaign.md`. A picture attached to one post out of twelve is a finding, not a style choice.
 9. **Filename** — every name parses back against the contract in Phase 6.
 
 **The gate, per post:** any fidelity finding, any structural finding, any assistant-domain link, any calendar date, or three or more findings total → rewrite from the source notes; one or two wording findings → fix in place; none → ship. A rewritten post re-enters at pass 1. Fixes skew replace and delete over insert; the only addition allowed is specificity already present in the source notes. Report, do not "fix", posts that read scrubbed — no contractions anywhere, every line engineered, no ordinary sentence left.
@@ -201,6 +203,7 @@ The report states: the source and its provenance, the link the posts carry and h
 - Inverting the source's point by cutting the qualifier that carried it.
 - A number without the condition the source attached to it, or a paraphrase inside quotation marks.
 - Adding the adjacent claim the source stopped short of — that is what the "What the source does NOT say" section is for.
+- Rendering a graphic for the one platform that demanded it and shipping every other post text-only. The image was made for the idea, not for `instagram`; it belongs everywhere the platform accepts one.
 - Publishing without files, or writing files the publisher cannot parse.
 - Reimplementing any part of publishing, humanizing, or voice-building here instead of handing off.
 - Repurposing into a feed the ledger shows already carries this source, without telling the user.

@@ -8,7 +8,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 
 ## The canonical table
 
-`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and **never a dot** — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` marks the platforms that cannot post without an attachment. `Genre` names the register file Phase 5 writes against.
+`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and **never a dot** — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` says what the platform does with an attachment: **required** means it cannot post without one, **optional** means it takes one and the run's image belongs there too, and a row saying none is supported takes no attachment at all. Optional is not a synonym for "skip it" — when the campaign has an image, every optional row that the post targets gets it. `Genre` names the register file Phase 5 writes against.
 
 | Slug | Site | Target the interview must collect | Media | Genre file |
 | --- | --- | --- | --- | --- |
