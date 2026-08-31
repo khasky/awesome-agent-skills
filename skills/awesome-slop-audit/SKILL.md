@@ -52,7 +52,9 @@ Categories are numbered so partitioned sub-audits report against the same list.
 3. Banner rows: `// ====`, `// ----`, `/* ---------- Name ---------- */`.
 4. Typographic glyphs in comment text: `— – … → ⇒ ↔ ≤ ≥ ± ≈ × ≠`, curly quotes,
    decorative bullets, emoji, non-breaking spaces. A hand-typed comment uses
-   `-`, `->`, `<=`, `~`, `x`.
+   `-`, `->`, `<=`, `~`, `x`. Markdown backticks around identifiers belong here
+   too (`` // the query is logged in `query` ``) — except in doc comments a tool
+   renders as markdown (TSDoc, rustdoc, published docstrings).
 5. Stale or false claims: drifted counts, version-pinned numbers, removed
    mechanisms, misplaced doc blocks sitting above the wrong definition.
 6. Change-narration: "now uses", "updated to", "used to be", "extracted from

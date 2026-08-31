@@ -184,7 +184,7 @@ function getMarket(id: any): Promise<any> { /* ... */ }
 ## Comments and docs
 
 - **Explain why, not what** — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
-- **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
+- **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. No markdown backticks around identifiers either — `// dropped from the URL, the query is logged in query`, not `` // ... logged in `query` ``; backticks stay only in doc comments a tool renders as markdown (TSDoc, rustdoc, published docstrings). (Comment text only — never string literals, identifiers, or data.)
 - **Doc comments on public APIs** — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
 - **No commented-out code** — Remove or explain in a ticket; use version control for history.
 
