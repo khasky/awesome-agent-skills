@@ -24,7 +24,13 @@ Check: the group URL from frontmatter — member view with a composer visible (n
 ## linkedin
 Check: `linkedin.com/feed/` — the member name renders in the rail. Compose: "Start a post" → the share dialog → `.ql-editor[contenteditable="true"]` → "Post". Read-back: own profile → recent activity/posts.
 
-**The share dialog can refuse to mount at all.** On a feed rendering with ~190 console errors, the button was present on the first probe and gone on the re-render; a coordinate click opened nothing, `el.focus()` reported `focus-failed`, and `linkedin.com/feed/?shareActive=true` produced zero `[contenteditable]` nodes and zero dialogs. Nothing about this is a selector to fix — it is the page failing to boot its composer. Two attempts and a route attempt, then record `failed` and move on; retrying it later in a fresh tab is a better use of the run than climbing further.
+**The reliable way in is `linkedin.com/preload/sharebox/`** — it opens the share composer directly, with `.ql-editor[contenteditable="true"]` ready. The profile route works too: the Activity section of `linkedin.com/in/<handle>/` carries a "Create a post" link pointing at that same URL. From the feed, the composer often refuses to mount at all: on a page rendering with ~190 console errors the button was present on one probe and gone on the next, and `?shareActive=true` produced zero editors.
+
+**Filling needs `page.keyboard.insertText`.** `handle.type`, `keyboard.type` after a coordinate click, and even `el.focus()` reporting success all leave the Quill editor empty; insertText fills it in one shot. Quill reports a few more characters than the source (it renders `\n\n` as `\n\n\n\n`), so compare the URL and the tail rather than the exact count.
+
+**Submitting works only through `el.click()` from `page.evaluate`.** With the body in place the Post button enables, and a coordinate click, an element-handle click and a force click all leave the activity feed unchanged — the newest post stayed a month old, while a `beforeunload` on the way out confirmed the draft was still sitting there. The untrusted JS click published immediately. Take the last enabled button whose text is exactly "Post"; the draft persists across reloads, so a failed attempt costs nothing and can be finished by hand.
+
+Read-back: `linkedin.com/in/<handle>/recent-activity/all/` should show the post as "Feed post number 1 … now"; the permalink is `linkedin.com/feed/update/urn:li:activity:<id>/`, and the URN is in that page's HTML. **LinkedIn rewrites every link to `lnkd.in/<code>` and renders a preview card**, so a tail comparison against the source URL fails on a perfectly intact post — check that the `lnkd.in` link and the card title are present instead, and that the original URL still appears in the page HTML.
 
 ## reddit
 Check: `reddit.com` — avatar in the header. Compose: `reddit.com/r/<subreddit>/submit` — title into the title field, body into the markdown/text field; set flair when frontmatter names one (some subs require it — an unset required flair blocks submission). Read-back: the subreddit's /new listing AND the user's profile — automod can remove a post seconds after it lands; removed = report to the user, never repost the same content at the same sub.
@@ -41,7 +47,11 @@ Three traps, all of which cost a run:
 - **The editor restores its autosaved draft.** Reloading `/new/text` after an abandoned attempt brings the old text back, so a second type doubles the post. Check the editor is empty *before* typing, and note that `Ctrl+A` + Backspace does not clear these blocks.
 - **Leaving raises `beforeunload`.** Accept the dialog to discard the draft and leave; dismissing it keeps you on the page. `page.on('dialog', d => d.accept())` inside the script handles the pair of them.
 
-Submit is "Post now". A click that leaves the page on `/new/text` with the text still in the blocks did **not** publish — confirm on `tumblr.com/blog/<name>`, where the newest post must be the new one, before recording anything.
+Entry point: the sidebar's `a[aria-label="Create a post"][href="/new"]`, or go straight to `tumblr.com/new/text`.
+
+Submit is "Post now", and **the trusted click does nothing** — five polls left the text sitting in the block. `el.click()` from `page.evaluate` publishes and redirects to `/dashboard`. Confirm on `tumblr.com/blog/<name>` before recording anything; the permalink is `tumblr.com/<name>/<id>/<slug>` and an `/edit/<name>/<id>` link sits beside it.
+
+**Filling has a trade-off, and both sides cost something.** `keyboard.type` types into the block editor correctly but the tag field steals nothing and the draft-restore trap above applies; `keyboard.insertText` fills reliably in one shot **but collapses the whole body into a single block**, so blank lines vanish and sentences run together (`each other.It doesn't.`). Prefer insertText for getting text in, then either restore the paragraph breaks with explicit `Enter` presses between blocks, or accept a one-block post and record it `degraded` — editing afterwards is possible here but needs the user's explicit request.
 
 ## mastodon
 Check: `https://<instance-from-frontmatter>/home` — the compose column renders the handle, the visibility control ("Public, quotes allowed") and the live character budget. Compose: `textarea.autosuggest-textarea__textarea` (placeholder "What's on your mind?"), coordinate-click and type; submit is the button labelled "Post". The textarea empties on success. The whole flow works first try — no actionability fights, no intent route needed.
@@ -70,7 +80,7 @@ Read-back, when it works: the profile's Truths tab renders posts as `/@<handle>/
 ## wonderful-dev
 Check: `wonderful.dev` — logged-in header state; the app lands on `/home`. Compose: the composer is already on the timeline — a visible `textarea[placeholder="Start typing…"]`, no dialog to open. Coordinate-click it and type.
 
-**The submit control has no label.** The visible "Post" text at the top of the page is the composer's *type* tab (Media / Poll / Post), and clicking it does nothing to submit — the first attempt left the text sitting in the box and published nothing. The real control is the single `input[type=submit]` inside the textarea's own form, roughly 32 px wide with an empty label: find it by scoping to `textarea.closest('form')`, then coordinate-click its rect. Read-back: the timeline shows the post immediately; the composer does **not** clear on success, so an empty-box check reports failure on a post that landed — verify by the body text appearing under a `wonderful.dev/<handle>/post/thread_<id>` link instead.
+**Submitting is unsolved, and one attempt looked successful when it wasn't.** The visible "Post" text at the top of the page is the composer's *type* tab (Media / Poll / Post) and submits nothing. The textarea's own form holds a single unlabelled `input[type=submit]` about 32 px wide; a coordinate click on it, and a JS `el.click()` on it, both left the profile with the same four older posts. Filling works — `t.focus(); t.setSelectionRange(0, t.value.length)` then `page.keyboard.insertText(text)` lands the body exactly — so the gap is the submit alone. Two attempts, then report and skip. **Read-back here is a trap in both directions.** The composer does not clear on success, so an empty-box check reports failure on a post that landed — and, worse, counting occurrences of the body text *on the same page* counts the text still sitting in the composer, which reported a successful publish for a post that was never created. Verify on `wonderful.dev/<handle>`: open the `post/thread_<id>` permalinks and confirm one of them is the new body, since old posts live at the same URL shape and a permalink alone proves nothing.
 
 ## hackernoon
 Check: `app.hackernoon.com` — the reader shell greets the user by handle, which confirms the session. Compose: in theory new draft → title, markdown body → submit for review, and **submission is the terminal state for this skill** (ledger `pending-approval`).
@@ -108,12 +118,24 @@ Check: `patreon.com` — redirects to `patreon.com/c/<handle>` with a Dashboard 
 Playwright's own `.click()` times out on both fields (actionability never settles); **coordinate clicks work**, aimed at the top of the element's rect rather than its centre for the tall body div. Visibility (public vs members) is set by the frontmatter, and no frontmatter value → ask, don't default. Read-back: publishing navigates to `patreon.com/<handle>/posts/<slug>-<id>?pr=true`; strip the query for the permalink, and confirm no "Join to unlock" gate is present — though as the creator you see the body either way, so a public/members claim rests on what was set, not on what you can see.
 
 ## ko-fi
-Check: `ko-fi.com/Manage/` — the manage rail (Home, Your page, Feed, Settings) renders for a signed-in user. Compose: the update composer is `textarea#postUpdateTextBox` ("Write a quick update…"), and **it exists in the DOM while being invisible**, so an element-handle click times out on visibility. `ko-fi.com/feed` briefly exposes "Post" and "Blog post" controls, and they vanish on re-query and never appear in the a11y snapshot; `/Manage/newpost`, `/post/new` and `/Manage/feedposts` all redirect back to `/Manage/`.
+Check: `ko-fi.com/Manage/` confirms the session, but **the composer is not there** — it lives on the creator's own page, `ko-fi.com/<handle>`. `/Manage/newpost`, `/post/new` and `/Manage/feedposts` all redirect back to `/Manage/`, which is what makes this look unreachable.
 
-Two full attempts across two runs produced no reachable composer. Treat ko-fi as **report-and-skip** unless a snapshot shows a visible composer, and say plainly that the update has to be posted by hand.
+The working sequence, all of it verified:
+
+1. On `ko-fi.com/<handle>`, take `button.creator-menu-btn` (the "Create" dropdown, `data-toggle="dropdown"`). Trusted clicks do nothing on it; **`el.click()` from `page.evaluate` opens it** — it is a Bootstrap toggle listening for a plain click event.
+2. In the dropdown, "Post something" opens the modal `#addContentMenuModal`, whose row reads `Post · Image · Blog post · Video · Poll · Audio`. The number displayed in that modal is the **character cap: 800**.
+3. Clicking "Post" in the modal makes `textarea#postUpdateTextBox` visible (it exists but has zero height until then, which is why an earlier run reported it invisible and gave up).
+4. Filling it needs the same trick as the rest of the page: `t.focus(); t.setSelectionRange(0, t.value.length)` in-page, then `page.keyboard.insertText(text)` — which also replaces whatever is already there. `handle.type`, `keyboard.type` and coordinate clicks all leave it empty, and `Ctrl+A`+Backspace does not clear it.
+5. Submit is `#postUpdateButton`, again via `el.click()` from `page.evaluate`; the textarea clears on success.
+
+**The 800-character cap truncates silently.** A body of 805 characters came back as 800 with the tail of the URL gone — the same failure shape as `peerlist`, except here the number is on screen. Fit the post to 800 before typing, then verify head and tail.
+
+Read-back: `ko-fi.com/<handle>/posts` shows the update; ko-fi exposes **no per-post permalink** in the feed, so record the posts page and say so.
 
 ## bastyon
-Check: `bastyon.com/index` — the feed renders with the account link and a PKOIN balance, which is the only signed-in signal available. Compose: **no composer is reachable through automation.** The feed exposes no buttons, no `[role="button"]` nodes and no editors; `/post`, `/post?edit`, `/editor` and `/index?share=1` all render an empty document. Key-pair auth means posting may additionally require a signing prompt, which belongs to the user in any case. Report and skip.
+Check: `bastyon.com/index` — when the app hydrates, the feed renders with the account link and a PKOIN balance, which is the only signed-in signal available. The composer a user sees is a field with `placeholder="What's new?"`.
+
+**The PWA stops hydrating under automation.** After the first few navigations, every route — `/`, `/index`, `/<handle>`, `/post`, `/editor`, `/index?share=1` — returned a document whose `body.innerText` was empty, including after a full reload with `waitUntil: 'load'` and 15 seconds of waiting; no placeholders, no buttons, no shadow roots, nothing to click. Key-pair auth means a signing prompt may be waiting behind the composer anyway, and that belongs to the user. Report and skip, and say the page renders for them but not for the automation.
 
 ## buymeacoffee
 Check: **`studio.buymeacoffee.com/posts`**, not `buymeacoffee.com` — the marketing homepage shows "Log in / Sign up" to a fully signed-in user, so checking there reports a false logged-out. The studio page also carries the read-back baseline: a "Published N" counter.
