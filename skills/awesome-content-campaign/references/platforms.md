@@ -12,7 +12,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 
 | Slug | Site | Target the interview must collect | Media | Genre file |
 | --- | --- | --- | --- | --- |
-| `facebook-wall` | facebook.com | Page URL or personal-timeline URL (ask which — different surfaces, different tone) | optional | `genre-micro-post.md` |
+| `facebook-wall` | facebook.com | **defaults to the personal timeline** (`facebook.com/<handle>`); ask only when the account also manages Pages | optional | `genre-micro-post.md` |
 | `facebook-group` | facebook.com/groups | group URL | optional | `genre-community-post.md` |
 | `linkedin` | linkedin.com | — | optional | `genre-micro-post.md` |
 | `reddit` | reddit.com | subreddit | optional | `genre-community-post.md` |
@@ -21,7 +21,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `mastodon` | any Mastodon instance | instance domain | optional | `genre-micro-post.md` |
 | `bluesky` | bsky.app | — | optional | `genre-micro-post.md` |
 | `x` | x.com | — | optional | `genre-micro-post.md` |
-| `threads` | threads.net | — | optional | `genre-micro-post.md` |
+| `threads` | threads.com | — | optional | `genre-micro-post.md` |
 | `truthsocial` | truthsocial.com | — | optional | `genre-micro-post.md` |
 | `nostr` | client-dependent | the web client the user posts through | optional | `genre-micro-post.md` |
 | `bastyon` | bastyon.com | — | optional | `genre-micro-post.md` |
@@ -30,10 +30,9 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `discord` | discord.com | server + channel | optional | `genre-community-post.md` |
 | `slack` | slack.com | workspace + channel | optional | `genre-community-post.md` |
 | `peerlist` | peerlist.io | — | optional | `genre-micro-post.md` |
+| `minds` | minds.com | — | optional | `genre-micro-post.md` |
 | `instagram` | instagram.com | — | **required** | `genre-micro-post.md` |
-| `tiktok` | tiktok.com | — | **required** (video) | `genre-micro-post.md` |
 | `pinterest` | pinterest.com | board | **required** | `genre-micro-post.md` |
-| `youtube` | youtube.com | channel, when the account has more than one | **required** for uploads (video); optional on the Community tab | `genre-micro-post.md` |
 | `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
 | `ko-fi` | ko-fi.com | — | optional | `genre-micro-post.md` |
 | `buymeacoffee` | buymeacoffee.com | — | optional | `genre-micro-post.md` |
@@ -45,6 +44,8 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
 | `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
 | `substack` | substack.com | publication, when the account has more than one | optional | `genre-long-article.md` |
+| `write-as` | write.as | blog, when the account has more than one | optional | `genre-long-article.md` |
+| `telegraph` | telegra.ph | — | optional | `genre-long-article.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
@@ -54,7 +55,7 @@ A platform the user names that is not on this list is written for like any other
 
 ## What to verify live, per selected platform
 
-- Post length cap, and whether it differs by account tier (X: free vs premium) or by instance (mastodon).
+- Post length cap, and whether it differs by account tier (X: free vs premium) or by instance (mastodon). **A cap the composer does not enforce is still a cap**: `peerlist` accepted a 495-character body and published it truncated mid-URL, so a platform whose composer shows no counter gets a deliberately short unit, and the published post is compared to the source afterwards, tail first.
 - Media: which formats, whether mandatory, count limits per post.
 - Links: clickable? auto-previewed? deprioritized by the feed? caption links dead (instagram)?
 - Hashtag norms: how many read as native, where they are a separate field (tumblr tags), where they do not exist (reddit).
@@ -65,7 +66,7 @@ A platform the user names that is not on this list is written for like any other
 ## Profiles
 
 ### facebook-wall
-Personal or page timeline. Short-to-medium conversational prose; links auto-preview; hashtags carry little weight. Media optional. Page vs personal profile differ in tone expectations — ask which the target is.
+**The personal timeline is the default surface** — `facebook.com/<handle>`, the wall the user posts to themselves. A Page is the exception, not the question to open with: only when the account manages Pages does the interview ask which surface, and a user who names their own profile URL has already answered. Short-to-medium conversational prose; links auto-preview; hashtags carry little weight. Media optional. Page and personal timeline differ in tone expectations, so a post written for one is not simply moved to the other.
 
 ### facebook-group
 A post into a community someone else moderates. Group rules gate promo harder than platform policy does; many groups queue posts for admin approval — publication is not instant and the campaign should not assume it. Target detail required: group URL. Value-first register; blunt ads get declined.
@@ -121,9 +122,6 @@ Supporter posts, same family as ko-fi: short, personal, update-flavored.
 ### instagram
 Image or video **required** — no media, no post. Caption links are not clickable ("link in bio" is the native CTA phrasing); hashtag blocks are native. Web composer exists at instagram.com. Verify caption cap and current media specs.
 
-### tiktok
-Video **required**; caption short. Web upload exists. A campaign without video content excludes this platform rather than faking it.
-
 ### bastyon
 Decentralized platform; account identity is a key pair and login flows differ from mainstream platforms. Crypto/free-speech-adjacent culture. Verify caps and media support live — documentation is thin, the live UI is the source of truth.
 
@@ -142,9 +140,6 @@ A chat message in one channel of one server, not a feed post: no discovery, no a
 ### slack
 A message in one channel of one workspace: no discovery, no algorithm, no hashtags. Structurally Discord's twin, socially stricter — most workspaces are workplaces, and a promotional message outside a designated channel reads as an intrusion into someone's job. Posting rights and channel conventions are the workspace's, not the user's; read the channel's recent messages and any pinned rules first. Target detail required: workspace and channel. Threads are a first-class structure here — verify whether the post belongs in the channel or in a thread before writing.
 
-### youtube
-Two different surfaces on one account. **Uploads** (video, including Shorts) carry a title, a description and tags, and the campaign writes those fields rather than the video itself — the video must already exist. **Community posts** are text, image or poll, and behave like a short feed post; whether the channel has that tab at all has historically been gated by channel size, so verify it live for this account rather than assuming. Description links are clickable; the first lines are what shows before the fold. Target detail required when the account manages more than one channel or a brand account.
-
 ### nostr
 A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
 
@@ -152,13 +147,22 @@ A protocol rather than a site: the account is a key pair, and posting happens th
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
 
 ### peerlist
-Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Small platform — read the live feed during Phase 3 for length norms, link handling and whether the composer supports anything beyond plain text.
+Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Composer is a dialog with an optional title field plus a body; **the body is silently truncated on publish** — a 495-character body came back cut two characters into the closing URL, with no counter and no warning in the composer. Keep the body at 400 characters or less, put the link where a few lost characters would not destroy it, and compare the published post's tail against the source. Small platform otherwise — read the live feed during Phase 3 for length norms and whether the composer supports anything beyond plain text.
 
 ### daily-dev
 Developer news aggregator. Two different acts: **submitting a link** to the public feed, where the title and the source do the work and self-promotion is judged the way an aggregator judges it, and **posting inside a squad**, which is a community with its own rules and moderators. The post file's target says which. Verify live what the composer accepts, how a submitted link is deduplicated against one already in the feed, and the squad's own promo rules before writing.
 
 ### medium
 General-purpose article platform with a rich editor rather than raw markdown. An article can sit on the author's own profile or be submitted to a **publication**, which routes it to that publication's editors and their schedule — submission is not publication, and the campaign must not treat it as such. Canonical-URL support matters when the piece also lives on the user's blog. Some articles sit behind the platform's paywall; whether the user's do is an account setting to confirm, not to assume.
+
+### minds
+Open-source social network with a crypto-adjacent, free-speech-forward culture and a small technical audience. A post is a short feed entry with optional media and clickable links; the composer sits at the top of the newsfeed. Accounts carry a token/reward layer that has nothing to do with posting — never touch wallet, boost or monetisation controls, and never enter a paid Boost flow, which sits next to the post button. Verify the current character cap live.
+
+### write-as
+Minimal, distraction-free blogging: a single editor pane where the first line becomes the title and everything below is the body, published to a blog under the account. No tags, no cover image, no editorial review, and posts can be anonymous or attached to a named blog — the target says which blog when the account has more than one. Markdown is supported. The register is an essay or a note, not a feed post; a three-line post looks lost there.
+
+### telegraph
+Telegram's throwaway publishing surface: title, author and body in one page, no account required and no dashboard. That is the catch worth stating — **a `telegra.ph` page is editable only from the browser that created it**, through a local token, so a page published from an automation session cannot be edited later from another machine. Nothing is discoverable on the platform itself: a Telegraph page has no feed and no audience, so it exists to be linked from somewhere else. Markdown does not apply; the editor is rich text and links are inserted as links.
 
 ### substack
 Newsletter platform where a post is simultaneously a web page and an email to subscribers. That second half changes the rules this file otherwise assumes: **publishing sends mail that cannot be recalled**, subscribers feel frequency directly, and a duplicate is not a downranked post but a second email. Sections and paywalled tiers decide who receives what. Target detail: the publication when the account has more than one.

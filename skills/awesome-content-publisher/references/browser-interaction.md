@@ -75,7 +75,21 @@ Climb only as far as needed; stop at the first rung that works. Never repeat a f
    ```
    The separate `move` → `down` → `up` with pauses beats `page.mouse.click()` on UIs that gate on hover state, and it reads as human. It bypasses the actionability wait entirely while still producing a **trusted** event.
 3. **Focus + Enter** — for `role="button"` / `tabindex="0"` items, especially dropdown menu entries: `el.focus()` in-page, then `page.keyboard.press('Enter')`. This rescued VK's create-post menu when both click forms timed out.
-4. **`page.evaluate(el => el.click())` — last resort, and never for file inputs or anything gated on user activation.** It is an untrusted event; Chrome ignores it for file choosers and some frameworks ignore it entirely.
+4. **The accessibility ref: `browser_find` for the label, then click the returned `aria-ref`.** On Instagram this opened the create-post dialog first try after coordinate clicks, `getByText` force clicks and the documented icon-column coordinates had all failed silently. It is cheap (one find, one click) and it targets what the page actually exposes rather than where a rect happened to be. Try it early, not last.
+5. **Element handle: `page.$(sel)` then `handle.click({timeout})`** — Playwright's own actionability applies, so it fails where rung 2 fails, but it succeeds on components that ignore synthetic mouse coordinates and only respond to a properly targeted event (Buy Me a Coffee's editor, HackerNoon's controls). Cheap to try after rung 2.
+5. **Force click: `locator.click({ force: true })`** — skips actionability, still a trusted event. It reports success even when the app does nothing, so **treat "force ok" as an attempt, never as a result**: re-probe for the dialog or the editor before typing.
+6. **`page.evaluate(el => el.click())` — last resort, and never for file inputs or anything gated on user activation.** It is an untrusted event; Chrome ignores it for file choosers and some frameworks ignore it entirely.
+
+**When the composer refuses to open, stop clicking and look for the platform's own intent route.** Several networks publish a URL that opens the composer prefilled, and it beats every rung above because there is nothing to click and the text arrives already counted:
+
+- `https://bsky.app/intent/compose?text=<encoded>`
+- `https://www.threads.com/intent/post?text=<encoded>`
+- `dev.to/new`, `studio.buymeacoffee.com/posts/new`, `patreon.com/posts/new`, `tumblr.com/new/text`, `hashnode.com/draft/new` — direct composer routes rather than intents, but the same idea: skip the button.
+
+Two more rules learned the hard way:
+
+- **Typing that reports success can still land nowhere.** `el.focus()` returning `document.activeElement === el`, and a coordinate click on a visible textarea, both preceded fields that stayed empty (Minds, Buy Me a Coffee, Tumblr's tag field). Always read the value back after typing and compare it to the source — length, head and tail — before touching submit.
+- **The composer may live in a child frame.** When the top-document selectors resolve to elements that cannot be typed into, loop `page.frames()`, find the frame whose document has both the title field and the editor, and drive that frame's handles. Buy Me a Coffee's studio does exactly this, and from the top document it looks like an ordinary page with dead fields.
 
 **Coordinates shift between renders.** Re-read the rect immediately before each click inside the same script. A rect captured before a `waitForTimeout` is already stale on these pages.
 
@@ -100,6 +114,7 @@ Rules, in order:
 
 ## Typing
 
+- **Target every field by its own identity — never "the first visible text input".** Composer dialogs carry neighbours that accept text just as happily: Instagram's alt-text accordion sits beside `aria-label="Add location"` and `aria-label="Add collaborators"`, and falling back to the first text input typed a whole alt description into the location field. Match on `id`, `placeholder`, `aria-label` or `data-placeholder`; when none of them identifies the field, stop and report rather than guessing, and if text has already gone somewhere wrong, clear it and re-read the field before submitting.
 - Click into the field with a real mouse click first, then `page.keyboard.type(text, { delay: 7-12 })`. Cheap, human-paced, and one script call for a whole post.
 - `fill()` **replaces** the whole value. Fine for a single shot into an empty contenteditable (it worked on VK, producing correct `<br><br>` paragraph breaks); never use it to append — the second call wipes the first.
 - Blank line between paragraphs = two `Enter` presses. Then verify: `innerText` may show `\n\n\n` for one visual blank line depending on the editor's block model. Compare against the source file's *meaning*, not its exact whitespace.
