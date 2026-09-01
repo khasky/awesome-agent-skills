@@ -57,6 +57,8 @@ Composition craft on top of that: large marks with real negative space around th
 
 **The data on the canvas is the knowledge map's, at its real values.** A bar pair is sized to the actual ratio, an arc filled to the actual fraction, a timeline spaced to the actual intervals. A shape drawn to look good and labelled with a real number is a fabricated chart, which is worse than no chart: it asserts a quantity the sources do not carry, in the one place a reader cannot check it.
 
+**No trademark word carrying its ordinary meaning on the canvas** — `slack` for spare capacity, `stripe`, `square`, `notion`, `discord`, `prime`, `oracle`, `meta`, `swift`, `zoom`. A label has no sentence around it to disambiguate, so the company wins the read outright; use the plain synonym (head start, margin, band) unless the graphic is genuinely about that company. Applies to the alt text too.
+
 Hard content rules: whatever few words appear come from the knowledge map, exactly as the map states them; the diagram may not assert a relationship the sources do not carry; no invented metrics, no fake product screenshots, no mocked-up testimonials or star ratings, no logos of companies the sources do not connect to the product. An image is a claim surface like any other sentence in the campaign.
 
 ## The variant set, and who picks
