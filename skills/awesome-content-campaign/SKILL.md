@@ -116,6 +116,16 @@ Exactly 5 fields separated by `_`; inside a field only `-` (never `_`, which wou
 
 - **pub-timezone** — the IANA name with `/` and `_` replaced by `-`: `Europe/Kyiv` → `Europe-Kyiv`, `America/New_York` → `America-New-York`. The frontmatter keeps the real IANA name; the filename token is display and fallback.
 - **full-post-title** — lowercase ASCII kebab-case slug of the title, ≤ 50 chars (Windows path limits are real).
+
+**The title itself names its subject and states its point, and it is written before the slug is cut from it.** A title is read in three places where no post surrounds it: a file listing months later, a composer's title field, an aggregator's feed. So it has to survive alone. Name the thing the post is about — the product, the model, the release, the actor — and say what happened to it. `H3 Max generates video faster than it plays` works. `Five seconds in under three` is a riddle: nothing in it says what is five seconds, whose, or why a reader should care, and the fact that the body explains it is exactly the problem, because the title is what has to earn the body being opened.
+
+Three failures this rules out, all of them shapes that look like titles:
+
+- **The unanchored fragment** — a measurement, a ratio or a phrase with its subject removed (`Five seconds in under three`, `Under $800k a year`, `Two minutes of it`). If the reader cannot answer "of what?" from the title, the subject was cut.
+- **The topic label** — a noun phrase naming an area rather than a claim (`Video generation speed`, `Notes on H3 Max`, `Thoughts on AI streams`). A title is a sentence's worth of meaning even when it is not a sentence.
+- **The teaser** — a title written to withhold (`This one number changes everything`, `What fal just shipped`). Curiosity bait reads as marketing on every surface here and as spam on the aggregators.
+
+Where a platform's own title field carries the post (`reddit`, `lemmy`, `hackernews`, `daily-dev`), the same rule is stricter, not looser: state the fact plainly and let the title be the whole pitch, since `hackernews` guidelines ban editorializing outright. A long-form platform may extend the title with the consequence (`… and that turns it into a channel`); a micro platform's title is metadata and stays short. All of them anchor on the same subject, because one unit adapted means one title adapted, never several unrelated ones.
 - **target-platform-name** — one of the canonical slugs from Phase 2, verbatim.
 
 Validation is part of this phase, not a hope: after generating names, parse every one back against `^(\d{4}-\d{2}-\d{2})_(\d{2}-\d{2})_([A-Za-z][A-Za-z0-9-]*)_([a-z0-9][a-z0-9-]*)_(<slug-list>)\.(md|txt|csv|html|pdf)$` and check no platform has two posts in one slot. A name that fails the round-trip is fixed before writing content into it.

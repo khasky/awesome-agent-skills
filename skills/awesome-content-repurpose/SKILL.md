@@ -179,6 +179,10 @@ YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.md
 
 The scheduled time is the publish time chosen in Phase 2 (now, or the time the user named). Frontmatter carries `platform`, `scheduled`, `timezone`, `title`, `voice`, `target` where the platform needs one, `attachments` with alt text, `links`, `hashtags`, `status: draft`. `links` holds the public source Phase 1 settled on, or nothing at all; the URL the source arrived on never lands there when it belongs to an assistant.
 
+**The `<title>` field is a lowercase kebab-case slug**, cut from the post's title after that title is written — the publisher parses the name against `[a-z0-9][a-z0-9-]*` for this field, so a capital letter or an underscore fails the round trip before a word of content is read.
+
+**What the title has to say is `awesome-content-campaign`'s rule and is not restated here**: name the subject and state the point, never an unanchored fragment, a topic label or a teaser. It is the same rule the unit's own headline follows, applied to the field a composer and a file listing will show without the post around it.
+
 **`voice` is written on every post file, always, and it names what was actually used rather than what was offered.** A post read back months later has to answer which voice wrote it without the manifest beside it, and a batch written under a profile that has since been rewritten is unreadable evidence otherwise. The value is the Phase 2 answer resolved to its source:
 
 - A profile from `awesome-content-voice` → `profile: <path>`, the path as it was read, so the file can be opened again.
