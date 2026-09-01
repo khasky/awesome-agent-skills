@@ -32,4 +32,3 @@ Fetch and read the target's own rules (subreddit sidebar and wiki, community sid
 4. **Flair, tags and required fields** are part of submitting — an unset required flair blocks the post.
 5. **Answer the replies.** A campaign that posts into a community and leaves is the behaviour these rules exist against; say so to the user when the schedule assumes nobody is home.
 6. **Frequency is per community**, and low. Several posts a week into one room is the pattern moderators ban for, whatever the campaign's global frequency says.
-7. **Chat platforms are not feeds.** On `discord`, `slack` and any other channel-based surface there is no discovery and no algorithm: the people in that channel see it in order, so it reads louder than anywhere else on this list, and multi-line bodies must be sent as one message rather than one line per send. In a workspace that is somebody's job, the bar for posting at all is higher than the bar for posting well.

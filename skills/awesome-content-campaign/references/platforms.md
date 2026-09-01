@@ -27,8 +27,6 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `bastyon` | bastyon.com | — | optional | `genre-micro-post.md` |
 | `vk-wall` | vk.com | own wall or a community the user may post to | optional | `genre-micro-post.md` |
 | `telegram` | t.me | channel or group | optional | `genre-micro-post.md` |
-| `discord` | discord.com | server + channel | optional | `genre-community-post.md` |
-| `slack` | slack.com | workspace + channel | optional | `genre-community-post.md` |
 | `peerlist` | peerlist.io | — | optional | `genre-micro-post.md` |
 | `minds` | minds.com | — | optional | `genre-micro-post.md` |
 | `instagram` | instagram.com | — | **required** | `genre-micro-post.md` |
@@ -134,11 +132,6 @@ Wall posts, medium prose, hashtags in use, images common. A personal wall and a 
 ### telegram
 A channel or group broadcast rather than a social feed: no ranking algorithm and no discovery surface, so subscribers see every post in order and frequency is felt directly — over-posting reads as noise here faster than on an algorithmic feed. Clickable links with previews that can be suppressed, light markup, media optional. Publishing needs admin rights on the target. Target detail required: channel or group. Verify the current message cap and the media-caption cap, which are not the same number.
 
-### discord
-A chat message in one channel of one server, not a feed post: no discovery, no algorithm, no hashtags — the people in that channel see it in order, and a marketing message dropped into a conversation reads louder than anywhere else on this list. Servers other than the user's own gate promo through their own rules and usually confine it to a designated channel (`#self-promo`, `#showcase`); read those rules and the channel's recent messages before writing, exactly as with a subreddit, and expect that posting rights may simply not exist. Discord markdown (bold, italic, code blocks, no headings in the old style — verify what the current composer renders), links clickable with an embed preview, media optional. Target detail required: server and channel. Verify the current message cap on the **web** composer, and whether the account is on a tier with a longer one.
-
-### slack
-A message in one channel of one workspace: no discovery, no algorithm, no hashtags. Structurally Discord's twin, socially stricter — most workspaces are workplaces, and a promotional message outside a designated channel reads as an intrusion into someone's job. Posting rights and channel conventions are the workspace's, not the user's; read the channel's recent messages and any pinned rules first. Target detail required: workspace and channel. Threads are a first-class structure here — verify whether the post belongs in the channel or in a thread before writing.
 
 ### nostr
 A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
@@ -159,10 +152,18 @@ General-purpose article platform with a rich editor rather than raw markdown. An
 Open-source social network with a crypto-adjacent, free-speech-forward culture and a small technical audience. A post is a short feed entry with optional media and clickable links; the composer sits at the top of the newsfeed. Accounts carry a token/reward layer that has nothing to do with posting — never touch wallet, boost or monetisation controls, and never enter a paid Boost flow, which sits next to the post button. Verify the current character cap live.
 
 ### write-as
-Minimal, distraction-free blogging: a single editor pane where the first line becomes the title and everything below is the body, published to a blog under the account. No tags, no cover image, no editorial review, and posts can be anonymous or attached to a named blog — the target says which blog when the account has more than one. Markdown is supported. The register is an essay or a note, not a feed post; a three-line post looks lost there.
+Minimal, distraction-free blogging: a single editor pane where the first line becomes the title and everything below is the body, published to a blog under the account. No tags, no cover image, no editorial review, and posts can be anonymous or attached to a named blog — the target says which blog when the account has more than one. The register is an essay or a note, not a feed post; a three-line post looks lost there.
+
+**Markdown is the input and it renders**, so an article here carries real formatting: headings `#` through `######`, bold and italic, bulleted and numbered lists, `[text](url)` links (bare URLs auto-link too) and inline code. Write.as documents its own supported subset and only that subset is guaranteed, so stay inside the common elements rather than reaching for tables or footnotes.
+
+Two traps worth carrying into the post file. **The title line is written as a heading, not as a bare first line** — an unmarked first line is taken as the title *and* still renders in the body, so the same words appear twice; `# Title` on line one avoids it. And **formatting only applies to blog posts**, not to anonymous ones: a post published while signed out is plain, which is the same trap as the anonymous-publishing one above and another reason the target blog is not optional.
 
 ### telegraph
-Telegram's throwaway publishing surface: title, author and body in one page, no account required and no dashboard. That is the catch worth stating — **a `telegra.ph` page is editable only from the browser that created it**, through a local token, so a page published from an automation session cannot be edited later from another machine. Nothing is discoverable on the platform itself: a Telegraph page has no feed and no audience, so it exists to be linked from somewhere else. Markdown does not apply; the editor is rich text and links are inserted as links.
+Telegram's throwaway publishing surface: title, author and body in one page, no account required and no dashboard. That is the catch worth stating — **a `telegra.ph` page is editable only from the browser that created it**, through a local token, so a page published from an automation session cannot be edited later from another machine. Nothing is discoverable on the platform itself: a Telegraph page has no feed and no audience, so it exists to be linked from somewhere else.
+
+**It is a formatted page, not a plain-text one, and an article shipped here without formatting is a defect.** The editor is rich text with a floating toolbar, and the page format accepts a fixed tag list: `a`, `aside`, `b`, `blockquote`, `br`, `code`, `em`, `figcaption`, `figure`, `h3`, `h4`, `hr`, `i`, `iframe`, `img`, `li`, `ol`, `p`, `pre`, `s`, `strong`, `u`, `ul`, `video`. So an article gets **real headings, and exactly two levels of them** — `h3` is the section heading and `h4` the subordinate one, with `h1` and `h2` simply not available. Bold, italic, blockquote, lists, code and horizontal rules are all on the table above.
+
+**Markdown syntax is not the input.** The body is rich text, so typing `## Where it breaks` publishes the literal hash characters; a heading is made with the editor's own controls, and links are inserted as links rather than written as `[text](url)`.
 
 ### substack
 Newsletter platform where a post is simultaneously a web page and an email to subscribers. That second half changes the rules this file otherwise assumes: **publishing sends mail that cannot be recalled**, subscribers feel frequency directly, and a duplicate is not a downranked post but a second email. Sections and paywalled tiers decide who receives what. Target detail: the publication when the account has more than one.
