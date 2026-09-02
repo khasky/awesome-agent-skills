@@ -147,6 +147,8 @@ Supporter feed, short updates, images common. Same insider register as patreon.
 ### buymeacoffee
 Supporter posts, same family as ko-fi: short, personal, update-flavored.
 
+**A post here is a small formatted article, not a status line.** The composer is a rich editor with bold, italic, underline, headings, lists, quotes, code blocks, an image control and a link control, so the post carries a picture at the top and a real clickable link where it points at something. Writing it as plain text with a bare URL wastes every affordance the platform gives and ships a post that looks unfinished next to the author's own.
+
 ### instagram
 Image or video **required** — no media, no post. Caption links are not clickable ("link in bio" is the native CTA phrasing); hashtag blocks are native. Web composer exists at instagram.com. Verify caption cap and current media specs.
 
