@@ -73,25 +73,59 @@ This applies whenever the run is generating rather than placing: a supplied imag
 
 The test is subtraction. Remove the candidate fact and ask whether the source still has a point. Remove "a five second clip generates in about three seconds" and the endless stream, the price of running it and the platform bans all stop making sense; remove the price and the text is unharmed. The one that takes the rest down with it is the primary fact.
 
-The set is then built by crossing two axes, and the first one matters more:
+**That spread is decided at the headline gate below, not at render time**, because the two gates split the work: the 20 *headline ideas* range across the facts, and the 20 *renders* are then 20 forms of whichever one the user picked. So the rule reads:
 
-- **Which fact gets the picture.** The primary fact takes **at least half** the set, in genuinely different readings of it. The remainder goes to the secondary facts, and their job is to show the user what else the source could carry, not to compete for the slot.
-- **Which form carries it.** From the shape table above, and a form is not repeated on the same fact unless the two readings genuinely differ.
+- **Which fact gets offered.** Among the 20 headline ideas, the primary fact takes **at least half**, in genuinely different wordings and angles rather than paraphrases of one sentence. The remainder goes to the secondary facts, and their job is to show the user what else the source could carry, not to compete for the slot.
+- **Which form carries the chosen one.** From the shape table above, once the text is settled. A form is not repeated unless the two readings genuinely differ.
 
-Practical shape of a 20-set: **at least 10 on the primary fact, at least 3 further facts across the rest, at least 6 distinct forms, and no secondary fact taking more than a fifth of the set.** A set of 20 bar charts of the same ratio satisfies no rule here; neither does a set that spreads evenly across seven facts and never once draws the thing the source is about.
+Practical shape: **at least 10 of the 20 headline ideas on the primary fact, at least 3 further facts across the rest, no secondary fact taking more than a fifth of them** — then **20 distinct forms** for the render set. Twenty paraphrases of one sentence fails the first half; twenty bar charts of one ratio fails the second.
 
 **Where the primary fact's number lives outside the given text, go and get it.** A pasted note often gestures at the capability ("it generates faster than real time") while the vendor's own announcement states it exactly. Verify the figure at its public source, put it in the knowledge map with that provenance, and use it: the set is built on the strongest form of the primary fact, not on the vaguest one that happens to be in the draft. What stays forbidden is inventing the number or inferring it — an unverifiable figure is not a primary fact, it is a fabrication.
 
-**Then hand the user a page they can look at, not a list of filenames.** Build one gallery from the rendered set — every variant at a size where the shapes read, each labelled with its number, its fact and its form — and give the user a link to it. In order of preference:
+### Two gates, and the text one comes first
+
+**Once the user has agreed to a generated set, the next thing they choose is the headline, before a single graphic is rendered.** A gallery that varies the message and the picture at the same time asks the user to compare twenty things along two axes at once, and the answer they give is unreadable: nobody can say whether variant 7 won on its wording or its shape. Separating the two also stops the run wasting twenty renders on a sentence the user was never going to publish.
+
+So the run writes **20 headline ideas** and presents them as text, numbered, with no images yet. They are spread by the same rule as the set itself: at least half of them state the primary fact, in genuinely different wordings and angles rather than twenty paraphrases of one sentence, and the rest carry the secondary facts. Each is a whole thought that could stand alone on a canvas, per the headline rule above, and each is short enough to set at display size.
+
+**The list always ends with a free-text option: the user writes their own headline.** That is not a fallback for a failed list, it is the point of showing the list — twenty concrete examples are what makes a person able to say "closer to number 9, but with the price in it". Whatever they type is used verbatim, checked only against the fidelity rules (no claim the sources do not carry, no calendar date, no long dash, no trademark word carrying its ordinary meaning) and reported if it breaks one, never silently rewritten.
+
+**The whole list is shown, and the question is single-choice.** Splitting twenty options across five questions works for a checkbox list and breaks here, because five single-select questions collect five answers where one is wanted. So print all 20 numbered in the message itself, then ask one question carrying a few of them verbatim plus two open doors: `another number from the list` and `my own wording`. The user has seen every option, and answers once.
+
+**Then the chosen headline is the headline for all 20 renders**, and the visual set becomes twenty treatments of one message: different forms from the shape table, different compositions, different anchors and densities per the craft section. The fact spread has already done its work at the text stage, so the render stage is free to vary only what the eye is being asked to compare.
+
+**And every render must draw the fact its headline states.** This is the trap the two-gate order sets, so it is worth naming: a set drafted before the gate has a composition per fact, and once one headline lands on all of them, every variant built on a different fact starts contradicting its own caption — a picture of a year's cost under a line about seconds. Those are rebuilt as further readings of the chosen fact, never shipped as-is. Where the chosen fact genuinely cannot carry 20 distinct forms, say so and ship fewer rather than padding the gallery with variants that argue with their own text.
+
+**Then hand the user a page they can look at, not a list of filenames.** Build one gallery from the rendered set — every variant at a size where the shapes read, each labelled with its number and its form, the fact being the same across all of them by then — and give the user a link to it. In order of preference:
 
 1. A published page, when the runtime can publish one, so the link opens anywhere and survives the session.
 2. A local `.html` gallery in `media/`, path given, plus a rendered contact-sheet image so the set is visible even if the page is never opened.
 
 Either way the contact sheet is produced, because a link the user does not open is not a decision they can make.
 
-**The pick is a gate, and it stops the run.** Present it through the structured-question UI like every other gate in these skills, numbered to match the gallery: pick one · pick one and ask for a variation of it · none of these, here is what I actually want · skip the image entirely. Nothing is attached, and no post file declares an attachment, until that answer exists. An agent that picks its own favourite and carries on has skipped the only step this section exists for.
+**The pick is the second gate, and it stops the run.** Present it through the structured-question UI like every other gate in these skills, numbered to match the gallery: pick one · pick one and ask for a variation of it · none of these, here is what I actually want · skip the image entirely. Nothing is attached, and no post file declares an attachment, until that answer exists. An agent that picks its own favourite and carries on has skipped the only step this section exists for — and one that renders before the headline gate has answered the wrong question first.
 
-**After the pick**, the chosen render is the run's image and goes everywhere the Media column says `optional` or `required`, per the one-image rule above. The other 19 stay on disk with their `.html` sources — they cost nothing to keep, they document what was considered, and the user re-picks later without regenerating. Record in the manifest which variant was chosen, out of how many, and on which fact.
+**After the pick**, the chosen render is the run's image and goes everywhere the Media column says `optional` or `required`, per the one-image rule above. The other 19 stay on disk with their `.html` sources — they cost nothing to keep, they document what was considered, and the user re-picks later without regenerating. Record in the manifest both answers: the headline the user chose out of how many ideas (and whether they typed their own), and the variant they chose out of how many renders.
+
+## Craft: what makes twenty renders look like twenty, not one recoloured
+
+A set built from flat shapes on flat backgrounds comes out uniform however different the forms are, because every variant shares the same lighting, the same edge quality and the same emptiness. The techniques below are what separate them. They are adapted from a working HTML/CSS asset pipeline (`emojery-assets`, which composes store screenshots, banners and diagram scenes the same way this path composes post graphics) — **taken as technique, never as appearance**: its palette, its lockups and its layouts stay its own, and the colour here still comes from `dataviz` and the user's brand.
+
+**Deterministic hashing, never `Math.random()`.** A variant that renders differently on a re-run cannot be re-picked from a gallery or regenerated after an edit. Seed a small periodic hash from the element's own coordinates and a salt, and drive every property from a different salt: `frac(sin(r * 928.31 + c * 517.13 + salt * 71.7) * 43758.5453)`. One salt for x jitter, another for y, another for scale, another for rotation, another for depth tier. Take the coordinates modulo a tile period and the whole field repeats seamlessly, which is what lets a background bleed off the canvas without a visible seam.
+
+**Break the grid without losing it.** A lattice reads as a grid and a scatter reads as noise; the useful thing sits between. Offset alternate rows by half a step, then jitter each cell by up to a third of the step on both axes, scale it between about 0.8× and 1.3×, and rotate it within roughly ±20°. The structure still carries, and nothing looks placed by a loop.
+
+**Depth is what flat sets are missing.** Assign each background element one of three or four blur tiers and give the foreground none, so the eye finds the subject immediately. Run the blur on the containing layer rather than per element — one filter pass instead of hundreds, and the layer's own soft edge falls outside the canvas rather than showing as a fringe. Add a directional drop shadow to the marks that should float.
+
+**Light the canvas from off-canvas.** One large radial gradient, `closest-side`, white at 25 to 35 percent alpha, positioned so more than half of it sits outside the frame. It reads as a light source in the room rather than a glow drawn on the picture. Two of them in opposite corners, in the accent and a second hue at 12 to 16 percent alpha over the flat base, give a background that is not a rectangle of colour: `radial-gradient(58% 46% at 24% -10%, ringA, transparent 70%), radial-gradient(54% 46% at 94% 6%, ringB, transparent 72%), base`.
+
+**Generate shapes from math instead of drawing them.** A scalloped disc is a polar path alternating between two radii over `points * 2` steps. A connector with real tension is a quadratic Bézier whose control point is pushed perpendicular to the chord by a bend parameter. An arrowhead is two short strokes off the line's end. Parametric shapes vary by argument, so one generator supplies a dozen distinct marks across the set while hand-drawn paths repeat themselves.
+
+**Vary the composition, not just the form.** Across the 20, move the subject's anchor between corners and edges, change how much of the canvas the marks occupy (a dense field in one, a single large mass with deep negative space in another), let some forms run off the edge and keep others fully inside, and change the scale relationship between largest and smallest element. Two variants using the same form at the same size in the same place are one variant.
+
+**Give the set one system and per-variant tokens.** Define the surface, ink, accent, secondary accent and the two ring washes once, and let each variant pick its emphasis within them. Shadows come from a small scale rather than ad hoc: a tight one for resting elements, a large offset one with negative spread for floating ones. A gradient ring around a shape needs no extra element — `background-image: linear-gradient(surface, surface), linear-gradient(90deg, …)` with a transparent border and `background-clip` does it in one box.
+
+**Stand in for content with shape, not with text.** Where a composition needs a body of text, a page or a card, draw rounded bars at uneven widths rather than lorem ipsum. It reads instantly as "content" and adds no words to a canvas that allows exactly one line of them.
 
 ## Building it
 

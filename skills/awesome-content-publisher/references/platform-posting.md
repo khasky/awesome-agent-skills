@@ -49,6 +49,8 @@ Three traps, all of which cost a run:
 
 Entry point: the sidebar's `a[aria-label="Create a post"][href="/new"]`, or go straight to `tumblr.com/new/text`.
 
+**Two things the block editor will not do by itself, and both shipped wrong in one run.** The post's image is a **featured image at the very top, directly under the title** — that is the shape of this author's own posts, and `tumblr.com/new/text` exposes no `input[type=file]` until an image block is added, so a run that only looks for one concludes there is no image support and ships text-only. Add the image block from the editor's own block control before typing the body, so the picture sits above it. And **a pasted URL is not a link**: select the words and use the popover that appears over a text selection, or the closing line publishes as dead characters.
+
 Submit is "Post now", and **the trusted click does nothing** — five polls left the text sitting in the block. `el.click()` from `page.evaluate` publishes and redirects to `/dashboard`. Confirm on `tumblr.com/blog/<name>` before recording anything; the permalink is `tumblr.com/<name>/<id>/<slug>` and an `/edit/<name>/<id>` link sits beside it.
 
 **Filling has a trade-off, and both sides cost something.** `keyboard.type` types into the block editor correctly but the tag field steals nothing and the draft-restore trap above applies; `keyboard.insertText` fills reliably in one shot **but collapses the whole body into a single block**, so blank lines vanish and sentences run together (`each other.It doesn't.`). Prefer insertText for getting text in, then either restore the paragraph breaks with explicit `Enter` presses between blocks, or accept a one-block post and record it `degraded` — editing afterwards is possible here but needs the user's explicit request.
@@ -107,15 +109,36 @@ tags: tag1, tag2, tag3, tag4
 
 Type the whole block into the textarea (Ctrl+A, Backspace first — the editor restores an old draft), then click "Save changes". Read-back: the editor navigates straight to `dev.to/<handle>/<slug>-<id>`, which is the permalink; confirm the body renders and the author line is the user. Smooth flow, no actionability fights.
 
+**Upload the image first, then write the front matter around its URL.** `input#image-upload-field` (`accept="image/*"`) takes the file with `setInputFiles` and dev.to returns a hosted `https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png`; the URL appears in the page HTML after the upload. That URL then goes in **two** places: `cover_image:` in the front matter, and an ordinary markdown image on the first line of the body, before the first `##`:
+
+```text
+---
+title: <title>
+published: true
+tags: tag1, tag2, tag3
+cover_image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png
+---
+
+![<alt text>](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png)
+
+<body>
+```
+
+Uploading and then referencing it only from `cover_image` is the failure to avoid: the article body then has no image in it, and the cover carries no alt text. The in-body markdown is also the only place the declared alt text survives. Confirm on the published page that an `img` sits above the first `h2` and that its `alt` is the post file's alt text.
+
 ## hackernews
 Check: `news.ycombinator.com` — the header carries the username and a `logout` link when logged in (`#me` holds the name). Compose: `/submit` — plain HTML form, `input[name=title]`, `input[name=url]`, `textarea[name=text]`; the form takes url **or** text, not both. Ordinary coordinate clicks and typing work; no SPA fights here.
+
+**A text submission is a real option, not a fallback.** The form takes url **or** text because the site forbids pairing a link with your own commentary above the fold — its FAQ: *"You can't. This is to prevent people from submitting a link with their comments in a privileged position at the top of the page. If you want to submit a link with comments, just submit the link, then add a regular comment."* So when the post file's URL is unusable (already submitted, or the piece is the campaign's own writing), filling `textarea[name=text]` and leaving `input[name=url]` empty publishes a normal HN submission. Do not report "HN only takes links" — it takes both, one at a time.
 
 **Check the URL is not already on HN before submitting.** A duplicate URL does not create a post: the form redirects to the existing item, and HN counts the attempt as an **upvote from your account on someone else's submission** — an outward-facing side effect the run never promised, visible as the header switching to `unvote` on that item. This happened on a docs URL that had been submitted three weeks earlier. So search `hn.algolia.com` (or submit and read the redirect) and treat a redirect to an existing `item?id=` as `skipped`, not `posted`, log the vote as an incident, and ask the user whether to unvote — never unvote on your own initiative. Read-back for a real submission: `/submitted?id=<user>` plus the item permalink; the site's filters can kill a new submission within minutes, and `/newest` not showing it while the profile does means exactly that. New accounts and repeat domains draw the filter hardest.
 
 ## patreon
 Check: `patreon.com` — redirects to `patreon.com/c/<handle>` with a Dashboard link when the creator session is live. Compose: **`patreon.com/posts/new` immediately creates a draft** and lands on `patreon.com/<handle>/posts/<id>/edit` — so merely probing that route leaves a draft on the account; probe it only when about to post. The editor is `textarea[placeholder="Title"]` plus a `div[contenteditable="true"]` body, and the submit is a plain "Publish" button.
 
-Playwright's own `.click()` times out on both fields (actionability never settles); **coordinate clicks work**, aimed at the top of the element's rect rather than its centre for the tall body div. Visibility (public vs members) is set by the frontmatter, and no frontmatter value → ask, don't default. Read-back: publishing navigates to `patreon.com/<handle>/posts/<slug>-<id>?pr=true`; strip the query for the permalink, and confirm no "Join to unlock" gate is present — though as the creator you see the body either way, so a public/members claim rests on what was set, not on what you can see.
+Playwright's own `.click()` times out on both fields (actionability never settles); **coordinate clicks work**, aimed at the top of the element's rect rather than its centre for the tall body div. Visibility (public vs members) is set by the frontmatter, and no frontmatter value → ask, don't default. Read the audience radios back before publishing: `Free access` / `Everyone` is the public state, `Paid access` is not.
+
+**The image goes in the post body and must stay out of Attachments.** The editor's toolbar has `Image`, which opens a drop zone ("Drop an image, video or audio file as the main content of your post"); that zone's own input is the one whose `accept` starts `image/jpeg,image/png` — the first `input[type=file]` inside it has `accept="*"` and is the **attachment** uploader, which publishes the file as a download link under the post instead of showing it. Picking the wrong one ships the picture twice: once as the visual, once as a stray `v02.png` in an Attachments list. Match the input by its `accept` starting with `image/`, and after publishing check the post page has no Attachments row. Read-back: publishing navigates to `patreon.com/<handle>/posts/<slug>-<id>?pr=true`; strip the query for the permalink, and confirm no "Join to unlock" gate is present — though as the creator you see the body either way, so a public/members claim rests on what was set, not on what you can see.
 
 ## ko-fi
 Check: `ko-fi.com/Manage/` confirms the session, but **the composer is not there** — it lives on the creator's own page, `ko-fi.com/<handle>`. `/Manage/newpost`, `/post/new` and `/Manage/feedposts` all redirect back to `/Manage/`, which is what makes this look unreachable.
@@ -130,6 +153,10 @@ The working sequence, all of it verified:
 
 **The 800-character cap truncates silently.** A body of 805 characters came back as 800 with the tail of the URL gone — the same failure shape as `peerlist`, except here the number is on screen. Fit the post to 800 before typing, then verify head and tail.
 
+**The image is added inside the same modal, before submitting.** The modal that appears after "Post something" carries a row of content types — `Post · Image · Blog post · Video · Poll · Audio` — and choosing `Post` reveals the text box. The image control lives in that same modal; find its input by an `accept` containing `image/` **scoped to `#addContentMenuModal`**, not page-wide. A supporter update shipped without one stands out on a feed where the author's other posts have pictures, so a missing image control is a reason to re-read the modal rather than to submit text-only.
+
+**The dropdown item is reached by coordinate, not by JS click.** `button.creator-menu-btn` opens the site's own nav, not this menu: the one that matters is the `Create` control carrying `data-toggle="dropdown"`, and its `Post something` entry only becomes clickable once the dropdown is open — an `el.click()` on the entry while it is collapsed silently does nothing. Open the dropdown, read the entry's rect, then coordinate-click it; the modal's own `Post` tile likewise needs its live rect.
+
 Read-back: `ko-fi.com/<handle>/posts` shows the update; ko-fi exposes **no per-post permalink** in the feed, so record the posts page and say so.
 
 ## bastyon
@@ -140,16 +167,30 @@ Check: `bastyon.com/index` — when the app hydrates, the feed renders with the 
 ## buymeacoffee
 Check: **`studio.buymeacoffee.com/posts`**, not `buymeacoffee.com` — the marketing homepage shows "Log in / Sign up" to a fully signed-in user, so checking there reports a false logged-out. The studio page also carries the read-back baseline: a "Published N" counter.
 
-Compose: `studio.buymeacoffee.com/posts/new` — `input[placeholder="Title"]` plus a `[contenteditable="true"]` body, submit "Publish now" (which shows "Post title and content can't be empty!" until both are filled). **The composer lives in a child frame.** Selectors resolve in the top document to invisible twins: coordinate clicks land on nothing, `el.focus()` returns `document.activeElement === el` and keystrokes still go nowhere, and the fields stay empty. Loop `page.frames()`, find the frame where both the title input and the editor exist, and drive it with element handles from that frame (`frame.$(sel)` then `.click()`), which does work there. Read-back: back on `/posts`, the Published counter must go up by exactly one; the public permalink is the `buymeacoffee.com/<handle>/<slug>` anchor in that row, and the post's visibility shows next to it ("Public").
+Compose: `studio.buymeacoffee.com/posts/new`. The composer is **in the main document, not a child frame** — an earlier note here claimed otherwise and sent runs hunting through `page.frames()`; the only other frame on the page is Google reCAPTCHA. The real anatomy, read off the live DOM:
+
+- **Title**: `input#post-title`, `name="project_update_heading"`, placeholder `Title`.
+- **Body**: `div.ProseMirror` inside `.pe-editor`, with a `.pe-menubar` toolbar above it.
+- **Publish**: `button.publish-button` reading "Publish now" in `.post-editor-sidebar`, plus a sidebar panel "Who can see this post?" carrying `Public`, a Categories block and its own `Publish` button.
+- **Hidden state flags** the app drives itself: `#is_title_typing`, `#publish-status` (`-1` on a fresh draft), `#is_post_success`.
+
+**Filling works and publishing does not, and the distinction matters for the report.** Typing into `#post-title` with an element handle and into `.ProseMirror` after a coordinate click both land correctly — the values are in the DOM and rendered on screen. What never happens is the publish: the dropdown of `a` options (`Publish now` / `Set publish date` / `Save as draft`) stays `display:none` under coordinate and JS clicks alike, `#is_title_typing` never flips off `false`, and the sidebar `Publish` fires nothing. Synthetic `input`/`change`/`keyup`/`blur` events on the title do not move the flag either, nor does appending a real keystroke.
+
+**Two traps in diagnosing it.** The string "Add a title to your post before continuing" is a **permanent hover tooltip** (`div.post-on-hover`) present even with the title filled — reading it as a validation state is a false signal. And the page carries a **reCAPTCHA frame**, so a silent publish failure here may be a bot check rather than a selector problem, and a bot check is the user's to clear, never one to work around.
+
+So: fill, attempt the publish twice, then **report and skip** — say plainly that the composer accepted the text and the publish control did not respond, and leave it to the user to press the button. Do not keep clicking, and do not click the sidebar `Publish` speculatively to "see if it works": on this platform that is the live publish.
+
+Read-back: back on `/posts`, the Published counter must go up by exactly one; the public permalink is the `buymeacoffee.com/<handle>/<slug>` anchor in that row, and the post's visibility shows next to it ("Public"). A counter that has not moved and no row for the title means nothing was published and no draft was left.
 
 ## instagram
 Check: `instagram.com` — home feed with the new-post (+) control. Compose: new post → upload the attachment (required — no attachment reached this phase only by a preflight bug: stop) → caption → share. Read-back: own profile grid. Quirk: caption links are not clickable; that was the campaign's problem, not this phase's — post the caption as written. Bio-CTA captions depend on the Phase 3 bio-link check having passed: the bio edit (when the user confirmed it) goes through the profile's own edit flow — the website/bio field only.
 
 Full flow as observed (UI in Russian; English labels in parentheses):
 
-1. **Create.** Coordinate clicks on the sidebar entry stopped working entirely in the run that produced these notes — the icon column at x≈36, the row centre and `getByText` force clicks all left the page untouched. **What did work first try: `browser_find` for "Create", then clicking the returned `aria-ref`** (`link "New post Create"`) with an ordinary locator click. Reach for the a11y ref before burning attempts on coordinates. Older behaviour, still worth trying next: the sidebar label span has a zero-size rect, so take its `closest('a')` rect; expanded sidebars respond at the row centre, collapsed ones only in the icon column.
-2. **"Публикация" (Post)** in the menu that appears — a plain span, no menu role; match by exact text.
-3. **Upload.** The dialog reads "Создание публикации / Перетащите сюда фото и видео". Its file input `accept` begins `image/avif,image/jpeg,…`. Scope to the dialog.
+0. **Never navigate to a `/create/…` URL.** `instagram.com/create/select/` and its siblings are not the app's route to the composer: they render an unrelated profile shell that happens to expose a file input whose `accept` is `image/jpeg` alone. A run that lands there concludes Instagram cannot take a PNG and converts the file — treating a symptom of being in the wrong place. The composer is reached from the sidebar and nowhere else.
+1. **Create — two clicks in the sidebar, and the selectors are stable.** Take `svg[aria-label="New post"]`, click its `closest('a, div[role="link"], div[role="button"], button')` by coordinate; the entry expands. A second control then appears beside it, `svg[aria-label="Post"]` (observed at x≈184, one row below), and clicking that opens the dialog titled **"Create new post"** with "Drag photos and videos here / Select from computer". Verified working this way; `browser_find` for "Create" and clicking the returned `link "New post Create"` ref is the equivalent a11y route and also works. Coordinate clicks on the row alone toggle the menu open and shut, so re-read the rect between the two clicks rather than clicking the same point twice.
+2. **The correct dialog accepts PNG.** Its file input reads `accept="image/avif,image/jpeg,image/png,image/he…"` — if the input you found accepts `image/jpeg` only, you are on the wrong route, go back to step 0.
+3. **Upload.** Scope `setInputFiles` to that dialog's own input. On a localized UI the dialog reads "Создание публикации / Перетащите сюда фото и видео".
 4. **Crop — do not skip this.** The step defaults to a square crop that mutilates a 16:9 screenshot. Open "Выбрать размер и обрезать" (aria-label) and pick **"Оригинал"** unless the post file asks for a ratio.
 5. **Two × "Далее" (Next)** — crop → filters (apply none) → caption.
 6. **Caption** goes into the dialog's `[contenteditable="true"]`; the counter reads `N/2 200`.
@@ -193,7 +234,9 @@ Check: the web client named in frontmatter — the user's own profile and a comp
 Check: `hashnode.com` — the avatar and the write control. Compose: the editor — title, markdown body, tags, optional cover image, canonical URL when the article mirrors the user's blog, and the choice between the personal blog and a publication (frontmatter's target; a publication may route the draft to its editors instead of publishing). Read-back: the published article URL it lands on, opened and confirmed; a draft submitted to a publication for review is `pending-approval`, not `posted`.
 
 ## threads
-**The domain is `threads.com`** — `threads.net` still resolves but the app and every permalink live on the new host. Compose: like Bluesky, the reliable path is the intent route — `https://www.threads.com/intent/post?text=<encodeURIComponent(body)>` opens the composer prefilled and correctly counted. Submit is the **last** button reading "Post" inside `[role="dialog"]` (the first one is the composer's own entry point); coordinate-click it and wait for the dialog count to drop to zero. Read-back: `threads.com/@<handle>`, newest `/post/<code>` link, and exactly one occurrence of the body text.
+**The domain is `threads.com`** — `threads.net` still resolves but the app and every permalink live on the new host. Compose: like Bluesky, the reliable path is the intent route — `https://www.threads.com/intent/post?text=<encodeURIComponent(body)>` opens the composer prefilled and correctly counted.
+
+**An emoji can arrive broken through the intent route, and it publishes broken.** One run shipped `…in the same folder �` — the replacement character, not the emoji — because an astral-plane codepoint did not survive the round trip into the composer. So after the intent route fills the editor, **compare the composer's text against the source character for character** rather than only by length, and check specifically that every emoji is still the emoji: search the field for `�`. Found one → clear the editor and type the body in directly instead of trusting the URL, or type the plain text through the intent route and add the emoji by keystroke afterwards. The same check applies to Bluesky's intent route for the same reason. Submit is the **last** button reading "Post" inside `[role="dialog"]` (the first one is the composer's own entry point); coordinate-click it and wait for the dialog count to drop to zero. Read-back: `threads.com/@<handle>`, newest `/post/<code>` link, and exactly one occurrence of the body text.
 
 Check: the Threads web app — the user's avatar and the composer entry on the home column. The account is an Instagram account: the session usually rides along with Instagram's, and the handle is the same one, so an Instagram login check is a strong prior but not proof — verify on Threads itself. Compose: the composer, type, attach through its own file input (scope to the composer's dialog — the page carries other uploaders), publish. Unlike Instagram, links in the body are clickable and media is optional. A reply chain is separate sequential posts through the composer's add control, only when the post file is explicitly a thread. Read-back: the user's own profile feed, newest post, its permalink opened and confirmed.
 
@@ -208,7 +251,15 @@ Check: `peerlist.io` — redirects to `/scroll` when signed in and the header ca
 Read-back: the post appears in `peerlist.io/scroll`, **not** on `peerlist.io/<handle>` or `/<handle>/scroll`, both of which render without it. The scroll feed is virtualized, so read the permalink in the same evaluate that finds the text — a second call finds the node already recycled and returns nothing.
 
 ## daily-dev
-Check: `app.daily.dev` — signed-in state, the user's avatar in the header. Compose: a link submission goes through the platform's own submit control; a squad post goes to that squad's page from frontmatter, where posting rights are required and their absence shows as a missing composer (report and skip). A link already present in the feed is deduplicated by the platform — resubmitting is not a fix, it is a report. Read-back: the squad feed or the user's profile, the item visible with its timestamp and permalink.
+Check: `app.daily.dev` — signed-in state, the user's avatar in the header. A bounce to the marketing site means the session is logged out; report it and skip rather than guessing at a target.
+
+Compose, default path: `New Post` (or `+`) from anywhere on the site, which posts from the personal profile. An original post takes a title and a Markdown body with code blocks; a link post takes the URL of an article already published elsewhere. Where the composer offers an audience, choose everyone, not a squad. **Community Picks is gone** — sunset in 2025 — so there is no separate submission mechanism to look for.
+
+Squad path, only when the post file's target names one: go to that squad's page, where posting rights are required and their absence shows as a missing composer (report and skip). A link already present in the feed is deduplicated by the platform — resubmitting is not a fix, it is a report.
+
+Read-back: the user's profile Posts tab, or the squad feed where one was named, the item visible with its timestamp and permalink.
+
+**Before submitting, confirm the user has seen the AI-content rule.** daily.dev prohibits AI-generated content. If nothing in the run records the user's decision to publish this text as their own after editing it, stop and ask rather than posting — this is one of the few places where publishing quietly can cost the account, not just the post.
 
 ## minds
 Check: `minds.com/newsfeed/subscriptions` — the rail renders Newsfeed / Boost / Wallet and the `@handle` entry. Compose: the composer sits on the newsfeed as `textarea.m-composerTextarea__message` ("Speak your mind...").
@@ -218,7 +269,15 @@ Check: `minds.com/newsfeed/subscriptions` — the rail renders Newsfeed / Boost 
 Read-back: `minds.com/<handle>/` shows the post and the full URL text; the permalink is the `/newsfeed/<numeric-id>` anchor. Never touch Boost, Wallet, Supermind or Minds+ controls — the token layer sits next to the composer and none of it is part of posting.
 
 ## medium
-Check: `medium.com` — avatar and the write control. Compose: the editor — title, body, up to the platform's tag limit; a publication target routes the draft to that publication's editors instead of publishing, which is `pending-approval`, not `posted`. Set the canonical URL when the piece mirrors the user's own blog. Confirm the paywall setting matches what the post file expects before publishing. Read-back: the published article URL, opened and confirmed.
+Check: `medium.com` — avatar and the write control. Compose: `medium.com/new-story` gives a title editor and a body editor, both `[contenteditable="true"]`; a publication target routes the draft to that publication's editors instead of publishing, which is `pending-approval`, not `posted`. Set the canonical URL when the piece mirrors the user's own blog. Confirm the paywall setting matches what the post file expects before publishing.
+
+**Headings: the `## ` shortcut does not fire when the text is typed straight through.** Typing `## ` then the heading text leaves the hashes as literal characters in a `<p>` — six of them shipped that way in one run. What works is per block, after the text is in: click into the paragraph, `Home`, `Shift+ArrowRight` ×3, `Backspace` to drop the `## `, then `Home` + `Shift+End` to select the line and press **`Control+Alt+Digit2`**, which converts it to a real heading. Verify afterwards that `section` holds zero `## ` and the expected count of `h3`/`h4`.
+
+**`--` autocorrects into an em dash**, so `claude --worktree` publishes as `claude — worktree`: the command is wrong and the campaign's zero-em-dash rule is broken in one stroke. Prefer the flag's short form (`-w`) when writing for Medium, and sweep the body for `[—–]` before publishing. Repairing it needs the **whole block replaced**, not a line edit: `Home` + `Shift+End` selects only the visual line and leaves the paragraph's tail behind (that mistake produced `…enforced rather than agreed.and claude — worktree frontend…`). Select the block with a Range over the `<p>` — `range.selectNodeContents(p)` through the selection API — then `Backspace` and retype.
+
+**The closing URL is not a link until you make it one**, and **the image is not there unless you insert it**. For the link: select the words, use the editor's link control on the selection. For the image: caret on an empty line, click the circled `+` that appears in the left margin, choose the image option, pick the file. Medium has no cover field to compensate, so skipping this ships an article with no picture at all.
+
+Read-back: the published article URL, opened and confirmed — headings rendered as headings, zero literal `## `, zero `[—–]`, the closing link clickable, the image present.
 
 ## write-as
 Check: `write.as/me` or the pad at `write.as/new` — a signed-in session shows the account's blogs; signed out, the pad still writes but posts anonymously, which is the trap worth checking for. Compose: one editor pane, first line becomes the title, the rest is the body; publish, then assign to the blog the post file names (an account with several blogs makes this a real choice, so the target is not optional).
@@ -237,4 +296,17 @@ Check: nothing to check — `telegra.ph` has no account. Compose: `telegra.ph` i
 Read-back: open the returned `telegra.ph/<slug>` and confirm title and body — and confirm the headings **rendered as headings**. A page whose body shows `##` in the text is a failed publish: it is editable only from this same browser, so fix it in the session that made it or it stays wrong permanently.
 
 ## substack
-Check: the publication's dashboard while signed in. **This platform sends email.** Publishing is not only a page going live: subscribers receive it, and nothing recalls a sent issue. Before submitting, read back the audience and section selection and the send-to-email toggle against what the post file declares — a wrong audience is not editable after the fact. Compose: new post → title, subtitle, body, section; then publish. Read-back: the published post URL and the dashboard showing it as sent, both captured; the send count is the evidence that the email half happened.
+Which of the two surfaces the post file names decides everything here, and the default one sends nothing.
+
+**Profile Article (default, no email).** Check: `substack.com/@handle` while signed in. Compose: `Create` → `Article` → title, body; then publish. The result is a public page on the author's profile and no newsletter is sent, so this carries the ordinary confirmation, not the strict one. Read-back: the published post URL, and the post appearing on the profile's Posts tab.
+
+**Publication send (opt-in, irreversible).** Only when the post file's target names a publication and the send is what the user asked for. Check: that publication's dashboard while signed in. **This path sends email.** Publishing is not only a page going live: subscribers receive it, and nothing recalls a sent issue. Before submitting, read back the audience and section selection and the send-to-email toggle against what the post file declares — a wrong audience is not editable after the fact. Compose: new post → title, subtitle, body, section; then publish. Read-back: the published post URL and the dashboard showing it as sent, both captured; the send count is the evidence that the email half happened.
+
+**A post file with no substack target is the profile Article, not an error and not a prompt.** Never resolve a missing target by opening a publication, and never enable a send toggle the file does not declare.
+
+**Editor mechanics, both surfaces.** Headings do convert from the `## ` shortcut typed at the start of an empty block, unlike Medium — verify anyway that the body holds zero literal `## `. Two things do **not** happen on their own:
+
+- **The closing URL stays plain text.** Select the words that should carry the link and press `Link` in the top toolbar. A published post showing a bare `https://…` in its last line is a defect, not a style.
+- **The image has to be inserted.** Caret on an empty line, then the image icon in the top toolbar → `Image` → pick the file. There is no cover field standing in for it.
+
+**The publish confirm has a second step that is easy to miss.** `Continue` opens the settings panel; the send/publish button there ("Send to everyone now" on the publication path) can raise a further modal — one observed variant is **"Publish without buttons"**, shown when the post carries no subscribe button. Until that modal is answered nothing is published and nothing is sent, and the Published list stays empty. Poll for it and answer it rather than reading the empty list as failure and retrying.

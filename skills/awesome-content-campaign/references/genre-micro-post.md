@@ -27,6 +27,10 @@ Before writing for a platform, read a handful of recent posts that natives — n
 | A benefit with no mechanism: "makes your workflow seamless" | The mechanism or the number: what it does, how much faster, under what conditions |
 | The same closing CTA line stamped on every post of the batch | Vary the wording and the placement; the link goes where interest peaks |
 | Perfect uniform sentence rhythm | Let one sentence run long and the next be four words |
+| Four flat declaratives with no emoji, no question, no aside — nobody is home in the text | One human signal minimum: the emoji where the surprise lands, the question, the wry half-line |
+| A different hashtag set invented per platform, or a tag chopped in half to fit | One campaign set, trimmed by whole tags from the end |
+| A URL parked inside parentheses mid-sentence | The pointing sentence carries it at the end |
+| Literary vocabulary (`duller`, `says it outright`) | The spoken word |
 
 ## Rules
 
@@ -37,4 +41,8 @@ Before writing for a platform, read a handful of recent posts that natives — n
 5. **Threads only when the content is genuinely sequential**, and only where the post file says so — a thread is a structure, not a way past the character cap.
 6. **Hashtags per the researched norm**: a few where they are the discovery mechanism (`mastodon`, `instagram`, `tumblr` tags), none where they read as noise. Where the composer has a tag field, the tags go there and never into the prose.
 7. **Emoji budget: 0 to 5 for a whole text, scaled to length** — none or one in a micro-post, one or two in a medium one. Spacing carries more than count: two in the same paragraph, or a pair a line apart, reads as decoration however apt each one is.
+8. **A post with no human signal in it reads as a machine report, and that is a defect.** A person writing about something they just found does not produce four flat declarative sentences and stop. Somewhere in the post there is a reaction: an emoji where the surprise lands, a question the reader is already asking, an aside in brackets, a short fragment, an exclamation where something genuinely annoyed or delighted them. **Every post carries at least one**, unless the interview turned emoji off and the platform's own natives write flat (`hackernews`, and community rooms that punish cadence). Flat is not the same as lifeless: even a plain community post can carry a question or a wry aside. The check: read the post back and find the sentence where the author is present. No such sentence → rewrite one.
+9. **Hashtags are one set for the whole campaign, trimmed per platform, never re-invented per post.** Pick the tag set once from the unit's subject, then cut it down where the platform's norm or its character cap is tighter — `x` takes the top one or two, `mastodon` and `instagram` take the fuller set, `hackernews` and the community rooms take none. Cutting means dropping whole tags from the end of the list; **a tag is never truncated mid-word to fit**, and a post never ends on half a hashtag. Two platforms showing the same post should show recognisably the same tags.
+10. **Plain spoken American English**, same bar as the long-form genre: no `duller`, `says it outright`, `thus`, `myriad`. Say it the way you would say it out loud.
+11. **A URL never sits in parentheses.** `Anthropic says it plainly in the docs (https://…): two agents…` buries the link inside a clause; the sentence that points at the link carries it at the end instead. Where the platform linkifies bare URLs, that is enough; where it does not, the link still goes at the end of its own sentence.
 8. **Leave room.** One plain sentence, one ordinary observation. A post where every line is engineered to land reads engineered.

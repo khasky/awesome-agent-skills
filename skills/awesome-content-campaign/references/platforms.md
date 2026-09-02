@@ -35,13 +35,13 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `ko-fi` | ko-fi.com | — | optional | `genre-micro-post.md` |
 | `buymeacoffee` | buymeacoffee.com | — | optional | `genre-micro-post.md` |
 | `hackernews` | news.ycombinator.com | — | none supported | `genre-community-post.md` |
-| `daily-dev` | daily.dev | squad, when posting into one rather than submitting a link | optional | `genre-community-post.md` |
+| `daily-dev` | daily.dev | **defaults to a direct post from the personal profile** (`New Post`, audience everyone); ask only when the user names a squad | optional | `genre-community-post.md` |
 | `wonderful-dev` | wonderful.dev | — | optional | `genre-community-post.md` |
 | `devto` | dev.to | — | optional | `genre-long-article.md` |
 | `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
 | `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
 | `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
-| `substack` | substack.com | publication, when the account has more than one | optional | `genre-long-article.md` |
+| `substack` | substack.com | **defaults to the personal profile** (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | `genre-long-article.md` |
 | `write-as` | write.as | blog, when the account has more than one | optional | `genre-long-article.md` |
 | `telegraph` | telegra.ph | — | optional | `genre-long-article.md` |
 
@@ -49,7 +49,7 @@ A platform the user names that is not on this list is written for like any other
 
 **Out of scope, deliberately:** a mailing tool whose only output is email (a newsletter sender, a self-hosted list). Publishing exists there, but nothing can be read back from a public page afterwards, and the pacing and duplicate rules these skills are built on do not map. A campaign that should also go to a list is written here and sent by the user's own mail tooling.
 
-`substack` is on the list because a post there is a public page with a permalink that can be read back — but publishing it **also sends mail that cannot be recalled**, so it carries the strictest confirmation of any platform here: audience, section and the send toggle are read back against the post file before submitting, and a duplicate is not a downranked post but a second email in someone's inbox.
+`substack` is on the list because a post there is a public page with a permalink that can be read back. **The default path sends no mail at all**: an Article published from the personal profile is a web page on `substack.com/@handle` and nothing lands in an inbox. Only the publication-plus-send path is irreversible, and it is entered by explicit choice, never by default — when it is chosen, audience, section and the send toggle are read back against the post file before submitting, and a duplicate there is not a downranked post but a second email in someone's inbox.
 
 ## What to verify live, per selected platform
 
@@ -83,6 +83,10 @@ Federated link-and-discussion aggregator, reddit-shaped: title + markdown body o
 ### tumblr
 Casual, personality-forward register. Tags are a separate field, not inline hashtags, and drive discovery. Long or short both native; images and GIFs at home here.
 
+**A post here carries one featured image, at the very top, directly under the title** — that is what this author's own posts do, and a text-only Tumblr post looks stripped next to them. The block editor takes an image block; adding it is a composer step, not a front-matter field.
+
+**Links are applied, not typed.** The block editor does not linkify a pasted URL, so a bare address publishes as dead text. Select the words that should carry the link and use the popover that appears over a selection.
+
 ### mastodon
 Federated — the cap and culture depend on the user's instance; verify on that instance, not on defaults. No engagement algorithm: hashtags are the discovery mechanism. Content-warning conventions matter for promo-adjacent posts. Target detail required: instance domain.
 
@@ -91,11 +95,17 @@ Federated — the cap and culture depend on the user's instance; verify on that 
 ### bluesky
 Short posts, hard cap (verify current), no markdown. Link cards from pasted URLs; threads for anything longer. Casual, tech-adjacent culture.
 
+**Hashtags work and are clickable**, and the platform accepts up to eight — which is a ceiling, not a target. Every tag also spends part of the 300-character budget, so two or three from the campaign's set is the practical share here. Shipping a Bluesky post with none is a miss, not a style choice.
+
 ### x
-Short posts; cap differs sharply by account tier — verify which tier the user has before writing a single post. Reply chains are the native long form. Hashtags in moderation; media boosts reach.
+Short posts; cap differs sharply by account tier — verify which tier the user has before writing a single post. Reply chains are the native long form. Media boosts reach.
+
+**Hashtags: one or two, and never more than two.** This is the one platform where more tags measurably cost reach rather than adding it — engagement peaks at one to two per post and falls off from three, with a steep drop past five. So `x` takes the top one or two tags of the campaign's set and drops the rest; it does not get the fuller block that `mastodon` and `instagram` carry. A post with zero is also fine here. What is not fine is omitting them by accident: pick the one or two deliberately, and make sure the cap trim never leaves half a tag at the end.
 
 ### threads
 Meta's text feed, bound to an Instagram account: the handle and the login are Instagram's, so wherever an Instagram presence exists a Threads one usually does too — check for it rather than assuming its absence. Conversational register close to `x`. Unlike Instagram, links in the post body are clickable and media is optional. Verify the current character cap and which domain the account answers on.
+
+**Threads has topic tags, not hashtag blocks, and takes exactly one per post** — the platform caps it there deliberately to keep tag spam down, and a tag may contain spaces. So this is the one platform where the campaign's tag set collapses to a single choice: pick the tag closest to the post's subject and drop the rest. A block of five hashtags copied from the `mastodon` version is wrong here, and zero tags is a miss.
 
 ### truthsocial
 Mastodon-derived microblog with its own single network — short posts, media optional, links clickable. Politically homogeneous audience whose interests rarely overlap a technical product's; say so if the user selects it for a product with no fit rather than writing copy that will land as noise. Verify the current character cap and media specs live: the fork's numbers are not Mastodon's.
@@ -109,14 +119,30 @@ Long-form article platform with **editorial review** — a submitted draft is no
 ### devto
 Long-form markdown articles with front-matter tags and canonical-URL support (set it if the article mirrors the user's blog). Community norms favor tutorials and experience reports over announcements; an announcement dressed as neither reads as spam. Frequency: articles per campaign.
 
+**`cover_image` in the front matter is not the article's image.** It renders on the feed card and above the title, and a reader scrolling the article itself can miss it entirely — it also takes no alt text. The image belongs **in the body, as the first element under the title**, written as ordinary markdown with real alt text: `![<alt>](<uploaded url>)` on the line after the front matter, before the first `##`. Setting `cover_image` as well is fine and normal; setting only `cover_image` ships an article whose picture is not in it.
+
+**Get the URL from dev.to's own uploader**: the editor's `#image-upload-field` accepts the file and returns a hosted `dev-to-uploads.s3.amazonaws.com/uploads/articles/…` URL. That URL is what goes into both the markdown and `cover_image` — the local path is meaningless once published.
+
+**The title is slugged into the permalink**, so the 50–60 character rule in `genre-long-article.md` is a URL rule here as much as a headline one.
+
 ### hackernews
-`news.ycombinator.com`. A submission, not a post: title plus URL (or title plus text), one global ranked feed, no hashtags, no media, no formatting beyond plain paragraphs and links. The title carries almost everything and marketing phrasing sinks a submission on sight — the site's own guidelines ban editorializing titles. A self-authored product goes up as `Show HN: <what it is>`, which has its own rules (working thing, author present in the comments). Frequency is per campaign at most, never per day; reposting the same URL is filtered. Verify the current title cap and the Show HN rules live.
+`news.ycombinator.com`. A submission, not a post: one global ranked feed, no hashtags, no media, no formatting beyond plain paragraphs and links. The title carries almost everything and marketing phrasing sinks a submission on sight — the site's own guidelines ban editorializing titles. A self-authored product goes up as `Show HN: <what it is>`, which has its own rules (working thing, author present in the comments). Frequency is per campaign at most, never per day. Verify the current title cap and the Show HN rules live.
+
+**A submission is title + URL **or** title + text, never both** — that is the site's own rule, and its stated reason is to stop people putting their commentary in a privileged position above the comments. So HN is not a link-only platform: a text submission is a first-class form, and `Ask HN` exists precisely because text posts do. The FAQ's wording: *"You can't. This is to prevent people from submitting a link with their comments in a privileged position at the top of the page. If you want to submit a link with comments, just submit the link, then add a regular comment."*
+
+**Which form this campaign uses is a decision, not a default.** A link submission points at somebody else's page and the title must be that page's own title, unedited. A text submission is the campaign's own writing and is the right form when the piece has something of its own to say — but it must then read as a discussion opener, not as a post pasted from a feed.
+
+**When the URL is already on HN, a link submission is not a duplicate post — it is a vote.** The form redirects to the existing item and registers an upvote from the account, an outward-facing side effect nothing asked for. Search `hn.algolia.com` before submitting. Found, and the existing item drew real attention (the FAQ tolerates reposting only where a story "has not had significant attention in the last year or so") → the honest options are a text submission that stands on its own, or skipping; say which, and never let the run cast the vote as a side effect of trying to post.
 
 ### patreon
 Posts address existing supporters — the register is an update to insiders, not a cold ad. Public vs member-only visibility is a per-post choice; ask. Medium prose, media friendly.
 
+**The image is the post's image, never an attachment.** Patreon's editor has two homes for a file and they look interchangeable: the media block in the post body, and the **Attachments** list in the sidebar. Only the first one is the picture readers see; the second publishes the file as a download link sitting under the post, so a run that touches both ships the same image twice — once as the visual and once as a stray `v02.png` for supporters to download. Put the image in the body block, and leave Attachments empty unless the post file genuinely asks for a downloadable file.
+
 ### ko-fi
 Supporter feed, short updates, images common. Same insider register as patreon.
+
+**The image is part of the post and has to be attached before submitting.** The quick-update composer takes one, and a text-only supporter update stands out against this author's own feed where other posts carry pictures. If the image control cannot be reached in the composer that opened, that is a reason to look again at the composer rather than to ship without it — see the posting notes for the route.
 
 ### buymeacoffee
 Supporter posts, same family as ko-fi: short, personal, update-flavored.
@@ -124,11 +150,15 @@ Supporter posts, same family as ko-fi: short, personal, update-flavored.
 ### instagram
 Image or video **required** — no media, no post. Caption links are not clickable ("link in bio" is the native CTA phrasing); hashtag blocks are native. Web composer exists at instagram.com. Verify caption cap and current media specs.
 
+**The composer opens from the sidebar, not from a URL.** `instagram.com/create/…` paths are not the app's own route to the composer and land on unrelated shells; the entry point is the `+` in the left sidebar, then the `Post` entry that appears under it. The dialog that opens accepts PNG among other formats — a run that reached a route accepting `image/jpeg` only has gone in the wrong door, and converting the file is treating the symptom.
+
 ### bastyon
 Decentralized platform; account identity is a key pair and login flows differ from mainstream platforms. Crypto/free-speech-adjacent culture. Verify caps and media support live — documentation is thin, the live UI is the source of truth.
 
 ### pinterest
 A pin is image + title + description + destination link, filed to a board. Image required. Target detail required: board. Discovery is search-driven — the description carries keywords, not hashtag walls.
+
+**The description is sentences, and it ends as a sentence.** Search-driven does not mean keyword-stuffed: a description that trails off into `Claude Code parallel sessions, git worktrees, cross-session messaging, AI coding workflow.` is a comma-separated word list wearing a full stop, and it reads as machine output to the one person who actually opens the pin. Write the description as prose that stands on its own, and if the keywords matter put them where keywords belong — the pin's own tag field, or a short hashtag line — not welded onto the last sentence.
 
 ### vk-wall
 Wall posts, medium prose, hashtags in use, images common. A personal wall and a community differ in tone and in who may post — target detail required: which one.
@@ -151,12 +181,28 @@ Developer blogging platform: markdown articles with tags, a cover image and cano
 Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Composer is a dialog with an optional title field plus a body; **the body is silently truncated on publish** — a 495-character body came back cut two characters into the closing URL, with no counter and no warning in the composer. Keep the body at 400 characters or less, put the link where a few lost characters would not destroy it, and compare the published post's tail against the source. Small platform otherwise — read the live feed during Phase 3 for length norms and whether the composer supports anything beyond plain text.
 
 ### daily-dev
-Developer news aggregator. Two different acts: **submitting a link** to the public feed, where the title and the source do the work and self-promotion is judged the way an aggregator judges it, and **posting inside a squad**, which is a community with its own rules and moderators. The post file's target says which. Verify live what the composer accepts, how a submitted link is deduplicated against one already in the feed, and the squad's own promo rules before writing.
+Developer news aggregator. **The default is Direct Posting from the personal profile**, audience everyone, no squad involved.
 
-**The squad options are the user's own joined squads, read from their account.** A signed-in `daily.dev` lists them in the sidebar under `My Squads` and on `daily.dev/squads/discover`, so the question offers those by name plus the link-submission option, and marks whichever squad matches the post's topic. Anything else is a guess: a run cannot know from outside whether someone belongs to `AI`, `WebDev` or nothing at all, and a post filed to a squad they never joined does not publish. Featured squads on that page are joinable but joining is the user's decision, so they are mentioned rather than selected.
+**Community Picks no longer exists.** It was sunset in 2025 and replaced by Direct Posting: `New Post` (or the `+` control) anywhere on `daily.dev`, and the contribution lives under the author's own name on their profile, which is where reputation and followers accrue. Anything in this file or elsewhere that still describes a separate submission mechanism is describing a feature that was removed. Source: `docs.daily.dev/docs/key-features/community-picks`.
+
+Two shapes the composer offers, both from the profile. An **original post** is written on daily.dev itself, title plus body, and the editor takes Markdown and code blocks. A **link post** points at an article already published on the author's own site. Where the composer asks for an audience, choose everyone rather than a squad. Adding a personal blog as an automatic Source is not an option any more: daily.dev stopped accepting personal blogs as sources and points authors at Direct Posting or their own squad instead.
+
+**A squad is opt-in and is not the default.** It is a community with its own rules and moderators, worth having only when the user intends to run a topical room regularly. When one is named, the options are the user's own joined squads, read from their account: a signed-in `daily.dev` lists them in the sidebar under `My Squads` and on `daily.dev/squads/discover`. A run cannot know from outside whether someone belongs to `AI`, `WebDev` or nothing at all, and a post filed to a squad they never joined does not publish. Featured squads there are joinable, but joining is the user's decision, so they are mentioned rather than selected.
+
+**Content has to be for developers, and the guidelines are enforced by ranking and removal** (`docs.daily.dev/docs/for-content-creators/content-guidelines`). Personal subjects are fine when the lesson is a developer's: why a browser extension got built, the mistakes made launching a SaaS, losing motivation after a big project, what seven years of shipping own products taught, why a complex architecture was abandoned, burnout, job hunting, learning to program. Off-limits by relevance: travel, pets, crafts, relationships, domestic anecdotes, politics, anything with no line back to development. Also prohibited outright: non-English material, political content, pure advertising, clickbait, programmatic-SEO output, and content from sources dormant three months or more.
+
+A post about the author's own product survives only in one shape: problem, then their experience, then the decisions taken, then what went wrong, then concrete conclusions, and a short product link at the end. "I built a service, sign up here" reads as advertising and is treated as such.
+
+**One rule collides with what these skills do, and the run says so out loud rather than discovering it in a takedown.** daily.dev prohibits AI-generated content, and states plainly that it prioritises human insight and lived experience. A post drafted by an agent and shipped unedited is against that rule whoever pressed publish. So `daily-dev` selected in the interview earns one line back to the user: the platform bans machine-written posts, the draft here is a starting point they are expected to rewrite in their own voice and from their own experience, and publishing it as-is risks downranking or removal of the post and reputational damage to the account. The user decides; the run never quietly ships into that rule, and never claims the text will pass as human.
 
 ### medium
 General-purpose article platform with a rich editor rather than raw markdown. An article can sit on the author's own profile or be submitted to a **publication**, which routes it to that publication's editors and their schedule — submission is not publication, and the campaign must not treat it as such. Canonical-URL support matters when the piece also lives on the user's blog. Some articles sit behind the platform's paywall; whether the user's do is an account setting to confirm, not to assume.
+
+**Two things the rich editor will not do for you, and both ship as visible defects.** A pasted URL stays plain text, so the closing link publishes as dead characters unless the words are selected and the editor's own link control is applied to them. And the image is inserted through the editor: put the caret on an empty line, use the `+` control that appears in the left margin, choose the image option, and pick the file — there is no cover field to fall back on, so an article with no in-body image ships with no image at all.
+
+**The title is slugged into the permalink**, so a two-sentence title becomes an unreadable URL; keep it inside the 50–60 character rule.
+
+**Its autocorrect rewrites `--` into an em dash.** That silently corrupts any command-line flag in the prose (`claude --worktree` publishes as `claude — worktree`) and drops an em dash into text the campaign forbids them in. Write the short form of the flag where one exists, or check the body for `—` before publishing and repair it by replacing the whole paragraph.
 
 ### minds
 Open-source social network with a crypto-adjacent, free-speech-forward culture and a small technical audience. A post is a short feed entry with optional media and clickable links; the composer sits at the top of the newsfeed. Accounts carry a token/reward layer that has nothing to do with posting — never touch wallet, boost or monetisation controls, and never enter a paid Boost flow, which sits next to the post button. Verify the current character cap live.
@@ -176,4 +222,12 @@ Telegram's throwaway publishing surface: title, author and body in one page, no 
 **Markdown syntax is not the input.** The body is rich text, so typing `## Where it breaks` publishes the literal hash characters; a heading is made with the editor's own controls, and links are inserted as links rather than written as `[text](url)`.
 
 ### substack
-Newsletter platform where a post is simultaneously a web page and an email to subscribers. That second half changes the rules this file otherwise assumes: **publishing sends mail that cannot be recalled**, subscribers feel frequency directly, and a duplicate is not a downranked post but a second email. Sections and paywalled tiers decide who receives what. Target detail: the publication when the account has more than one.
+Two different surfaces share one slug, and **the default is the one that sends no email**.
+
+**The personal profile is the default target.** Substack's own help puts it plainly: "On Substack, you can publish from your profile and website." Every account gets a profile at `substack.com/@handle` with a `Create` menu offering `Note`, `Article`, `Video`, `Podcast` and more, and an Article published there is a web page on that profile with a permalink. No newsletter goes out, no subscriber inbox is touched, and **no publication has to exist** — an account that has never made one publishes this way. That is the path a repurposed article takes unless the user says otherwise, and it needs no target detail, because the profile is not a thing to choose between.
+
+**Same two editor traps as `medium`, on both surfaces.** A pasted URL does not become a link — select the words and use the `Link` control in the top toolbar. The image is inserted from that toolbar too: caret on an empty line, the image icon, then `Image`, then the file. Neither happens by writing markdown, and an article that skips them publishes with a dead URL and no picture.
+
+**The publication path is opt-in and it is the irreversible one.** An account that runs a publication can publish there instead and send the post to subscribers, and a sent issue cannot be recalled: subscribers feel frequency directly, sections and paywalled tiers decide who receives what, and a duplicate is a second email rather than a downranked post. Enter it only when the user names the publication and asks for the send, and then read back audience, section and the send toggle against the post file before submitting.
+
+**So the interview does not ask "which publication?" by default**, and it certainly does not ask it every run. That question is unanswerable for the common case — an account with a profile and no publication has nothing to name, so the only honest answers left are "drop it" or a typed guess. Ask instead only when the user has said they want the newsletter send, or when the account is known to run more than one publication.
