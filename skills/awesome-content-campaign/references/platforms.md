@@ -78,11 +78,15 @@ Title + body, markdown supported, no hashtags. Everything is per-subreddit: rule
 ### lemmy
 Federated link-and-discussion aggregator, reddit-shaped: title + markdown body or a link submission, per-community rules, no hashtags, votes and moderators. The instance is part of the address — `lemmy.world` is the largest but one among many, and a community name means nothing without it. Target detail required: instance domain and community; read that community's sidebar rules for self-promotion limits before writing, exactly as with a subreddit. Small, technically literate audience that reads marketing register as an intrusion.
 
+**The instance and the community are two different questions, and only the second one is usually open.** A user with an account has exactly one instance, so once they have named it the run stops offering alternatives; what remains is which community on it. **That list is read from the instance itself, never guessed**, and Lemmy's own API answers it from a logged-in tab on that domain: `/api/v3/community/list?type_=Local&sort=TopAll&limit=50` for what the instance carries, and `/api/v3/search?q=<topic>&type_=Communities&listing_type=Local` for the ones matching this post's subject. Both return subscriber and post counts, so the options can be offered ranked by fit with the size that makes them choosable — on `lemmy.world` a post about a model release meets `technology` at 87k subscribers, `machinelearning` at 1.2k and `fosai` at 4.8k, and that spread is the actual decision. Offer the topical matches alongside the large general community, because the big one is not always the right room.
+
 ### tumblr
 Casual, personality-forward register. Tags are a separate field, not inline hashtags, and drive discovery. Long or short both native; images and GIFs at home here.
 
 ### mastodon
 Federated — the cap and culture depend on the user's instance; verify on that instance, not on defaults. No engagement algorithm: hashtags are the discovery mechanism. Content-warning conventions matter for promo-adjacent posts. Target detail required: instance domain.
+
+**Ask it as a default plus an escape hatch, never as a menu of instances.** `mastodon.social` (or whichever the user has already named) and `another server, I will type it` are the two options. A list of three or four instances the user has no account on is a quiz with no right answer visible from inside the question, and picking one of them wrongly sends the run's caps research to a server they cannot post from.
 
 ### bluesky
 Short posts, hard cap (verify current), no markdown. Link cards from pasted URLs; threads for anything longer. Casual, tech-adjacent culture.
@@ -136,6 +140,10 @@ A channel or group broadcast rather than a social feed: no ranking algorithm and
 ### nostr
 A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
 
+**The default is the site the user actually has an account on, and for most people that is `nostr.com` itself.** The question exists because a Nostr key works in any client, not because the run gets to pick one; a menu of `primal.net · snort.social · iris.to` offered to someone who signed up at `nostr.com` is three sites they have no relationship with, and nothing in the question explains the basis for choosing. `nostr.com` is a client in its own right and not merely a directory — it carries a feed, a sign-in, a configured relay set (`relay.nostr.com`, `relay.damus.io`, `nos.lol` and others, read/write) and an installable app — so naming it as the default is correct rather than a fallback. It also publishes its own explainer at `nostr.com/clients` and points at `nostrapps.com` for the rest, which is the honest place to send a user who wants to change.
+
+So: the client the user named or is signed into, plus `another client, I will type it`. And **check the signer before promising the post can go out**: posting through a web client needs a NIP-07 browser extension or a remote signer, so if `window.nostr` is absent in the browser that will do the publishing, say so at interview time rather than letting the publisher discover it at the composer. Never ask for, read, or paste the private key in any case.
+
 ### hashnode
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
 
@@ -144,6 +152,8 @@ Developer profile network: a feed of short posts attached to a public profession
 
 ### daily-dev
 Developer news aggregator. Two different acts: **submitting a link** to the public feed, where the title and the source do the work and self-promotion is judged the way an aggregator judges it, and **posting inside a squad**, which is a community with its own rules and moderators. The post file's target says which. Verify live what the composer accepts, how a submitted link is deduplicated against one already in the feed, and the squad's own promo rules before writing.
+
+**The squad options are the user's own joined squads, read from their account.** A signed-in `daily.dev` lists them in the sidebar under `My Squads` and on `daily.dev/squads/discover`, so the question offers those by name plus the link-submission option, and marks whichever squad matches the post's topic. Anything else is a guess: a run cannot know from outside whether someone belongs to `AI`, `WebDev` or nothing at all, and a post filed to a squad they never joined does not publish. Featured squads on that page are joinable but joining is the user's decision, so they are mentioned rather than selected.
 
 ### medium
 General-purpose article platform with a rich editor rather than raw markdown. An article can sit on the author's own profile or be submitted to a **publication**, which routes it to that publication's editors and their schedule — submission is not publication, and the campaign must not treat it as such. Canonical-URL support matters when the piece also lives on the user's blog. Some articles sit behind the platform's paywall; whether the user's do is an account setting to confirm, not to assume.
