@@ -1,11 +1,11 @@
 ---
-name: awesome-commit-plan
-description: "Turns a codebase into a commit plan: a navigation map of its modules and their dependency direction, then a split where every commit builds and tests on its own, so the series is bisectable end to end. Each commit is verified by replaying the ladder in a scratch clone against the repository's own gates, never asserted. Messages follow a strict ruleset that keeps machine-written prose out of the log. The only output is a plan file numbered #1 to #N, no dates, no preamble. Use when asked to 'split this project into commits', 'plan the commit history for this repo', 'how should I break this into commits', 'prepare a bisectable commit series', or in Russian 'разбей проект на коммиты', 'составь план коммитов', 'как разбить это на коммиты'. Takes a repository URL or a local path: '/awesome-commit-plan <url-or-path>'. Do not use to execute the plan against git history — that is awesome-git-history-rebuild; not to squash an existing history — awesome-git-history-reset; not to review a diff — awesome-code-review."
+name: awesome-git-commit-plan
+description: "Turns a codebase into a commit plan: a navigation map of its modules and their dependency direction, then a split where every commit builds and tests on its own, so the series is bisectable end to end. Each commit is verified by replaying the ladder in a scratch clone against the repository's own gates, never asserted. Messages follow a strict ruleset that keeps machine-written prose out of the log. The only output is a plan file numbered #1 to #N, no dates, no preamble. Use when asked to 'split this project into commits', 'plan the commit history for this repo', 'how should I break this into commits', 'prepare a bisectable commit series', or in Russian 'разбей проект на коммиты', 'составь план коммитов', 'как разбить это на коммиты'. Takes a repository URL or a local path: '/awesome-git-commit-plan <url-or-path>'. Do not use to execute the plan against git history — that is awesome-git-history-rebuild; not to squash an existing history — awesome-git-history-reset; not to review a diff — awesome-code-review."
 license: MIT
 metadata:
   author: Khasky
   tags: ["git", "commit-splitting", "bisect", "conventional-commits", "code-analysis", "planning"]
-  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-commit-plan"
+  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-git-commit-plan"
 ---
 
 # Commit Plan
@@ -28,7 +28,7 @@ Four invariants hold throughout:
 ## Invocation
 
 ```
-/awesome-commit-plan <repository-url-or-path> [--out <file>] [--commits N] [--granularity coarse|default|fine]
+/awesome-git-commit-plan <repository-url-or-path> [--out <file>] [--commits N] [--granularity coarse|default|fine]
                      [--verify full|build|off] [--strategy layered|vertical|manual] [--slice on|off]
 ```
 
