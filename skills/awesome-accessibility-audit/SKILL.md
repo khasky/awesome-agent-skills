@@ -1,6 +1,6 @@
 ---
 name: awesome-accessibility-audit
-description: "Audits UI and markup for accessibility (WCAG 2.1/2.2, keyboard, screen readers) and suggests concrete fixes. Use when checking a11y, before shipping a page or component, reviewing forms/modals/interactive UI, or when the user says 'accessibility', 'a11y', 'WCAG', 'screen reader', 'keyboard navigation', 'доступность'. Covers semantic HTML, focus management, labels, contrast, dynamic content, and WCAG 2.2 additions (target size, focus obscured, accessible authentication). Do not use for conversion structure (use awesome-landing-audit) or search discoverability (use awesome-seo-audit)."
+description: "Read-only audit of UI and markup for accessibility (WCAG 2.1/2.2, keyboard, screen readers), producing findings and the concrete fix for each. Use when checking a11y, before shipping a page or component, reviewing forms/modals/interactive UI, or when the user says 'accessibility', 'a11y', 'WCAG', 'screen reader', 'keyboard navigation', 'доступность'. Covers semantic HTML, focus management, labels, contrast, dynamic content, and WCAG 2.2 additions (target size, focus obscured, accessible authentication). It audits and reports; the fixes ship as snippets in the report, and it never edits files. Do not use for conversion structure (use awesome-landing-audit) or search discoverability (use awesome-seo-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -10,7 +10,9 @@ metadata:
 
 # Accessibility Audit
 
-Review UI and markup for accessibility and suggest concrete fixes aligned with WCAG so all users can perceive, operate, and understand the interface.
+Review UI and markup for accessibility and give the concrete fix for each finding, aligned with WCAG, so all users can perceive, operate, and understand the interface.
+
+Read-only: it reports findings, each with the markup or attribute change that resolves it, and never applies them. A snippet in a report is reviewable next to the criterion it satisfies; the same edit applied silently is not. Hand the report to whoever owns the component.
 
 ## When to Activate
 
@@ -24,7 +26,7 @@ Review UI and markup for accessibility and suggest concrete fixes aligned with W
 1. **Define scope** — Page, component, or flow to review (e.g. login form, report table, modal dialog).
 2. **Check each area** — Semantic HTML, keyboard, labels and names, color and contrast, dynamic content, motion. Use the checklists below.
 3. **Document findings** — Location (component/file or element type), WCAG criterion or principle, issue, impact, and recommended fix. Severity: Critical / High / Medium.
-4. **Suggest fixes** — Code snippet or attribute change where possible. Prefer native HTML and correct ARIA over custom widgets when they suffice.
+4. **Give the fix, do not apply it** — A code snippet or attribute change in the report where possible. Prefer native HTML and correct ARIA over custom widgets when they suffice.
 5. **Recommend follow-up** — Suggest automated tools (e.g. axe, Lighthouse, pa11y; in CI, fail the build on critical) and manual testing for broader coverage. Automated tools catch roughly 30–40% of WCAG issues — the rest is manual. Recommend a flow × assistive-tech matrix: test each key user flow across keyboard-only, a screen reader (VoiceOver on Mac/iOS, NVDA on Windows, TalkBack on Android), 200% and 400% zoom / reflow (WCAG 1.4.10), Windows High Contrast, and reduced-motion; note Voice Control/Dragon and Switch Control where relevant. Do not claim full WCAG compliance from a single review.
    - For automated assertions in tests: `axe-core` with `.withTags(['wcag2a','wcag2aa'])` targets a specific WCAG tier and can fail CI on violations; Playwright's `page.ariaSnapshot()` (1.59+) asserts the accessibility tree of dialogs, menus, and composite widgets — coverage beyond what axe/Lighthouse give.
    - Run automated scans at more than one viewport (mobile and desktop breakpoints, not only the default): focus-obscured, overlapping targets, and reflow violations appear or vanish with viewport size, so a single-viewport scan silently under-reports.

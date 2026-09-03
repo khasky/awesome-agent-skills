@@ -101,10 +101,10 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-architecture-audit](skills/awesome-architecture-audit) | Read-only whole-project audit: architecture and module boundaries, docs-vs-code fidelity, YAGNI/KISS/SOLID, and extensibility (build-from-source, add-a-provider), with a SHIP/FIX/BLOCK verdict and a prioritized recommendations report |
-| [awesome-security-audit](skills/awesome-security-audit) | Checks for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and crypto misuse |
+| [awesome-security-audit](skills/awesome-security-audit) | Read-only check for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and crypto misuse — findings carry their remediation, applying it is the owner's call |
 | [awesome-pentest](skills/awesome-pentest) | Authorization-gated penetration-test engagement: scoping and rules of engagement, recon, attack-surface mapping, testing, exploitation-to-proof, and a findings report with CWE/CVSS and retest — drives the audit siblings and follows PTES/OWASP WSTG/NIST 800-115 |
 | [awesome-leak-audit](skills/awesome-leak-audit) | Keeps a public client (extension, app, SPA, CLI) from leaking backend internals; client hardening |
-| [awesome-accessibility-audit](skills/awesome-accessibility-audit) | WCAG-oriented a11y checks and fixes |
+| [awesome-accessibility-audit](skills/awesome-accessibility-audit) | Read-only WCAG-oriented a11y checks, each finding carrying its fix as a reviewable snippet |
 | [awesome-seo-audit](skills/awesome-seo-audit) | Read-only SEO + AI-discoverability audit: technical SEO, programmatic-page safety, agent/LLM readability, with a SHIP/FIX/BLOCK verdict |
 | [awesome-performance-audit](skills/awesome-performance-audit) | Read-only server/runtime performance and reliability audit: event loop, streams/backpressure, memory diagnostics, graceful shutdown, resilience topology (circuit breakers, retry budgets, queue bounds), with a SHIP/FIX/BLOCK verdict |
 | [awesome-database-audit](skills/awesome-database-audit) | Read-only database-layer audit: schema anti-patterns (EAV, imprecise types), query/index fit, integrity and concurrency, migration hygiene and tenancy, with a SHIP/FIX/BLOCK verdict |

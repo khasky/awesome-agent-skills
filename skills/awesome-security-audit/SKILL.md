@@ -1,6 +1,6 @@
 ---
 name: awesome-security-audit
-description: "Audits code for common vulnerabilities: injection, secrets, auth, dependency CVEs, CI/CD pipeline exposure, and cryptographic misuse — with confidence-gated, evidence-backed findings mapped to CWE/OWASP. Use when reviewing security, before a release, after adding auth/payments/sensitive-data handling, when hardening GitHub Actions or other CI workflows, or when the user says 'security review', 'security audit', 'check for vulnerabilities', 'is this secure'. Do not use for auditing what a public client discloses about a private backend — use awesome-leak-audit for that."
+description: "Read-only audit of code for common vulnerabilities: injection, secrets, auth, dependency CVEs, CI/CD pipeline exposure, and cryptographic misuse — with confidence-gated, evidence-backed findings mapped to CWE/OWASP, each carrying the fix it calls for. Use when reviewing security, before a release, after adding auth/payments/sensitive-data handling, when hardening GitHub Actions or other CI workflows, or when the user says 'security review', 'security audit', 'check for vulnerabilities', 'is this secure'. It audits and reports; it never edits code, and the remediation it describes is applied by whoever owns the fix. Do not use for auditing what a public client discloses about a private backend — use awesome-leak-audit for that."
 license: MIT
 metadata:
   author: Khasky
@@ -10,7 +10,9 @@ metadata:
 
 # Security Audit
 
-Review code and config for common security issues so risks are identified and remediated.
+Review code and config for common security issues so risks are identified, evidenced, and handed over with the fix each one needs.
+
+Read-only on the codebase: it reports findings and the remediation each calls for, and never applies an edit. The active phase (scanners, `npm audit`, registry lookups) is gated separately in step 2 and reads — it does not write either. A security fix belongs to whoever owns the code path, reviewed against the finding that motivated it; an audit that silently patches what it found leaves nobody able to check whether the patch closed the hole or moved it.
 
 ## When to Activate
 
@@ -32,7 +34,7 @@ Split the work into a **passive** phase (reading source, config, and dependency 
 7. **Escalate criticals immediately** — Don't hold a confirmed Critical (RCE, auth bypass, exposed live secret, bulk-PII exposure) for the final report; surface it to the user the moment it's confirmed, with the immediate containment step.
 8. **Sweep for variants** — a confirmed finding is a class, not an instance. Before writing it up, search the repo for the same shape: the same sink reached from a different caller, the same missing check on sibling routes, the same pattern copy-pasted into another module. Grep the sink, the vulnerable call, and the fix's absence (`execute(f"` after finding one f-string query; every route file after finding one without an ownership check), then read each hit in context. Report the class as **one finding listing every location**; split it out only where a variant's severity or reachability genuinely differs. Fixing the one caller the report named and leaving four siblings live is the failure this step exists to prevent.
 9. **Document findings** — Location (file:line or area), issue, impact, and recommended fix. Do not claim "secure"; frame as "no obvious issues in reviewed scope" and suggest further steps (e.g. dependency scan, pentest) if relevant.
-10. **Remediate** — Suggest concrete fixes. Do not introduce new secrets or log sensitive data in fixes.
+10. **Specify the remediation** — Describe the concrete fix per finding; do not apply it, and do not introduce new secrets or log sensitive data in what you propose.
 11. **Stop on impact** — If an active step shows signs of affecting the running system or its data (errors, state changes, account lockouts), stop that step and report before continuing.
 
 ## Parallelizing the passive phase (large scope)
@@ -176,7 +178,7 @@ Rate on impact and reachability, not the pattern alone: weigh exploitability, re
 | "That default is just for development" | If it can reach production code, it's a finding. |
 | "The framework handles that" | Confirm the escape hatches (`mark_safe`, `.raw()`, `dangerouslySetInnerHTML`) aren't in use first. |
 
-## Anti-patterns (avoid in fixes)
+## Anti-patterns (avoid in the remediation you specify)
 
 - Introducing new hardcoded secrets or logging secrets/PII.
 - Suggesting "add a comment" instead of removing or protecting the vulnerability.
@@ -192,7 +194,7 @@ Rate on impact and reachability, not the pattern alone: weigh exploitability, re
 
 ## Retesting
 
-After fixes land, re-run the exact check that produced each finding and assign a status — don't assume a fix works because it looks right:
+Once someone else's fixes have landed and this audit is re-invoked against them, re-run the exact check that produced each finding and assign a status — don't assume a fix works because it looks right:
 
 - **Remediated** — the check now passes; the regression test fails without the fix and passes with it.
 - **Partially remediated** — one path fixed, a sibling caller or edge case still open.
