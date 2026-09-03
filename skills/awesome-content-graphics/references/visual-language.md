@@ -1,16 +1,16 @@
 # Visual language — what to draw, and how to render it
 
-Loaded before the first line of markup is written. The gates, the fact rules and the headline rules live in `SKILL.md`; this file is the drawing.
+Loaded before the first line of markup is written. The gates and the fact rules live in `SKILL.md`; **which kind of picture this is lives in `style-catalog.md`**, and that file is read first. This one is the drawing craft underneath: the shape vocabulary the emphasis-diagram archetype uses, the techniques that keep a set from looking like one image recoloured, and the render mechanics every archetype shares.
 
 ## The job of the image
 
-**The image is what stops the scroll, not a second copy of the post.** The text is already in the post and the reader will read it there. What the image has to do is make them stop long enough to start reading, and carry one idea visually while they do.
+**The image is what stops the scroll, not a second copy of the post.** The text is already in the post and the reader will read it there. What the image has to do is make them stop long enough to start reading, and carry one idea while they do.
 
-So the graphic is drawn, not typed. The mechanism the post is about becomes a diagram: two blocks and an arrow, one box inside another, a shape split down the middle, a full bar next to an empty one, three dots on a line where the third is a different colour. Abstract is fine and usually better, as long as the shape means what the post means. Anything a viewer would have to *read* to understand belongs in the post body.
+Where the idea is a relationship rather than a thing, the graphic is drawn rather than typed: the mechanism becomes a diagram — two blocks and an arrow, one box inside another, a shape split down the middle, a full bar next to an empty one, three dots on a line where the third is a different colour. Abstract is fine and usually better, as long as the shape means what the post means.
 
 ## What to build
 
-Pick the shape from what the idea *does*, not from a template rotation. **Reach for the composition that a viewer feels before they parse it** — mass against emptiness, a rhythm that breaks, a field that fills, one mark that refuses to match the others. The chart vocabulary is available as *drawing* (a rail, an arc, a stack of marks are all fine shapes), never as *reporting*: the moment it acquires an axis label or a value it has become the captioned diagram `SKILL.md` rules out.
+For the emphasis diagram, pick the shape from what the idea *does*, not from a template rotation. **Reach for the composition that a viewer feels before they parse it** — mass against emptiness, a rhythm that breaks, a field that fills, one mark that refuses to match the others. The chart vocabulary is available as *drawing* (a rail, an arc, a stack of marks are all fine shapes), never as *reporting*: **inside this archetype** the moment a mark acquires an axis label or a printed value it has become a chart nobody asked for. Labels are not banned generally — the denser archetypes in `style-catalog.md` are built on them — they are banned *here*, because the whole point of this archetype is that the shape carries the meaning alone.
 
 | What the post is about | What the image shows |
 | --- | --- |
@@ -30,9 +30,9 @@ Pick the shape from what the idea *does*, not from a template rotation. **Reach 
 
 **The chart craft is not reinvented here.** Form choice, the colour formula and its runnable validator, mark specs and the anti-pattern catalog live in the `dataviz` skill, and a graphic on this path is built against it. What that skill supplies and this file does not restate: thin marks over thick saturated blocks, hairline recessive gridlines that are never dashed, a 2px surface gap between touching fills and a 2px surface ring on overlapping markers, direct labels used sparingly instead of a number on every point, text in ink tokens rather than in the series colour, no dual axis ever, and a palette proved with `scripts/validate_palette.js` rather than judged by eye.
 
-Two places this path overrides that skill, because a feed image is not a dashboard: there is no hover layer, no tooltip and no table view, and no labels either, so **a value reaches the viewer through the headline or not at all** — every quantity's condition and source live in the post body and in the alt text; and where a chart would carry a legend or a direct label to separate two series, a post graphic separates them by position, mass and accent, because its one line of type is already spent.
+Two places this path overrides that skill, because a feed image is not a dashboard: there is no hover layer, no tooltip and no table view; and where a chart would carry a legend to separate two series, a post graphic separates them by position, mass and accent. In the emphasis diagram specifically there are no labels at all, so **a value reaches the viewer through the headline or not at all**, and every quantity's condition and source live in the post body and in the alt text.
 
-The form is almost always **emphasis** rather than categorical: one accent hue on the thing the post is about, everything else in the de-emphasis gray. A post makes one point, so a second hue usually means the graphic is trying to make two.
+The form is almost always **emphasis** rather than categorical: one accent hue on the thing the post is about, everything else in the de-emphasis gray. A post makes one point, so a second hue usually means the graphic is trying to make two. The exceptions are declared by archetype — a split compare needs exactly two hues because the two hues *are* the comparison, and a catalog grid may key its rows by hue as long as the cells stay neutral.
 
 Composition craft on top of that: large marks with real negative space around them; a deliberate composition rather than centred everything; contrast strong enough to survive a dark feed and a bright one. Inline SVG is preferred for the marks, since it stays self-contained and scales. Gradients, blurs and shadows are allowed when they are doing work.
 
@@ -50,11 +50,13 @@ A set built from flat shapes on flat backgrounds comes out uniform however diffe
 
 **Generate shapes from math instead of drawing them.** A scalloped disc is a polar path alternating between two radii over `points * 2` steps. A connector with real tension is a quadratic Bézier whose control point is pushed perpendicular to the chord by a bend parameter. An arrowhead is two short strokes off the line's end. Parametric shapes vary by argument, so one generator supplies a dozen distinct marks across the set while hand-drawn paths repeat themselves.
 
-**Vary the composition, not just the form.** Across the 20, move the subject's anchor between corners and edges, change how much of the canvas the marks occupy (a dense field in one, a single large mass with deep negative space in another), let some forms run off the edge and keep others fully inside, and change the scale relationship between largest and smallest element. Two variants using the same form at the same size in the same place are one variant.
+**Vary the composition, not just the form.** Across the set, move the subject's anchor between corners and edges, change how much of the canvas the marks occupy (a dense field in one, a single large mass with deep negative space in another), let some forms run off the edge and keep others fully inside, and change the scale relationship between largest and smallest element. Two variants using the same form at the same size in the same place are one variant.
+
+**And vary the archetype and the surface before varying anything else.** Composition differences inside one archetype on one surface are the smallest available difference; a statement on warm paper next to a proof object on deep dark next to a chain on a gradient field is what a real set looks like. The spread rule is in `style-catalog.md`.
 
 **Give the set one system and per-variant tokens.** Define the surface, ink, accent, secondary accent and the two ring washes once, and let each variant pick its emphasis within them. Shadows come from a small scale rather than ad hoc: a tight one for resting elements, a large offset one with negative spread for floating ones. A gradient ring around a shape needs no extra element — `background-image: linear-gradient(surface, surface), linear-gradient(90deg, …)` with a transparent border and `background-clip` does it in one box.
 
-**Stand in for content with shape, not with text.** Where a composition needs a body of text, a page or a card, draw rounded bars at uneven widths rather than lorem ipsum. It reads instantly as "content" and adds no words to a canvas that allows exactly one line of them.
+**Stand in for content with shape, not with text.** Where a composition needs a body of text, a page or a card, draw rounded bars at uneven widths rather than lorem ipsum. It reads instantly as "content" and spends none of the archetype's type budget.
 
 ## Building it
 
@@ -63,7 +65,7 @@ One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.
 - **Self-contained means offline**: no CDN stylesheet, no web font, no remote image, no script that fetches. A rendering machine without network access must produce the same file. Fonts come from a system stack (`system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif`); a font the user names and has installed locally is fine.
 - **Size the canvas to the platform**, from the caller's verified research rather than memory — the ratios in play are the vertical feed image, the square, and the link-preview landscape. Set the body to exact pixel dimensions and render at 2× device scale so edges stay clean after the platform recompresses it.
 - **Readable at thumbnail size**: the composition carries at 25% zoom and the headline is still legible there, which puts it no smaller than about 4% of the canvas height. View it at that size before accepting it; if the picture turns to mush the marks are too many or too thin, and the fix is fewer, larger forms.
-- **Render the set in one pass, then look at every render** — the contact sheet read in Phase 5, which is where the marks running off the canvas and the compositions that came out grey are caught.
+- **Render the set in one pass, then look at every render** — the contact-sheet read, which is where the marks running off the canvas, the type overflowing its box and the compositions that came out grey are caught.
 
 **Render in a spawned browser, not the user's.** This step loads a local `file://` page and screenshots it — there is no account, no session and nothing to log into, so it has no business taking over a browser the user is working in. Prefer, in order: a headless browser the automation can launch itself, an installed CLI (`wkhtmltoimage` or a browser's own `--screenshot`, verified with `--version` exiting 0), and only then a live bridge. Using a live bridge means the user's window fills with `file://` tabs while the batch renders, so ask first when there is more than one bridge, say which browser is being used, and warn that it is busy.
 

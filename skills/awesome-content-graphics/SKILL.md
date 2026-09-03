@@ -1,6 +1,6 @@
 ---
 name: awesome-content-graphics
-description: "Produces the one image a post ships with, offline: a set of at least 20 self-contained HTML/CSS graphics rendered locally to PNG, built from the caller's own facts and from whatever the user supplies as input — a brand palette, reference images, example graphics, a render they already approved — with two user gates, the headline first and the picture second, so the skill never picks the campaign's image on the user's behalf. No image-generation service, no API key, nothing uploaded anywhere. Use when asked to 'make an image for this post', 'generate a graphic for the campaign', 'draw a picture for social', or in Russian 'сделай картинку для поста', 'нарисуй графику к посту' — and whenever awesome-content-campaign or awesome-content-repurpose reach a platform that cannot post without media. Do not use for photographs, illustrations, people or product mockups (it draws flat shapes and one line of type); not for video, which it cannot produce; not to write the posts themselves — use awesome-content-campaign or awesome-content-repurpose."
+description: "Produces the one image a post ships with, offline: a user-chosen set size (10, 20, 30 or any number) of self-contained HTML/CSS graphics rendered locally to PNG and spread across twelve visual archetypes — statement, proof object, split compare, chain, poster, catalog grid, transcript, cut paper, emphasis diagram and more — built from the caller's facts and from what the user supplies as input: brand palette, reference images, examples, a render they already approved. Two gates, the headline first and the picture second, so the image is never chosen on the user's behalf. No image service, no API key, nothing uploaded. Use when asked to 'make an image for this post', 'generate a graphic for the campaign', or in Russian 'сделай картинку для поста', 'нарисуй графику к посту' — and whenever awesome-content-campaign or awesome-content-repurpose reach a platform that cannot post without media. Do not use for photographic scenes or illustrated characters, which offline HTML cannot render; not for video, which it cannot produce; not to write the posts themselves — use awesome-content-campaign or awesome-content-repurpose."
 license: MIT
 metadata:
   author: Khasky
@@ -18,9 +18,12 @@ This is one stage lifted out of the content pipeline so every skill that needs a
 
 **Second principle: the facts are the boundary.** The composition may not assert a relationship the caller's sources do not carry. An image is a claim surface like any other sentence, and a wordless claim is still read as evidence.
 
+**Third principle: a set is a spread of kinds, not a spread of shapes.** Twenty variations on one composition are one variant rendered twenty times, and a gallery of them gives the user nothing to decide. The set moves across the archetype catalog — a statement, a claim beside the artifact that proves it, a comparison, a chain, a poster, a transcript — and across surfaces, densities and typographic treatments.
+
 Bundled files (load on demand):
 
-- `references/visual-language.md` — what to draw for what kind of idea (the shape table), the craft that makes twenty renders look like twenty rather than one recoloured, and the rendering mechanics. **Read it before writing the first line of markup**, not after the first contact sheet comes back grey.
+- `references/style-catalog.md` — **read first.** The twelve archetypes a post graphic can be, the five axes they are built from (density, surface, typography, proof object, atmosphere), the device library, the rule for what words are allowed on a canvas, and what is not renderable offline.
+- `references/visual-language.md` — the shape vocabulary the emphasis-diagram archetype draws from, the craft that keeps a set from looking like one image recoloured, and the rendering mechanics every archetype shares. **Read it before writing the first line of markup**, not after the first contact sheet comes back grey.
 
 It also reuses, by reference rather than by restating:
 
@@ -29,7 +32,9 @@ It also reuses, by reference rather than by restating:
 
 ## What it produces, and what it does not
 
-What comes out is a **flat graphic built out of shapes, colour and a few words**. Say that plainly to the user, because it is not what "generate an image" usually means: photographic and illustrative imagery is out of scope — no rendered scenes, no people, no product mockups, no logos of companies the sources do not connect to the product.
+What comes out is a **designed graphic built from shapes, type, colour, drawn interface chrome and system emoji** — anything HTML, CSS and inline SVG can compose with the fonts already on the machine. That reaches further than "a flat diagram": posters, comparison cards, terminal and editor mockups, chat transcripts, cut-paper headlines and quote cards are all in range, and `references/style-catalog.md` is the map of them.
+
+What is **out of range, and said plainly to the user rather than approximated**: photographic scenes, illustrated characters, anything needing a fetched brand asset, and anything needing a display font that is not installed. A scene with a person in it needs an illustrator or an image model, and this skill deliberately calls neither. Offered a reference of that kind, name the nearest archetype that is reachable and say what was substituted.
 
 It produces **stills**. A platform whose requirement is video (`tiktok`, `youtube` uploads) cannot be satisfied by this path, and a still is never offered as a substitute — recommend dropping the platform instead of shipping an unpostable draft.
 
@@ -42,20 +47,22 @@ It produces **stills**. A platform whose requirement is video (`tiktok`, `youtub
 - `<facts-source>` — a file, a folder or pasted text carrying the facts the image may draw on: a knowledge map, a source-notes file, a post draft, or a plain description. Nothing given → ask.
 - `--out` — where renders land. Default `media/` under the current working folder, `media/src/` for the HTML sources.
 - `--refs` — files or folders of reference material the user wants the look built from (see Phase 1). Repeatable.
-- `--count` — size of the set. Default 20, and **20 is also the floor** for a generated set; a smaller number is only honest when the chosen fact genuinely cannot carry more distinct forms.
+- `--count` — size of the set: `10`, `20`, `30`, or any number the user names. Passed on the command line it skips the Phase 3 question; omitted, the question is asked.
+- `--style` — pin one archetype from `references/style-catalog.md` instead of spreading the set across several.
 - `--ratio` — canvas shape. Default square, which survives on every feed.
 
 ## The input contract
 
-A calling skill hands over five things, and the run states which of them it got:
+A calling skill hands over six things, and the run states which of them it got:
 
 | Input | What it is | Missing → |
 | --- | --- | --- |
 | **Facts** | The claims the image may draw on, each with the condition and provenance the source attached | Ask for them. A graphic built on facts nobody supplied is a fabrication with a picture around it |
 | **The boundary** | What the sources do NOT say — the adjacent claims a picture would drift into | Ask. This is the section that stops a composition inventing a relationship |
 | **Output folder** | Where the renders and their `.html` sources go | Default to `media/` and say so |
-| **Look inputs** | Brand palette, reference images, examples, a previously approved render (Phase 1) | Run with one accent and neutrals, and say that is what happened |
+| **Look inputs** | Brand palette, reference images, examples, a previously approved render, an archetype by name (Phase 1) | Run with one accent and neutrals, and say that is what happened |
 | **Target ratios** | Which platforms the image is for, so the canvas is sized once rather than four times | Square at 1080×1080, stated |
+| **Set size** | How many variants, when the caller already asked | Ask it in Phase 3 |
 
 Two constraints ride along from the callers and hold here even when nobody restates them: **no calendar date anywhere on a canvas or in alt text** (a "checked on" stamp is the loudest machine tell an image can carry), and **no long dash** in the headline or the alt text.
 
@@ -67,7 +74,12 @@ Two constraints ride along from the callers and hold here even when nobody resta
 2. **Reference images or example graphics** — pictures the user likes and wants this to sit next to: their own previous posts, a competitor's feed, a screenshot from anywhere. Read them and name what is being taken: the density, the contrast, the amount of type, where the subject sits, how much of the canvas is empty.
 3. **A render they already approved** — the single most useful input a repeat user has, because it is a decision they already made. A previous accepted graphic sets the system for the new set unless they say otherwise.
 4. **A description in words** — "dark, very few elements, one strong colour" is a complete answer and often the fastest one.
-5. **Nothing** — one accent hue, one de-emphasis gray, one surface, stated as the default that was used.
+5. **An archetype by name** — "all of them as posters", "I want the terminal one". Pins the set to one row of `references/style-catalog.md` and waives the spread rule.
+6. **Nothing** — one accent hue, one de-emphasis gray, one surface, stated as the default that was used.
+
+**Read a supplied reference against the catalog, and say what it is.** A reference is not a mood; it is a specific point on the five axes, and naming those is what makes it reproducible: which archetype it is, how dense, what surface, what the type is doing, what proof object it carries, which atmosphere devices are on it. "Dark surface with a vignette, statement archetype, outlined caps, bloom behind the wordmark, a faint symbol field at 6 percent" is a reference that can be built from. "Looks nice, modern" is one that cannot.
+
+**A reference that is out of range gets named, not approximated.** Photographic scenes and illustrated characters do not render offline; say which part is unreachable, name the archetype that is, and let the user decide.
 
 **What is taken from a reference is its technique, never its identity.** Density, contrast, composition, edge quality, the relationship between type and shape: all fair. Another company's brand, its logo, its exact palette, a watermarked asset, or a look pinned tightly enough to one living designer that the result reads as theirs: none of it, and say so plainly rather than producing a near-copy and hoping. A reference the user owns is theirs to reuse as closely as they like.
 
@@ -83,69 +95,90 @@ The test is subtraction. Remove the candidate fact and ask whether the source st
 
 **Where the primary fact's number lives outside the given text, go and get it.** A pasted note often gestures at the capability ("it generates faster than real time") while the vendor's own announcement states it exactly. Verify the figure at its public source, record it with that provenance, and use it: the set is built on the strongest form of the primary fact, not on the vaguest one that happens to be in the draft. What stays forbidden is inventing the number or inferring it — an unverifiable figure is not a primary fact, it is a fabrication.
 
-## Phase 3 — The headline gate, before anything is drawn
+## Phase 3 — How big is the set
 
-**A gallery that varies the message and the picture at the same time asks the user to compare twenty things along two axes at once**, and the answer they give is unreadable: nobody can say whether variant 7 won on its wording or its shape. Separating them also stops the run wasting twenty renders on a sentence the user was never going to publish.
+**Ask, unless `--count` already answered.** A structured question with four options:
+
+| Option | What it is for |
+| --- | --- |
+| **10** | A quick pick. Two or three archetypes, one or two surfaces. The right answer when the user knows roughly what they want |
+| **20** (recommended) | The default sweep. Four or more archetypes across several surfaces, enough that the gallery contains something the user had not thought of |
+| **30** | A wide sweep. Worth it when the source is rich, when an earlier set was rejected wholesale, or when the image matters more than usual |
+| **another number** | Whatever the user types |
+
+Two honest limits to state when they are crossed, without refusing the number: **below about 6 the gallery stops being a choice** and becomes a proposal, and **above about 60 the contact sheet stops being readable** at any size that fits a screen, so the pick gate degrades into scrolling. Say which one applies and build what they asked for.
+
+The number governs both gates: it is the size of the render set **and** the number of headline ideas offered in Phase 4, so a user who asked for 10 is not handed 20 sentences to read.
+
+**The count is also a work estimate, so say what it costs.** Thirty renders is thirty compositions written by hand, thirty screenshots and a contact sheet that takes real time to read properly. That is the honest trade against a wider choice, and the user should hear it before choosing rather than while waiting.
+
+## Phase 4 — The headline gate, before anything is drawn
+
+**A gallery that varies the message and the picture at the same time asks the user to compare N things along two axes at once**, and the answer they give is unreadable: nobody can say whether variant 7 won on its wording or its shape. Separating them also stops the run wasting a whole set of renders on a sentence the user was never going to publish.
 
 ### What a headline is
 
-**Exactly one line of type on the canvas, and it carries the point on its own.** The graphic is seen in a feed by someone who has not read a word of the post yet, and a picture that only makes sense once they do has already lost them. A reader who sees nothing but that line and the shape under it comes away knowing what the post says. `Faster to make than to watch` is a headline. `Generation speed` is a topic, and a topic is not a headline.
+**The line that carries the claim, in every archetype.** The graphic is seen in a feed by someone who has not read a word of the post yet, and a picture that only makes sense once they do has already lost them. A reader who sees the headline and the composition under it comes away knowing what the post says. `Faster to make than to watch` is a headline. `Generation speed` is a topic, and a topic is not a headline.
 
-Write it as a whole thought — a clause or a short sentence, up to about a dozen words, wrapped over two lines if it needs them. It may name the thing, state the mechanism, or carry the number when the number *is* the point. What it may never be is a fragment the diagram has to complete.
+Write it as a whole thought — a clause or a short sentence, up to about a dozen words, wrapped over two lines if it needs them. It may name the thing, state the mechanism, or carry the number when the number *is* the point. What it may never be is a fragment the picture has to complete.
 
-**And that headline is the only type on the canvas.** No axis labels, no ticks, no legend, no series names, no unit riding a mark, no caption under the diagram, no footer, no date, no logo. This is what rules out the **captioned-diagram construction** — the labelled chart, the annotated timeline, the bar pair with its two names underneath, the grid with a value riding the one accent cell. Those spread the meaning across a dozen scattered words and read as a slide; a slide in a feed is scrolled past. One line does the talking, the composition does the rest.
+**How much other type may sit beside it is the archetype's decision, not a fixed law.** A statement carries the headline and nothing else; a poster carries six tiers of it. What holds everywhere is the rule from `references/style-catalog.md`: **every word on the canvas is the headline, a label naming a real thing the picture depicts, a value that is the point, a section takeaway, or the wordmark — and a word doing none of those is cut.** Read order is forced in every archetype, and no label names something the picture does not show.
 
-Two consequences worth stating. A quantity may **shape** the composition without being written down — a mass sized to a real ratio, a break where the real break falls, a count of marks that is the real count — and it is spelled out only when the headline itself is carrying it. And the alt text still carries the whole meaning in words, including any quantity the canvas only implies, because that is where a screen-reader user gets it.
+Two consequences worth stating. A quantity may **shape** the composition without being written down — a mass sized to a real ratio, a break where the real break falls, a count of marks that is the real count — and in the archetypes that carry no labels it is spelled out only when the headline itself carries it. And the alt text always carries the whole meaning in words, including any quantity the canvas only implies, because that is where a screen-reader user gets it.
 
 **No trademark word carrying its ordinary meaning**, in the headline or the alt text — `slack` for spare capacity, `stripe`, `square`, `notion`, `discord`, `prime`, `oracle`, `meta`, `swift`, `zoom`. A headline stands alone with no paragraph around it to disambiguate, so the company wins the read outright; use the plain synonym (head start, margin, band) unless the graphic is genuinely about that company.
 
 ### The gate itself
 
-The run writes **20 headline ideas** and presents them as text, numbered, with no images yet. They are spread across the facts: **at least half state the primary fact**, in genuinely different wordings and angles rather than twenty paraphrases of one sentence, and the rest carry the secondary facts, whose job is to show the user what else the source could carry rather than to compete for the slot. Practical shape: at least 10 of the 20 on the primary fact, at least 3 further facts across the rest, no secondary fact taking more than a fifth of them.
+The run writes **as many headline ideas as the Phase 3 count** and presents them as text, numbered, with no images yet. They are spread across the facts: **at least half state the primary fact**, in genuinely different wordings and angles rather than N paraphrases of one sentence, and the rest carry the secondary facts, whose job is to show the user what else the source could carry rather than to compete for the slot. Practical shape: at least half on the primary fact, at least 3 further facts across the rest, no secondary fact taking more than a fifth of them.
 
-**The list always ends with a free-text option: the user writes their own headline.** That is not a fallback for a failed list, it is the point of showing the list — twenty concrete examples are what makes a person able to say "closer to number 9, but with the price in it". Whatever they type is used verbatim, checked only against the rules above (no claim the sources do not carry, no calendar date, no long dash, no trademark word carrying its ordinary meaning) and reported if it breaks one, never silently rewritten.
+**The list always ends with a free-text option: the user writes their own headline.** That is not a fallback for a failed list, it is the point of showing the list — a page of concrete examples is what makes a person able to say "closer to number 9, but with the price in it". Whatever they type is used verbatim, checked only against the rules above (no claim the sources do not carry, no calendar date, no long dash, no trademark word carrying its ordinary meaning) and reported if it breaks one, never silently rewritten.
 
-**The whole list is shown, and the question is single-choice.** Splitting twenty options across five questions works for a checkbox list and breaks here, because five single-select questions collect five answers where one is wanted. So print all 20 numbered in the message itself, then ask one question carrying a few of them verbatim plus two open doors: `another number from the list` and `my own wording`. The user has seen every option, and answers once.
+**The whole list is shown, and the question is single-choice.** Splitting the options across several questions works for a checkbox list and breaks here, because five single-select questions collect five answers where one is wanted. So print all of them numbered in the message itself, then ask one question carrying a few verbatim plus two open doors: `another number from the list` and `my own wording`. The user has seen every option, and answers once.
 
-## Phase 4 — Render the set
+## Phase 5 — Render the set
 
-**The chosen headline is the headline for all 20 renders**, and the visual set becomes twenty treatments of one message: different forms from the shape table in `references/visual-language.md`, different compositions, different anchors and densities. The fact spread did its work at the text stage, so this stage varies only what the eye is being asked to compare.
+**The chosen headline is the headline for every render**, and the visual set becomes N treatments of one message. The fact spread did its work at the text stage, so this stage varies only what the eye is being asked to compare.
 
-**Every render draws the fact its headline states.** This is the trap the two-gate order sets, so it is worth naming: a set drafted before the gate has a composition per fact, and once one headline lands on all of them, every variant built on a different fact starts contradicting its own caption — a picture of a year's cost under a line about seconds. Those are rebuilt as further readings of the chosen fact, never shipped as-is. Where the chosen fact genuinely cannot carry 20 distinct forms, say so and ship fewer rather than padding the gallery with variants that argue with their own text.
+**Vary the archetype first, then the surface, then the composition.** That order matters: two emphasis diagrams with different shapes are near-neighbours, while a statement, a proof object and a poster are three different answers to the same question. The spread rule — at least `⌈n / 5⌉` distinct archetypes, none over 40 percent of the set — is in `references/style-catalog.md`, along with which archetypes suit which kind of idea. A pinned archetype from Phase 1 waives the spread and varies density and surface instead.
 
-**The geometry on the canvas is the facts', at their real values.** A mass pair is sized to the actual ratio, an arc swept to the actual fraction, a rhythm spaced at the actual intervals, a field holding the actual count. Nothing is written down, so nothing can be checked by a reader — which makes the discipline stricter rather than looser: a shape drawn to look good while implying a quantity the sources do not carry is a fabricated chart with its evidence removed.
+**Every render draws the fact its headline states.** This is the trap the two-gate order sets, so it is worth naming: a set drafted before the gate has a composition per fact, and once one headline lands on all of them, every variant built on a different fact starts contradicting its own caption — a picture of a year's cost under a line about seconds. Those are rebuilt as further readings of the chosen fact, never shipped as-is. Where the chosen fact genuinely cannot carry N distinct treatments, say so and ship fewer rather than padding the gallery with variants that argue with their own text.
 
-Form choice, composition craft, the variety techniques and the render command are all in `references/visual-language.md`.
+**The geometry on the canvas is the facts', at their real values.** A mass pair is sized to the actual ratio, an arc swept to the actual fraction, a rhythm spaced at the actual intervals, a field holding the actual count. In the archetypes that print no values, nothing can be checked by a reader — which makes the discipline stricter rather than looser: a shape drawn to look good while implying a quantity the sources do not carry is a fabricated chart with its evidence removed. In the archetypes that do print things — a terminal, a transcript, a labelled grid — the honesty rules bind harder still, and that section of `references/style-catalog.md` is read before the first mockup.
 
-## Phase 5 — Look at every render before the user does
+**Canvas size and aspect ratio do not change with the archetype.** Whatever ratio the run was given is what every variant renders at; a poster is a poster inside that frame, at that size, and a reference image's own proportions are never adopted along with its look.
 
-The colour validator checks colour, not layout, so a set of 20 will contain marks running off the canvas, forms that collide into mush and compositions that turned out to be a grey rectangle — all of which are invisible in the markup and obvious in the image. **Build a contact sheet and read it**, then fix what it shows. Shipping a gallery of broken renders wastes the user's only look at the set.
+## Phase 6 — Look at every render before the user does
 
-**Three tests, per variant.** Read only the headline with the picture covered: it has to state the point by itself. Then cover the headline: the shape still has to say which side is bigger, which way the thing moves, where the break is. And look at it beside the other 19 — if it could swap places with any of them without changing what it means, the picture is decoration and the idea was not visual.
+The colour validator checks colour, not layout, so a set will contain marks running off the canvas, forms that collide into mush, type overflowing its box and compositions that turned out to be a grey rectangle — all of which are invisible in the markup and obvious in the image. **Build a contact sheet and read it**, then fix what it shows. Shipping a gallery of broken renders wastes the user's only look at the set.
 
-Then hand the user a page they can look at, not a list of filenames. One gallery from the rendered set, every variant at a size where the shapes read, each labelled with its number and its form. In order of preference:
+**Four tests, per variant.** Read only the headline with the picture covered: it has to state the point by itself. Then cover the headline: the composition still has to say which side is bigger, which way the thing moves, where the break is — or, in the denser archetypes, what the structure is. Then count the words and check each one against the five jobs: headline, label on a real thing, value that is the point, section takeaway, wordmark. And look at it beside its neighbours — if it could swap places with another without changing what it means, one of the two is decoration.
+
+**Plus one test on the set.** Name the archetype of every variant and count the distinct ones. Below `⌈n / 5⌉`, or one archetype over 40 percent, the set is narrower than it looks and the thin part gets rebuilt before the gallery goes out.
+
+Then hand the user a page they can look at, not a list of filenames. One gallery from the rendered set, every variant at a size where the composition reads, each labelled with its number and its archetype. In order of preference:
 
 1. A published page, when the runtime can publish one, so the link opens anywhere and survives the session.
 2. A local `.html` gallery in the output folder, path given, plus a rendered contact-sheet image so the set is visible even if the page is never opened.
 
 Either way the contact sheet is produced, because a link the user does not open is not a decision they can make.
 
-## Phase 6 — The pick gate
+## Phase 7 — The pick gate
 
 **This one stops the run.** Present it through the structured-question UI, numbered to match the gallery: pick one · pick one and ask for a variation of it · none of these, here is what I actually want · skip the image entirely. Nothing is attached, and no post file declares an attachment, until that answer exists. An agent that picks its own favourite and carries on has skipped the only step this skill exists for.
 
-`none of these` is a real branch, not a polite decline: take what the answer says, fold it into the Phase 1 system, and render a second set. A set the user rejected wholesale usually failed on visual language rather than on geometry — the first thing to change is density, depth and composition, not the shape table row.
+`none of these` is a real branch, not a polite decline: take what the answer says, fold it into the Phase 1 system, and render a second set. **A set rejected wholesale almost never failed on geometry — it failed on kind.** The first move is to change the archetype mix and the surfaces, not to redraw the same archetype with different shapes; the second is to raise the density, because a set that reads as unremarkable is usually a set of bare canvases. Ask for the count again while doing it: a user who rejected 20 may want 30, or may want 10 built properly in one direction.
 
-## Phase 7 — Hand back
+## Phase 8 — Hand back
 
 The chosen render is the run's image. After the pick:
 
 - **Verify the file**: it exists, its pixel dimensions match the target, it opens, and its size is sane for the platform limits the caller supplied. A graphic that fails any of these is fixed or dropped, never handed back unverified.
 - **Write the alt text**, describing what the image *shows* and what it means, and carrying the quantity the canvas only implies: the two masses and the ratio between them, the rhythm and where it breaks, the one form that does not conform, with the number and its condition stated in words since the picture cannot. Not "an infographic about the product", and never a date or a stamp.
-- **Keep the other 19** with their `.html` sources. They cost nothing to store, they document what was considered, and the user re-picks later without regenerating.
-- **Write a receipt** beside the renders — `graphics.md` in the output folder: the look inputs the set was built from, the primary fact and how it was chosen, the headline the user picked out of how many ideas (and whether they typed their own), the variant they picked out of how many renders, the palette with its validator result, the renderer used, and the alt text. The calling skill copies those two answers into its own manifest; a decision recorded only in the transcript is lost the moment the session ends.
+- **Keep the rest of the set** with their `.html` sources. They cost nothing to store, they document what was considered, and the user re-picks later without regenerating.
+- **Write a receipt** beside the renders — `graphics.md` in the output folder: the look inputs the set was built from and what was taken from each, the primary fact and how it was chosen, the set size and who chose it, the archetype spread that was actually built, the headline the user picked out of how many ideas (and whether they typed their own), the variant they picked out of how many renders and which archetype it is, the palette with its validator result, the renderer used, and the alt text. The calling skill copies the two gate answers into its own manifest; a decision recorded only in the transcript is lost the moment the session ends.
 
-**One graphic serves every platform that takes one.** The image is made for the post, not for a single network: render it once, and the caller attaches it wherever its Media column says `optional` or `required`, with the article platforms using it as the cover image. Render a second aspect ratio only when a platform's verified ratio genuinely cuts the first one apart — a square that survives everywhere beats four ratio-perfect files nobody reuses. That is about ratios and does not shrink the set: the set is 20 candidates for one slot, and only the chosen one is ever re-rendered per ratio.
+**One graphic serves every platform that takes one.** The image is made for the post, not for a single network: render it once, and the caller attaches it wherever its Media column says `optional` or `required`, with the article platforms using it as the cover image. Render a second aspect ratio only when a platform's verified ratio genuinely cuts the first one apart — a square that survives everywhere beats four ratio-perfect files nobody reuses. That is about ratios and does not shrink the set: the set is N candidates for one slot, and only the chosen one is ever re-rendered per ratio.
 
 ## When the user supplied their own image
 
@@ -153,21 +186,29 @@ Skip all of it. A supplied image, or a library the user pointed at, is a decisio
 
 ## Verification
 
-The report states: which look inputs were supplied and what was taken from them (or that none were, and one accent plus neutrals was used); the palette with its validator result rather than a claim that it looks fine; the primary fact and the subtraction that identified it; how many headline ideas were offered and which one the user chose, marked when they wrote their own; how many renders were produced, how many were rebuilt after the contact-sheet read and what was wrong with them; which variant the user chose; the renderer that was used; and the paths of the chosen render, its `.html` source, the gallery and the receipt. Anything that could not be done — no renderer available, a brand colour that fails the contrast check, a fact set too thin for 20 distinct forms — is named, never implied.
+The report states: which look inputs were supplied and what was taken from each, read back in the catalog's own terms (archetype, density, surface, type treatment, devices) rather than as a mood, or that none were supplied and one accent plus neutrals was used; the palette with its validator result rather than a claim that it looks fine; the primary fact and the subtraction that identified it; the set size and whether the user chose it or a flag did; **the archetype spread actually built, counted**; how many headline ideas were offered and which one the user chose, marked when they wrote their own; how many renders were produced, how many were rebuilt after the contact-sheet read and what was wrong with them; which variant the user chose and what archetype it is; the renderer that was used; and the paths of the chosen render, its `.html` source, the gallery and the receipt. Anything that could not be done — no renderer available, a brand colour that fails the contrast check, a reference whose style needs an illustrator, a fact set too thin for N distinct treatments — is named, never implied.
 
 **No renderer available at all** → say so and hand back nothing rather than promising an image. The caller ships the posts text-only and records why.
 
 ## Anti-patterns
 
 - Rendering one graphic and attaching it. The set and the two gates are the whole point of this skill.
-- Rendering before the headline gate: twenty pictures of twenty different messages, and an answer that cannot be read.
+- **A whole set in one archetype.** N flat compositions on N empty canvases is the failure this catalog exists to end: it reads as unremarkable however varied the shapes are, because the eye compares kinds before it compares geometry.
+- Deciding the set size instead of asking, or offering a size question with no free-text option.
+- Rendering before the headline gate: N pictures of N different messages, and an answer that cannot be read.
 - A variant whose picture argues with the headline stamped on it, left in the gallery because it was drafted before the gate.
-- The captioned diagram: axis labels, a legend, a value on every mark, a caption under the picture. One line of type, and the composition does the rest.
-- A headline that is a topic (`Generation speed`) or a fragment the diagram has to finish.
-- Twenty paraphrases of one sentence at the headline stage, or twenty bar charts of one ratio at the render stage.
+- Density with no read order: six blocks of equal weight and no entry point, which is a slide rather than a post graphic.
+- A word on the canvas doing none of the five jobs — a caption restating the headline, a footer, a decorative label, an orphan naming something the picture does not show.
+- The captioned diagram *inside the emphasis archetype*: an axis label or a printed value on a composition whose whole premise is that the shape carries it alone.
+- A headline that is a topic (`Generation speed`) or a fragment the picture has to finish.
+- Paraphrases of one sentence at the headline stage, or one form recoloured at the render stage.
 - A composition drawn to look good while implying a quantity the sources do not carry.
-- A calendar date, a "checked on" stamp, a logo or a footer on the canvas.
+- A mocked interface showing behaviour the product does not have, or a transcript whose lines nobody wrote.
+- A calendar date, a "checked on" stamp, or a third-party logo the sources do not connect to the subject.
 - Copying a reference's brand, logo or exact palette instead of its technique.
+- Approximating an illustrated scene the renderer cannot produce, instead of naming the limit and offering the archetype that is reachable.
+- Adopting a reference image's aspect ratio along with its look. The ratio comes from the caller and does not change per variant.
+- Describing a variant as a typographic style the installed fonts cannot set.
 - Swapping a brand colour that failed the contrast check for one that passes, without telling the user.
 - Shipping the gallery without reading the contact sheet, so the user's one look at the set is spent on broken renders.
 - Offering a still where the platform requires video.
