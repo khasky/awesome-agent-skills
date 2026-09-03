@@ -1,11 +1,11 @@
 ---
-name: awesome-db-audit
+name: awesome-database-audit
 description: "Read-only audit of a database layer — schema design against a catalog of SQL anti-patterns (EAV, generic keys, imprecise types), query patterns (SELECT *, N+1, unindexable predicates), integrity and concurrency (constraints in the DB, transactions, locking), and migration/operations hygiene (forward-only, expand/contract, restore path, tenancy model) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit the database', 'review the schema', 'check our migrations', 'is this data model sound', 'why are queries slow' (static analysis), or 'проверь схему базы'. It audits and reports; it never edits schema or data. Do not use for runtime latency profiling (use awesome-performance-audit), SQL injection and access control (use awesome-security-audit), or app-layer data-access style (use awesome-code-standards)."
 license: MIT
 metadata:
   author: Khasky
   tags: ["database", "audit", "schema", "sql", "migrations", "indexes", "tenancy"]
-  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-db-audit"
+  documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-database-audit"
 ---
 
 # Database Audit
