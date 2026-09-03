@@ -24,6 +24,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Agent maintenance](#agent-maintenance)
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
+  - [Picking between similar skills](#picking-between-similar-skills)
   - [Install](#install)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
@@ -143,9 +144,39 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-content-voice](skills/awesome-content-voice) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, pasted samples, or an interview plus a tuned archetype: counted absence signals, per-platform register, protected personal tics, and a source-and-confidence stamp |
-| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): knowledge map with claim tracing, dated platform-limit and best-time checks, one content unit fanned out per platform with strict per-platform uniqueness, per-genre register, offline HTML/CSS graphics when a media-required platform has none, a two-stage self-audit, one dated file per slot plus a campaign manifest |
+| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): knowledge map with claim tracing, dated platform-limit and best-time checks, one content unit fanned out per platform with strict per-platform uniqueness, per-genre register, a two-stage self-audit, one dated file per slot plus a campaign manifest |
 | [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one existing text (a link, a file, pasted notes) into platform-native posts: source notes every claim traces to, selection over summary with a different idea per platform, per-genre registers and dated limits reused from the campaign skill, a two-stage audit, files first and publishing as a handoff |
+| [awesome-content-graphics](skills/awesome-content-graphics) | Makes the one image a post ships with, offline: a set of at least 20 self-contained HTML/CSS graphics rendered locally from the caller's facts and the user's own look inputs (brand palette, reference images, an approved render), with two gates — the headline as text first, the picture from a gallery second — so the skill never picks the image for the user |
 | [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): bridge/format/login preflights, a persistent dedup ledger, timezone-aware scheduling with day-long waits, sequential human-paced posting with read-back verification, and an opt-in read-only engagement harvest |
+
+## Picking between similar skills
+
+Some skills sit next to each other on purpose: they share a file format, a target, or a vocabulary. The overlap is real — what separates them is one question, in the last column. Names are shortened there; every skill links from the tables above.
+
+| These look alike | Shared ground | What decides |
+| --- | --- | --- |
+| awesome-code-review · awesome-architecture-audit | Both read code and rank findings on the same severity scale | One diff or PR before merge → code-review. The whole project — boundaries, docs-vs-code fidelity, extensibility, SHIP/FIX/BLOCK → architecture-audit. |
+| awesome-code-review · awesome-code-review-feedback | Two ends of one review thread | Writing the review → code-review. Answering comments you received → code-review-feedback. |
+| awesome-security-audit · awesome-pentest | Same vulnerability classes, same CWE mapping | Static white-box read of your own code, no gate → security-audit. Active probing of a live target, hard-gated behind written authorization → pentest. |
+| awesome-security-audit · awesome-leak-audit | Both ask what an attacker gains | Exploitable server-side flaws → security-audit. What a shipped public client reveals about the private backend → leak-audit. |
+| awesome-security-audit · awesome-dependency-audit | Both report CVEs | Vulnerabilities in code you wrote → security-audit. The dependency graph itself — lockfiles, typosquats, install scripts, reachability → dependency-audit. |
+| awesome-dependency-audit · awesome-dependency-upgrade | Same package set, two halves of one job | Decide what is risky → audit. Execute the bumps in verified batches → upgrade. |
+| awesome-performance-audit · awesome-database-audit | Both answer "why is this slow" | Runtime behavior — event loop, memory, streams, resilience topology → performance-audit. The static data layer — schema, index-vs-predicate fit, migrations → database-audit. |
+| awesome-bug-fix · awesome-root-cause | Both refuse to fix before the cause is known | A failure you can reproduce on command → bug-fix. An incident or process problem with nothing runnable to fail → root-cause. |
+| awesome-test-writing · awesome-regression-sweep | Both live in the test suite | Designing and writing tests → test-writing. Running every layer against a recorded baseline and reporting deltas → regression-sweep. |
+| awesome-seo-audit · awesome-landing-audit · awesome-accessibility-audit | Three read-only audits of the same public page | Found and parsed by search and LLMs → seo-audit. Structure that converts — CTA, form friction, message match → landing-audit. Usable by everyone, WCAG → accessibility-audit. |
+| awesome-claims-audit · awesome-architecture-audit | Both catch drift between what is written and what the code does | Public claims — site, store listing, privacy policy, README → claims-audit. Internal docs against the codebase they describe → architecture-audit. |
+| awesome-slop-audit · awesome-code-cleanup | Both target machine-written noise in a repo | Repo-wide marker audit across code, tests, docs and CI, absence proven per category → slop-audit. The comment and naming pass that rewrites → code-cleanup. |
+| awesome-code-standards · awesome-code-cleanup | Both govern how code reads | Prescribe conventions for work being written → code-standards. Sweep noise out of what already exists → code-cleanup. |
+| awesome-git-commit-plan · awesome-git-history-rebuild | The same split, planned then executed | Read-only, produces the numbered plan → commit-plan. Erases the history and replays the tree to that plan → history-rebuild. |
+| awesome-git-history-reset · awesome-git-history-rebuild | Both erase history and force-push, behind the same safety gates | One Initial commit → history-reset. A curated series over the identical tree → history-rebuild. |
+| awesome-git-history-salvage · awesome-git-history-reset | Both act on a history that is about to be, or already was, rewritten | Recover and list every commit that ever existed, writing nothing → history-salvage. Destroy and replace → history-reset. |
+| awesome-design-doc · awesome-api-design | Both run before code exists | The system — requirements, alternatives, recommendation, rollout → design-doc. The HTTP surface — resources, versioning, pagination, idempotency → api-design. |
+| awesome-error-standards · awesome-logging-standards | Both shape what happens on failure | The error contract — types, envelopes, status mapping, retries → error-standards. What gets written down — levels, structure, PII → logging-standards. |
+| awesome-humanize-en · awesome-document-style · awesome-grammar-check | Three passes over the same English text | Strip AI fingerprints → humanize-en. Line-edit for clarity and specificity → document-style. Suggest without touching the text → grammar-check. |
+| awesome-style-mimic · awesome-content-voice | Both write the same section set, so either file feeds a rewrite or a campaign | A site's brand voice, learned by crawling it → style-mimic. The author's own voice from their own evidence, with consent, counted absence and a confidence stamp → content-voice. |
+| awesome-content-campaign · awesome-content-repurpose | Both write platform-native posts into the file format the publisher reads | Product sources plus a schedule → content-campaign. One existing text, no schedule → content-repurpose. |
+| awesome-content-campaign · awesome-content-publisher | Two halves of one shipping pipeline | Write the post files → content-campaign. Post them to your accounts through your own browser → content-publisher. |
 
 ## Install
 
