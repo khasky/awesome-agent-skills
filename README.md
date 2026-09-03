@@ -70,7 +70,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-code-standards](skills/awesome-code-standards) | Naming, structure, and patterns for consistent code across a team |
-| [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide cleanup of AI-like code noise: comments by default, plus read-only audit, refactor, and dead-code/inconsistency detection modes — cleanup passes behavior-preserving, detection findings execution-verified |
+| [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide cleanup of AI-like code noise: comments by default, plus read-only audit, refactor, dead-code/inconsistency detection, and an execution mode that applies another audit's findings — cleanup passes behavior-preserving, detection findings execution-verified. The only skill here that edits for these reasons |
 | [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades safely: risk-classified batches, changelog-driven majors, overrides with removal conditions, verification between steps |
 
 ### Testing
@@ -111,7 +111,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | [awesome-dependency-audit](skills/awesome-dependency-audit) | Read-only supply-chain audit of the dependency graph: lockfile discipline, typosquats and hallucinated package names, install-script exposure, CVE reachability, licenses — with a SHIP/FIX/BLOCK verdict |
 | [awesome-landing-audit](skills/awesome-landing-audit) | Read-only structural audit of landing/marketing pages: single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics, not copy |
 | [awesome-claims-audit](skills/awesome-claims-audit) | Audits public claims (site, README, store listing, privacy policy, docs) against the constants, manifests and catalogs that decide them — mechanical checks with a mutation proof, then a fix phase |
-| [awesome-slop-audit](skills/awesome-slop-audit) | Audits a repo for machine-written "AI slop" markers across code, tests, docs and CI — a verified catalog of lies, noise and fingerprints, absence proven per category, plus an opt-in fix phase with the rename/test-title/injected-source traps |
+| [awesome-slop-audit](skills/awesome-slop-audit) | Read-only audit of a repo for machine-written "AI slop" markers across code, tests, docs and CI — a verified catalog of lies, noise and fingerprints, absence proven per category, findings ranked and handed to awesome-code-cleanup, which applies them |
 
 ### Git and repository operations
 
@@ -166,7 +166,7 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | awesome-test-writing · awesome-regression-sweep | Both live in the test suite | Designing and writing tests → test-writing. Running every layer against a recorded baseline and reporting deltas → regression-sweep. |
 | awesome-seo-audit · awesome-landing-audit · awesome-accessibility-audit | Three read-only audits of the same public page | Found and parsed by search and LLMs → seo-audit. Structure that converts — CTA, form friction, message match → landing-audit. Usable by everyone, WCAG → accessibility-audit. |
 | awesome-claims-audit · awesome-architecture-audit | Both catch drift between what is written and what the code does | Public claims — site, store listing, privacy policy, README → claims-audit. Internal docs against the codebase they describe → architecture-audit. |
-| awesome-slop-audit · awesome-code-cleanup | Both target machine-written noise in a repo | Repo-wide marker audit across code, tests, docs and CI, absence proven per category → slop-audit. The comment and naming pass that rewrites → code-cleanup. |
+| awesome-slop-audit · awesome-code-cleanup | Both target machine-written noise in a repo | They chain rather than compete: slop-audit finds and ranks across code, tests, docs and CI, and never edits; code-cleanup executes — its own comment and naming pass, or the report slop-audit produced. |
 | awesome-code-standards · awesome-code-cleanup | Both govern how code reads | Prescribe conventions for work being written → code-standards. Sweep noise out of what already exists → code-cleanup. |
 | awesome-git-commit-plan · awesome-git-history-rebuild | The same split, planned then executed | Read-only, produces the numbered plan → commit-plan. Erases the history and replays the tree to that plan → history-rebuild. |
 | awesome-git-history-reset · awesome-git-history-rebuild | Both erase history and force-push, behind the same safety gates | One Initial commit → history-reset. A curated series over the identical tree → history-rebuild. |

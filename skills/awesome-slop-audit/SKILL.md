@@ -1,14 +1,21 @@
 ---
 name: awesome-slop-audit
-description: "Audits a repository for machine-written 'AI slop' markers across every surface — code, comments, tests, docs, configs and CI — against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, misleading prefixes, impossible defensiveness, copy-paste drift, em-dash saturation and negative-parallelism prose fingerprints. Every suspect is verified against the code before it is reported, absence is proven per category, and an opt-in fix phase executes the user's selection with the rename / test-title / injected-source traps accounted for. Use when asked to 'find AI slop', 'does this code look AI-written', 'find machine-written or vibe-coding markers', 'de-slop the repo', or in Russian 'найди AI-slop', 'проверь код на следы ИИ', 'что выдаёт код, написанный нейросетью'. Do not use for the comment-craft pass itself (awesome-code-cleanup), prose line-editing (awesome-document-style, awesome-humanize-en), or public-claims-vs-code drift (awesome-claims-audit)."
+description: "Read-only audit of a repository for machine-written 'AI slop' markers across every surface — code, comments, tests, docs, configs and CI — against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, misleading prefixes, impossible defensiveness, copy-paste drift and negative-parallelism prose fingerprints. Every suspect is verified against the code before it is reported, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to 'find AI slop', 'does this code look AI-written', 'find machine-written or vibe-coding markers', or in Russian 'найди AI-slop', 'проверь код на следы ИИ', 'что выдаёт код, написанный нейросетью'. Do not use to fix what it finds — it never edits a file; the fix pass and the comment-craft pass live in awesome-code-cleanup. Not for prose line-editing (awesome-document-style, awesome-humanize-en) or public-claims-vs-code drift (awesome-claims-audit)."
 license: MIT
 metadata:
   author: Khasky
-  tags: ["audit", "ai-slop", "vibe-coding", "detection", "code-quality", "cleanup"]
+  tags: ["audit", "ai-slop", "vibe-coding", "detection", "code-quality"]
   documentation: "https://github.com/khasky/awesome-agent-skills/tree/main/skills/awesome-slop-audit"
 ---
 
 # AI Slop Audit
+
+**This skill reads and reports. It never edits.** Every fix its findings call for
+— the comment rewrite, the rename, the drift-pair unification, the CI template
+extraction — is executed by `awesome-code-cleanup`, which owns the editing bar,
+the behavior-preserving proof and the regression gate. Splitting it this way is
+what lets the catalog below range over docs and CI without a second skill
+rewriting the same line.
 
 A **slop marker** is anything that makes a reader think "a machine wrote this and
 nobody read it". Three classes, in descending order of harm:
@@ -37,9 +44,10 @@ and the report carries no per-category clean table — the reader acts on findin
 and everything else is scrolling. An audit that found nothing anywhere says so in
 one sentence and stops.
 
-Not for: judging code quality in general (awesome-code-review,
-awesome-architecture-audit), rewriting prose voice (awesome-humanize-en), or
-generated/vendored files — those are excluded, not audited.
+Not for: applying any of it (awesome-code-cleanup), judging code quality in
+general (awesome-code-review, awesome-architecture-audit), rewriting prose voice
+(awesome-humanize-en), or generated/vendored files — those are excluded, not
+audited.
 
 ## Marker catalog
 
@@ -136,18 +144,22 @@ mechanical cleanup, and tells you exactly where to sweep next.
 ## Phase 0 — Recon
 
 1. Snapshot `git status` / `git diff --stat`. **Already-dirty files are the
-   user's WIP: exclude them from the audit and the fix pass, and never commit
-   them.** Re-check before committing — WIP can appear mid-session.
+   user's WIP: exclude them from the audit** and say so. Auditing a half-written
+   file reports findings against code the author is still moving, and the fix
+   pass that receives the report would collide with their uncommitted work.
 2. Scope to tracked files; exclude generated (`__generated__`, codegen, locks),
    vendored, data tables, locale trees, binary assets.
 3. Read the repo's rules (AGENTS.md / CLAUDE.md / CONTRIBUTING): formatter
    width, comment policy, and — critical for public repos — disclosure rules.
-   A fix pass must never reintroduce private detail, and protected wording
-   (credentials, backend mechanics) is off-limits even for a glyph swap.
+   Carry them into the report: wording protected for disclosure reasons
+   (credentials, backend mechanics, a deliberately vague comment) is off-limits
+   to the fix pass even for a glyph swap, and the fix pass only knows that if
+   this audit names it on the finding.
 4. Inventory line counts; beyond ~5k lines split into **disjoint** partitions
    (~5–10k each along directory boundaries) and run one read-only subagent per
-   partition in parallel. Disjoint is what makes the later parallel fix safe.
-   **Resource preflight** before spawning them: cap concurrency at
+   partition in parallel. Disjoint is what makes coverage accountable — every
+   file audited once, by one agent, so a category proven empty is proven across
+   the whole scope. **Resource preflight** before spawning them: cap concurrency at
    `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these
    read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent;
    recompute before each wave; if the runtime caps sub-agent concurrency itself,
@@ -178,54 +190,29 @@ product's data (so emoji/glyphs in it are never flagged), name the wire
 contracts and pinned identifiers (so nothing suggests renaming them), name the
 trust boundaries (so their defensiveness is not "over-defense").
 
-## Phase 2 — Fix pass (opt-in, scoped)
+## Phase 2 — Report and handoff
 
-Only on explicit request, and only the findings the user selected — restate
-what is in and out of scope before editing. Partition editors along the same
-disjoint boundaries; verification is centralized (agents do not run lint/tests
-— parallel runs collide).
+Lead with the density verdict and the evidence behind it. Then the ranked
+findings, the policy findings above them, and the do-not-do list.
 
-The traps, each learned the expensive way:
+Three things the report owes the fix pass that reads it, because they are
+cheap to see while auditing and expensive to rediscover while editing:
 
-- **Test titles are load-bearing.** Before renaming one, grep CI workflows and
-  package scripts for `-g`/`--grep` filters carrying the title, and check for
-  `__screenshots__`/snapshot directories keyed by sanitized title. Keyed or
-  filtered → skip and report.
-- **Strings compared against the outside world are data.** Never normalize a
-  literal matched against product UI, DOM content, or locale strings — even
-  when it carries the exact glyph you are sweeping. Only test-authored
-  error/log messages are fair game.
-- **Injected source stays self-contained.** A helper serialized into a page
-  (`String(fn)`, `page.evaluate`) cannot gain imports, and its export site is
-  part of the contract — unify implementations by moving the body, keep a
-  re-export.
-- **Renames need a repo-wide grep first** — including e2e, scripts and any
-  sibling packages the main tsconfig does not cover. An affordance prefix
-  stays where the override path is real.
-- **A drift-pair unification is a behavior change.** Label it as the fix it
-  is, pin both sides with tests (the corrected case on each), and put it in
-  its own `fix:` commit — never buried in the cleanup diff.
-- **The formatter will react.** Renames change line lengths; arrays collapse,
-  import order shifts. Run the formatter check centrally after the pass and
-  apply its targeted fixes rather than hand-wrapping.
-- **Excluded scope is excluded.** If the user picked categories, the lies you
-  found in the others stay unfixed — list them in the report instead.
+- **Which findings are not fixable as written.** A test title a CI `--grep`
+  filter or a snapshot directory keys on, a literal compared against product
+  UI or locale strings, a helper serialized into a page that cannot gain
+  imports: record the constraint next to the finding. The fix pass re-checks
+  it before editing, and a finding that arrives without the note gets checked
+  from scratch anyway.
+- **Which findings are behavior changes wearing cleanup clothes.** A drift-pair
+  unification decides which of two behaviors survives. Say so on the finding so
+  it is never bundled into a cleanup diff.
+- **The exact scope each finding sits in.** File, line, category number. A fix
+  pass runs on the user's selection, and the categories left out stay unfixed
+  by design.
 
-## Phase 3 — Verification
-
-Run the repo's own full gate and read real output, not wrapper summaries:
-every tsconfig (main, e2e, scripts), lint with warnings as errors, docs lint,
-unit suite, browser/component suite if titles or test code changed, a
-list/dry-run of any runner too expensive to execute (it still proves every
-spec imports), build plus any size budgets. Validate proposed commit messages
-against the repo's commitlint config when one exists. State plainly what
-remains unverified — live-site suites, CI runners a composite-action change
-has not executed on — instead of implying total coverage.
-
-## Phase 4 — Report and commits
-
-Lead with the verdict and the verification evidence. Fixes partition into
-commits by concern — behavior fix, cleanup refactor, CI, docs — and **each
-commit must compile alone**: a rename's import-graph pulls its consumer files
-into the same commit even when they "belong" elsewhere. Propose the messages
-in the repo's own convention; committing is the user's call.
+Then stop. Fixing is `awesome-code-cleanup`: it takes this report, applies the
+selection, and owns the verification gate that proves the edits changed
+nothing they should not have. This skill has verified its claims against the
+code (Phase 1) and has nothing to verify beyond them, because it wrote no
+diff — say that plainly rather than implying a gate ran.
