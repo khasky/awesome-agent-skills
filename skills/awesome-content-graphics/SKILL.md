@@ -1,6 +1,6 @@
 ---
 name: awesome-content-graphics
-description: "Produces post graphics offline: a user-chosen set size (10, 20, 30 or any number) of self-contained HTML/CSS variants rendered locally to PNG and spread across twelve visual archetypes, built from the supplied facts and the user's own look inputs (brand palette, reference images, an approved render). The source may be a URL, file or text in any language, and a gate settles whether the canvas speaks that language, English, or another the user names; a second gate settles the headline before anything is drawn. Called on its own it hands over the whole set, opens the folder and offers another batch on top; called by a post skill it ends on a pick gate, so the image is never chosen for the user. No image service, no API key, nothing uploaded. Use when asked to 'make an image for this post', 'generate graphics for the campaign', or in Russian 'сделай картинку для поста' — and whenever awesome-content-campaign or awesome-content-repurpose reach a platform that cannot post without media. Do not use for photographic scenes or illustrated characters, which offline HTML cannot render; not for video; not to write the posts — use awesome-content-campaign or awesome-content-repurpose."
+description: "Produces post graphics offline: a user-chosen set size (10, 20, 30 or any number) of self-contained HTML/CSS variants rendered locally to PNG across twelve visual archetypes, built from the supplied facts and the user's own look inputs (brand palette, reference images, an approved render). The source may be a URL, file or text in any language, and three gates settle it: which language the canvas speaks, the headline before anything is drawn, and — when a post skill called — which render ships. Called on its own it hands over the whole set and offers another batch. No image service, no API key, nothing uploaded. Use when asked to make an image or graphic for a post or campaign, 'сделай картинку для поста', or whenever awesome-content-campaign or awesome-content-repurpose reach a platform that cannot post without media. Do not use for photographic scenes, illustrated characters, video, or writing the posts themselves."
 license: MIT
 metadata:
   author: Khasky
@@ -27,7 +27,7 @@ Bundled files (load on demand):
 
 It also reuses, by reference rather than by restating:
 
-- `dataviz` — the chart craft underneath: form choice, the colour formula and its runnable validator (`scripts/validate_palette.js`), mark specs, the anti-pattern catalog. Loaded before any graphic is written.
+- `dataviz` — the chart craft underneath: form choice, the colour formula and its runnable validator (`validate_palette.js`, in that skill's own scripts), mark specs, the anti-pattern catalog. Loaded before any graphic is written.
 - `awesome-content-campaign`'s `references/platforms.md` — the Media column, when the caller needs to know which platforms take the result.
 
 ## What it produces, and what it does not
@@ -96,7 +96,7 @@ Two constraints ride along from the callers and hold here even when nobody resta
 
 **What is taken from a reference is its technique, never its identity.** Density, contrast, composition, edge quality, the relationship between type and shape: all fair. Another company's brand, its logo, its exact palette, a watermarked asset, or a look pinned tightly enough to one living designer that the result reads as theirs: none of it, and say so plainly rather than producing a near-copy and hoping. A reference the user owns is theirs to reuse as closely as they like.
 
-**Then the palette is proved, not eyeballed.** Whatever came out of the answers above goes through `dataviz`'s colour formula and its runnable validator (`scripts/validate_palette.js`): the accent and the de-emphasis gray clear 3:1 against the surface, and they stay separable under protan and tritan simulation. A brand colour that fails is reported with what it fails, and the user decides between their colour and the check — never silently swapped for one that passes.
+**Then the palette is proved, not eyeballed.** Whatever came out of the answers above goes through `dataviz`'s colour formula and its runnable validator (`validate_palette.js`, in that skill's own scripts): the accent and the de-emphasis gray clear 3:1 against the surface, and they stay separable under protan and tritan simulation. A brand colour that fails is reported with what it fails, and the user decides between their colour and the check — never silently swapped for one that passes.
 
 Record the answers. The set, the gallery and every later regeneration are built in this system, and a run that changes the system mid-set produces twenty variants nobody can compare.
 
