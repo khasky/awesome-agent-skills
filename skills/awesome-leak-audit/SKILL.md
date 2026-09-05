@@ -1,6 +1,6 @@
 ---
 name: awesome-leak-audit
-description: "Audit a public-facing client (browser extension, mobile/desktop app, SPA, CLI, SDK, or any open-sourced client that talks to a private backend) so its public surface stays self-contained and doesn't help attackers. Use when asked to review a repo for leaked backend internals, secrets, or abuse-enabling disclosure; to check that comments/docs/tests don't reveal server-side mechanics (rate limits, anti-abuse, quotas, test backdoors, infra/tech stack, DB/schema, env-var names); to scrub a client before open-sourcing or a store/app-store submission; or for client-side security hardening (permissions, IPC/message sender validation, auth-token handling, DOM/XSS sinks, build-time config, secret bundling). Triggers: 'audit for leaks', 'does this leak backend details', 'is this safe to make public', 'what does our API disclose', 'harden the client'. Do not use for server-side vulnerability hunting — use awesome-security-audit."
+description: "Audits a public-facing client (extension, mobile or desktop app, SPA, CLI, SDK) so its published surface reveals nothing about the private backend: leaked internals in comments, docs and tests (rate limits, anti-abuse, quotas, test backdoors, infra, schema, env-var names), plus client hardening (permissions, message-sender validation, token handling, DOM sinks, bundled secrets). Use when asked whether a repo leaks backend details, before open-sourcing or a store submission, to harden a client, or 'что раскрывает наш клиент'. Do not use for server-side vulnerability hunting (awesome-security-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -33,7 +33,7 @@ Sort every disclosure into one of two buckets:
 
 ## Workflow
 
-Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first, and pass every agent the public/private boundary from phase 1 or an unavoidable disclosure gets mis-flagged. Keep phase 4 remediation single-writer and serial — parallel editors of the same files collide. **Resource preflight** (before fan-out): cap concurrent read-only agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first, and pass every agent the public/private boundary from phase 1 or an unavoidable disclosure gets mis-flagged. Keep phase 4 remediation single-writer and serial — parallel editors of the same files collide. **Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ### Phase 1 — Scope the public/private boundary
 
@@ -41,6 +41,8 @@ Before searching, establish what "private" means for *this* product. Do not skip
 - Identify the public artifact(s) under audit and the private counterparts (backend, admin tools, infra, monorepo siblings). Ask the user or infer from a `AGENTS.md`/`README`/`CONTRIBUTING` if the split isn't obvious.
 - List the product's backend stack, hosting, DB, anti-abuse mechanisms, and any test/staging affordances — so you recognize a leak when you see one. If you don't know them, that's the first question to the user.
 - Write down what counts as necessary-minimum for this client (its real endpoints and payloads) so you don't waste effort flagging the unavoidable.
+
+**Done when:** the public artifact and its private counterparts are named, the backend stack behind them is known or asked about, and the necessary-minimum surface is written down.
 
 ### Phase 2 — Sweep for leaks
 
@@ -65,6 +67,8 @@ Pay special attention to two high-value, easy-to-miss classes:
 - **Secrets one step from publication** — real values in git-ignored `.env*` files that a *source bundle* (store/app-store "reviewable sources" zip, `npm pack`, a directory backup) would include because the bundler doesn't honor `.gitignore`. Untracked ≠ safe.
 - **Test/e2e code** — deterministic test credentials, special query params, endpoints the shipped client never calls, and comments narrating server internals. This is where backend behavior leaks most often, because tests document expected server responses.
 
+**Done when:** every taxonomy cluster has been walked across the whole repo, each finding carries `file:line`, a quote and its attack path, and every area that could not be checked is written down with the reason.
+
 ### Phase 3 — Client-side hardening
 
 Run `references/client-hardening.md`. This is orthogonal to leaks: it's about the client being exploitable regardless of what it discloses. Prioritize caller validation on privileged cross-context entry points, auth-token storage and egress, untrusted data reaching an interpreter, over-broad capabilities, and build-time config that lets a poisoned build repoint the backend or bundle a secret.
@@ -72,6 +76,8 @@ Run `references/client-hardening.md`. This is orthogonal to leaks: it's about th
 **Pick the mechanism file for the client type.** `client-hardening.md` states each rule runtime-independently and names where the mechanism lives per platform. For a browser extension, SPA, or web SDK, read `references/browser-client.md` alongside it — that file carries the extension permission model, storage tiers, DOM/CSS sink list, bundler config gating, and npm lifecycle-script pass. For a native mobile, desktop, CLI, or server-side SDK client, skip it and follow the per-platform pointers in the main checklist instead (exported components and Intents, XPC and URL schemes, `ipcMain` and preload bridges, local sockets and ports, the OS keychain, the platform's build-metadata and symbol stripping). Say in the report which of the two you ran, so a reader knows what was and wasn't in scope.
 
 Keep three adversaries in mind while hardening: the **scoundrel** (controls config or input maliciously), the **lazy developer** (copy-pastes the first example — are the safe defaults also the easy ones?), and the **confused developer** (swaps parameters — is misuse loud or silent?).
+
+**Done when:** the hardening checklist has been run, and the report can say which mechanism file the client type called for and which one was actually read.
 
 ### Phase 4 — Remediate
 
@@ -84,6 +90,8 @@ Apply the fixes. Order of impact:
 
 Behavior-preserving is the default: keep public API contracts, storage keys, message names, and request/response shapes stable unless the task explicitly wants a functional change.
 
+**Done when:** every accepted fix has landed, the public contracts are unchanged unless the task asked otherwise, and the deferred findings are listed rather than dropped.
+
 ### Phase 5 — Verify
 
 Prove you didn't break anything and didn't miss anything:
@@ -93,9 +101,13 @@ Prove you didn't break anything and didn't miss anything:
 - Sweep any **source maps you ship or submit for store review** (`.map` files carry original comments, internal paths, and dead code) with the same leak taxonomy as the built artifact.
 - Confirm legitimate flows still work (e.g. a staging/e2e build that *is* allowed to differ still resolves correctly).
 
+**Done when:** typecheck, tests, lint and a production build have each been run with their real exit codes read, and the built artifact and any source bundle have been swept as well as the source tree.
+
 ### Phase 6 — Report
 
 Write the report per `references/report-template.md`: findings by severity, applied changes, residual recommendations (secret rotation, git-history exposure, consciously-deferred tradeoffs), and the verification evidence. Note that **git history is not fixable retroactively** — a removed secret or a descriptive commit subject stays in the log; recommend rotation and future commit-message hygiene rather than a rewrite of a public repo's history.
+
+**Done when:** every finding carries its severity and evidence, the residual recommendations name what only the user can do, and the report states what was left unchecked.
 
 ## Guardrails
 
