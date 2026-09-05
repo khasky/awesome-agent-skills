@@ -1,6 +1,6 @@
 ---
 name: awesome-dependency-audit
-description: "Read-only audit of a project's third-party dependencies — lockfile discipline, hallucinated and typosquatted package names (slopsquatting), dependency confusion, install-script exposure, maintenance and provenance, license conflicts, and CVE reachability — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit dependencies', 'check the supply chain', 'is this package safe', 'проверь зависимости', to review a package.json/requirements/go.mod change, before adding a dependency, or after a bot PR bumps versions. Do not use for vulnerabilities in the project's own source code (use awesome-security-audit), for CI workflow hardening (its CI/CD category covers that), or to execute the upgrades the audit calls for — use awesome-dependency-upgrade; this skill audits the dependency graph itself."
+description: "Read-only audit of third-party dependencies — lockfile discipline, typosquats and hallucinated package names, dependency confusion, install-script exposure, provenance, licenses, CVE reachability — with a SHIP / FIX / BLOCK verdict. Use when asked to audit dependencies or the supply chain, judge whether a package is safe, review a manifest change, after a bot version bump, or 'проверь зависимости'. Do not use for vulnerabilities in your own code (awesome-security-audit) or to execute the upgrades (awesome-dependency-upgrade)."
 license: MIT
 metadata:
   author: Khasky
@@ -10,7 +10,7 @@ metadata:
 
 # Dependency Audit
 
-Audit the third-party dependency graph — manifests, lockfiles, and the packages they resolve to — for supply-chain risk, before it ships with the product. Read-only: it reports findings and a verdict; it does not upgrade, pin, or remove anything. Hand the report to **awesome-dependency-upgrade** to act on.
+Audit the third-party dependency graph — manifests, lockfiles, and the packages they resolve to — for supply-chain risk, before it ships with the product. Read-only: it reports findings and a verdict; it does not upgrade, pin, or remove anything. To act on the report, call the Skill tool with "awesome-dependency-upgrade".
 
 Two phases: **passive** (reading manifests, lockfiles, license files, changelogs already on disk — no gate) and **active** (anything that reaches a registry or scanner: `npm audit`, `pip-audit`, `osv-scanner`, registry metadata lookups — propose the commands and wait for approval first). Default to passive; say what staying passive leaves unverified.
 
@@ -21,7 +21,9 @@ Two phases: **passive** (reading manifests, lockfiles, license files, changelogs
 3. **Walk the five tracks below** — a track whose signal you cannot observe (no lockfile committed, no registry access approved) is `NOT ASSESSED`, never a guess.
 4. **Score, gate, report** — one **SHIP / FIX / BLOCK** verdict for the audited scope. See Output.
 
-**Parallelizing the passive tracks (large graph).** Tracks A–E are independent lenses, and Tracks B (name authenticity) and C (health/provenance) are per-package — embarrassingly parallel. Fan out read-only sub-agents: one per ecosystem manifest, or one per batch of newly-added packages for the per-package tracks, each reading manifests, lockfiles, and unpacked tarballs off disk. Keep **every active step in the parent** — a sub-agent must never run a Track-D scanner or reach a registry, those are gated once (the passive/active split) by the parent, not N times by N agents. Barrier before the verdict: the parent dedupes to one finding per `package@version` and resolves transitive license/CVE reachability, which is graph-wide, not per-package. **Resource preflight** (before fan-out): cap concurrent sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+**Done when:** every ecosystem manifest found is named, each of the five tracks carries findings or a NOT ASSESSED with its reason, and every finding cites a file, a version or a scanner line.
+
+**Parallelizing the passive tracks (large graph).** Tracks A–E are independent lenses, and Tracks B (name authenticity) and C (health/provenance) are per-package — embarrassingly parallel. Fan out read-only sub-agents: one per ecosystem manifest, or one per batch of newly-added packages for the per-package tracks, each reading manifests, lockfiles, and unpacked tarballs off disk. Keep **every active step in the parent** — a sub-agent must never run a Track-D scanner or reach a registry, those are gated once (the passive/active split) by the parent, not N times by N agents. Barrier before the verdict: the parent dedupes to one finding per `package@version` and resolves transitive license/CVE reachability, which is graph-wide, not per-package. **Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Two different risks — keep them separate
 
