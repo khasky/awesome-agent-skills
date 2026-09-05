@@ -1,6 +1,6 @@
 ---
 name: awesome-dependency-upgrade
-description: "Plans and executes dependency upgrades safely — batching by risk, changelog-driven major migrations, overrides for unfixed CVEs, verification between steps, one revertable commit per batch. Use when asked to 'upgrade dependencies', 'bump packages', 'fix the audit findings', 'update to the latest version', 'обнови зависимости', or to act on an awesome-dependency-audit report. Do not use for detection and risk assessment — use awesome-dependency-audit; adding a brand-new dependency is an ask-first decision outside this skill."
+description: "Plans and executes dependency upgrades safely — batching by risk, changelog-driven major migrations, overrides for unfixed CVEs, verification between steps, one revertable commit per batch. Use when asked to upgrade or bump dependencies, act on an awesome-dependency-audit report, or 'обнови зависимости'. Do not use for detection and risk assessment (awesome-dependency-audit); adding a brand-new dependency is an ask-first decision outside this skill."
 license: MIT
 metadata:
   author: Khasky
