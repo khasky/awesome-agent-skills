@@ -1,6 +1,6 @@
 ---
 name: awesome-security-audit
-description: "Read-only audit of code for common vulnerabilities: injection, secrets, auth, dependency CVEs, CI/CD pipeline exposure, and cryptographic misuse — with confidence-gated, evidence-backed findings mapped to CWE/OWASP, each carrying the fix it calls for. Use when reviewing security, before a release, after adding auth/payments/sensitive-data handling, when hardening GitHub Actions or other CI workflows, or when the user says 'security review', 'security audit', 'check for vulnerabilities', 'is this secure'. It audits and reports; it never edits code, and the remediation it describes is applied by whoever owns the fix. Do not use for auditing what a public client discloses about a private backend — use awesome-leak-audit for that."
+description: "Read-only audit of code for injection, secrets, auth and authorization flaws, dependency CVEs, CI/CD pipeline exposure and cryptographic misuse — confidence-gated, evidence-backed findings mapped to CWE/OWASP, each carrying the fix it calls for. Use when asked for a security review or audit, before a release, after adding auth, payments or sensitive-data handling, when hardening CI workflows, or 'проверь безопасность'. Reports; never edits code. Do not use for what a public client discloses about a private backend (awesome-leak-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -37,13 +37,15 @@ Split the work into a **passive** phase (reading source, config, and dependency 
 10. **Specify the remediation** — Describe the concrete fix per finding; do not apply it, and do not introduce new secrets or log sensitive data in what you propose.
 11. **Stop on impact** — If an active step shows signs of affecting the running system or its data (errors, state changes, account lockouts), stop that step and report before continuing.
 
+**Done when:** every candidate on the worklist has an explicit verdict, every confirmed finding has been swept for variants across the repo, and the report states what this static pass could not see.
+
 ## Parallelizing the passive phase (large scope)
 
 The 10 category checklists are independent read-only lenses. On a large tree, fan out one read-only sub-agent per category over a **shared attack-surface map** — build the map in step 4 first, it is the frozen brief every lens needs, or lenses reach divergent verdicts. Candidate verification (step 5) fans out the same way: one adversarial-revalidation agent per confirmed candidate. Keep the merge at a single barrier that owns the confidence gate (step 5), cross-category taint chains (a secret→network-sink flow spans Secrets + Sensitive-data), dedup (step 6), and the variant sweep (step 8) — no sub-agent emits a verdict alone.
 
 **Every active step stays in the parent.** A sub-agent must never run a scanner, `npm audit`/`pip audit`, or reach a package registry — those are gated (step 2) and approved once, by the parent, not N times by N agents.
 
-**Resource preflight** (before fan-out): cap concurrent sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, where `per_agent` ≈ 0.7 GB for read-only agents or 1.5 GB if one runs a language server / tests / browser; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+**Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents or 1.5 GB if one runs a language server, tests or a browser; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## What not to flag (false-positive control)
 
