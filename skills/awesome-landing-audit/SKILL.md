@@ -1,6 +1,6 @@
 ---
 name: awesome-landing-audit
-description: "Read-only, mechanical audit of a landing or marketing page's conversion structure — single primary CTA per view, form-field friction, ad-to-headline message match, trust/social-proof presence, above-the-fold value, and CLS-safe banners/interstitials — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict per page. Use when the user asks to 'audit my landing page', 'why isn't this page converting', 'check the CTA / form / hero', or 'is this page conversion-ready'. Do not use for copy voice or persuasiveness (awesome-humanize-en, awesome-document-style), SEO / discoverability (awesome-seo-audit), or WCAG accessibility (awesome-accessibility-audit)."
+description: "Read-only mechanical audit of a landing page's conversion structure — one primary CTA per view, form friction, ad-to-headline message match, trust elements, above-the-fold value, CLS-safe banners — with a SHIP / FIX / BLOCK verdict per page. Use when asked to audit a landing page, why a page is not converting, whether it is conversion-ready, or 'почему лендинг не конвертит'. Do not use for copy voice (awesome-humanize-en), SEO (awesome-seo-audit), or accessibility (awesome-accessibility-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -20,6 +20,8 @@ This is not a copy critique. "The headline is weak" is out of scope; "there are 
 2. **Gather evidence** — pull the rendered HTML (the state a visitor sees), the form markup, and the inbound context you were given (ad copy, `utm_*` params, referring query). Note the viewport you evaluated the fold at (e.g. `1366×768` desktop, `390×844` mobile) — "above the fold" is meaningless without one.
 3. **Check the eight mechanics below** — each maps to an observable signal. A signal you cannot observe (no ad copy supplied → can't judge message match) is `NOT ASSESSED`, never a guess.
 4. **Score, gate, report** — one **SHIP / FIX / BLOCK** verdict per page. See Output.
+
+**Done when:** the evaluated viewport is stated, all eight mechanics carry a verdict or a NOT ASSESSED, and every finding points at a signal observable on the page.
 
 ## The eight mechanics
 
