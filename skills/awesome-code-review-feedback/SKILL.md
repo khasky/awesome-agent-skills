@@ -1,6 +1,6 @@
 ---
 name: awesome-code-review-feedback
-description: "How to respond to code review feedback: verify before implementing, clarify unclear items, and push back with technical reasoning when needed. Use when receiving PR feedback or review comments, when reviewer or bot findings need addressing, or when the user says 'address the review', 'ответь на ревью', 'поправь по замечаниям'. Applies to any team or culture. Do not use for performing the review itself — use awesome-code-review."
+description: "How to respond to code review feedback: verify before implementing, clarify unclear items, and push back with technical reasoning when needed. Use when asked to address a review, when reviewer or bot findings need answering, or 'ответь на ревью'. Applies to any team or culture. Do not use for performing the review itself (awesome-code-review)."
 license: MIT
 metadata:
   author: Khasky
@@ -127,7 +127,7 @@ If the reviewer suggests a more complete or "proper" implementation (e.g. full v
 
 - Use **after** awesome-code-review skill has been used (when you are the one receiving the review).
 - Use **before** marking "review feedback addressed" — implement in order, test each change, then verify.
-- Run the full test suite after implementing feedback, before claiming "all feedback addressed" — the claim without a fresh run is unverified. A reviewer-requested regression test is designed with **awesome-test-writing**.
+- Run the full test suite after implementing feedback, before claiming "all feedback addressed" — the claim without a fresh run is unverified. A reviewer-requested regression test is designed by calling the Skill tool with "awesome-test-writing".
 
 ## Checklist (before marking feedback "done")
 
