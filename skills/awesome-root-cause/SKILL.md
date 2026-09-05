@@ -1,6 +1,6 @@
 ---
 name: awesome-root-cause
-description: "Structured root-cause analysis for incidents, recurring failures, and process problems that have no failing test to run — 5-Whys, fishbone, PDCA, and a one-page A3 write-up. Use for a postmortem, incident retro, 'why does this keep happening', quality or process breakdown, or 'find the root cause' of a non-code issue. For an actual code bug with a reproducible failure, use awesome-bug-fix instead."
+description: "Structured root-cause analysis for incidents, recurring failures and process problems with no failing test to run — 5-Whys, fishbone, PDCA, and a one-page A3 write-up. Use for a postmortem or incident retro, when asked why something keeps happening, to find the root cause of a non-code issue, or 'найди первопричину'. Do not use for a code bug with a reproducible failure (awesome-bug-fix)."
 license: MIT
 metadata:
   author: Khasky
@@ -34,7 +34,7 @@ For each surviving candidate, ask "why" down the chain. Two rules:
 
 Each chain ends in a candidate root cause backed by evidence, not assertion.
 
-**Parallelizing the dig (many candidates).** The fishbone sweep (step 2) and the 5-Whys chains (step 3) are independent, read-only evidence digs — fan out one sub-agent per cause category or per surviving candidate, each gathering its own logs, tickets, and timeline. Barrier at step 4: the parent dedupes chains that converged on the same systemic gap, applies the "one class, not one instance" test, and ranks countermeasures across the full set — a per-chain agent proposes candidates, it never writes the final countermeasures. **Resource preflight** (before fan-out): cap concurrent sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only evidence agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+**Parallelizing the dig (many candidates).** The fishbone sweep (step 2) and the 5-Whys chains (step 3) are independent, read-only evidence digs — fan out one sub-agent per cause category or per surviving candidate, each gathering its own logs, tickets, and timeline. Barrier at step 4: the parent dedupes chains that converged on the same systemic gap, applies the "one class, not one instance" test, and ranks countermeasures across the full set — a per-chain agent proposes candidates, it never writes the final countermeasures. **Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only evidence agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ### 4. Countermeasures (Poka-Yoke first)
 For each confirmed root cause, prefer prevention that makes recurrence structurally hard over "be more careful":
