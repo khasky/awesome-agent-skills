@@ -1,6 +1,6 @@
 ---
 name: awesome-performance-audit
-description: "Read-only audit of performance and reliability — event-loop discipline, streaming and backpressure, memory/CPU diagnostics, production shutdown/timeout/job habits, cross-service resilience topology (circuit breakers, retry budgets, queue bounds, dual-writes), and frontend delivery (Core Web Vitals, bundle size, hydration) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit performance', 'why is the service slow', 'why is my page slow', 'memory keeps climbing', 'tail latency is bad', 'the worker OOMs', 'is this ready for load', 'review this for throughput', or 'will this survive a dependency outage'. It audits and reports; it does not rewrite hot paths. Do not use for retry/backoff/idempotency header contracts (use awesome-error-standards — this skill audits the failure topology, that one owns the contract format) or for animation/render style standards (use awesome-code-standards — this skill measures, that one prescribes)."
+description: "Read-only audit of performance and reliability — event-loop discipline, streaming and backpressure, memory and CPU diagnostics, shutdown/timeout/job habits, resilience topology (circuit breakers, retry budgets, queue bounds), and frontend delivery (Core Web Vitals, bundle size, hydration) — with evidence per finding and a SHIP / FIX / BLOCK verdict. Use when a service or page is slow, memory climbs, tail latency is bad, a worker OOMs, before a load event, or 'почему тормозит'. Measures and reports; rewrites no hot paths. Do not use for retry/idempotency contracts (awesome-error-standards) or render style rules (awesome-code-standards)."
 license: MIT
 metadata:
   author: Khasky
@@ -28,6 +28,8 @@ Six audit tracks, run the ones in scope:
 2. **Gather evidence** — CPU profile for hot paths, heap snapshots for growth, GC traces for pressure, request/job correlation to connect symptoms to workloads. Read code paths and config (timeouts, body limits, pool sizes). Persist raw pulls (`raw/<target>/<date>/...`) before synthesizing so a re-audit can diff.
 3. **Measure the tail, not the average** — p95/p99/max, not mean. Averages hide the requests that actually hurt.
 4. **Score, gate, report** — see Output.
+
+**Done when:** the workload is named, the tail numbers are measured rather than estimated, every track in scope has been walked, and anything that could only be settled under real load is reported as unmeasured.
 
 ## Triage before reading code
 
