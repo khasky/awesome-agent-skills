@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Repurposes one existing text — a published URL, a file, or pasted notes — into platform-native posts, then files them and optionally publishes: source notes every claim traces back to, an interview for platforms, voice, language and length, per-genre registers and dated platform limits reused from awesome-content-campaign, a two-stage anti-slop audit, and one dated file per platform in the format awesome-content-publisher takes, so publishing is a handoff, not a second implementation. Use when asked to 'repurpose this article into posts', 'adapt this for linkedin and x', 'turn this text into social posts', or in Russian 'адаптируй статью под соцсети', 'сделай посты из этого текста', 'перепиши текст под платформы'. Do not use to build a scheduled campaign from product sources — use awesome-content-campaign; not to publish a folder that exists — use awesome-content-publisher; not to build the voice profile — use awesome-content-voice."
+description: "Turns one existing text — a URL, a file, or pasted notes — into platform-native posts: source notes every claim traces back to, an interview for platforms, voice and length, the per-genre registers and dated platform limits of awesome-content-campaign, a two-stage anti-slop audit, one dated file per platform in the format awesome-content-publisher reads. Use when asked to repurpose an article into posts, adapt a text for named platforms, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), or to build the voice profile (awesome-content-voice)."
 license: MIT
 metadata:
   author: Khasky
@@ -226,7 +226,7 @@ Files exist before anything is published. A run that fails at the third platform
 
 Files only → the skill reports where they are and stops.
 
-Publish now, or at a named time → hand the folder to `awesome-content-publisher`:
+Publish now, or at a named time → call the Skill tool with "awesome-content-publisher" and hand it the folder:
 
 ```
 /awesome-content-publisher repurpose/<slug>/posts --now
