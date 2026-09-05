@@ -60,7 +60,7 @@ A set built from flat shapes on flat backgrounds comes out uniform however diffe
 
 ## Building it
 
-One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.png` beside the other media in `<out>/`.
+One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.png` beside the other media in `<out>/`. `<out>` is the run's own folder — an absolute path, and with no `--out` given a fresh directory under the session's temporary area rather than anything inside the folder the skill was called from.
 
 - **Self-contained means offline**: no CDN stylesheet, no web font, no remote image, no script that fetches. A rendering machine without network access must produce the same file. Fonts come from a system stack (`system-ui, -apple-system, "Segoe UI", Roboto, "Noto Sans", sans-serif`); a font the user names and has installed locally is fine. **Where the canvas is set in a non-Latin script, prove the stack carries it on the first render** — a missing glyph is an empty box, and nothing downstream of the markup will flag it.
 - **Size the canvas to the platform**, from the caller's verified research rather than memory — the ratios in play are the vertical feed image, the square, and the link-preview landscape. Set the body to exact pixel dimensions and render at 2× device scale so edges stay clean after the platform recompresses it.
@@ -72,7 +72,7 @@ One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.
 ```js
 await page.setViewportSize({ width: W, height: H });
 await page.goto('file:///absolute/path/to/graphic.html');
-await page.screenshot({ path: 'media/<name>.png', scale: 'device', animations: 'disabled' });
+await page.screenshot({ path: '<out>/<name>.png', scale: 'device', animations: 'disabled' });
 ```
 
 Say which renderer was used, in the report.

@@ -54,7 +54,7 @@ The same pipeline ends two different ways, and getting this wrong produces a que
 ```
 
 - `<facts-source>` — a URL, a file, a folder or pasted text carrying the facts the image may draw on: an article, a knowledge map, a source-notes file, a post draft, or a plain description. **It may be in any language, and its language does not decide the graphic's** — that is the Phase 3 question. Nothing given → ask.
-- `--out` — where renders land. Default `media/` under the current working folder, `media/src/` for the HTML sources.
+- `--out` — where renders land. Omitted, the run makes a fresh folder of its own under the session's temporary area (see below) and prints the absolute path; the HTML sources go in `src/` beneath it. A path given here is used as-is.
 - `--refs` — files or folders of reference material the user wants the look built from (see Phase 1). Repeatable.
 - `--count` — size of the set: `10`, `20`, `30`, or any number the user names. Passed on the command line it skips the Phase 3 question; omitted, the question is asked.
 - `--lang` — the language the words on the canvas are written in. Same rule: passed, it skips the question; omitted, the question is asked.
@@ -71,13 +71,28 @@ A calling skill hands over seven things, and the run states which of them it got
 | --- | --- | --- |
 | **Facts** | The claims the image may draw on, each with the condition and provenance the source attached | Ask for them. A graphic built on facts nobody supplied is a fabrication with a picture around it |
 | **The boundary** | What the sources do NOT say — the adjacent claims a picture would drift into | Ask. This is the section that stops a composition inventing a relationship |
-| **Output folder** | Where the renders and their `.html` sources go | Default to `media/` and say so |
+| **Output folder** | Where the renders and their `.html` sources go | Make a fresh run folder under the session's temporary area, never one inside the folder the skill was called from, and print its absolute path |
 | **Look inputs** | Brand palette, reference images, examples, a previously approved render, an archetype by name (Phase 1) | Run with one accent and neutrals, and say that is what happened |
 | **Target ratios** | Which platforms the image is for, so the canvas is sized once rather than four times | Square at 1080×1080, stated |
 | **Set size** | How many variants, when the caller already asked | Ask it in Phase 3 |
 | **Language** | The language the posts are written in, which the graphic matches | Ask it in Phase 3. Never inferred from the source text |
 
 Two constraints ride along from the callers and hold here even when nobody restates them: **no calendar date anywhere on a canvas or in alt text** (a "checked on" stamp is the loudest machine tell an image can carry), and **no long dash** in the headline or the alt text.
+
+## Where the renders land
+
+**The run never writes into the folder it was invoked from.** Twenty PNGs, their HTML sources, a gallery and a contact sheet appearing inside the user's project is a change nobody asked for, and in a repository it lands in `git status` as work the user now has to clean up. A `media/` directory beside their code is the failure mode this rule exists to stop.
+
+So with no `--out` given, **make a fresh directory of the run's own and put everything in it**: the renders, `src/` for the `.html` sources, the gallery, the contact sheet and `graphics.md`.
+
+- It goes in the **session's scratch or temporary directory** when the runtime names one, otherwise the OS temp directory — `%TEMP%` on Windows, `$TMPDIR` on macOS, `/tmp` on Linux.
+- It is **new on every run**, with a unique suffix in the name, so two runs in one session never write over each other and a second invocation never inherits the first one's files.
+- It is **one folder per run, not per batch**: Phase 8's further batches append into the same folder, which is what keeps their numbering and the rebuilt gallery comparable.
+- **Print its absolute path** the first time something is written there, so the user can reach the set without asking where it went.
+
+**A temporary folder is temporary, and Phase 7 is where that matters.** The operating system sweeps these paths on its own schedule, so handing the files over is the step that gets the set out of a directory with a clock on it — and standalone, the run offers to copy the whole set to a folder the user names.
+
+**An `--out` path is honoured as given**, whether a person typed it or a calling skill supplied one. `awesome-content-campaign` and `awesome-content-repurpose` pass a folder inside their own campaign directory because their manifests reference the attachment by path, and a manifest pointing into temp is a broken campaign.
 
 ## Phase 1 — The look comes from the user's own inputs
 
@@ -216,8 +231,9 @@ Either way the contact sheet is produced, because a link the user does not open 
 
 1. **Verify the files as a batch**: they all exist, their pixel dimensions match the target, they open, and none is a stub. Any that fail are fixed or named as dropped.
 2. **Hand the files to the user** through whatever the runtime has for delivering files, so they can be saved without going hunting for a path. Where a runtime has nothing of the kind, the absolute folder path plus the gallery link is the fallback, given as text that can be copied.
-3. **Open the output folder**, and say that it was opened. This is the one command in the skill that touches the machine outside its own folder, so it is announced rather than silent, and it is skipped in a headless or scheduled run where there is no desktop to open it on. Platform-appropriate: `explorer` on Windows, `open` on macOS, `xdg-open` on Linux — verified to exist before it is called, and a failure is a one-line note, never an error that stops the run.
-4. **Then Phase 8**, which is the only question this mode asks after the render.
+3. **Offer to copy the set somewhere permanent**, naming the run folder it is sitting in. The default output is a temporary directory the OS will eventually sweep, so a user who wants to keep these renders needs a folder of their own; take the path they name, copy the whole set into it — renders, `src/`, gallery, contact sheet, receipt — and confirm what landed where. Nothing is copied into their project unless they name it.
+4. **Open the output folder**, and say that it was opened. This is the one command in the skill that touches the machine outside its own folder, so it is announced rather than silent, and it is skipped in a headless or scheduled run where there is no desktop to open it on. Platform-appropriate: `explorer` on Windows, `open` on macOS, `xdg-open` on Linux — verified to exist before it is called, and a failure is a one-line note, never an error that stops the run.
+5. **Then Phase 8**, which is the only question this mode asks after the render.
 
 **Alt text is not written for the whole set here**, because thirty descriptions nobody asked for is thirty descriptions of work. Offer it, and write it for whichever renders the user says they will use.
 
@@ -261,7 +277,7 @@ Skip all of it. A supplied image, or a library the user pointed at, is a decisio
 
 ## Verification
 
-The report states: **the mode the run was in**, and in the standalone one that the whole set is the deliverable, where it is, and whether the folder was opened; which look inputs were supplied and what was taken from each, read back in the catalog's own terms (archetype, density, surface, type treatment, devices) rather than as a mood, or that none were supplied and one accent plus neutrals was used; the palette with its validator result rather than a claim that it looks fine; the primary fact and the subtraction that identified it; **the source's detected language and the language the words were set in, with who chose it**, plus the glyph-coverage check where the script is not Latin; the set size and whether the user chose it or a flag did; **the archetype spread actually built, counted**; how many headline ideas were offered and which one the user chose, marked when they wrote their own; how many renders were produced across how many batches, how many were rebuilt after the contact-sheet read and what was wrong with them; which variant the user chose and what archetype it is, in the embedded mode; the renderer that was used; and the paths of the renders, their `.html` sources, the gallery and the receipt. Anything that could not be done — no renderer available, a brand colour that fails the contrast check, a reference whose style needs an illustrator, a fact set too thin for N distinct treatments — is named, never implied.
+The report states: **the mode the run was in**, and in the standalone one that the whole set is the deliverable, the absolute path of the run folder it was written to, whether that folder was opened, and whether the set was copied out to a folder the user named; which look inputs were supplied and what was taken from each, read back in the catalog's own terms (archetype, density, surface, type treatment, devices) rather than as a mood, or that none were supplied and one accent plus neutrals was used; the palette with its validator result rather than a claim that it looks fine; the primary fact and the subtraction that identified it; **the source's detected language and the language the words were set in, with who chose it**, plus the glyph-coverage check where the script is not Latin; the set size and whether the user chose it or a flag did; **the archetype spread actually built, counted**; how many headline ideas were offered and which one the user chose, marked when they wrote their own; how many renders were produced across how many batches, how many were rebuilt after the contact-sheet read and what was wrong with them; which variant the user chose and what archetype it is, in the embedded mode; the renderer that was used; and the paths of the renders, their `.html` sources, the gallery and the receipt. Anything that could not be done — no renderer available, a brand colour that fails the contrast check, a reference whose style needs an illustrator, a fact set too thin for N distinct treatments — is named, never implied.
 
 **No renderer available at all** → say so and hand back nothing rather than promising an image. The caller ships the posts text-only and records why.
 
@@ -269,7 +285,9 @@ The report states: **the mode the run was in**, and in the standalone one that t
 
 - **Asking a standalone user which render "ships with the post".** There is no post. The whole set is what they asked for, and the question reads as the run having forgotten who called it.
 - Offering `skip the image, post text only` to someone who never mentioned a post, or telling them nothing will be attached when nothing was ever going to be.
-- Ending a standalone run at the gallery, leaving the user to dig the files out of a temp path themselves.
+- Ending a standalone run at the gallery, leaving the user to dig the files out of a temp path themselves, or letting the run end without offering to copy the set out of a folder the OS will sweep.
+- **Writing the set into the folder the run was invoked from**, so a `media/` directory nobody asked for appears in the user's project and their next `git status` is full of PNGs.
+- Reusing one fixed temp folder across runs, so a second set overwrites the first one's numbering and the user's earlier favourites are gone.
 - A second batch that overwrites the first, or renumbers it, so the variant the user was building on is gone.
 - A second batch that re-renders combinations the first one already covered, and calls thirty near-duplicates thirty new options.
 - Opening the user's file manager without saying so, or trying to open one in a headless run.
