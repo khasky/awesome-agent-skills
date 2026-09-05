@@ -1,6 +1,6 @@
 ---
 name: awesome-translate-ru-en
-description: "Translate Russian text of any kind into natural English while preserving every structural element, formatting marker, link, identifier, and the author's human voice. Use when translating Russian articles, docs, prose, fiction, marketing copy, technical content, transcripts, or any other Russian-language text to English; when mirroring a directory of Russian files into an English equivalent; or when the user asks to \"translate to English\", \"convert to en\", \"make an English version\", \"переведи на английский\", or \"сделай английскую версию\" of a Russian source. Do not use for removing AI voice from text already in English — use awesome-humanize-en."
+description: "Translates Russian text of any genre into natural English, preserving every structural element, formatting marker, link, identifier, and the author's voice. Use when translating Russian articles, docs, prose, marketing or technical text, when mirroring a directory of Russian files into an English one, or on 'переведи на английский'. Do not use for removing AI voice from text already in English (awesome-humanize-en)."
 license: MIT
 metadata:
   author: Khasky
