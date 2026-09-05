@@ -1,6 +1,6 @@
 ---
 name: awesome-skills-purge
-description: "Removes installed agent skills from every AI agent on the machine — Claude Code, Codex, Gemini CLI, Cursor, Copilot, opencode, Amp, Windsurf, and any other agent that reads a `skills/` directory — behind a keep list that can spare one collection, this skill alone, or a named set. Cross-platform by construction: the platform is detected at run time and every command comes from that detection. Use when asked to 'delete all skills', 'uninstall every skill from all agents', 'clean out my agent skills but keep X', 'remove the skills I installed', or in Russian 'удали все навыки', 'очисти скиллы у всех агентов', 'снеси все skills кроме'. Do not use to uninstall a plugin that ships skills (the agent's own plugin manager owns those) or to delete the git clone a symlinked install points at — that is a directory the user removes knowingly, not collateral of a purge."
+description: "Removes installed agent skills from every AI agent on the machine — Claude Code, Codex, Gemini CLI, Cursor, Copilot, opencode, Amp, Windsurf, any agent that reads a skills directory — behind a keep list (one collection, this skill alone, or a named set), with an archive and a confirmation gate before anything goes. Platform detected at run time. Use when asked to delete or uninstall installed skills, clean out skills but keep some, or 'удали все навыки'. Do not use to uninstall a plugin that ships skills, or to delete the git clone a symlinked install points at."
 license: MIT
 metadata:
   author: Khasky
