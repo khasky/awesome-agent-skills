@@ -1,6 +1,6 @@
 ---
 name: awesome-slop-audit
-description: "Read-only audit of a repository for machine-written 'AI slop' markers across every surface — code, comments, tests, docs, configs and CI — against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, misleading prefixes, impossible defensiveness, copy-paste drift and negative-parallelism prose fingerprints. Every suspect is verified against the code before it is reported, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to 'find AI slop', 'does this code look AI-written', 'find machine-written or vibe-coding markers', or in Russian 'найди AI-slop', 'проверь код на следы ИИ', 'что выдаёт код, написанный нейросетью'. Do not use to fix what it finds — it never edits a file; the fix pass and the comment-craft pass live in awesome-code-cleanup. Not for prose line-editing (awesome-document-style, awesome-humanize-en) or public-claims-vs-code drift (awesome-claims-audit)."
+description: "Read-only audit of a repository for machine-written 'AI slop' across code, comments, tests, docs, configs and CI, against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, impossible defensiveness, copy-paste drift, negative-parallelism prose. Every suspect is verified against the code, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to find AI slop or machine-written markers, or 'проверь код на следы ИИ'. Do not use to fix what it finds, for prose line-editing (awesome-document-style), or for public-claims drift (awesome-claims-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -157,11 +157,14 @@ mechanical cleanup, and tells you exactly where to sweep next.
    (~5–10k each along directory boundaries) and run one read-only subagent per
    partition in parallel. Disjoint is what makes coverage accountable — every
    file audited once, by one agent, so a category proven empty is proven across
-   the whole scope. **Resource preflight** before spawning them: cap concurrency at
-   `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these
-   read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent;
-   recompute before each wave; if the runtime caps sub-agent concurrency itself,
-   defer to it.
+   the whole scope. **Resource preflight** (before fan-out): cap concurrency at
+   `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for
+   these read-only agents; go serial if CPU load > 85% or free RAM <
+   2×per_agent; recompute before each wave; where the runtime caps sub-agent
+   concurrency itself, defer to it.
+
+**Done when:** the scope is fixed, the domain caveats are written into the
+brief, and the partitions are disjoint.
 
 ## Phase 1 — Audit (read-only)
 
@@ -188,6 +191,10 @@ product's data (so emoji/glyphs in it are never flagged), name the wire
 contracts and pinned identifiers (so nothing suggests renaming them), name the
 trust boundaries (so their defensiveness is not "over-defense").
 
+**Done when:** every in-scope file has been read by exactly one agent, every
+suspect has been verified against the code, and each category is either
+evidenced or proven empty.
+
 ## Phase 2 — Report and handoff
 
 Lead with the density verdict and the evidence behind it. Then the ranked
@@ -209,8 +216,12 @@ cheap to see while auditing and expensive to rediscover while editing:
   pass runs on the user's selection, and the categories left out stay unfixed
   by design.
 
-Then stop. Fixing is `awesome-code-cleanup`: it takes this report, applies the
-selection, and owns the verification gate that proves the edits changed
-nothing they should not have. This skill has verified its claims against the
-code (Phase 1) and has nothing to verify beyond them, because it wrote no
-diff — say that plainly rather than implying a gate ran.
+Then stop. Fixing is `awesome-code-cleanup` — call the Skill tool with
+"awesome-code-cleanup": it takes this report, applies the selection, and
+owns the verification gate that proves the edits changed nothing they should
+not have. This skill has verified its claims against the code (Phase 1) and
+has nothing to verify beyond them, because it wrote no diff — say that
+plainly rather than implying a gate ran.
+
+**Done when:** every category is reported as evidenced or proven empty, the
+findings are ranked, and the report says plainly that no file was edited.
