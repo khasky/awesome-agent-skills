@@ -1,6 +1,6 @@
 ---
 name: awesome-database-audit
-description: "Read-only audit of a database layer — schema design against a catalog of SQL anti-patterns (EAV, generic keys, imprecise types), query patterns (SELECT *, N+1, unindexable predicates), integrity and concurrency (constraints in the DB, transactions, locking), and migration/operations hygiene (forward-only, expand/contract, restore path, tenancy model) — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit the database', 'review the schema', 'check our migrations', 'is this data model sound', 'why are queries slow' (static analysis), or 'проверь схему базы'. It audits and reports; it never edits schema or data. Do not use for runtime latency profiling (use awesome-performance-audit), SQL injection and access control (use awesome-security-audit), or app-layer data-access style (use awesome-code-standards)."
+description: "Read-only audit of a database layer — schema anti-patterns (EAV, generic keys, imprecise types), query and index fit (SELECT *, N+1, unindexable predicates), integrity and concurrency, migration and tenancy hygiene — with evidence per finding and a SHIP / FIX / BLOCK verdict. Use when asked to audit the database, review the schema or migrations, judge a data model, or 'проверь схему базы'. Never edits schema or data. Do not use for runtime profiling (awesome-performance-audit), SQL injection (awesome-security-audit), or data-access style (awesome-code-standards)."
 license: MIT
 metadata:
   author: Khasky
@@ -24,16 +24,19 @@ Four audit tracks — run the ones in scope:
 
 1. **Establish scope** — the whole schema, one domain's tables, or the migration history. Name it; findings without a boundary don't prioritize.
 2. **Locate the source of truth** — schema files, ORM models, migration directory; note the engine and version (Postgres/MySQL/SQLite behave differently and some findings are engine-specific — say which).
-3. **Read schema before queries** — a table designed wrong makes every query against it a finding; start where the defects multiply.
-4. **Grep the query sites** — ORM calls and raw SQL both; an anti-pattern that never runs on a hot path is a note, not a FIX. Zero hits is not proof of absence — ripgrep honors `.gitignore`; re-scan with ignores off before concluding.
-5. **Score, gate, report** — see Output.
+3. **Read the project's own words** — its glossary (`CONTEXT.md`, a domain doc) or the vocabulary its models, tests and API already use, and name every finding in those terms; a table or column that contradicts the glossary's own definition is itself a finding, and a report that renames the domain makes the reader translate before they can act.
+4. **Read schema before queries** — a table designed wrong makes every query against it a finding; start where the defects multiply.
+5. **Grep the query sites** — ORM calls and raw SQL both; an anti-pattern that never runs on a hot path is a note, not a FIX. Zero hits is not proof of absence — ripgrep honors `.gitignore`; re-scan with ignores off before concluding.
+6. **Score, gate, report** — see Output.
+
+**Done when:** the scope and the engine version are stated, every track in scope has been walked against both the schema and the query sites, and a table or call site that could not be read is on the NOT ASSESSED list rather than scored.
 
 ## Track A — Schema design
 
 - **Explicit, meaningful keys** — every table has a primary key; relationships are declared foreign keys, not conventions the ORM "knows". An undeclared FK stops nothing; the constraint does.
 - **No EAV, no MUCK** — attribute-as-rows (entity-attribute-value) and one "common lookup" table holding every enum in the system lose types, constraints, and indexes. Genuinely dynamic attributes belong in a typed JSON column, not a key-value table.
 - **Precise types** — money as integer minor units or `NUMERIC`, never `FLOAT`; dates in date/timestamp types, never strings; a fixed value set as an enum or `CHECK`, not free text; no multi-valued attribute packed into one column (CSV-in-a-VARCHAR).
-- **Tenancy model is a decision, not an accident** — for multi-tenant schemas: which model (database-per-tenant vs shared with tenant scoping), and in a shared schema does `tenant_id` lead composite keys and indexes, and does every query filter on it? A missing tenant filter is also a security finding — hand it to `awesome-security-audit`.
+- **Tenancy model is a decision, not an accident** — for multi-tenant schemas: which model (database-per-tenant vs shared with tenant scoping), and in a shared schema does `tenant_id` lead composite keys and indexes, and does every query filter on it? A missing tenant filter is also a security finding — call the Skill tool with "awesome-security-audit".
 - **Verdict cue** — an EAV core table or `FLOAT` money is FIX; a missing PK on a production table is BLOCK for that table's flows; a deliberate, documented denormalization is a note, not a defect.
 
 ## Track B — Query patterns and indexes
