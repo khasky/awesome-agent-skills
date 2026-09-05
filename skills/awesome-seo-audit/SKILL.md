@@ -1,6 +1,6 @@
 ---
 name: awesome-seo-audit
-description: "Read-only SEO and AI-discoverability audit of a site or codebase — technical SEO, generated-page (programmatic SEO) safety, and agent/LLM readability — producing evidence-backed findings and a SHIP / FIX / BLOCK verdict. Use when the user asks to 'audit my SEO', 'check for thin content / cannibalization', 'will Google penalize these pages', 'am I blocking GPTBot/ClaudeBot', 'llms.txt', 'AI discoverability', 'will LLMs see my site', 'is my site agent-readable', or 'проверь SEO'. It audits and reports; it does not write content or edit files. Do not use for WCAG accessibility (use awesome-accessibility-audit) or landing-page conversion mechanics (use awesome-landing-audit)."
+description: "Read-only SEO and AI-discoverability audit of a site or codebase — technical SEO, programmatic-page safety, and agent/LLM readability (llms.txt, GPTBot/ClaudeBot access) — with evidence per finding and a SHIP / FIX / BLOCK verdict. Use when asked to audit SEO, check for thin or cannibalizing pages, judge whether LLMs and agents can read the site, or 'проверь SEO'. Reports only; writes no content. Do not use for WCAG accessibility (awesome-accessibility-audit) or landing conversion mechanics (awesome-landing-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -23,6 +23,8 @@ Three audit tracks, run the ones in scope:
 2. **Gather evidence, don't assume** — fetch `robots.txt`, `sitemap.xml`, `llms.txt`, page HTML (rendered *and* raw), response headers, and the JSON-LD. Every finding cites the artifact it came from (`file:line`, a header value, a URL). A pattern match is a lead; confirm in context.
 3. **Persist raw pulls** before synthesizing when auditing many URLs (`raw/<target>/<date>/…`) so a re-audit can diff against it.
 4. **Score, gate, report** — see Output.
+
+**Done when:** the scope is stated, every finding cites the artifact it came from, each track in scope has been walked, and any page type left unsampled is named.
 
 ## Track A — Technical SEO
 
