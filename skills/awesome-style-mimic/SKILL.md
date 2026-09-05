@@ -1,6 +1,6 @@
 ---
 name: awesome-style-mimic
-description: "Learns a website's writing style by deep-crawling it in a live browser and distills a reusable style guide (voice, tone rules, lexicon, rhythm, structure, golden samples), then rewrites any documents or page sources in that voice with a cross-document consistency pass. Use when the user says 'learn the style of <site>', 'изучи стиль сайта', 'create a style guide from my website', or wants text rewritten in a learned voice: 'rewrite this in the style of <site>', 'перепиши в стиле', 'apply this style guide to these docs'. Learn mode needs browser automation; apply mode needs only the guide file and works on Markdown, HTML and component sources. Do not use for an author's own voice built from their posts and drafts — use awesome-content-voice; for removing AI voice from English text — use awesome-humanize-en; for line-editing Markdown without a target voice — use awesome-document-style; for translation — use awesome-translate-ru-en."
+description: "Learns a website's writing style by deep-crawling it in a live browser, distills a reusable style guide (voice, tone rules, lexicon, rhythm, structure, golden samples), then rewrites documents or page sources in that voice with a cross-document consistency pass. Use when asked to learn the style of a site, build a style guide from a website, rewrite text in a site's voice, or 'изучи стиль сайта', 'перепиши в стиле'. Learn mode needs browser automation; apply mode needs only the guide. Do not use for an author's own voice (awesome-content-voice), stripping AI voice (awesome-humanize-en), or translation (awesome-translate-ru-en)."
 license: MIT
 metadata:
   author: Khasky
@@ -125,9 +125,10 @@ concurrently. Each reads its files and writes STYLE observations (not content su
 `style-crawl/<host>/analysis/batch-N.md` with fixed sections: **Lexicon / Voice & POV /
 Rhythm / Structure / Formatting / Genre notes / Golden-sample candidates** (3–5 verbatim
 excerpts ≤120 words with source file and why), returning only a 5-line summary.
-**Resource preflight** before spawning: cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`,
-`per_agent` ≈ 0.7 GB for these read-only agents; go serial if CPU load > 85% or free RAM <
-2×per_agent; recompute before each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+**Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75,
+free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read-only agents; go serial if
+CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps
+sub-agent concurrency itself, defer to it.
 
 ### 4. Synthesis
 
@@ -186,10 +187,10 @@ source path, one output path, the file mode (markdown/html/component), and the F
 `references/rewriter-contract.md` — identical guide + identical contract per file is what
 keeps one authorial voice across the batch. Never relay a summary of the guide; each
 subagent reads the guide file itself. A failed file gets one retry, then is reported — never
-silently dropped. **Resource preflight** before spawning: cap concurrency at
-`min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read/write
-agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; if
-the runtime caps sub-agent concurrency itself, defer to it.
+silently dropped. **Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75,
+free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read/write agents; go serial if
+CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps
+sub-agent concurrency itself, defer to it.
 
 After all rewrites land (2+ files), run ONE consistency-pass subagent over the whole output
 set (for >15 files: first/last 3 paragraphs plus a middle excerpt each): find cross-document
