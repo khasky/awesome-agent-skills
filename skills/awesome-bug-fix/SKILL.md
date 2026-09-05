@@ -1,6 +1,6 @@
 ---
 name: awesome-bug-fix
-description: "Debugs by building a runnable pass/fail reproduction, isolating the root cause, then fixing — no fixes without root cause first. Use when fixing bugs, investigating test/build failures, or when the user reports an error, crash, flaky behavior, or says 'debug this', 'why does X happen', 'не работает'. Use especially under time pressure or after several failed fix attempts. Do not use for feature work with no failing behavior to explain."
+description: "Debugs by building a runnable pass/fail reproduction, isolating the root cause, then fixing — no fixes without root cause first. Use when fixing a bug, investigating a test or build failure, when the user reports an error, crash or flaky behavior, or 'не работает'. Use especially under time pressure or after several failed fix attempts. Do not use for feature work with no failing behavior to explain, or for slowness and memory growth (awesome-performance-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -18,6 +18,8 @@ Find and fix bugs by following a strict process: no fixes without root cause fir
 
 **NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST.** Symptom fixes waste time and introduce new bugs. If you have not completed Phase 1, you may not propose fixes.
 
+**Redact before you show anything.** This skill quotes commands, outputs and captured artifacts back to the user, and the transcript leaves the machine. Write `<REDACTED>` in place of every token, password, connection string, cookie and customer identifier; build loops against environment variables so the credential stays in the environment rather than in the command you paste; and from a captured artifact (a HAR file, a log dump, a request trace) quote only the lines carrying the signal, because auth headers ride in the rest. If the redacted output is genuinely not enough to diagnose the bug, say so and ask the user rather than pasting the raw capture.
+
 ## When to Activate
 
 - User reports a bug, error, or "it doesn't work"
@@ -27,7 +29,7 @@ Find and fix bugs by following a strict process: no fixes without root cause fir
 
 **Use especially when:** Under time pressure, "one quick fix" seems obvious, you've already tried multiple fixes, or you don't fully understand the issue. Do not skip for "simple" bugs — simple bugs have root causes too.
 
-**If the bug is slowness, memory growth, or throughput — not a wrong result** — the diagnostic path is a performance audit, not this correctness loop: hand off to awesome-performance-audit (measure tail latency, take a heap/CPU profile). Return here only once it narrows to a specific, reproducible defect.
+**If the bug is slowness, memory growth, or throughput — not a wrong result** — the diagnostic path is a performance audit, not this correctness loop: call the Skill tool with "awesome-performance-audit" (measure tail latency, take a heap/CPU profile). Return here only once it narrows to a specific, reproducible defect.
 
 ## The Four Phases
 
@@ -44,6 +46,7 @@ Complete each phase before proceeding to the next.
 2. **Reproduce consistently — the feedback loop IS the work**
    - Build a fast, deterministic check the agent can run without human interaction that produces pass/fail, not "looks wrong". This loop is the deliverable of this phase; if you catch yourself reading code to build a theory before the loop exists, stop and build the loop first.
    - Preference order for the loop: failing unit test > integration test > CLI script > REPL one-liner. Then tighten it as a product: faster (seconds, not minutes), sharper signal, more deterministic.
+   - **When the obvious loop is not available, walk the ladder** — the bug that resists a repro usually needs a different *kind* of loop, not more staring. In rough order of preference: a **failing test** at whatever seam reaches the bug; a **curl or HTTP script** against a running dev server; a **CLI invocation** on a fixture input, diffing stdout against a known-good snapshot; a **headless browser script** asserting on DOM, console or network; a **replayed capture** (save the real request, payload or event log to disk and push it through the code path in isolation); a **throwaway harness** that boots the minimum subset of the system with everything else mocked; a **property or fuzz loop** when the symptom is "sometimes wrong output"; a **bisection harness** wrapping "boot at state X, check" so `git bisect run` drives it when the bug appeared between two known-good states; a **differential loop** running the same input through two versions or two configs and diffing the outputs; and, last, a **human-in-the-loop script** ([`scripts/hitl-loop.template.sh`](scripts/hitl-loop.template.sh)) when a person genuinely has to click — it keeps the loop structured and feeds the captured answers back.
    - Gate for leaving this step: the signal's output matches the reported failure. If it shows a *different* failure, note it as a second bug — do not chase it now.
    - **Flaky/intermittent bugs:** the goal is not a clean repro but a higher reproduction rate — loop the trigger 100×, parallelise, add stress, narrow timing windows until it fails reliably enough to observe.
    - If not reproducible at all, triage by branch: timing (add delays/stress), environment (diff machine/env config), state (inspect shared/persistent state), or truly-random (seed/PRNG). Gather data; do not guess.
@@ -58,6 +61,8 @@ Complete each phase before proceeding to the next.
 5. **Trace data flow**
    - Where does the wrong value originate? What called this with a bad value? Trace backward to the source. Fix at the source, not at the symptom.
    - Keep asking "why" until you reach a systemic gap, not a person. If a why-chain bottoms out at "human error", ask "why was that error possible?" — the real root is a missing validation, missing automation, or an unclear procedure. (The count isn't magic — stop at the true root cause, whether that's three whys or six.)
+
+**Done when:** the loop has been run at least once and its output matches the failure the user reported, the origin of the wrong value is named, and no fix has been proposed yet.
 
 ### Phase 2: Pattern analysis
 
@@ -76,15 +81,20 @@ Complete each phase before proceeding to the next.
 3. **List differences** — Between working and broken paths: config, types, order, assumptions.
 4. **Dependencies** — What other components, settings, or environment does this depend on?
 
+**Done when:** the difference between the working path and the broken one is written down as a list, or the report states that no working example exists.
+
 ### Phase 3: Hypothesis and minimal test
 
 1. **Write down 3–5 ranked, falsifiable hypotheses** — even when one feels obvious. "I think X is the root cause because Y." Each must be specific enough to be provable wrong. To broaden past the obvious technical guess, sweep six cause categories (Ishikawa): **People, Process, Technology, Environment, Methods, Materials** — root causes live in Process or Methods more often than in Technology.
-2. **Test the most likely first, minimally** — Smallest possible change or instrumentation, one variable and one hypothesis at a time. Instrumenting for all hypotheses at once destroys the signal; remove falsified instrumentation immediately. Do not fix multiple things at once.
-3. **Red-team the leading hypothesis** — Before acting, try to refute it three ways: premise (is the assumed cause actually present?), path (does execution actually reach it?), consequence (would fixing it actually remove the symptom?). Confirmed refutation → drop it; partial → downgrade to a suggestion.
-4. **Verify** — Did it work? Yes → Phase 4. No → Form a new hypothesis; do not layer more fixes on top.
-5. **If uncertain** — Say "I don't understand X." Do not pretend; ask or research.
+2. **Show the ranked list before testing it** — a cheap checkpoint with a large payoff: the user often re-ranks it instantly ("we deployed a change to #3 yesterday") or names hypotheses they have already ruled out. Present the list, then proceed on your own ranking if they are away — this asks, it does not block.
+3. **Test the most likely first, minimally** — Smallest possible change or instrumentation, one variable and one hypothesis at a time. Instrumenting for all hypotheses at once destroys the signal; remove falsified instrumentation immediately. Do not fix multiple things at once.
+4. **Red-team the leading hypothesis** — Before acting, try to refute it three ways: premise (is the assumed cause actually present?), path (does execution actually reach it?), consequence (would fixing it actually remove the symptom?). Confirmed refutation → drop it; partial → downgrade to a suggestion.
+5. **Verify** — Did it work? Yes → Phase 4. No → Form a new hypothesis; do not layer more fixes on top.
+6. **If uncertain** — Say "I don't understand X." Do not pretend; ask or research.
 
 **Instrumentation nuances:** in tests use `console.error()`/stderr, not the logger (may be swallowed); log *before* the dangerous operation, not only after it fails; `new Error().stack` gives a full trace at a point of interest; when shared state is corrupted, bisect the test order to find the polluting test. Tag every debug log with a unique prefix (`[DEBUG-a4f2]`) so cleanup is a single grep.
+
+**Done when:** 3–5 falsifiable hypotheses are ranked and written down, the leading one has survived the red-team pass, and each probe changed exactly one variable.
 
 ### Phase 4: Implementation
 
@@ -93,6 +103,8 @@ Complete each phase before proceeding to the next.
 3. **Implement a single fix** — Address the root cause. One change. No "while I'm here" refactors or extras.
 4. **Verify** — Test passes; no other tests broken; issue actually resolved.
 5. **If the fix doesn't work** — Stop. No fixes before diagnosis is complete, no exceptions; one fix at a time, test after each. If you have tried 3+ fixes and each reveals a problem elsewhere (a fix cascade), question the architecture (see below). Do not attempt a fourth fix without stepping back.
+
+**Done when:** the original repro no longer reproduces, the regression test fails without the fix and passes with it (or its missing seam is reported as the finding), and every `[DEBUG-...]` tag is gone.
 
 ### When 3+ fixes have failed: question architecture
 
@@ -156,7 +168,7 @@ Environment:     [exact versions where reproduced: runtime, OS, key deps, config
 Root cause:      [one sentence]
 Fix:             [what changed and where]
 Evidence:        [the passing run: command + result]
-Regression test: [test that fails without the fix, passes with it — placement and design: awesome-test-writing]
+Regression test: [test that fails without the fix, passes with it — design it by calling the Skill tool with "awesome-test-writing"]
 Status:          DONE | DONE_WITH_CONCERNS (name them) | BLOCKED (on what)
 ```
 
