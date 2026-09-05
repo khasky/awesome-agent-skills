@@ -1,6 +1,6 @@
 ---
 name: awesome-claims-audit
-description: "Audit every checkable public claim a product makes against the code that decides it, then fix the drift. Compares marketing pages, README, store listings, docs, privacy policy, FAQ and structured data against the constants, manifests, catalogs and locale strings that settle them — including across repos, where nothing fails when a sentence goes false. Use when asked to 'check the site against the code', 'do the facts on the site match reality', 'audit the copy', 'find outdated claims', 'is the README still true', before a store submission or a privacy-policy review, after a change to permissions, limits, labels or supported platforms, or in Russian 'проверь соответствие сайта коду', 'проверь факты на сайте', 'найди устаревшие утверждения'. Read-only until it reports; fixing is a separate phase. Do not use for prose quality (awesome-document-style), conversion structure (awesome-landing-audit), or whole-codebase docs fidelity (awesome-architecture-audit)."
+description: "Audits every checkable public claim — marketing pages, README, store listing, privacy policy, docs, structured data — against the constants, manifests, catalogs and locale strings that decide it, across repos, then fixes the drift in a separate phase. Use when asked whether the site still matches the code, to find outdated claims, before a store submission or privacy-policy review, or 'проверь факты на сайте'. Do not use for prose quality (awesome-document-style), conversion structure (awesome-landing-audit), or internal docs fidelity (awesome-architecture-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -75,10 +75,10 @@ A, decider in repo B — is never split across agents that each see only one sid
 Barrier before Output: the parent classifies and dedupes the same wrong sentence in
 six places into one finding with six locations, not six findings. The hard phase
 gate holds — report everything first, fix (Phases 4–5) second, single-writer.
-**Resource preflight** (before fan-out): cap concurrent sub-agents at
-`min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only
-agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before
-each wave; if the runtime caps sub-agent concurrency itself, defer to it.
+**Resource preflight** (before fan-out): cap concurrency at `min((cores−1)×0.75,
+free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read-only agents; go
+serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave;
+where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Phase 1 — the mechanical pass
 
@@ -137,6 +137,9 @@ node scripts/map-coverage.mjs --map claim-source-map.md --config claims.config.j
 It names both directions — a row promising coverage that no check provides, and a
 check no row accounts for.
 
+**Done when:** every mechanical check has been run and read, and each surface
+it could not reach is named.
+
 ## Phase 2 — harvest the claims
 
 Four shapes, in descending order of how badly they fail:
@@ -173,6 +176,9 @@ security, pricing, terms); the trust pages that must not overpromise; the catalo
 that drive generated pages; static public assets that are wire contracts wearing
 marketing clothes; the README feature list; and untracked or dev-only drafts.
 
+**Done when:** every public surface in scope has been read whole, and each
+harvested claim carries the file and line it was written on.
+
 ## Phase 3 — resolve each claim
 
 Use `references/claim-source-map.md`. The traps that recur:
@@ -196,6 +202,9 @@ Use `references/claim-source-map.md`. The traps that recur:
   says.
 - **Right today, false past a threshold.** A claim whose truth depends on a count,
   a quota, or a free tier is a latent finding — record it with the threshold.
+
+**Done when:** every claim has been driven to true, false or unverifiable
+against the code that decides it, and no claim is left resolved by memory.
 
 ## What not to flag
 
@@ -261,6 +270,9 @@ It rebuilds each index entry from `HEAD` plus the named keys and writes it to th
 index without touching the working tree. Match `--indent` to the file's own
 formatting, or the whole file stages reformatted and buries the real change.
 
+**Done when:** every accepted fix has landed in one place per meaning, and the
+claims that were deliberately left alone are listed with the reason.
+
 ## Phase 5 — verify
 
 The claim being fixed is *rendered output*, so prove it there.
@@ -282,6 +294,9 @@ renders, and hides in a page you did not think to open.
 - **For edited static assets, parsing is not proving.** A syntax check says the
   file loads. Extract the pure function and exercise its branches, or add the check
   to the suite that already runs.
+
+**Done when:** the mechanical pass has been re-run green, and every edited
+asset has been exercised rather than only parsed.
 
 ## Output
 
