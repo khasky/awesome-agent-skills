@@ -1,6 +1,6 @@
 ---
 name: awesome-design-doc
-description: "Produces a design document or ADR for a feature or architectural decision: requirements and scale numbers first, real alternatives with trade-offs, a recommendation grounded in the requirements, explicit non-goals and migration path. Use when asked to 'write a design doc', 'write an ADR', 'design this feature/system', 'which approach should we take', 'спроектируй', or when awesome-code-review requests an ADR for a load-bearing decision. Do not use for auditing an existing architecture — use awesome-architecture-audit; not for HTTP resource modeling details — use awesome-api-design."
+description: "Produces a design document or ADR for a feature or architectural decision: requirements and scale numbers first, real alternatives with trade-offs, a recommendation grounded in the requirements, explicit non-goals and migration path. Use when asked to write a design doc, write an ADR, decide which approach to take, 'спроектируй', or when awesome-code-review requests an ADR for a load-bearing decision. Do not use for auditing an existing architecture (awesome-architecture-audit) or for HTTP resource modeling detail (awesome-api-design)."
 license: MIT
 metadata:
   author: Khasky
@@ -31,7 +31,7 @@ One-page ADR for a single decision; full design doc when the feature needs a dat
 
 ## Work Process
 
-1. **Requirements before components** — functional requirements as testable statements, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after.
+1. **Requirements before components** — functional requirements as testable statements, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after. Read the decisions already recorded (existing ADRs) and the project's own glossary before naming anything: a design that renames a concept the codebase already has costs every reader a translation, and one that silently contradicts an accepted ADR gets re-litigated in review instead of decided here.
 2. **Back-of-envelope the load** — requests/sec, storage/year, working-set size, fan-out per action. Three lines of arithmetic kill more bad designs than any diagram; a design without numbers is a vibe. State the assumptions so a reader can re-run the math when the assumptions age.
 3. **Sketch the contract before the internals** — the API endpoints or events in/out, and the data model's core entities with their invariants. The contract exposes scope errors while they are still cheap (`awesome-api-design` for HTTP resource detail).
 4. **Generate 2–3 genuine alternatives** — including the simplest thing that could work ("do nothing" or "a cron job and a table" is often a legitimate contender). An alternative added only to be knocked down is padding; each one gets its honest best case.
@@ -52,6 +52,29 @@ Alternatives considered: <each with its honest best case and why it lost against
 Consequences: <what becomes easier, what becomes harder, what debt is accepted knowingly>
 Non-goals: <what this decision deliberately does not cover>
 ```
+
+## Agent brief (when the decision is handed to an implementer)
+
+A design doc explains a decision to a reader; a **brief** tells an implementer — a person or an unattended agent — what to build. When the work is handed off rather than built in the same session, add one per unit of work, and write it to survive the wait: the brief may sit for days while the codebase moves under it.
+
+**Durability over precision.** Describe interfaces, types, config shapes and behavioral contracts; never file paths or line numbers, which go stale and send the implementer to a file that no longer exists. Say *what* the system should do, not *how* to change the code — the implementer explores the current tree and makes its own implementation decisions.
+
+```text
+## Brief: <one-line summary of what must happen>
+
+Category:          feature | bug | migration
+Current behavior:  <what happens today — the status quo the work builds on>
+Desired behavior:  <what happens after, including edge cases and error conditions>
+Key interfaces:    <the types, signatures, events or config shapes that change, and how>
+
+Acceptance criteria:
+- [ ] <specific, independently verifiable — "returns 409 on a duplicate idempotency key",
+      not "handles duplicates correctly">
+
+Out of scope:      <the adjacent thing that must NOT be touched, so gold-plating has to argue>
+```
+
+Where the decision splits into several briefs, publish them in dependency order and let each name the briefs that block it, so the ready set is readable without re-reading the doc.
 
 ## Output Format
 
