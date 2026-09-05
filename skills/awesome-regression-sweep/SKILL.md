@@ -1,6 +1,6 @@
 ---
 name: awesome-regression-sweep
-description: "Read-only regression sweep over a codebase and its live surfaces: a layered aspect pass (typecheck, lint, generated-artifact drift, unit and integration suites, black-box wire contract, cross-implementation parity, downstream consumer build) compared against a recorded baseline so the answer is deltas, plus nine rotating deep angles — shuffled test order, the other publication path, coverage ratchet, deploy dry-run, one number by two paths, docs-vs-code constants, deployed-vs-committed drift, scheduled-job health. Use when asked to 'verify everything', 'check for regressions', 'run the full sweep', 'make sure nothing broke', 'is this safe to release', before or after a deploy; in Russian 'проверь что ничего не сломалось', 'полная проверка', 'прогони все проверки'. Never deploys, never writes, never calls a mutating route. Do not use for designing tests (awesome-test-writing), diagnosing one known failure (awesome-bug-fix), or profiling latency (awesome-performance-audit)."
+description: "Read-only regression sweep over a codebase and its live surfaces, answering in deltas against a recorded baseline: a layered aspect pass (typecheck, lint, generated-artifact drift, unit and integration suites, black-box wire contract, cross-implementation parity, downstream consumer build) plus nine rotating deep angles from shuffled test order to deployed-vs-committed drift. Never deploys, never writes, never calls a mutating route. Use when asked to verify everything before or after a deploy, check for regressions, or 'проверь что ничего не сломалось'. Do not use to design tests (awesome-test-writing), diagnose one failure (awesome-bug-fix), or profile latency (awesome-performance-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -104,6 +104,9 @@ login walls, and missing credentials into skips, and the skip set varies run to
 run. Attribute every non-green line to *code*, *environment*, or *harness* before
 reporting it.
 
+**Done when:** every aspect in the baseline has been compared, and each
+non-green line is attributed to code, environment or harness.
+
 ## Parallelizing the sweep — with care
 
 Split the aspects into two lanes by **resource contention**, not just independence
@@ -121,11 +124,11 @@ hunts.
 
 The barrier is the verdict: one agent merges all deltas against the single
 `baseline.json` and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or
-emits a verdict. **Resource preflight** (before fan-out): cap concurrent
-sub-agents at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB
-for the static/HTTP agents; go serial if CPU load > 85% or free RAM < 2×per_agent;
-recompute before each wave; if the runtime caps sub-agent concurrency itself,
-defer to it.
+emits a verdict. **Resource preflight** (before fan-out): cap concurrency at
+`min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for
+the static/HTTP agents; go serial if CPU load > 85% or free RAM <
+2×per_agent; recompute before each wave; where the runtime caps sub-agent
+concurrency itself, defer to it.
 
 ## Phase 2 — the nine angles
 
@@ -159,9 +162,12 @@ watch keeps producing new information instead of the same green line.
 7. **Docs versus code.** Every constant a doc states must be greppable in the
    source — limits, timeouts, retry counts, enum vocabularies, defaults. Then grep
    for the phrasings a recent change made false. Highest hit rate of the nine; for
-   the full public-copy pass hand off to `awesome-claims-audit`.
+   the full public-copy pass, call the Skill tool with "awesome-claims-audit".
 8. **Deployed versus committed.** `references/deployment-and-infrastructure.md`.
 9. **Infrastructure and scheduled jobs.** Same file.
+
+**Done when:** every angle picked for this round has been run and its delta
+recorded against the single baseline.
 
 ## Phase 3 — the invariants checklist
 
@@ -181,6 +187,9 @@ Repeat `--bad` per malformed shape — non-numeric, reversed, zero, oversize, to
 many items, over-long value, missing separator. Each takes a different branch
 through the validator, and the branch that forgets to reject is the one that
 reaches the database before validation finishes.
+
+**Done when:** every invariant has been checked or marked NOT ASSESSED with
+its reason.
 
 ## What not to flag
 
