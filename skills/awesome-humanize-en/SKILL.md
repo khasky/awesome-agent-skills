@@ -70,7 +70,7 @@ Final pass against the checklist (see below)
 
 Vocabulary tells (pattern #10) are gated by density, not flagged one-by-one:
 
-- **Tier 1 — flag on sight**: delve, tapestry, seamless, robust, testament, boasts, "leverage" as a verb.
+- **Tier 1 — flag on sight**: delve, tapestry, seamless, robust, testament, boasts, "leverage" as a verb, "deliberately" as an appended intent stamp.
 - **Tier 2 — flag only when 2+ co-occur in one paragraph**: harness, foster, elevate, streamline, crucial, pivotal.
 - **Tier 3 — flag only at high density (≈3%+ of running words)**: significant, innovative, effective, comprehensive.
 

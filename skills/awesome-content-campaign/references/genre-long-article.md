@@ -28,7 +28,7 @@ Motivated by a problem the author actually hit. Uneven by design: five paragraph
 | Emoji on some headings and not others | One surface for the whole piece: all headings, or none and the prose instead |
 | A bare URL sitting as plain text, or a link shoved into parentheses mid-sentence | Apply the editor's link control to real words; give the link its own closing clause |
 | A third-party tool named with no idea what it is | One identifying clause at first mention |
-| Literary vocabulary nobody says out loud (`duller`, `says it outright`, `myriad`) | The spoken word: `more boring`, `says it plainly`, `many` |
+| Literary vocabulary nobody says out loud (`duller`, `says it outright`, `myriad`, `deliberately`) | The spoken word: `more boring`, `says it plainly`, `many`, `on purpose` |
 
 ## Rules
 
@@ -50,7 +50,7 @@ Motivated by a problem the author actually hit. Uneven by design: five paragraph
 
 11. **Name what a tool is the first time it appears.** A reader who does not already know the ecosystem cannot follow a paragraph that compares three products by bare name. The first mention of anything beyond the main subject carries a short identifying clause: what kind of thing it is and, where it matters, how it is switched on. `Agent Teams is the experimental mode where one lead session spawns and supervises teammates, behind CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS` and `MCP Agent Mail is the closest third-party attempt` both do this; `Agent Teams does not change this. MCP Agent Mail gets closest with file reservations` assumes the reader already knows both, and loses everyone who does not.
 
-12. **Plain spoken American English.** The register is a competent person explaining something out loud, so the vocabulary stays at the level people actually speak. Rare and literary words are the tell that a machine reached for a synonym: `duller`, `says it outright`, `thus`, `hence`, `myriad`, `plethora`, `albeit`, `heretofore`, `bespoke`, `salient`, `veritable`, `wherein`. Write `less exciting` or `more boring`, `says it plainly` or `spells it out`, `so`, `many`. The test: would you say this word to a colleague at a desk? No → replace it.
+12. **Plain spoken American English.** The register is a competent person explaining something out loud, so the vocabulary stays at the level people actually speak. Rare and literary words are the tell that a machine reached for a synonym: `duller`, `says it outright`, `thus`, `hence`, `myriad`, `plethora`, `albeit`, `heretofore`, `bespoke`, `salient`, `veritable`, `wherein`, `deliberately`. Write `less exciting` or `more boring`, `says it plainly` or `spells it out`, `so`, `many`, `on purpose`. The test: would you say this word to a colleague at a desk? No → replace it.
 
 13. **A URL in the body is a real link, and never sits in parentheses.** Rich editors do not linkify pasted text, so a bare URL publishes as dead characters — select the words and apply the editor's own link control (`medium`, `substack`, `tumblr`, `telegraph`), or write real markdown where markdown renders. And a link belongs to the sentence that points at it, not stuffed into a bracket mid-clause: `Anthropic says it plainly in the docs (https://…): two agents editing one file…` reads as a citation dumped into a footnote; write the sentence, then hand over the link at its end.
 

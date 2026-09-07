@@ -8,7 +8,7 @@ Specific vocabulary and syntactically bulky constructions that LLMs gravitate to
 
 ## 10. 🔴 Overuse of AI vocabulary
 
-**List:** delve, tapestry, testament, boasts, nestled, underscore, leverage, seamless, robust, showcase, realm, landscape, navigate, foster, pivotal, crucial, vibrant, intricate, multifaceted, comprehensive, meticulous, bustling, "treasure trove".
+**List:** delve, tapestry, testament, boasts, nestled, underscore, leverage, seamless, robust, showcase, realm, landscape, navigate, foster, pivotal, crucial, vibrant, intricate, multifaceted, comprehensive, meticulous, bustling, deliberately, "treasure trove".
 
 **Problem.** These words show up together far too often in generated text. One on its own can be perfectly fine; five or more in a single paragraph is almost always AI.
 

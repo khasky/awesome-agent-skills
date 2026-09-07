@@ -67,6 +67,7 @@ Avoid these — they make text sound machine-generated:
 - "in conclusion" (use "to wrap up", "all told", or just start the closing differently)
 - "leverage" (as a verb when "use" works)
 - "utilize" (use "use")
+- "deliberately" (use "on purpose", or give the reason)
 - "robust", "seamless", "cutting-edge" (overused marketing words)
 - "comprehensive", "holistic" (when not specifically meaningful)
 - "in today's world", "in the modern era", "as of today"

@@ -95,6 +95,7 @@ Watch for and rewrite:
 - “plays a crucial/pivotal/key role...”
 - “underscores/highlights/showcases...”
 - “robust/seamless/cutting-edge/innovative...”
+- “deliberately/intentionally” stamped on a choice instead of the reason for it (say “on purpose”)
 - “not only X but also Y”
 - “from X to Y” ranges used for drama rather than meaning
 - forced groups of three
