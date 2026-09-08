@@ -91,7 +91,7 @@ Three exceptions, and only these: a platform whose Media column says media is no
 
 ## Phase 3 — Platform check
 
-For every selected platform, confirm the current constraints: length cap and whether it varies by account tier, media formats and whether media is mandatory, link handling, hashtag norms, editor type, and any promo or disclosure rule that applies to what is being posted. Reuse `platform-cache.md` when its entry is under 30 days old and say it was reused with its date; re-verify anything older. Community rules — a subreddit's, a group's, a server's — are re-read every run regardless of cache age, and a community that forbids link-drops or self-promotion is reported to the user with the option to pick another target.
+For every selected platform, confirm the current constraints: length cap and whether it varies by account tier, media formats and whether media is mandatory, link handling, hashtag norms, editor type, and any promo or disclosure rule that applies to what is being posted. Reuse `platform-cache.md` when its entry is under 30 days old and say it was reused with its date; re-verify anything older. A cache entry records the page that was actually opened — a value recalled from memory, taken off a search-result snippet, or written from a URL that did not load is not a source: record that it could not be reached and treat the value as unresearched. Community rules — a subreddit's, a group's, a server's — are re-read every run regardless of cache age, and a community that forbids link-drops or self-promotion is reported to the user with the option to pick another target.
 
 ## Phase 4 — Write
 
