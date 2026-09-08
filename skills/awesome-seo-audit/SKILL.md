@@ -115,6 +115,9 @@ No "positive" line and no list of the checks that passed — the verdict already
 Severity uses the shared finding scale — `Critical / High / Medium / Low` (`Informational` for hygiene notes like llms.txt formatting or retired markup left in place). Each finding also carries a confidence bucket — **High** (the header/tag/URL was fetched and read) or **Medium** (inferred without fetching); Medium findings list under **Needs verification** with the check that would confirm them, and never drive the verdict on their own.
 
 Rules for the report:
+- **SHIP** — nothing found that removes a page from the index or misroutes a ranking signal; only hygiene notes remain.
+- **FIX** — a real indexability, canonical, duplication, or render-blindness defect with a named owner; correct it before the next content push builds on it.
+- **BLOCK** — the scope is uncrawlable, unindexable, or snippet-suppressed as shipped, a canonical points off the site, or a cohort trips the scaled-content gate: publishing more of it deepens the damage rather than adding reach.
 - **Evidence per finding** — quote the header/tag/URL; no "potentially".
 - **No composite score** — report the verdict, the severities, and the measurements actually taken: a uniqueness ratio, a byte size, an LCP figure, an X-of-N Lighthouse pass ratio. A `Technical 78/100` nobody can reconstruct is false precision, and no outside tool sees Google's ranking data — its own guidance on third-party SEO tools says so plainly. If a stakeholder wants one number, name the checks it would average and let them own the weights.
 - **No coverage, no claim** — if you couldn't fetch rendered HTML, couldn't sample the cohort, or lack the data to measure uniqueness, return `NOT ASSESSED` for that part and pass no judgement on it. A partial audit says so.
