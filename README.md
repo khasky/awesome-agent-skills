@@ -133,7 +133,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text: 42 patterns, a discourse layer that fixes structure before style, regex markers, source-fabrication checks |
+| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text (Russian via a calibration file): review and edit operations, venue rules for release notes, replies, postmortems, tickets and articles, a discourse layer fixed before style, regex markers, source-fabrication checks, editing-trace tests, a pinned evidence ledger |
 | [awesome-document-style](skills/awesome-document-style) | Line-edits Markdown into clear, specific, publication-ready prose |
 | [awesome-grammar-check](skills/awesome-grammar-check) | Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text |
 | [awesome-translate-ru-en](skills/awesome-translate-ru-en) | Russian → English translation that preserves structure, formatting, and the author's voice |
@@ -198,6 +198,8 @@ The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, 
 - **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
 - **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
 - Restart or reload the agent after copying so it picks up new skills.
+
+What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version.
 
 ## Usage examples
 
@@ -266,4 +268,4 @@ Part of a set of agent tooling — pick the layer you need:
 
 ## License
 
-Released under the [MIT license](LICENSE). The [awesome-humanize-en](skills/awesome-humanize-en) skill adapts MIT-licensed material from [humanizer-ru](https://github.com/Vladimir-Human/humanizer-ru) by Vladimir-Human, and [awesome-seo-audit](skills/awesome-seo-audit) cross-checked its Google-policy detail against [claude-seo](https://github.com/AgriciDaniel/claude-seo) by AgriciDaniel (MIT) before confirming it at the primary source — with credit kept inline where it's used.
+Released under the [MIT license](LICENSE). The [awesome-humanize-en](skills/awesome-humanize-en) skill adapts MIT-licensed material from [humanizer-ru](https://github.com/Vladimir-Human/humanizer-ru) by Vladimir-Human and, for its venue rules, editing-trace tests and evidence ledger, from [sepia](https://github.com/Nanako0129/sepia) by Nanako Tsai (MIT); [awesome-seo-audit](skills/awesome-seo-audit) cross-checked its Google-policy detail against [claude-seo](https://github.com/AgriciDaniel/claude-seo) by AgriciDaniel (MIT) before confirming it at the primary source — with credit kept inline where it's used.
