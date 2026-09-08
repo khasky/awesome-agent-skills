@@ -133,6 +133,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
+| [awesome-copywriting](skills/awesome-copywriting) | Writes a product's own short copy — headlines, descriptions, button and empty-state and error microcopy, subject lines, CTAs — from the reader's state at the moment the line lands, with a quality-probing intake, a story gate, and variants delivered with a pick |
 | [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text (Russian via a calibration file): review and edit operations, venue rules for release notes, replies, postmortems, tickets and articles, a discourse layer fixed before style, regex markers, source-fabrication checks, editing-trace tests, a pinned evidence ledger |
 | [awesome-document-style](skills/awesome-document-style) | Line-edits Markdown into clear, specific, publication-ready prose |
 | [awesome-grammar-check](skills/awesome-grammar-check) | Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text |
@@ -175,6 +176,9 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | awesome-design-doc · awesome-api-design | Both run before code exists | The system — requirements, alternatives, recommendation, rollout → design-doc. The HTTP surface — resources, versioning, pagination, idempotency → api-design. |
 | awesome-error-standards · awesome-logging-standards | Both shape what happens on failure | The error contract — types, envelopes, status mapping, retries → error-standards. What gets written down — levels, structure, PII → logging-standards. |
 | awesome-humanize-en · awesome-document-style · awesome-grammar-check | 3 passes over the same English text | Strip AI fingerprints → humanize-en. Line-edit for clarity and specificity → document-style. Suggest without touching the text → grammar-check. |
+| awesome-copywriting · awesome-humanize-en · awesome-document-style | All four end in English prose someone ships | There is no line yet and you are writing one → copywriting. A line exists and reads machine-made → humanize-en. A document exists and reads vague → document-style. |
+| awesome-copywriting · awesome-landing-audit | Both act on the words a marketing page shows | Write or replace the line → copywriting. Judge the page's structure — CTA count, form friction, message match — without touching the words → landing-audit, which hands copy quality to copywriting. |
+| awesome-copywriting · awesome-content-campaign | Both write marketing text from product facts | The product's own surfaces — headline, button, empty state, subject line → copywriting. Posts for other people's platforms, on a schedule, in that platform's register → content-campaign. |
 | awesome-style-mimic · awesome-content-voice | Both write the same section set, so either file feeds a rewrite or a campaign | A site's brand voice, learned by crawling it → style-mimic. The author's own voice from their own evidence, with consent, counted absence and a confidence stamp → content-voice. |
 | awesome-content-campaign · awesome-content-repurpose | Both write platform-native posts into the file format the publisher reads | Product sources plus a schedule → content-campaign. One existing text, no schedule → content-repurpose. |
 | awesome-content-campaign · awesome-content-publisher | Two halves of one shipping pipeline | Write the post files → content-campaign. Post them to your accounts through your own browser → content-publisher. |
@@ -195,6 +199,7 @@ The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, 
 | Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
 | Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
 
+- **Claude Code plugin:** `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. Installs every skill at once and updates with the plugin; the Quick start's symlink path stays the better choice if you want `git pull` to move them.
 - **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
 - **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
 - Restart or reload the agent after copying so it picks up new skills.
