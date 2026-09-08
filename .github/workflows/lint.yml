@@ -192,6 +192,66 @@ jobs:
           sys.exit(1 if fail else 0)
           PY
 
+      # Progressive disclosure, enforced rather than advised: SKILL.md is the map
+      # an agent always loads, and detail belongs in references/, which it loads
+      # on demand. The cap sits just above the largest compliant skill, so it
+      # binds new work without inviting a rewrite of what already fits.
+      # GRANDFATHERED carries the one skill written before the budget existed;
+      # a name leaves that list by being split, never by being re-added.
+      - name: SKILL.md stays inside the line budget
+        run: |
+          python3 - <<'PY'
+          import pathlib, sys
+
+          BUDGET = 500
+          GRANDFATHERED = {"awesome-git-history-rebuild"}
+
+          fail, stale = [], []
+          for folder in sorted(pathlib.Path("skills").iterdir()):
+              if not folder.is_dir():
+                  continue
+              path = folder / "SKILL.md"
+              if not path.exists():
+                  continue
+              lines = len(path.read_text(encoding="utf-8").splitlines())
+              if lines > BUDGET and folder.name not in GRANDFATHERED:
+                  fail.append(f"{path}: {lines} lines (budget {BUDGET}) — "
+                              f"move detail into {folder.name}/references/")
+              if lines <= BUDGET and folder.name in GRANDFATHERED:
+                  stale.append(f"{folder.name} now fits the budget — drop it from GRANDFATHERED")
+
+          print("\n".join(fail + stale) if fail or stale else f"line budget OK (cap {BUDGET})")
+          sys.exit(1 if fail or stale else 0)
+          PY
+
+      # The two plugin manifests are the Claude Code install path. They carry the
+      # repo's own name and are easy to leave behind on a rename, so the check is
+      # that they parse and still agree with each other and with the directory.
+      - name: plugin manifests parse and agree
+        run: |
+          python3 - <<'PY'
+          import json, pathlib, sys
+
+          root = pathlib.Path(".claude-plugin")
+          plugin = json.loads((root / "plugin.json").read_text(encoding="utf-8"))
+          market = json.loads((root / "marketplace.json").read_text(encoding="utf-8"))
+
+          fail = []
+          if plugin.get("name") != "awesome-agent-skills":
+              fail.append(f"plugin.json name is {plugin.get('name')!r}")
+          entries = [p.get("name") for p in market.get("plugins", [])]
+          if entries != [plugin["name"]]:
+              fail.append(f"marketplace.json lists {entries}, expected [{plugin['name']!r}]")
+          for key in ("description", "version", "license"):
+              if not plugin.get(key):
+                  fail.append(f"plugin.json is missing {key}")
+          if not pathlib.Path("skills").is_dir():
+              fail.append("the plugin ships skills/ and it is not there")
+
+          print("\n".join(fail) if fail else f"plugin manifests OK ({plugin['name']} v{plugin['version']})")
+          sys.exit(1 if fail else 0)
+          PY
+
       - name: humanize-en marker regexes still match their fixtures
         run: python3 skills/awesome-humanize-en/scripts/check_markers.py
 

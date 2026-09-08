@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-marketplace-manifest.json",
+  "name": "awesome-agent-skills",
+  "owner": {
+    "name": "Khasky",
+    "url": "https://github.com/khasky"
+  },
+  "description": "The Awesome Agent Skills collection, installable as a Claude Code plugin.",
+  "plugins": [
+    {
+      "name": "awesome-agent-skills",
+      "source": "./",
+      "description": "Skills for AI coding agents: code review, test writing, design docs, debugging, security and dependency audits, git history surgery, refactoring, copywriting, and cleaning up AI-written code and text.",
+      "license": "MIT",
+      "keywords": ["code-review", "testing", "security", "audit", "refactoring", "debugging", "git", "documentation", "copywriting", "content", "ai-cleanup"]
+    }
+  ]
+}
