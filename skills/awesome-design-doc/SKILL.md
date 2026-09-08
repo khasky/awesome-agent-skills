@@ -1,6 +1,6 @@
 ---
 name: awesome-design-doc
-description: "Produces a design document or ADR for a feature or architectural decision: requirements and scale numbers first, real alternatives with trade-offs, a recommendation grounded in the requirements, explicit non-goals and migration path. Use when asked to write a design doc, write an ADR, decide which approach to take, 'спроектируй', or when awesome-code-review requests an ADR for a load-bearing decision. Do not use for auditing an existing architecture (awesome-architecture-audit) or for HTTP resource modeling detail (awesome-api-design)."
+description: "Produces a design document or ADR for a feature or architectural decision: requirements and scale numbers first, real alternatives with trade-offs, a recommendation grounded in the requirements, explicit non-goals and migration path. Use when asked to write a design doc, write an ADR, decide which approach to take, run a pre-mortem on a plan before committing to it, 'спроектируй', 'сделай pre-mortem', or when awesome-code-review requests an ADR for a load-bearing decision. Do not use for auditing an existing architecture (awesome-architecture-audit) or for HTTP resource modeling detail (awesome-api-design)."
 license: MIT
 metadata:
   author: Khasky
@@ -37,7 +37,7 @@ One-page ADR for a single decision; full design doc when the feature needs a dat
 4. **Generate 2–3 genuine alternatives** — including the simplest thing that could work ("do nothing" or "a cron job and a table" is often a legitimate contender). An alternative added only to be knocked down is padding; each one gets its honest best case.
 5. **Evaluate on the trade-off axes the requirements activate** — not a fixed rubric: consistency vs availability, sync vs async, SQL vs NoSQL, monolith-extension vs new service, build vs buy, latency vs cost. For each active axis, say which side the requirements favor and why. Skip axes with no tension — padding dilutes the load-bearing analysis.
 6. **Recommend, grounded in requirements** — one recommendation, tied by name to the requirements that drove it ("eventual consistency suffices because the feed tolerates 30s lag — that unlocks the cheaper fan-out-on-read"). State what new information would flip the decision.
-7. **Name non-goals, risks, and the path** — explicit non-goals (what this deliberately does not solve, so scope creep has to argue with a sentence), the top risks with their mitigations, the migration/rollout order for existing data and consumers, and the rollback story (`rules`-level deploy discipline applies; a design that cannot roll out incrementally gets that called out here, not discovered in the PR).
+7. **Invert before you mitigate, then name non-goals and the path** — run the risk pass backwards first: it is a year on, this decision was the wrong one, and the design is being unwound. Name the three things that killed it, in the concrete ("the backfill never finished and writes diverged"), never the abstract ("scaling risk"). Inversion surfaces what a forward pass rationalizes away, because "what would kill this" cannot be answered with "we will be careful". Each named cause then earns an early warning sign a reader could actually observe and either a mitigation or a written acceptance. Then explicit non-goals (what this deliberately does not solve, so scope creep has to argue with a sentence), the top risks with their mitigations, the migration/rollout order for existing data and consumers, and the rollback story (`rules`-level deploy discipline applies; a design that cannot roll out incrementally gets that called out here, not discovered in the PR).
 
 ## ADR format
 
@@ -82,10 +82,19 @@ Full design doc: Title → Problem & requirements (with numbers) → Proposed de
 
 ## Self-check before delivering
 
+Run the structural gate first, so the reading below is spent on judgement rather than on spotting a placeholder:
+
+```bash
+node scripts/check-design-doc.mjs <path to the doc>   # exit 0 clean, 1 findings
+```
+
+It settles only what a machine can settle (sections present and non-empty, at least two alternatives, no leftover placeholder, ADR status valid) and says nothing about whether the recommendation is right. `--self-test` proves each check can fail before it is trusted to pass anything.
+
 - The three-condition test verdict is stated in one line — why this decision earned a document at all.
 - Every scale number traces to a stated assumption a reader can re-run; a number with no assumption is a vibe with digits.
 - A recommendation exists, cites the requirements that drove it by name, and states what new information would flip it.
 - Re-read each alternative as its advocate: if one collapses under its own best case, it was a straw man — replace it or drop it.
+- The risk list came out of the inversion pass, not out of what was convenient to mitigate: each risk names an early warning a reader could observe, and a risk with no mitigation is written down as accepted rather than dropped.
 - Non-goals, rollback, and marked open questions are present; any requirement you invented rather than confirmed is moved to Open questions or deleted.
 
 ## Anti-patterns
@@ -98,4 +107,5 @@ Full design doc: Title → Problem & requirements (with numbers) → Proposed de
 | Invented requirements ("we might need multi-region") | Only stated or confirmed requirements; speculation goes to Non-goals |
 | ADR spam — a document per reversible choice | The three-condition test; reversible choices get a code comment |
 | Design without a rollout | Migration order, backward compatibility, and rollback in the doc |
+| Risks listed forward, each arriving with a reassuring mitigation | Invert first: name what killed it, then mitigate the causes you named |
 | Open questions silently resolved by omission | An explicit Open questions section the reader can answer |
