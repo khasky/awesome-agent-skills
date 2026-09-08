@@ -169,6 +169,7 @@ Human-style rules, distilled from `awesome-humanize-en`, `awesome-document-style
 - Tags that have their own field in the composer never appear in the body: the article platforms and `tumblr` carry them as a `tags` frontmatter list, and a trailing line of bare words (`ai machine-learning video news`) publishes as literal text. Inline `#hashtags` stay in the body only where that platform's natives write them there.
 - No invented idiom — "proved it the blunt way", "a figure worth stopping on" — a phrase shaped like a saying with no saying behind it is machine phrasing. Say what happened in ordinary words.
 - No summary-stamp openers ("In conclusion", "TL;DR:" as a stamp), no fake-candor openers ("Let's be honest"), no hype closers ("The future looks bright").
+- Announcement and launch posts carry the release-notes tells too: no marketing inflation ("thrilled to announce", "powerful new features", "seamless experience"), no benefit claim without its mechanism ("faster" needs the number or the change: "exports 40% faster in our benchmarks", "fixed a race in the retry queue"), no intro paragraph about the journey and no closing paragraph about the road ahead, breaking changes and user impact before the rest. Enthusiasm is not the news; the change is.
 - Counts and versions as digits; claims from the knowledge map only, with the map's exact numbers.
 - No trademark word carrying its ordinary meaning: `slack` for spare capacity, `stripe`, `square`, `notion`, `discord`, `prime`, `oracle`, `meta`, `swift`, `zoom`, `teams`, `windows`. The reader sees the company, not the noun, and on a post about software the misread is instant — write the plain synonym (head start, margin, band, idea, disagreement) and keep the word only where the post genuinely is about that company. Body, title, alt text, hashtags and any words on a graphic alike.
 - Hashtags per the platform's researched norm — a handful where they drive discovery (mastodon, instagram), few-to-none where they read as spam (reddit has none at all).
@@ -183,6 +184,8 @@ Voice per the interview, held consistently across every post and platform. When 
 5. **The human-style defaults below** — the floor when nothing above has an opinion.
 
 A profile section marked "sample too thin" or a profile stamped `confidence: low` carries less weight than the genre file, not more: say so in the report rather than writing a platform's posts to a register nobody observed.
+
+**A voice applied wholesale is a fingerprint.** A profile or a style guide lists more moves than any one post should carry: pick 3–5 of its signature moves per post and vary the pick across the batch, so the same opener, the same closing formula and the same tic do not stamp every slot. A formula ending the profile records ("return to the opening image, shortest sentence last") fails the batch's own outline test once it appears every time; break it deliberately in some posts. Uniformity findings in Phase 6 keep full strength under a declared voice — a voice does not excuse a metronome. And where the voice and a human-style rule above directly conflict (a profile that forbids contractions against the rhythm rule, a house em-dash habit against the no-saturation rule), name both in the report and let the user pick; never resolve it silently in either direction.
 
 ## Phase 6 — Self-audit (before delivery, always)
 
