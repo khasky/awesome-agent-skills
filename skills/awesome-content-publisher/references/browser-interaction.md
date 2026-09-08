@@ -112,6 +112,88 @@ Rules, in order:
 3. **`setInputFiles` needs no click and no user activation** — that is why it is preferred over clicking a hidden label, which Chrome may block. But it is exactly why targeting is on you.
 4. **Verify before submitting**: the preview image must appear *inside* the composer (a `blob:` or CDN `src` within the dialog), the caption text must still be intact, and `location.href` must be unchanged. **A navigation right after `setInputFiles` means you hit the wrong input** — stop, find out what was created, and report it before touching anything else.
 
+## An upload's absence must be proven, never assumed — and retries stack
+
+**A missing `blob:` src is not evidence that the upload failed.** Truth Social's composer renders an attachment with no `blob:` URL anywhere, and clears `input.files` once the app has taken the file, so the two probes most people reach for — `[...document.querySelectorAll('img')].filter(x => /^blob:/.test(x.src))` and `input.files.length` — both read empty on a composer that is holding the picture perfectly well. A run that trusted them concluded "no image", retried the upload four times, and **published a post with four copies of the same picture** while reporting the post as text-only. Both halves of that were wrong, and the user had to delete the post.
+
+So verify an attachment by a **positive signal the composer itself renders per attachment**, and count it:
+
+- an alt/description control that exists once per attachment (Truth Social: `Add Description`; Mastodon: an `ALT` button and a `compose-form__upload__delete`; Bluesky: `Add alt text`),
+- a remove/delete control per attachment,
+- a gallery class that encodes the count (Mastodon: `media-gallery--layout-1` vs `--layout-2`),
+- a thumbnail whose `src` may be `blob:`, `data:` **or already a CDN URL** — accept any of the three.
+
+```js
+// count attachments, don't ask whether one exists
+const n = (composer.innerText.match(/Add Description/g) || []).length;   // per-platform token
+if (n !== 1) throw new Error(`expected 1 attachment, found ${n}`);
+```
+
+Three rules follow, and they cost a public post each:
+
+1. **Upload once.** Never retry `setInputFiles` because a probe came back empty — re-probe with a positive signal first. Every retry that "failed" may have silently added another copy.
+2. **Count attachments immediately before submitting**, exactly as you compare the body text. A count that is not exactly what the post file declares is a stop, not a note.
+3. **When the count is wrong, fix it in the composer** — Mastodon's `button.compose-form__upload__delete` and its equivalents — rather than publishing and repairing afterwards.
+
+## An uploaded asset's URL comes from the uploader, never from the page
+
+When a platform hands back a hosted URL for the file you just uploaded, take it from **the widget's own output** — the copyable field it renders, the `value` of the input it fills, or the network response. **Never scrape the page HTML for a CDN-looking pattern.** Editor pages are full of other people's images: article covers in a sidebar, feed thumbnails, house ads. A regex over the document returns whichever matched first, and that is not your file.
+
+This shipped a wrong picture as both the cover and the in-body image of a published article, with the run reporting success, because `/https:\/\/dev-to-uploads\.s3\.amazonaws\.com\/uploads\/articles\/[\w.-]+/` matched a foreign 300×299 asset in the editor shell. The upload itself had worked; only the URL was wrong. Two properties of the real URL made it unmatchable by that pattern — a different S3 region host, and the file's original extension preserved (`.jpg`, not `.png`).
+
+**Then prove the URL is yours.** Open it and compare the natural dimensions against the source file:
+
+```js
+// the page's own <img> is CORS-restricted; navigate to the URL instead —
+// the browser titles the tab "<name> (WxH)", which is enough
+```
+
+A one-line dimension check separates your upload from every other asset on the page, and it is the only cheap proof that the file the post will show is the file you sent.
+
+## A submit that does nothing is usually refusing — read the screen
+
+Before treating an unresponsive submit as a UI-automation problem, check whether the form is rejecting it. Bastyon's Post button ignored a coordinate click, a JS `el.click()`, an inner-node click and an element-handle click across two sessions, and the run reported the platform unpublishable — inventing a theory about key-pair signing to explain it. A screenshot showed a red **"Please add Tags"** line beside the button: the post needed a category. Selecting one cleared it and the very next click published.
+
+So after the first click that changes nothing:
+
+1. Read the composer's own text for a validation message — search for `please`, `required`, `select`, `add`, `must`, and for elements coloured as errors (`[class*=error]`, `[class*=warn]`, red text).
+2. **Take a screenshot.** A coloured one-line warning next to a button is trivial to see and easy to miss in a DOM text dump, especially when it sits in a sibling container your scoped query never reached.
+3. Only then climb the click ladder.
+
+The same applies to a disabled-looking control: check `disabled`, `aria-disabled` and whether a required field elsewhere in the form is empty, before concluding the button is unreachable.
+
+## An SPA tab that has stopped hydrating never recovers — open a new one
+
+Bastyon rendered its app shell (46 KB of HTML, all the container divs) with `document.body.innerText.length === 0` on every route, through reloads, cache-bypassing reloads and 20-second waits. Both `/index` and the profile route were dead in that tab, while the same browser rendered the site normally for the user. **Opening a new tab booted the app immediately**, draft intact.
+
+When a client-rendered site returns an empty body on a route that worked earlier in the run, do not keep reloading: open a fresh tab. And note where a platform keeps its draft — Bastyon's composer draft lives on the profile route (`/<handle>?read=1`), not the feed, so a run that only ever looked at the feed can miss a draft that is sitting there waiting for one click.
+
+## A control outside the viewport is not clickable
+
+`getBoundingClientRect()` happily returns coordinates for an element that is scrolled off screen, and `page.mouse.click` at those coordinates hits whatever is actually painted there. Three submits in one run were lost this way: Truth Social's **Truth** button sits at `y≈1177` in a 1068 px viewport and the click landed on the attachment image; Lemmy's community picker sits at `y≈1187`; wonderful.dev's **Post** button moves from `y≈154` to `y≈1045` the moment an image is attached.
+
+Before every click on a submit or a picker:
+
+```js
+const r = el.getBoundingClientRect();
+if (r.y < 60 || r.y + r.height > innerHeight) { await page.mouse.wheel(0, r.y - 400); await page.waitForTimeout(1200); }
+// re-read the rect AFTER scrolling, then hit-test
+const top = document.elementFromPoint(cx, cy);
+const ok = el.contains(top) || el === top;
+```
+
+Widening the window does not always help: HackerNoon's story-settings sidebar (the *original / category* gates) sits at `x≈2624` and moves further right as the viewport grows, because the layout scales with it. A control that no viewport size can reach is the one legitimate case for `el.click()` from `page.evaluate` — that is what cleared both HackerNoon gates.
+
+## Enumerate the controls; do not guess their labels
+
+Twice in one run a control that existed was reported as missing because the probe filtered `document.querySelectorAll('button')` through a guessed regex: LinkedIn's `button[aria-label="Add media"]` and wonderful.dev's `input[type=file][accept="image/jpeg,image/png,image/gif"]`. Both were plainly there. The conclusions written from those probes ("the sharebox has no media control", "the composer exposes no file input") were false, and both posts shipped without their picture.
+
+When something appears to be absent, **dump every candidate once** — tag, `aria-label`, `title`, `innerText`, `type`, rect — and read the list, rather than narrowing by a term you expect to find. Include `div[role="button"]`, `label` and `a`: LinkedIn's "Start a post" is a `DIV`, so a `button`-only sweep finds nothing and the feed composer looks broken when it was simply never clicked.
+
+## Composer state can gate its own controls
+
+LinkedIn's sharebox shows **Add media** on an empty composer and removes it once the editor holds text, so the natural order — write, then attach — makes the attach control disappear and the post go out bare. Where a composer offers media, **attach first and type second**, then re-verify the text and the attachment count before submitting.
+
 ## Typing
 
 - **Target every field by its own identity — never "the first visible text input".** Composer dialogs carry neighbours that accept text just as happily: Instagram's alt-text accordion sits beside `aria-label="Add location"` and `aria-label="Add collaborators"`, and falling back to the first text input typed a whole alt description into the location field. Match on `id`, `placeholder`, `aria-label` or `data-placeholder`; when none of them identifies the field, stop and report rather than guessing, and if text has already gone somewhere wrong, clear it and re-read the field before submitting.
@@ -120,6 +202,34 @@ Rules, in order:
 - `fill()` **replaces** the whole value. Fine for a single shot into an empty contenteditable (it worked on VK, producing correct `<br><br>` paragraph breaks); never use it to append — the second call wipes the first.
 - Blank line between paragraphs = two `Enter` presses. Then verify: `innerText` may show `\n\n\n` for one visual blank line depending on the editor's block model. Compare against the source file's *meaning*, not its exact whitespace.
 - Always read back the field length and compare to the source before submitting.
+
+## Formatting a rich editor: only a real caret counts, and never touch its DOM
+
+Applying a format (a heading, a link) to text that is already in a rich editor has exactly one reliable shape, and two tempting shortcuts that both fail silently.
+
+**What works** — put a real caret in the block with a real mouse click, select with the keyboard, verify the selection, then send the shortcut:
+
+```js
+// 1. bring the block into the viewport and re-read its rect afterwards
+await page.mouse.wheel(0, y0 - 420); await page.waitForTimeout(1100);
+const r = await page.evaluate(t => { const p = [...document.querySelectorAll('section p')]
+  .find(x => x.innerText.trim() === t); const b = p.getBoundingClientRect();
+  return { x: Math.round(b.x + 40), y: Math.round(b.y + b.height/2) }; }, text);
+// 2. real click, then keyboard selection
+await page.mouse.click(r.x, r.y);
+await page.keyboard.press('Home');
+await page.keyboard.down('Shift'); await page.keyboard.press('End'); await page.keyboard.up('Shift');
+// 3. assert the selection is what you think it is, THEN format
+const sel = await page.evaluate(() => window.getSelection().toString().trim());
+if (sel !== text) throw new Error('selection mismatch: ' + sel);
+await page.keyboard.press('Control+Alt+Digit2');
+```
+
+**Shortcut 1, which does nothing:** building the selection with `range.selectNodeContents(p)` + `selection.addRange(range)` and then pressing the shortcut. The DOM selection exists, `window.getSelection()` reports the right text — and the editor ignores it, because its own model never saw a caret. Seven Medium headings failed this way and shipped as plain paragraphs. Mouse *drag* selection and triple-click fare no better: CDP-synthesised mouse events reach the element (`elementFromPoint` confirms it) and focus the editor, yet produce no native selection at all.
+
+**Shortcut 2, which is worse because it looks like it worked:** `document.execCommand('formatBlock', false, 'h3')`. It returns `true`, the paragraph visibly becomes a heading, and every DOM assertion passes. But the editor's document model never registered the change, so the autosave stores nothing — reload the page and all of it is gone. **Never mutate a rich editor's DOM directly**; if a change did not travel through the editor's own event pipeline, it does not exist. Verify formatting by reloading the editor, not by reading the DOM you just changed.
+
+Finally, **the editor's tag names are not the published ones**: Medium's editor writes `h3` for the title and `h4` for section headings, which render as `h1` and `h3` on the published page. Assert heading structure on the published article, never in the editor.
 
 ## Submitting — do not navigate away
 
