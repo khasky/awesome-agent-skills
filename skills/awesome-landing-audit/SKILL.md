@@ -56,7 +56,7 @@ Per page, most-severe signal wins:
 
 Stay mechanical. These are **out of scope or legitimate choices**, not defects:
 
-- **Copy quality** — voice, persuasiveness, positioning, tone, word choice, AI-sounding phrasing → awesome-humanize-en / awesome-document-style. You flag *structure*, never how good the sentence is.
+- **Copy quality** — voice, persuasiveness, positioning, tone, word choice → awesome-copywriting writes the replacement line; awesome-humanize-en strips AI-sounding phrasing from one that already exists. You flag *structure*, never how good the sentence is.
 - **SEO / discoverability** — titles, meta, canonical, thin/duplicate content, indexability, structured-data-for-ranking → awesome-seo-audit. (You may read JSON-LD to confirm a trust element *exists*; you do not grade it for search.)
 - **WCAG accessibility** — keyboard order, focus management, contrast, screen-reader semantics, target size → awesome-accessibility-audit. #7 checks layout shift and content-blocking only.
 - **Deliberate business patterns** — a "contact sales" / demo-request flow instead of self-serve; a multi-CTA **hub** page that intentionally offers several equal paths; a long-form sales page (length is a strategy, not friction); a high-friction form that qualifies leads on purpose (enterprise). Note these as intentional; do not mark them FIX.

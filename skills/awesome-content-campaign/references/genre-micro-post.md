@@ -6,6 +6,8 @@ Covers every platform whose Genre column in `platforms.md` names this file: the 
 
 One idea, landed fast. A person posting on their own feed opens where the interest is, says the thing, and stops — no setup paragraph, no summary of what was just said. Length is set by the idea, so a real feed is uneven: a three-line post sits next to a twelve-line one. Specifics do the persuading: a version, a number with its condition, a name, the actual error text. First person and contractions are normal. The reader is assumed competent.
 
+**Reader state.** Mid-scroll, owing the post nothing, half a second from gone. Bored, mildly skeptical, half looking for a reason to stop and half looking for a reason not to. Nothing about the post has been chosen by them, so the first line either earns the next one or the post is over. Write to that state: the concrete thing first, and never a warm-up the reader did not ask for.
+
 ## Read the feed first
 
 Before writing for a platform, read a handful of recent posts that natives — not brands — publish there, and match their length norms, punctuation habits and formatting. Half of what reads as machine-written is register mismatch rather than word choice. When a voice profile from `awesome-content-voice` is in play it outranks this observation for the author's own habits; the feed still sets what the platform's readers expect.

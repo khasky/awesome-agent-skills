@@ -6,6 +6,8 @@ Covers every platform whose Genre column in `platforms.md` names this file; that
 
 Somebody who belongs there posting something the room can use. It leads with the useful part, states the affiliation plainly, and survives the top comment. Register is flat and unadorned: these rooms read marketing cadence as an intrusion and downvote or remove it, often before a moderator sees it. Length matches the substance, and questions in the replies get answered by the author.
 
+**Reader state.** A regular of the room, reading with the room's own memory: they have seen this pitch before, from someone who never came back. Their first question is whether the poster belongs here, and the second is whether the post is an ad. Skepticism is the default and it is aimed at the author rather than the claim. Write to that state: the useful part before the affiliation, the affiliation before anyone has to ask, and no cadence that sounds like it was written for a different audience.
+
 ## Before writing — non-negotiable
 
 Fetch and read the target's own rules (subreddit sidebar and wiki, community sidebar on `lemmy`, the group's pinned rules, the server's `#rules` channel, the site guidelines for `hackernews`), plus the last screen of what natives post there. A community that bans self-promotion, requires a participation ratio, mandates flair, or confines promo to one channel is a hard constraint: report it to the user and offer a different target rather than writing a post moderators will remove. `hackernews` additionally has its own form for a self-authored product (`Show HN:`), with its own expectations — a working thing and the author present in the comments.

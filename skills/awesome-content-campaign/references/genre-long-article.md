@@ -6,6 +6,8 @@ Covers every platform whose Genre column in `platforms.md` names this file: the 
 
 Motivated by a problem the author actually hit. Uneven by design: five paragraphs on the part that turned out to be interesting, one line on the setup steps nobody argues about. Contains at least one dead end, at least one opinion the reader could disagree with, and numbers with their conditions attached. First person and contractions are normal. Code is real and was run, or is labeled as a sketch.
 
+**Reader state.** Arrived on purpose, usually from a search or someone's link, already holding the problem the title named. Willing to spend real minutes, and willing to leave the moment the piece starts explaining what they already know. They are checking whether the author actually did the thing. Write to that state: the specific case before the general background, the dead end kept rather than tidied away, and no paragraph whose only job is to reach the next heading.
+
 **Frequency is per campaign, not per day.** These communities treat a stream of announcements as spam. Where a platform reviews submissions editorially, submission is not publication and the schedule must say so; the user's own site publishes instantly and still does not want an article a day.
 
 ## AI tells in this genre
