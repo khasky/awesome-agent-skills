@@ -194,3 +194,12 @@ jobs:
 
       - name: humanize-en marker regexes still match their fixtures
         run: python3 skills/awesome-humanize-en/scripts/check_markers.py
+
+      # A gate nobody proved can fail is decoration. Each self-test runs its own
+      # checks against a known-bad fixture and a known-good one: it must reject the
+      # first and pass the second.
+      - name: design-doc gate rejects a bad doc and passes a good one
+        run: node skills/awesome-design-doc/scripts/check-design-doc.mjs --self-test
+
+      - name: campaign gate rejects a bad campaign and passes a good one
+        run: node skills/awesome-content-campaign/scripts/check-campaign.mjs --self-test

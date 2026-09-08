@@ -84,7 +84,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, non-goals and rollout |
+| [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, risks found by inverting to failure first, non-goals and rollout — with a structural gate run before delivery |
 | [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resource modeling, versioning by layering, cursor pagination, idempotency keys |
 
 ### Debugging and reliability
@@ -144,7 +144,7 @@ Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs strai
 | Skill | What it does |
 | --- | --- |
 | [awesome-content-voice](skills/awesome-content-voice) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, samples, or an interview — with per-platform register, protected personal tics, and a confidence stamp |
-| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any source (repos, sites, files): claim tracing, dated platform limits and best times, per-genre register, a 2-stage self-audit, one dated file per slot plus a manifest |
+| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any source (repos, sites, files): claim tracing, dated platform limits and best times, per-genre register, a 2-stage self-audit, one dated file per slot plus a manifest whose filenames and frontmatter are checked by a gate, not asserted |
 | [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one existing text (a link, a file, pasted notes) into platform-native posts: source notes every claim traces to, a different idea per platform, per-genre registers and dated limits, a 2-stage audit |
 | [awesome-content-graphics](skills/awesome-content-graphics) | Makes the one image a post ships with, offline: a user-sized set (5, 25, 50, 100 or any number) of self-contained HTML/CSS graphics rendered locally across a type-led family of statements, tinted-glyph canvases, display-scale number lockups and readable data figures, built from the supplied facts and the user's own look inputs, gated on the canvas language and then the headline. No image service, no API key |
 | [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): login preflights, a persistent dedup ledger, timezone-aware scheduling, human-paced posting with read-back verification |
