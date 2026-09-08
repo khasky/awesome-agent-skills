@@ -79,6 +79,19 @@ When you agree and will implement:
 - **Do:** "Good catch — [specific issue]. Fixed in [location]."
 - **Avoid:** Performative agreement without technical content: "You're absolutely right!", "Great point!", "Thanks for the feedback!" — the code and your technical response are the acknowledgment.
 
+## How the reply reads
+
+Read the thread and the maintainers' other replies first and match that register; terseness is the norm in dev venues, not rudeness. Then:
+
+- **Answer first.** The verdict or the fix in sentence one; reasoning after, only as needed. Never restate the reviewer's comment back before answering — the thread already has it.
+- **Cite the artifact.** `file.py:214`, the commit SHA that fixed it, the error text verbatim, the test that proves it. "Fixed in a1b2c3d" beats "I've addressed this".
+- **Do it, then say so.** Never reply "I'll look into this" when the fix is at hand; make the change, link the commit. A promise in place of the work is the reflex a reviewer learns to distrust.
+- **Length proportional to stakes.** A nit gets one line; a design disagreement gets a paragraph with a pointer. A wall of bullets for a one-sentence answer is a tell.
+- **Vary the shape.** Replies that all follow acknowledge + explain + confirm read machine-written. Some are one word ("done"), some argue.
+- **Uncertainty is cheap.** "Not sure — does it reproduce on 2.4?" beats three hedged paragraphs of "there could be several factors".
+- **Wontfix is plain.** Say so, give one reason, link the policy or the issue where it was decided. Do not soften it into ambiguity the reviewer must decode.
+- **No sign-off**, no "hope this helps", no "let me know if you have questions". End at the content.
+
 ## Forbidden vs. INSTEAD
 
 | Forbidden | Instead |
