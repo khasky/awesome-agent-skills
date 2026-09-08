@@ -95,6 +95,12 @@ Two more rules learned the hard way:
 
 **Coordinates shift between renders.** Re-read the rect immediately before each click inside the same script. A rect captured before a `waitForTimeout` is already stale on these pages.
 
+**A `scrollIntoView` and the rect read after it must be in separate calls.** Both inside one `page.evaluate`, the rect comes back pre-scroll — which is how a Create button reported `y≈1393` on a 1068 px viewport and the click at that coordinate hit nothing. Scroll in one call, wait ~1.5 s, read and hit-test in the next, click immediately after.
+
+**`elementFromPoint` returning something else names the blocker, and the blocker is usually the fix.** Three separate composers in one run refused every click for the same reason and each named its own obstacle: Minds' `.m-composer__triggerOverlay` (click the overlay to expand the composer, then the button is reachable), Tumblr's own "Draft saved!" toast sitting over `Post now`, and a wrapped element whose rect had simply moved. When the hit-test fails, do not climb the ladder — read what came back and clear it.
+
+**A click that opens a modal looks exactly like a click that did nothing.** Mastodon's Post opens an "Add alt text?" confirmation: the composer keeps its text, the button stays enabled, and every subsequent click — coordinate, handle, JS — is swallowed by the modal, with the element-handle click timing out on actionability. The composer's state cannot tell you this. **Screenshot after the first click that changes nothing**, before deciding the control is broken.
+
 ## File inputs — the rule that prevents the worst incident
 
 **NEVER take a page-wide file input.** `document.querySelectorAll('input[type=file]')[0]` and `locator('input[type=file]').first()` are how you upload a post image into the account's photo album instead of the composer. That happened on VK: the community page carries three file inputs, the first belongs to the Photos section, and `setInputFiles` on it added the image to a public album and navigated away, destroying the composer draft.
@@ -288,6 +294,8 @@ The user's UI can be in any language — this run met Russian Instagram and Ukra
 - **`beforeunload` while a draft exists** (X does this): the tool surfaces a modal state. Dismiss with `accept: false` to *keep* the draft; accepting discards work you cannot retype for free.
 - **Several `[role="dialog"]` elements coexist** — notifications panels, account menus, empty portals. Never grab `querySelector('[role="dialog"]')` blindly; identify by `aria-label` or distinctive text.
 - **Skeleton screens**: Facebook's post-settings step renders grey placeholders first. A DOM probe run too early reads the *previous* step and looks like "the button did nothing" — wait and re-probe before concluding a click failed.
+- **The commit is often a second control inside what the first click opened.** Hashnode's header `Update` opens a *Post settings* dialog carrying its own `Update`; Substack's `Continue` opens a confirm panel carrying `Update now`; ko-fi's Publish runs an inline `onclick="iceConfirmPublish(...)"` that raises a **SweetAlert2** confirm (`Publish now?` / `Publish it!`). A run polling only `location.href` and Bootstrap's `.modal` never saw the last one and reported the post as unpublished for hours. After a save or publish click, enumerate `[role=dialog]`, `[role=alertdialog]`, `.swal2-container` and any newly-appeared button carrying the same verb, before concluding anything.
+- **A toolbar button can open a menu rather than act.** Substack's `title="Insert image"` opens a popover offering *Image / Gallery / Stock photos / Generate image*; the button alone adds no input, no dialog and no file chooser, which reads as a dead control. The menu lives in a portal — look in `[role=menu]` and `[data-radix-popper-content-wrapper]`, not in the editor subtree — and the item that means "from my computer" is what parks the native file chooser.
 - **Cross-post and paid toggles must be read before submitting**: Instagram's "Threads" share checkbox and AI-label, Facebook's Share to groups / Share to story / Promote. Confirm they are off unless the post file asks for them, and never enter a paid boost flow.
 
 ## Screenshots
@@ -299,3 +307,23 @@ await page.screenshot({ path: 'name.png', scale: 'css', animations: 'disabled', 
 ```
 
 Screenshots and the server's `.playwright-mcp/` directory land in the current working directory — often the user's git repo. Move them to the session scratchpad at the end of the run; do not leave untracked artifacts in a project tree.
+
+## The run_code sandbox: what is and is not in scope
+
+The function handed to `browser_run_code_unsafe` runs in the Playwright server process, not in Node's module scope: **`require` is not defined**, so a script cannot read the post file itself. Generate the script with the body already embedded as a JSON literal and load it with the tool's `filename` parameter. That is also the only way to keep a 4 KB body out of the conversation on every retry.
+
+**Never retype a body into a script by hand.** Twice in one run a body was reconstructed from memory instead of generated from the source file, and both times the last line went missing — a hashtag line on one platform, a whole trailing tag line on another. The pre-submit diff caught them, but only because the diff compares against the file. If a script needs the text inline, generate it; if it is already inline, diff it against the file before submitting.
+
+**When `filename` names a file that already exists, the file on disk is what runs** — the `code` argument is ignored. Two symptoms follow from not knowing this: a stale script keeps executing while you edit the `code` payload and nothing changes, and a `SyntaxError` appears from a file you never looked at. Write the script to the path first (a shell heredoc is the cheapest way), then call the tool with that `filename` and any placeholder in `code`. The directory must exist too — a missing `.playwright-mcp/` fails the call with `ENOENT` before anything runs, and Phase 9 cleanup is what deletes it between runs.
+
+**Write Windows paths with forward slashes inside the inline `code`.** `D:\repos\...` survives one layer of JSON encoding and arrives as `eposgithub...` — the backslashes are eaten and the path is unrecognisable. `D:/repos/...` works everywhere Playwright takes a path, including `setInputFiles`.
+
+**Arguments must be passed, not closed over.** `page.evaluate(fn, arg)` serialises `arg`; a name referenced inside `fn` that only exists in the outer script throws `ReferenceError` in the page. It reads like a typo and costs a round trip.
+
+**`browser_evaluate` accepts a `filename`** and writes the result there instead of returning it — the way to pull a whole editor's block list out for a local diff without flooding the context. Note where it lands: `filename` is relative to the **current working directory** (the repo root), not to `.playwright-mcp/`, and the same is true of `page.screenshot({ path })`. Both are Phase 9 cleanup.
+
+## A hung tool call can leave a process eating the machine
+
+Two `browser_run_code_unsafe`-adjacent Bash calls timed out on an infinite loop in a local helper and were reported as "still running". Left alone, those Python processes grew to **4 GB and 41 GB** of working set — the machine had 0.2 GB of its 64 GB free by the time anyone looked, and every later browser call was competing with them. A timed-out call is not a call that stopped.
+
+After any tool call that times out or is moved to the background, **check for the process it started and kill it if the work is abandoned** (`tasklist` / `Get-CimInstance Win32_Process` on Windows, `ps` elsewhere), and use `TaskStop` on the harness task as well — stopping the task does not always reap the child. A runaway helper is also a plausible cause when browser calls that worked a minute ago start timing out.

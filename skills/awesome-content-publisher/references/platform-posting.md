@@ -20,6 +20,10 @@ Check: `facebook.com` — own avatar and the "What's on your mind" composer. Com
 
 Observed on a Page (UI in Ukrainian): the inline composer field reads "Що у вас на думці?"; clicking it opens a dialog with `aria-label="Create post"` (English attribute even on a localized UI) — several other `[role="dialog"]` nodes coexist (notifications, empty portals), so identify by that label. The composer has exactly one file input inside its subtree; scope to it. Posting is two steps: **Next** ("Далі") → a **Post settings** screen → **Publish** ("Опублікувати"). The settings screen renders grey skeletons for several seconds — a DOM probe run too early still reports the *previous* step's buttons and looks like the click failed; wait and re-probe rather than clicking Next again. On that screen confirm audience, and that *Share to groups*, *Share to story* and *Promote* are not engaged — "Просувати допис" warns it opens a paid flow after Post; never enter it. The photo-edit panel that carries alt text frequently will not open (two attempts, both dead) — Facebook then generates its own OCR description. Read-back: the Page feed shows "Щойно"/"Just now" with `Published by <admin>`; capture the `/posts/pfbid…` permalink and open it to confirm text and media, since the feed truncates behind "See more".
 
+**On the profile, "Share a thought…" is the Note composer, not the wall composer.** It opens a dialog titled **New note** — a 24-hour ephemeral Messenger/Facebook note, `aria-labelledby` and no `aria-label`, so a search for `[aria-label="Create post"]` finds nothing and the run reads it as a failed click. The wall composer is the **`div[role="button"]` whose text is exactly `What's on your mind?`**, further down the page, and clicking that one does produce `[role="dialog"][aria-label="Create post"]`. Escaping the note raises a **`Discard note?`** confirmation whose `Discard` button must be clicked to leave; nothing is created either way, but a run that walks away leaves the dialog open over everything else on the page.
+
+Two more details of the personal-timeline flow, which is simpler than the Page flow above: the audience button reads `Friends`, there is **no Next/settings step** (the dialog's own `Post` publishes directly), and the composer's per-attachment controls are `aria-label` `Edit media preview` and `Remove media` — one of each means exactly one attachment.
+
 ## facebook-group
 Check: the group URL from frontmatter — member view with a composer visible (no composer = not a member or posting restricted → report, skip). Compose: composer inside the group page. Read-back: group feed; many groups queue posts for admin approval — a "pending approval" notice = ledger status `pending-approval`, not `posted` and not a failure.
 
@@ -56,6 +60,16 @@ Fields: `textarea#post-title`, `input#post-url`, the body is `textarea[id^="mark
 
 **The image uploader is per-textarea and its id is generated, which is how a run misses it.** The create-post form carries `input[type=file][id^="file-upload-"]` whose suffix matches the body textarea's own random id — it is the markdown toolbar's image button, not a separate media field. `setInputFiles` on it uploads to the instance's pict-rs and **writes `![](https://<instance>/pictrs/image/<uuid>.webp)` into the body at the caret**, so press `Control+Home` first when the picture belongs above the text. A page-wide `input[type=file]` query at page load returns nothing useful here; resolve the id from the textarea. Read-back on the permalink: the post renders a thumbnail and the body carries the `pictrs` URL.
 
+**`?communityId=<n>` survives the form's query rewrite; `?community_name=` does not.** That id is on the community page's own **"Create a post"** link (`/create_post?communityId=786` on `lemmy.world/c/machinelearning@lemmy.ml`), so the reliable route is: open the community, take that link, fill the form there, and never navigate again. The picker label stays `lemmy.ml/Machine Learning` and the id stays in the URL through every field edit.
+
+That matters because **the picker itself resists automation**: with the dropdown open and `#searchable-select-input` visible, typing a query lists the options as zero-height buttons, a coordinate click on the matching one closes the dropdown without selecting, and `ArrowDown` + `Enter` leaves focus on the input. Three attempts left the label on `Select a Community`. Do not spend the run there — use the id route.
+
+**Re-entering the form from its own query string restores the body, so a fresh `insertText` doubles it** (905 source characters came out as 1810). Select the textarea's whole value first (`e.focus(); e.setSelectionRange(0, e.value.length)`), then insert; verify the length equals the source before going on.
+
+**Re-resolve the file input's id after every re-render.** It is `file-upload-<the body textarea's random id>`, and that id changes when the form remounts — an upload aimed at the previous id silently does nothing and the body gains no `![](…/pictrs/image/…)`. Read `document.querySelector('textarea[id^="markdown-textarea-"]').id` immediately before uploading, and confirm exactly one `pictrs` reference in the body afterwards.
+
+**The Create button sits below the fold** (`y≈1393` on a 1068 px viewport). Scroll it into view in one call, wait, re-read the rect in the next, then click — a rect read in the same evaluate as the `scrollIntoView` is stale and the click misses.
+
 ## tumblr
 Check: `tumblr.com/dashboard` — the account/settings row renders for a signed-in user. Compose: `tumblr.com/new/text` opens a block editor — an `H1` title block and a `P` body block, both `[contenteditable="true"]`, plus `textarea[placeholder="#add tags"]`.
 
@@ -75,7 +89,9 @@ Entry point: the sidebar's `a[aria-label="Create a post"][href="/new"]`, or go s
 
 **Newlines inside one inserted paragraph are dropped.** A source block of five `/eli5 …` lines published as one run-on line (`…TLS work/eli5 monads/eli5 eigen…`). Where a source paragraph carries single newlines, place the caret before each subsequent line with a Range and press `Shift+Enter`, then count the `br` elements against the source's line count.
 
-**An already-published post is editable**: `tumblr.com/edit/<blog>/<id>` opens the same block editor with body, tags and image loaded, and `Save` republishes in place — same URL, same notes. Tags, links and lost line breaks are therefore repairable without a delete-and-repost.
+**An already-published post is editable**: `tumblr.com/edit/<blog>/<id>` opens the same block editor with body, tags and image loaded, and `Save` republishes in place — same URL, same notes. Tags, links, lost line breaks and a misplaced image are therefore repairable without a delete-and-repost.
+
+**Typing `/image` at the end of the body puts the picture at the bottom, and that is where one run's post shipped.** The slash command inserts at the caret, and the caret is wherever the last `insertText` left it. To move an existing image to the top, or to place a new one there: set a `Range` at offset `0` of the **first** body block's text node, `Enter` (an empty block appears above), `ArrowUp` into it, then `/image` + `Enter` and `setInputFiles` on the input that appears. Remove the old bottom block afterwards through its own red **✕** control, which is rendered on the image block itself — and only after the top image has resolved, so a failed insert never leaves the post with no picture at all. Verify by geometry on the published page: the image's `top` must be smaller than the first paragraph's.
 
 **The older note below is kept for the block-inserter menu only.** Three attempts in one run failed: `/new/text` exposes no `input[type=file]` at all until an image block exists, the `+` block-inserter opens a menu whose `Image` entry answered neither a coordinate click, a JS click nor focus+Enter, and a synthesised drag-and-drop onto the body dropped nothing. The post shipped text-only and was recorded `degraded`. Treat this as open: probe the block menu afresh, since labels and menu DOM drift, and if it still refuses say so in the report rather than recording a clean success — quietly shipping Tumblr without the campaign's picture is the defect `SKILL.md` names.
 
@@ -83,15 +99,46 @@ Submit is "Post now", and on a **freshly loaded** `/new/text` a single coordinat
 
 **Filling has a trade-off, and both sides cost something.** `keyboard.type` types into the block editor correctly but the tag field steals nothing and the draft-restore trap above applies; `keyboard.insertText` fills reliably in one shot **but collapses the whole body into a single block**, so blank lines vanish and sentences run together (`each other.It doesn't.`). Prefer insertText for getting text in, then either restore the paragraph breaks with explicit `Enter` presses between blocks, or accept a one-block post and record it `degraded` — editing afterwards is possible here but needs the user's explicit request.
 
+**A bare URL on its own line becomes a link card, and the paragraph typed right after it is swallowed.** Inserting the body paragraph by paragraph, the `https://github.com/...` line turned into a GitHub embed card — correct and desirable, it carries the repo title and a real anchor — but the next source paragraph never arrived, twice in a row, in two independent attempts. The block count comes out one short per bare-URL line and the loss is silent. After filling, diff the `p[contenteditable="true"]` blocks against the source with the bare-URL lines filtered out; where one is missing, click the block that should follow it, put the caret at its start, `insertText` the missing paragraph and press `Enter` to split. That repair is exact and takes one call.
+
+**`Home` goes to the start of the visual line, not the block.** On a wrapped paragraph, `Home` then `Enter` splits the paragraph in the middle — `The interesting thing about FreeToken is not simply that it can "offload` / `a model to RAM."` — and the fix is a Range collapsed to the first text node's offset 0, then `Backspace` to merge back. Use a Range for block-start work; reserve `Home`/`End` for single-line blocks.
+
+**The image goes where the caret is, and the caret cannot come back.** `/image` + `Enter` **consumes the block it was typed in** and creates no paragraph after it: the contenteditable count drops to the title alone, `document.activeElement` becomes the image block's own control, and neither a click below the image, an `Enter`, nor an `ArrowDown` produces a new paragraph. Two attempts at a top placement therefore cost two body paragraphs each. **Type the whole body first, then create a trailing empty block (Range to the end of the last paragraph, `Enter`) and run `/image` there.** The picture lands after the last paragraph and before the tags, which is not this author's usual featured-image shape — say so in the ledger — but nothing in the body is at risk.
+
+**The "Draft saved!" toast covers the Post now button.** It appears bottom-centre, over the button row, and a click aimed at a rect read before it appeared lands on the toast and saves a draft instead of publishing. Re-read the button's rect immediately before clicking and hit-test it; a click that produces a private draft is recoverable but leaves an artifact to disclose.
+
+Tag chips read back from `.tagsCont .tag.wrps .label`; the tag field itself is the page's single `textarea` once the composer is open.
+
 ## mastodon
 Check: `https://<instance-from-frontmatter>/home` — the compose column renders the handle, the visibility control ("Public, quotes allowed") and the live character budget. Compose: `textarea.autosuggest-textarea__textarea` (placeholder "What's on your mind?"), coordinate-click and type; submit is the button labelled "Post". The textarea empties on success. The whole flow works first try — no actionability fights, no intent route needed.
 
 Read-back: `https://<instance>/@<handle>`, newest `/@<handle>/<numeric-id>` link. **Mastodon shortens the displayed URL** ("code.claude.com/docs/en/cross-…"), so a tail comparison against the page text fails on a post that is perfectly intact — open the permalink and compare the `a[href]` of the link instead, which carries the full URL.
 
+**The submit is `.compose-form button.button--compact`.** A page-wide sweep for a button whose text is `Post` and taking `.pop()` picks the navigation's own Post entry instead, and clicking that does nothing — which is what made an earlier run report the composer unsubmittable. Scope the query to `.compose-form`.
+
+**When the attachment has no description, Post opens a confirmation instead of publishing.** The modal reads **"Add alt text? Your post contains media without alt text."** with `Cancel` / `Post anyway` / `Add alt text`. Until it is answered the composer keeps its text, the Post button keeps looking enabled and untouched, and every further click is swallowed — an element-handle click times out on actionability because the modal owns the pointer. The composer's own state is not the tell here; a screenshot is. Where the post file declares no alt, answer **Post anyway** and record the post `degraded`; never invent a description to clear the dialog.
+
+The compose form also states the remaining budget as a bare number (`500` empty, `62` for a 455-character body with one URL), which is the cheap way to confirm the text landed.
+
 ## bluesky
 Check: `bsky.app` — compose button. Compose: new post, type, attach; paste links plainly for the link card. Read-back: own profile feed.
 
 **The compose button defeats every click form.** `browser_click` on its `aria-ref` times out on actionability, a coordinate click on the inline "What's up?" box does nothing, and `?compose=true` mounts no dialog. Focus+Enter opens *an* editor that is not the composer, so typing into the first `[contenteditable="true"]` lands nowhere. What works, first try: **navigate to `https://bsky.app/intent/compose?text=<encodeURIComponent(body)>`** — the composer opens prefilled, the character count is already correct, and the submit control is `aria-label="Publish post"` (coordinate click on it works). Read-back: `bsky.app/profile/<handle>` where the newest `/post/<rkey>` link is the new one; the handle comes from the last `a[href^="/profile/"]` in the nav, since the first one belongs to whichever feed post is on screen.
+
+**The profile page is not a source of record — the app's own API is.** `bsky.app/profile/<handle>` rendered **zero** `a[href*="/post/"]` through scrolling and re-queries while the account had seven posts. Count from the endpoint the app itself calls:
+
+```text
+GET https://public.api.bsky.app/xrpc/app.bsky.feed.getAuthorFeed?actor=<handle>&limit=10
+→ { feed: [ { post: { uri, record: { text, createdAt, facets }, embed: { images: [...] } } } ] }
+```
+
+The `uri`'s last segment is the rkey for the permalink, `embed.images.length` proves the picture attached, and `record.facets.length` proves the URL became a real link. Take the count before and after and require exactly +1.
+
+**The intent route leaves the address bar on `bsky.app/` while mounting the composer.** Judge by `[role="dialog"]` carrying a `[contenteditable]` with the prefilled text and an `aria-label="Publish post"` button, never by `location.href` — a run that checked the URL concluded the composer had not opened and started hunting for a media button in the page header.
+
+**The composer already holds one attachment before you add anything**: Bluesky auto-generates a link card for a URL in the text, and it carries its own `Remove attachment` control. Attaching an image **replaces** that card — the URL stays a real link through the post's facet, but the preview is gone. That is a trade to make deliberately and record, not a duplicate to fix.
+
+`Add media to post` opens the native chooser, which the MCP server parks. The first click at a rect read a moment earlier did nothing; re-read the rect and hit-test immediately before clicking, then answer the parked chooser with `browser_file_upload` from an allowed root.
 
 ## x
 Check: `x.com/home` — composer at the top of the timeline; `[data-testid="SideNav_AccountSwitcher_Button"]` carries the handle, which is the cheapest login+identity probe. Compose: type, attach, Post; a thread is separate sequential posts via the composer's add-post control, only when the post file is explicitly structured as a thread. Read-back: own profile.
@@ -99,6 +146,10 @@ Check: `x.com/home` — composer at the top of the timeline; `[data-testid="Side
 Selectors: editor `[data-testid="tweetTextarea_0"]` (Draft.js — click it with a real mouse click, then `keyboard.type`); the composer's file input is the one whose `accept` starts with `image/jpeg,…`; submit `[data-testid="tweetButtonInline"]` (or `tweetButton` in the modal composer). Read-back: `[data-testid="tweet"]` on the profile, with `time[datetime]` and the `/status/<id>` href.
 
 **Alt text is a known dead end from the inline composer.** `[data-testid="altTextWrapper"]` is an `<a role="link">` pointing at `/compose/post/media`; the route changes but the description modal never mounts. Four approaches failed: coordinate click, manual `down`/`up`, focus+Enter, and navigating to the full-page composer. Treat X alt text as best-effort: try twice, then record the post as `degraded` in the ledger and say so in the report — **X does not allow adding a description after posting**, so the only fix is delete-and-repost. This account's owner has already ruled that trade the wrong way round: a missing alt is not worth a republish, so name it in the report and leave the post alone unless the user asks. Alt is the one thing on this list allowed to ship missing; the image itself never is. Navigating away while a draft exists raises a `beforeunload` modal — dismiss it with `accept: false` to keep the draft. SPA back (`goBack`) preserves composer text and attachments; a full `goto` does not.
+
+**The coordinate click on `[data-testid="tweetButtonInline"]` can do nothing at all** — with the button enabled (`aria-disabled` null), in view, and `elementFromPoint` returning a node inside it. The composer kept its 272 characters through twelve polls and the profile proved nothing had posted. **The element-handle click (`page.$(sel)` then `handle.click()`) published on the first try.** Try rung 2, verify absence on the profile, then go to the handle click; do not repeat the coordinate click.
+
+**An empty Draft.js editor reports `innerText.length === 1`, not 0** (the empty block's newline). A submit-confirmation poll that waits for exactly 0 never fires; treat `<= 1` as cleared.
 
 ## truthsocial
 Check: `truthsocial.com` — own avatar and the composer on the home column; the header shows the display name and `@handle`. Compose: the composer is on the home page as `textarea#compose-textarea` ("What's on your mind?"), the visibility control reads "Post to Public", and the submit button is labelled **"Truth"**. Coordinate-click the textarea, type, coordinate-click "Truth"; the textarea empties on submit.
@@ -110,6 +161,10 @@ Check: `truthsocial.com` — own avatar and the composer on the home column; the
 **The profile lags by up to an hour, and reading that lag as failure creates duplicates.** The composer cleared, and `truthsocial.com/@<handle>` plus the home feed showed nothing across several reads with scrolling and re-querying — so the post was recorded `unverified`. It had in fact published. An hour later the profile listed it, and by then a second copy had been posted on the assumption the first never landed. Two rules follow: never treat an empty Truth Social profile as evidence of absence, and never re-post here without a read-back that succeeded at least once. When the profile is empty, leave the entry `unverified`, say so, and re-check later; the correct fix for a duplicate is deleting one through the post's **More → Delete** menu, which needs the user's explicit request.
 
 Read-back, when it works: the profile's Truths tab renders posts as `/@<handle>/posts/<numeric-id>` links, newest first, with a relative timestamp.
+
+**Nothing settles the lag except waiting, and that is the correct answer here.** Do not go looking for an endpoint to ask instead — this skill never calls a platform's API, and Truth Social's own backend disagreed with itself during the lag anyway. Record `unverified`, say so, and re-check the profile listing before the final report: it caught up within the hour and named the post `117236694329753810` with its media attachment. This is the platform where the zero-retry discipline pays for itself.
+
+`textarea#compose-textarea` also refuses `handle.click()` (actionability never settles). Fill it with `ta.focus(); ta.setSelectionRange(0, ta.value.length)` in-page followed by `insertText`, exactly like Ko-fi's box.
 
 ## wonderful-dev
 Check: `wonderful.dev` — logged-in header state; the app lands on `/home`. Compose: the composer is already on the timeline — a visible `textarea[placeholder="Start typing…"]`, no dialog to open. Coordinate-click it and type.
@@ -123,6 +178,19 @@ Check: `wonderful.dev` — logged-in header state; the app lands on `/home`. Com
 **The platform renders markdown *partially*, and the gap is links.** Code fences, inline code and `##` headings all render; a markdown link may or may not, and the deciding factor is the label. ``[`eli5`](https://…)`` — inline code inside the label — published as literal text, while plain `[eli5](https://…)` rendered as a real anchor on the same account minutes later. **Strip backticks from link labels here**, keep the rest of the markdown verbatim, and confirm on the permalink that `](` appears nowhere. Bare URLs autolink fine.
 
 Deleting a post: its **Menu** control at the top-right of the card opens `Delete`, and a confirm dialog follows. Identify the target by its permalink before deleting — and where a defect is the reason, by the defect's own signature in the body as well. Verify on the permalink that an `a[href]` exists and that `[` … `](` appears nowhere in the rendered text. **Read-back here is a trap in both directions.** The composer does not clear on success, so an empty-box check reports failure on a post that landed — and, worse, counting occurrences of the body text *on the same page* counts the text still sitting in the composer, which reported a successful publish for a post that was never created. Verify on `wonderful.dev/<handle>`: open the `post/thread_<id>` permalinks and confirm one of them is the new body, since old posts live at the same URL shape and a permalink alone proves nothing.
+
+**A long body does not publish, and the failure is completely silent.** With 3923 characters and the image attached, the composer read back perfectly (exact length, matching head and tail, one 1080x1080 blob) and the `Post` button submitted nothing under **four** different forms: a coordinate click on a rect re-read immediately beforehand with a positive hit-test, an element-handle click (actionability timeout), `el.click()` from `page.evaluate`, and `Ctrl+Enter` / `Cmd+Enter`. No validation text, no `disabled`, no `aria-disabled`, no `maxlength`, no character counter. The profile listing kept the same six `thread_` permalinks and zero occurrences of the body after every attempt, so nothing was created and no duplicate exists.
+
+**The cap is 2000 characters, and the page's own console says so.** `browser_console_messages` after a failed submit carried the answer in one line:
+
+```text
+POST /api/trpc/posts.createPost → 400
+{"code":"too_big","maximum":2000,"inclusive":true,"path":["content"]}
+```
+
+That is a passive reading of what the page itself did — the correct first move on any silent failure here, and it beat four rounds of click-ladder escalation. **Check the body against 2000 characters during the source scan**, and where it is over, raise it with the user (trim, split, skip) rather than discovering it at the button; trimming their copy is not a decision to make alone. Trimming by dropping whole source blocks — a section, an example — reads better than truncating mid-paragraph, and the trimmed body still goes through the ordinary pre-submit diff against what was actually sent.
+
+**The Post button moves after the image lands** — from `y≈648` to `y≈1027` on a 1068 px viewport, right at the bottom edge — and a probe run just after filling reports the old position. Re-read the rect in its own call immediately before clicking. Also note the composer renders the markdown source **literally in its own textarea**, syntax-highlighting URLs and hashtags; that preview says nothing about how the post will publish.
 
 ## hackernoon
 Check: `app.hackernoon.com` — the reader shell greets the user by handle, which confirms the session. Compose: in theory new draft → title, markdown body → submit for review, and **submission is the terminal state for this skill** (ledger `pending-approval`).
@@ -151,6 +219,20 @@ Note the title field is a **`textarea`**, not an input: `textarea[placeholder*="
 The typed-input-rule route below still works and remains the fallback when a paste handler is not present. Inserting `## Heading` as plain text publishes the hashes as literal characters; TipTap builds the heading from its own **input rule**, which fires only on a genuinely typed space: put the caret at the start of the paragraph (click it, then `Home`), delete the marker characters already there, then **type** `## ` keystroke by keystroke and watch the paragraph become an `h2` before typing on. The same applies to `- ` lists and `> ` quotes. Never write into its DOM.
 
 **The cover image is a separate control from anything in the body.** `Add Cover` above the title opens a picker backed by its own `input[type=file]`; the campaign image goes there and the body carries no duplicate. Read-back on `<blog>.hashnode.dev/<slug>`: confirm the cover `img`, count the `h2` elements against the source's `##` count, and assert zero literal `##` in the rendered text.
+
+**The markdown paste handler does not autolink a bare URL.** `[FreeToken](https://…)` became an anchor and the closing `https://arxiv.org/…` on its own line stayed dead text. Wrap every bare URL as `[url](url)` in the markdown **before** dispatching the paste; re-pasting into a cleared editor is one call and cheaper than reaching for the link control afterwards.
+
+**Publish is two buttons and one of them is a decoy.** The page carries two elements whose text is `Publish`: the real one top-right (75x32) and a zero-sized one. Filter by `getBoundingClientRect().width > 20` and click the visible one; a preview panel then opens carrying its **own** wide `Publish` (463 px) low on the page — click that by width (`> 200`). The editor answers `published successfully` and the URL moves from `/draft/<id>` to `/edit/<id>`.
+
+**The cover control consumes one of two file inputs.** Before clicking `Cover` the page has two `input[type=file][accept="image/*"]`; the first belongs to the picker that `Cover` opens. Click `Cover` first, then take the single `INPUT.hidden` that remains and `setInputFiles` on it — a blob preview at the source's own dimensions and a `Change cover` label confirm it. Feeding a file to the first input before clicking `Cover` does nothing visible and wastes the upload.
+
+**Scope the literal-markdown assertion to the article.** The published page's footer lists other posts from the blog, and one of those carried `](http` in its excerpt — a document-wide check reports the new article as broken when it is clean. The same trap applies to the cover: the footer's cards are also `/uploads/covers/` URLs, so match the cover by the one inside `article` (or by the URL the upload returned), never by the first `/covers/` src on the page.
+
+**Editing a published article: the header `Update` does NOT save.** It opens a **Post settings** dialog (*Attribution · Discovery · Scheduling · Visibility*) whose own `Update` button is the commit. Two attempts in one run clicked the header button, waited, navigated away and lost the change with no error and no toast — the editor showed the cover in place the whole time. Sequence: click the header `Update` (filter the two `Update` buttons by `getBoundingClientRect().width > 10`; the other is zero-sized), wait for `[role=dialog]`, then click the `Update` **inside that dialog**.
+
+**A cover is not attached until its CDN URL exists.** The panel says `Change cover` / `Delete cover` and paints the picture from a local read while the upload is still in flight; saving at that moment stores nothing. Poll until an `img` whose src is `cdn.hashnode.com/uploads/covers/<pubId>/<uuid>.jpg` is in the DOM, *then* save, *then* reload `/edit/<id>` from scratch and confirm the cover survived. Both of a run's failed attempts looked identical to a success until that reload.
+
+**Cover panel route on a published article:** the `Cover` button above the title opens a panel with `Upload` / `Unsplash` tabs and an `Upload Image` button. Its file input is inside the panel — walk up from the `Upload Image` button until a `input[type=file]` turns up and `setInputFiles` on that one, rather than clicking the button and answering a native chooser.
 
 ## devto
 Check: `dev.to` — avatar / "Create Post" button. Compose: `dev.to/new` opens the markdown editor as a **single `#article_body_markdown` textarea** with no separate title or tag fields and a button that reads "Save changes" rather than Publish. Everything is front matter, and `published: true` is what makes "Save changes" publish rather than draft:
@@ -196,6 +278,17 @@ cover_image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png
 
 Uploading and then referencing it only from `cover_image` is the failure to avoid: the article body then has no image in it, and the cover carries no alt text. The in-body markdown is also the only place the declared alt text survives. Confirm on the published page that an `img` sits above the first `h2` and that its `alt` is the post file's alt text.
 
+**Proving the uploaded URL is yours without leaving the editor**: load it as an `Image()` inside `page.evaluate` and read `naturalWidth`/`naturalHeight` off the `onload`. That compares against the source file's dimensions in one call and costs no navigation, so the draft stays intact.
+
+```js
+await page.evaluate(async (url) => await new Promise(res => {
+  const im = new Image();
+  im.onload = () => res({ w: im.naturalWidth, h: im.naturalHeight });
+  im.onerror = () => res({ err: 1 });
+  im.src = url;
+}), url);
+```
+
 ## hackernews
 Check: `news.ycombinator.com` — the header carries the username and a `logout` link when logged in (`#me` holds the name). Compose: `/submit` — plain HTML form, `input[name=title]`, `input[name=url]`, `textarea[name=text]`; the form takes url **or** text, not both. Ordinary coordinate clicks and typing work; no SPA fights here.
 
@@ -208,11 +301,29 @@ Check: `patreon.com` — redirects to `patreon.com/c/<handle>` with a Dashboard 
 
 **A title is mandatory — `Publish` carries `aria-disabled="true"` until the field has one**, and the button looks merely faded rather than disabled, so a run can click it repeatedly and read the silence as a broken control. Where the post file has no title, take one from a sibling file in the campaign folder (the `devto` / `hashnode` / `medium` / `substack` units always open with an H1) rather than reaching for the post's own first sentence — see `post-formatting.md`.
 
+**Nothing in this editor renders markdown, and the styles come from a floating toolbar over a selection.** A body inserted as plain text publishes `## Heading` as literal hashes and `**bold**` as literal asterisks — the user reads that as broken formatting, and it is. Patreon has no markdown mode and no HTML paste that survives; the only route is the one a person uses: **select the range, then pick the style from the popover that appears above it.**
+
+Recipe, per heading, applied after the body is in and diffed:
+
+1. Select exactly the heading's text — build a `Range` over the block's text node (`setStart(node, 0)`, `setEnd(node, node.length)`) and put it on the selection; a click-and-drag is not needed and is less precise.
+2. Wait ~600 ms for the floating toolbar to mount. It is a portal, not a child of the editor.
+3. Click `button[aria-label="Text size"]`, which opens a second popover listing the heading levels; pick `Heading 2` for a source `##`. `button[aria-label="Bold"]` toggles `<strong>` directly with no second step.
+4. Strip the marker characters (`## `, the `**` pair) from the text itself — the style does not consume them.
+
+Verify by counting the block-level `h2`s against the source's `##` count and asserting zero literal `## ` and `**` in the published body. Six headings and one bold span converted this way in one pass on an already-published post, saved with the editor's `Update`.
+
 **This editor displaces characters during paragraph-by-paragraph insertion.** One run published-to-draft with `very little tex`, `/eli5 Fourier trans` and a closing URL ending `…/eli5formst` — the three missing fragments concatenated onto the link. Diff every `<p>` against its source paragraph before publishing and repair in place; the total length matches even when three paragraphs are broken.
 
 Playwright's own `.click()` times out on both fields (actionability never settles); **coordinate clicks work**, aimed at the top of the element's rect rather than its centre for the tall body div. Visibility (public vs members) is set by the frontmatter, and no frontmatter value → ask, don't default. Read the audience radios back before publishing: `Free access` / `Everyone` is the public state, `Paid access` is not.
 
 **The image goes in the post body and must stay out of Attachments.** The editor's toolbar has `Image`, which opens a drop zone ("Drop an image, video or audio file as the main content of your post"); that zone's own input is the one whose `accept` starts `image/jpeg,image/png` — the first `input[type=file]` inside it has `accept="*"` and is the **attachment** uploader, which publishes the file as a download link under the post instead of showing it. Picking the wrong one ships the picture twice: once as the visual, once as a stray `v02.png` in an Attachments list. Match the input by its `accept` starting with `image/`, and after publishing check the post page has no Attachments row. Read-back: publishing navigates to `patreon.com/<handle>/posts/<slug>-<id>?pr=true`; strip the query for the permalink, and confirm no "Join to unlock" gate is present — though as the creator you see the body either way, so a public/members claim rests on what was set, not on what you can see.
+
+**The repair recipe for the displaced characters, which worked on all five blocks in one pass.** Dump the editor's blocks with `innerText.split(/
+{2,}/)` and diff them against the source split the same way, then for each truncated block: find it by its exact current text, walk to its **last text node**, set a Range at `nodeValue.length` collapsed, and `insertText` the missing fragment. Finish by trimming the junk that was glued to the final block — count the characters past the URL and press `Backspace` that many times. Re-dump and re-diff afterwards; the second diff matched 69 of 69 blocks.
+
+Note the source's own internal newlines become separate blocks in this editor, so compare against the source split on **every** newline run, not just blank lines, or the diff reports dozens of false mismatches.
+
+The audience radios read `Free access — Let everyone access this post` (checked by default, this is the public state) and `Paid access — Limit access to paid members`. Read `input[type=radio].checked` rather than the surrounding text, and state in the report which one was set.
 
 ## ko-fi
 Check: `ko-fi.com/Manage/` confirms the session, but **the composer is not there** — it lives on the creator's own page, `ko-fi.com/<handle>`. `/Manage/newpost`, `/post/new` and `/Manage/feedposts` all redirect back to `/Manage/`, which is what makes this look unreachable.
@@ -229,7 +340,13 @@ The dropdown sequence, if the quick-update button is absent:
 
 **A body over 800 characters belongs in a Blog post, not a quick update — and that is the user's call, not a silent truncation.** `textarea#postUpdateTextBox` carries a hard `maxlength="800"`, so a long-form unit written for this platform simply cannot go through the feed composer. Ko-fi's own `Blog` entry (`a[href="/blog/editor?back=true"]` on the creator page) opens a full editor: `#blogPostTitle`, a Froala body (`.fr-element.fr-view`), `#featuredImage` for the cover, `#tags`. Raise the choice with the user — blog post, trim to 800, or skip — rather than deciding for them.
 
-**The blog editor's `Publish now` does not fire under automation.** It sits behind a split button whose dropdown opens (via `el.click()` from evaluate, and by coordinate), the `Publish now` item hit-tests true, the click lands — and the post stays a draft, twice over. Everything else works: title, body, featured image and tags all save. Record `failed`, hand the user the draft URL, and do not spend more of the run on it.
+**The blog editor's `Publish now` raises a SweetAlert2 confirm, and missing it looks exactly like a dead button.** The item carries an inline `onclick="iceConfirmPublish('/Blog/PublishPostByAlias?…','/post/…')"`, which opens a **SweetAlert2** dialog — *Publish now? · Publish it! · Cancel* — sitting in `.swal2-container`, outside every `[role=dialog]` and every Bootstrap `.modal`. A run polling only `location.href` and `.modal` saw no change, concluded `Publish now` does not fire under automation, and left the post a draft through two sessions. Sequence: open the split-button dropdown (`el.click()` from evaluate), click `Publish now`, then answer the SweetAlert with its `Publish it!` button (`.swal2-confirm`, or the button whose text is exactly `Publish it!`). The post goes live at `ko-fi.com/post/<slug>`.
+
+**`#blogPostTitle` carries `maxlength="70"` and truncates in silence.** A 78-character title published as *"…by using the whole PC, not j"* — cut mid-word, on the line every reader sees first. The field simply stops accepting characters, so a length check on the *source* title catches it and a read-back of the field catches it; nothing on screen says a word. Cut at a word boundary using the author's own wording, never invent a shorter title. Editing afterwards is possible: the post page's `Edit` opens `/blog/editor/<slug>?mode=edit`, and `#imageUploadSubmit` — labelled `Update and view post` — saves without any confirm.
+
+**The featured image is `#featuredImage`, and it is not the body image.** `input#featuredImage[accept=".gif, .jpeg, .jpg, .png"]`; `setInputFiles` on it renders a `data:` preview in the sidebar with `Set alt text` / `Remove` beneath, and the picture publishes above the body. A blog post shipped without it and the defect was invisible in a DOM text dump — this page renders its body late, so `document.body.innerText` came back as 281 characters of chrome and no article at all. Screenshot this one rather than trusting a text read.
+
+**Code blocks lose their newlines and ko-fi is the one doing it.** `<pre><code>` content published as one run-on line; re-setting the body through `FroalaEditor.INSTANCES[0].html.set()` with explicit `<br>` inside the `pre` did not survive either — the server strips them. This is a platform limit, not a filling bug: record it, do not spend the run fighting it, and prefer a shape that reads without hard line breaks where a post file has the choice.
 
 **Froala displaces characters the same way Patreon's editor does** — four blocks lost their tails to the closing URL in one pass (`use few wor`, `database index`, `gradient desce`, `game theo`, with `ryntesds` appended to the link). Diff every block before publishing.
 
@@ -242,6 +359,19 @@ The dropdown sequence, if the quick-update button is absent:
 **The dropdown item is reached by coordinate, not by JS click.** `button.creator-menu-btn` opens the site's own nav, not this menu: the one that matters is the `Create` control carrying `data-toggle="dropdown"`, and its `Post something` entry only becomes clickable once the dropdown is open — an `el.click()` on the entry while it is collapsed silently does nothing. Open the dropdown, read the entry's rect, then coordinate-click it; the modal's own `Post` tile likewise needs its live rect.
 
 Read-back: `ko-fi.com/<handle>/posts` shows the update; ko-fi exposes **no per-post permalink** in the feed, so record the posts page and say so. That also means a defective ko-fi post cannot be handed back as a URL — finding it again for an edit or a delete goes through the user's own feed — so get this one right before submitting rather than counting on a repair.
+
+**Froala's own API loads the body correctly where a paste event does not.** A synthetic `ClipboardEvent` carrying `text/html` is sanitised by this editor down to bare paragraphs: headings, code blocks and **both anchors** were stripped, leaving the links as dead text and `Paper:https://…` run together. The editor instance is reachable and its setter is not sanitised the same way:
+
+```js
+const inst = window.FroalaEditor.INSTANCES[0];
+inst.html.set(html);
+inst.undo.saveStep();
+inst.events.trigger('contentChanged');
+```
+
+That kept 8 headings, 12 `pre` blocks, a list and both `a[href]`s, and it registers in the editor's model (unlike a raw DOM write) because it travels through the editor's own pipeline. This also sidesteps the character-displacement bug entirely, since nothing is typed. Verify with `inst.html.get()` alongside the DOM.
+
+**The blog's Publish still does not fire — confirmed a second time, and here is exactly how far it gets.** The split control is `#t-submit-dropdown` ("Publish |"); a coordinate click on its **left third** opens the menu and `#t-submit-publish` ("Publish now"), which is zero-sized until then, becomes a real 268x46 button. A coordinate click on it hit-tests true and lands — and the editor URL never changes, `ko-fi.com/<handle>/posts` never shows the post. Everything else saves: title, body, featured image (`#featuredImage`, `accept=".gif, .jpeg, .jpg, .png"`), tags. Record `failed` with the `/blog/editor/<slug>?mode=edit` URL and stop; the user publishes it with one click.
 
 ## bastyon
 Check: `bastyon.com/index` — when the app hydrates, the feed renders with the account link and a PKOIN balance, which is the only signed-in signal available. The composer a user sees is a field with `placeholder="What's new?"`.
@@ -259,6 +389,14 @@ Check: `bastyon.com/index` — when the app hydrates, the feed renders with the 
 **An upload that never finishes hides the submit entirely.** In one run the image reached the composer (its thumbnail rendered at the right dimensions) but the `.spinner` in `.item.images.upload.dropZone` never cleared, and `div.dopost` stayed inside a `postWrapper` with `display: none` through 30 s of polling — so there was no Post control to click and no validation message to read, only a hidden one. That is a different failure from the "Please add Tags" refusal below: check the spinner and the `postWrapper` display before concluding the button is unreachable, and record `failed` with the draft left on the profile route rather than retrying the upload.
 
 **The image input is in the composer and finding it takes one query.** Attach through the `input[type=file]` inside `.item.images.upload.dropZone` in the share wrapper — scope to the wrapper, since the page carries avatar and cover uploaders too. Attach before typing; the thumbnail appears in the composer and the picture publishes above the text. A composer offering no visible media button is not evidence of no media support: enumerate the file inputs.
+
+**The composer lives on the profile route only.** `bastyon.com/index?read=1` renders the feed and its `.common_share_article_wrapper` elements are **feed post cards**, not the composer — a run that scoped to the first of those found a stranger's post and clicked into it. `bastyon.com/post?share=true` answers *Post not found*. The composer, its dropzone and `div.dopost` all exist on **`bastyon.com/<handle>?read=1`**, and the handle is the `href` of the avatar link in the top-right corner.
+
+**The image upload does not complete — three occurrences across two runs, now treated as a platform limit.** `setInputFiles` on the dropzone's own input is accepted, and then no thumbnail ever renders while `.spinner` stays visible through 36 seconds of polling; a fresh tab reproduces it exactly. Note that the spinner is visible even **before** any upload, so its presence alone is not the signal — the absence of any `img` inside `.item.images.upload.dropZone` is. Do not retry a third time: publish text-only and record `degraded` naming the missing image, or hand the post back, and say that Bastyon has no post editing so adding the picture later means delete-and-repost.
+
+**Tags come free when the body ends in a hashtag line.** Bastyon extracts them into `.tagsCont` chips automatically — `#localai #opensource #moe` appeared without touching the tags field — which satisfies the category requirement that the `Please add Tags` refusal is about. Check the chips before reaching for `input.sminput[placeholder="Categories and tags"]`, and clear anything you typed there that did not commit.
+
+The profile exposes no per-post permalink in its listing, so the account page is the read-back URL; verify by counting occurrences of the opening line (exactly one).
 
 ## buymeacoffee
 Check: **`studio.buymeacoffee.com/posts`**, not `buymeacoffee.com` — the marketing homepage shows "Log in / Sign up" to a fully signed-in user, so checking there reports a false logged-out. The studio page also carries the read-back baseline: a "Published N" counter.
@@ -282,6 +420,10 @@ The working editor, verified end to end:
 TipTap **does** honour a programmatic Range here, unlike Medium — but two things still go wrong. Inserting the image scrolls the page, so the toolbar leaves the viewport and a click at its old coordinates hits nothing: **scroll back to the top, re-establish the Range (scrolling drops the selection), re-read the toolbar rect, then click.** And `End` moves to the end of the *visual line*, not the paragraph, so on a wrapped paragraph a `Shift+ArrowLeft × len` selection grabs the wrong span — the Range over the text node is what makes this exact.
 
 Read-back: back on `studio.buymeacoffee.com/posts`, the Published counter must go up by exactly one and a row for the title must appear with its visibility beside it ("Public"). Then open the `buymeacoffee.com/<handle>/<slug>` permalink and confirm the three things this composer can lose: the closing URL is an `<a>` rather than text, an `img` from `cdn.buymeacoffee.com` sits in the body, and no `�` replacement character survived anywhere.
+
+**The HTML paste works on this TipTap and is much cheaper than the toolbar route.** Dispatching a `paste` event carrying `text/html` into `div.tiptap.ProseMirror` produced 5 headings, 9 code blocks and **both links as real anchors** in one call — no per-paragraph typing, no Range selection, no Link button at index 3. The toolbar recipe above remains the fallback for a body that has to be assembled in place.
+
+Order that works end to end: title → HTML paste → `Control+Home` → `setInputFiles` on the page's `input[type=file][accept="image/*"]` (the image lands as the first block, and the upload returns a `cdn.buymeacoffee.com/uploads/project_updates/…` URL) → read the sidebar audience back as `Public` → `Publish now`. Publishing navigates straight to `buymeacoffee.com/<handle>/<slug>`, and the studio's `Published N` counter is the +1 check.
 
 ## instagram
 Check: `instagram.com` — home feed with the new-post (+) control. Compose: new post → upload the attachment (required — no attachment reached this phase only by a preflight bug: stop) → caption → share. Read-back: own profile grid. Quirk: caption links are not clickable; that was the campaign's problem, not this phase's — post the caption as written. Bio-CTA captions depend on the Phase 3 bio-link check having passed: the bio edit (when the user confirmed it) goes through the profile's own edit flow — the website/bio field only.
@@ -349,14 +491,7 @@ Check: `peerlist.io` — redirects to `/scroll` when signed in and the header ca
 
 **Never judge what exists from `peerlist.io/<handle>/posts`.** That listing is virtualised and inconsistent: consecutive loads returned one post, then four, then two, sometimes without the newest. A run that read two agreeing loads as "the republish did not land" submitted twice more on that basis.
 
-**The source of record is the endpoint the page itself calls:**
-
-```text
-GET https://peerlist.io/api/v2/scroll/user?userId=<userId>&timeSince=<now-ms>&maxCount=50&numComments=1&numUpvoteProfiles=3
-→ { success, data: { scroll: [ { postId, caption (HTML), availableAt, upvoteCount, … } ], nextCursor } }
-```
-
-The `userId` comes straight out of any earlier call to it — `browser_network_requests` with filter `api|scroll` surfaces both. Navigate to that URL in the tab and parse `document.body.innerText`: it answers "how many copies of this post exist", "does the caption contain an `<a href>`", and "how many upvotes has it collected" in one read. The drafts panel (`Drafts` in the composer) and the global `/api/v2/scroll/feed` are the two cross-checks. Use these before any second submit, never after.
+**Cross-check on the surfaces peerlist renders, and never by calling its API.** The page fetches `/api/v2/scroll/user` for itself; `browser_network_requests` will show that call and its status after a submit, which is a passive reading and useful. Requesting it yourself is not allowed here — see the Core principle. The visual cross-checks are the permalink (`/scroll/post/<id>`, ~10 s to render), the composer's `Drafts` panel, and the feed at `/feed`; treat a post as present only when two loads agree, and where they never do, leave the entry `unverified` and tell the user rather than submitting again.
 
 **The linkifier is real but fussy.** Other accounts' posts carry working anchors, so peerlist does linkify — but only for a URL that was **typed with real keystrokes and followed by a space**. `insertText` of a body ending in a URL publishes dead text. Insert the body up to the URL, press `Control+End`, type the URL with `keyboard.type`, type one space, and assert an `a[href]` inside the composer before submitting.
 
@@ -367,6 +502,16 @@ The `userId` comes straight out of any earlier call to it — `browser_network_r
 **The dialog has a file input, and it is easy to write off.** No camera icon is obvious in the composer's first render, but the dialog carries an `input[type=file]` with an `image/` accept — enumerate the inputs inside the dialog instead of hunting for a button. **Attach before typing**: the upload re-renders the dialog and a body typed first can be lost. A successful upload shows as a thumbnail in the dialog and publishes as a `cloudfront` `img`; confirm it on the listing, never in the composer.
 
 Read-back: use **`peerlist.io/<handle>/posts`**, which lists the post reliably. The `/scroll/post/<id>` permalink renders page chrome only and never the body, however long you wait — reading that as failure is a false negative. On the listing the body is collapsed behind a **`Read More`** control: click it before comparing the tail, or an intact post looks truncated. The scroll feed itself is virtualized, so read any permalink in the same evaluate that finds the text — a second call finds the node already recycled and returns nothing.
+
+**The `Post` entry button on `/scroll` opens the composer only through `el.click()` from `page.evaluate`.** A coordinate click on its live rect and an element-handle click both leave the page unchanged; the JS click opens the dialog first try. The dialog's own `Post` button, by contrast, takes an ordinary coordinate click.
+
+**The composer's body editor refuses `handle.click()`** (actionability never settles). Focus it in-page and place the caret with a Range collapsed to the end, then `insertText`.
+
+**The link recipe works and is worth following exactly.** Insert the body *without* its closing URL, press `Control+End`, wait for the caret to settle, then `keyboard.type(URL)` with a real delay and follow it with a **space**. Peerlist's linkifier fires on typed input and the space commits it: the published caption then carries `<a href="…">`, confirmed on the API. Inserting the URL as part of the body text produces dead characters, which is how this platform shipped a bare link last campaign.
+
+The composer prints its own constraints while you work — the character cap (`480`), `Sharing only a link is no fun.` and **`We don't support hashtags (yet)`**. A post file whose body ends in a hashtag line therefore needs that line dropped here, and the composer says so rather than silently stripping it.
+
+In the API response the post's id field is **`id`**, not `postId`; `media` carries the attachments and `caption` the HTML whose `<a href` presence is the link check.
 
 ## daily-dev
 Check: `app.daily.dev` — signed-in state, the user's avatar in the header. A bounce to the marketing site means the session is logged out; report it and skip rather than guessing at a target.
@@ -387,12 +532,18 @@ Read-back: the user's profile Posts tab, or the squad feed where one was named, 
 
 **Before submitting, confirm the user has seen the AI-content rule.** daily.dev prohibits AI-generated content. If nothing in the run records the user's decision to publish this text as their own after editing it, stop and ask rather than posting — this is one of the few places where publishing quietly can cost the account, not just the post.
 
+Confirmed again end to end, with two details worth pinning: the **cover** goes through the page's **first** `input[type=file]` (the second, `name="content_upload"`, belongs to the body toolbar and inserts inline), and the audience control's label is the plain text `Everyone` at the top-left of the modal — a page-wide text search matches the sidebar's `Squads` navigation first, so read the control, not the document. Posting navigates straight to `daily.dev/posts/<slug>`.
+
 ## minds
 Check: `minds.com/newsfeed/subscriptions` — the rail renders Newsfeed / Boost / Wallet and the `@handle` entry. Compose: the composer sits on the newsfeed as `textarea.m-composerTextarea__message` ("Speak your mind...").
 
 **Keystrokes only reach it through an element handle.** A coordinate click plus `page.keyboard.type` leaves the value empty and both "Post" buttons disabled, and so does `el.focus()`; `page.$('textarea.m-composerTextarea__message')` then `handle.type(text)` fills it correctly first try. The enabled submit is not in the page-wide button sweep either — walk up from the textarea (about five parents) to the composer container and take the "Post" button inside it.
 
 Read-back: `minds.com/<handle>/` shows the post and the full URL text; the permalink is the `/newsfeed/<numeric-id>` anchor. Never touch Boost, Wallet, Supermind or Minds+ controls — the token layer sits next to the composer and none of it is part of posting.
+
+**`.m-composer__triggerOverlay` sits on top of the composer and eats the click on Post.** With the body typed and the Post button enabled, `elementFromPoint` at the button's centre returns that overlay, so every trusted click lands on it. Click the overlay first: the composer expands into a modal, and from then on there are **two** `textarea.m-composerTextarea__message` nodes holding the same text and **two** Post buttons — the inline one enabled, the modal's one disabled. Take the last **enabled** Post and click it with `el.click()` from `page.evaluate`; both textareas clear on success.
+
+The permalink page renders the whole feed, so `document.querySelector('.m-activityContent__message')` on it can return a *different* post's body, and the post's own text stays collapsed behind `See more` whose expand control detaches on re-render. **Do not reach for Minds' API to get around it.** A run navigated the tab to `/api/v1/entities/entity/<guid>` and was served a Cloudflare block page — the account being noticed, on a platform where a ban costs the user everything the account holds. Expand `See more` and read the body visually, or where a body-level assertion cannot be made, say which one and leave it unverified rather than claiming it.
 
 ## medium
 **The body goes in as an HTML paste, and one-line paragraphs need fusing first.** `medium.com/new-story` exposes a single `div.postArticle-content [contenteditable="true"]`: type the title, press `Enter`, then dispatch a `paste` event carrying `text/html` — headings become `h3`/`h4`, fences `pre`, quotes `blockquote`, `[t](u)` a real anchor. But Medium puts a full paragraph gap under every `<p>`, so a source that writes rhythmic one-line paragraphs (`Browser.` / `Resolver.` / `Root.`) publishes as a stretched wall the author will not recognise. Fuse runs of three or more consecutive paragraphs of ≤32 characters into one block joined by `<br>` before pasting — see `post-formatting.md` for why that threshold and not 35.
@@ -414,6 +565,12 @@ Check: `medium.com` — avatar and the write control. Compose: `medium.com/new-s
 **Editing a published story does not update it until you republish.** On `/p/<id>/edit` the header carries `Done editing` and a `data-action="republish"` button whose visible label is **"Save and publish"**. Autosave persists the edit to the draft only — the live article keeps its old body, which is easy to misread as "the edit did not apply". Click that button, then re-fetch the canonical URL: the first load right after republishing can still serve the previous render, so confirm on a fresh navigation rather than on the redirect target.
 
 Read-back: the published article URL, opened and confirmed — headings rendered as headings, zero literal `## `, zero `[—–]`, the closing link clickable, the image present. Note the published image host is `miro.medium.com`, not the `cdn-images-1.medium.com` the editor shows, so match on either.
+
+**The title has to be put in after the paste, and then styled.** Typing the title into the empty editor and pressing `Enter` before the paste does not survive — the paste replaces it and the story opens on the subtitle. What works: paste the body first, then click the first visible block, `Control+Home`, `insertText` the title (it lands as a plain `p` above everything), then select that line with a real caret — click it, `Home`, `Shift+End`, assert `window.getSelection().toString()` — and press **`Control+Alt+Digit1`**, which turns it into the editor's `h3` title style.
+
+**The image goes in through the `+` control, and the labels are unambiguous.** Put the caret at the end of the subtitle and press `Enter`; a control with `aria-label="Add an image, video, embed, or new part"` appears at the left margin of the empty paragraph. Click it and a row expands — `Add an image`, `Add an image from Unsplash`, `Add a video`, `Add an embed`, `Add a new code block`, `Add a new part`. `Add an image` opens the native chooser, which the MCP server parks; answer it with `browser_file_upload` from an allowed root. The picture becomes a `figure` with a `cdn-images-1.medium.com` src.
+
+**Medium rate-limits publishing and says so in plain text.** The pre-publish panel (`data-action="show-prepublish"` opens it, and its own `Publish` finishes) printed: *"The author of this story has published or scheduled the maximum of two stories in the past 24 hours. Please try to publish or schedule again in 24 hours."* The button stays enabled and the click lands; only the URL not changing and that sentence reveal the refusal. This is a platform refusal, not a UI problem: record `failed` with the `medium.com/p/<id>/edit` draft URL and do not retry inside the window.
 
 ## write-as
 Check: `write.as/me` or the pad at `write.as/new` — a signed-in session shows the account's blogs; signed out, the pad still writes but posts anonymously, which is the trap worth checking for. Compose: one editor pane, first line becomes the title, the rest is the body; publish, then assign to the blog the post file names (an account with several blogs makes this a real choice, so the target is not optional).
@@ -445,9 +602,25 @@ Which of the two surfaces the post file names decides everything here, and the d
 **Editor mechanics, both surfaces.** Headings do convert from the `## ` shortcut typed at the start of an empty block, unlike Medium — verify anyway that the body holds zero literal `## `. Two things do **not** happen on their own:
 
 - **The closing URL stays plain text**, and Substack does not auto-link it on publish — one run shipped the article with a dead `https://…` in the body. Recipe: real `mouse.click` into the paragraph, `End`, then `Shift+ArrowLeft` once per character of the URL, assert `window.getSelection()` equals the URL exactly, then click the toolbar's `button[aria-label="Link"]`. The popover carries two fields: `Enter text…` arrives prefilled from the selection, and **`Enter URL...` is empty and must be filled** — type the address there and press `Enter`. Verify an `a[href]` exists in the body before publishing. (`End` is safe here only because this paragraph does not wrap past the URL; on a wrapped line use a Range over the text node instead.)
-- **Editing an already-published post needs `Update` → `Update now`**, and the same `Publish without buttons` modal appears again; the landing URL gains `?alreadyPublished=true` when it lands.
+- **Editing an already-published post goes `Continue` → `Update now`** (see below); the landing URL gains `?alreadyPublished=true`.
 - **The image has to be inserted, and the toolbar is contextual.** The top toolbar renders `button[aria-label="Insert image"]` only while the caret is inside a body block; `Control+Home` moves the caret somewhere that dismisses it, which is how one run concluded the control "disappears when the caret moves" and shipped without a picture. Working sequence: real `mouse.click` into the first body block → `Home` → `Enter` → `ArrowUp` (empty block, caret still in the body) → click `Insert image` → a submenu opens with `Image` / `Stock photos` / `Generate image` → click **`Image`**, which opens the native file chooser (`browser_file_upload`). The only `input[type=file]` in the DOM is `.file-sidebar-item-hidden-file-input`, which belongs to the draft sidebar — setting files on it does nothing to the body. Confirm afterwards that the body holds an `img` with a `substackcdn.com` src.
 
 **A cleared composer is not a publication here.** One run stopped one step short, left the article in draft and recorded a success — the editor looks the same either way. Confirm on the post's own page or the dashboard listing that the item reads published, never in the editor.
 
 **The publish confirm has a second step that is easy to miss.** `Continue` opens the settings panel; the send/publish button there ("Send to everyone now" on the publication path) can raise a further modal — one observed variant is **"Publish without buttons"**, shown when the post carries no subscribe button. Until that modal is answered nothing is published and nothing is sent, and the Published list stays empty. Poll for it and answer it rather than reading the empty list as failure and retrying.
+
+Verified route and selectors for the **profile Article**: `Create` in the left rail → `Article` → `<handle>.substack.com/publish/post`, which creates a draft and lands on `/publish/post/<id>`. Fields: `textarea[placeholder="Title"]`, `textarea[placeholder="Add a subtitle…"]`, body `.tiptap.ProseMirror`. **The body takes an HTML paste** — 13 headings, 16 code blocks and both anchors survived in one call. Where the source opens with an H1 and an H2, the H1 is the title and the H2 belongs in the subtitle field, not the body.
+
+**The email toggle is ON by default and the button label is the cheap proof of the setting.** The publish panel (reached with `Continue`) carries `Send via email and the Substack app`, checked, and the submit reads **`Send to everyone now`**. Clicking the toggle off flips the submit to **`Publish now`**, and the confirmation that follows offers **`Publish on web only`**. Assert all three — toggle false, button `Publish now`, confirmation answered web-only — before and after the click; a run that only reads the toggle can still send mail if the label never changed. Publishing lands on `/publish/posts/detail/<id>/share-center`, which carries the public `/p/<slug>` link.
+
+**The body image does work, and the control is found by `title`, not `aria-label`.** An earlier run looked for `button[aria-label="Insert image"]`, found nothing usable and recorded the platform's image as best-effort; the button is `button[title="Insert image"]` in the top toolbar and it behaves like this:
+
+1. Real `mouse.click` into the first body block, then `Control+Home`, `Enter`, `ArrowUp` — an empty block at the very top, caret inside the body. Assert the caret: `getSelection().anchorNode` should resolve to `.ProseMirror`'s child `0` at offset `0`.
+2. `el.click()` the `title="Insert image"` button. **Nothing observable happens in the editor** — no new `input[type=file]`, no `[role=dialog]`. It opened a portal menu: `Image / Gallery / Stock photos / Generate image`, findable under `[role=menu], [data-radix-popper-content-wrapper]`.
+3. Click the leaf element whose text is exactly `Image`. *That* parks the native file chooser — answer it with `browser_file_upload`.
+4. Poll until the editor's `img` src is a `substackcdn.com/image/fetch/...` URL. The image lands as `.ProseMirror`'s child `0`; the empty paragraph survives beneath it and is removed with one `Backspace` from the start of the paragraph below.
+
+The sidebar's `.file-sidebar-item-hidden-file-input` is the *Thumbnail* uploader and is never the body image — it sat on `Loading...` indefinitely when a run fed it the campaign picture.
+
+**Editing an already-published post: `Continue`, not `Update`.** The header carries `Saved` / `Preview` / `Continue`; `Continue` raises a confirm panel whose buttons are `Cancel` and **`Update now`**, with no email-resend option and no "Publish without buttons" modal. It lands on `/publish/posts/detail/<id>/share-center?alreadyPublished=true` reading *Your post is live!*. Reaching the editor of a published post: `/publish/posts` → the row link `/publish/posts/detail/<id>` gives the id → the editor is `/publish/post/<id>`.
+
