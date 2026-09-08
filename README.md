@@ -228,8 +228,7 @@ Each skill follows the [Agent Skills specification](https://agentskills.io/speci
 skills/<skill-name>/
 ├── SKILL.md          # required: YAML frontmatter (name, description) + instructions
 ├── references/       # optional: detailed docs the agent loads on demand
-├── scripts/          # optional: helper scripts
-└── evals/            # optional: behavioral eval cases (prompt.md + graders/) for `claude plugin eval skills/<skill-name>`
+└── scripts/          # optional: helper scripts
 ```
 
 **No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/` or `scripts/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
