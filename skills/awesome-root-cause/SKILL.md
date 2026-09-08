@@ -67,6 +67,20 @@ Verification plan — success criterion + PDCA check date
 Follow-up        — open items, what to watch
 ```
 
+## How the write-up reads
+
+A postmortem is read by people who were not there and by the next on-call a year later. The document has absolute timestamps with a timezone, exact failure mechanics, honest dead ends, and action items someone owns. A team's incident template is a fine container; the tell is filler inside it. Rules for the prose (the venue file `references/domains/postmortems.md` in `awesome-humanize-en` carries the full tell table):
+
+- **Blameless is not agentless.** "Mistakes were made", "the change was deployed" with no actor anywhere is fog. Name systems and roles: "the deploy pipeline promoted the config before validation ran".
+- **The timeline keeps the wrong turns.** The 40 minutes spent on the bad hypothesis is the most instructive part of the document, and the part write-ups most often drop. Absolute times, timezone stated once.
+- **The mechanism at code or config level.** The exact query, flag, limit or race window. If nobody knows it yet, that is a question for the team, not a blank to prose over.
+- **An action item is a change with an owner and a date.** "Improve monitoring and communication" is not one; "add alert on queue depth > 10k (owner: infra, due 09-15)" is.
+- **No self-praise adverbs.** "The team swiftly identified…" — the timestamps carry the speed judgment; let them.
+- **Commit to the causal chain you believe**, and mark the genuinely unknown part as unknown. "A combination of factors may have contributed" is a hedge where a judgment was needed.
+- **Impact in numbers first** (duration, requests failed, users affected, money if known), narrative second. Numbers come from the incident data, never rounded to sound complete.
+- **Every template section earns its length.** A "What went well" with nothing in it is one honest line or deleted, not a paragraph written for completeness.
+- **End at the action items.** No moralizing conclusion about reliability culture. And a postmortem that admits no wrong judgment anywhere has not been written yet.
+
 ## Guardrails
 
 - **Blame-free.** Name systems and steps, not individuals. "The deploy had no staging gate", not "X deployed without testing".
