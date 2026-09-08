@@ -57,6 +57,8 @@ So when the bridge is missing, or the target gate says the wrong browser answere
 1. **Tool calls time out at ~5 seconds.** Anything slower — a multi-step click sequence, a screenshot of a heavy page, a wait — must run inside ONE `browser_run_code_unsafe` call, which has its own longer budget. Do not chain five 4-second tool calls when one script does the job.
 2. **Playwright's actionability wait never settles on heavy SPAs.** VK, X, Facebook and Instagram continuously animate, lazy-load and re-render. `browser_click` fails with `TimeoutError: waiting for element to be visible, enabled and stable` even when a DOM probe shows the element is visible, `pointer-events: auto`, hit-testable and with a rect that does not move across three consecutive frames. This is not a stale selector — re-deriving from a fresh snapshot returns the same element and fails the same way.
 
+**Other runtimes** — the snippets are Playwright's JavaScript API because that is the handle the bridge passes into `browser_run_code_unsafe`; none of it is a language choice this skill makes. Driving Playwright from another binding, every call here exists under that binding's own naming (`page.set_input_files` in Python, `Page.SetInputFilesAsync` in .NET), and the function handed to `evaluate` stays browser JavaScript everywhere — the page runs that argument, not the driver.
+
 ## The click ladder
 
 Climb only as far as needed; stop at the first rung that works. Never repeat a failing rung more than twice — that is the signal to climb, not to retry.
