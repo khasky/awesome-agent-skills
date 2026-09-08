@@ -345,7 +345,18 @@ Check: `peerlist.io` — redirects to `/scroll` when signed in and the header ca
 
 **The cap is 480 characters and the Post button enforces it** — measured by probe: 400 enables it, 500 disables it. An over-length body is therefore a stop before anything is typed, not a truncation to discover afterwards. Check the source length against 480 during the source scan and raise it with the user; trimming their copy is their call.
 
-**There is no edit, and republishing can fail silently — so get the post right the first time.** The post's `⋮` menu offers only `Copy Link` and `Delete`. Worse, two clean republish attempts (fresh dialog, image attached, body verified, anchor verified, `Post` enabled and hit-tested, dialog closed afterwards) created **nothing** — the profile listing and every permalink probe showed only the original. Nothing duplicated, which is the saving grace, but a defect published here is effectively permanent. That makes the pre-submit format gate load-bearing on this platform above all others.
+**There is no edit, and the listing lies — so this platform gets exactly one submit.** The post's `⋮` menu offers only `Copy Link` and `Delete`, and a post starts collecting upvotes within minutes, so a delete is not a free undo. A defect published here is effectively permanent, which makes the pre-submit format gate load-bearing above all other platforms.
+
+**Never judge what exists from `peerlist.io/<handle>/posts`.** That listing is virtualised and inconsistent: consecutive loads returned one post, then four, then two, sometimes without the newest. A run that read two agreeing loads as "the republish did not land" submitted twice more on that basis.
+
+**The source of record is the endpoint the page itself calls:**
+
+```text
+GET https://peerlist.io/api/v2/scroll/user?userId=<userId>&timeSince=<now-ms>&maxCount=50&numComments=1&numUpvoteProfiles=3
+→ { success, data: { scroll: [ { postId, caption (HTML), availableAt, upvoteCount, … } ], nextCursor } }
+```
+
+The `userId` comes straight out of any earlier call to it — `browser_network_requests` with filter `api|scroll` surfaces both. Navigate to that URL in the tab and parse `document.body.innerText`: it answers "how many copies of this post exist", "does the caption contain an `<a href>`", and "how many upvotes has it collected" in one read. The drafts panel (`Drafts` in the composer) and the global `/api/v2/scroll/feed` are the two cross-checks. Use these before any second submit, never after.
 
 **The linkifier is real but fussy.** Other accounts' posts carry working anchors, so peerlist does linkify — but only for a URL that was **typed with real keystrokes and followed by a space**. `insertText` of a body ending in a URL publishes dead text. Insert the body up to the URL, press `Control+End`, type the URL with `keyboard.type`, type one space, and assert an `a[href]` inside the composer before submitting.
 
