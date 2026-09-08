@@ -1,0 +1,101 @@
+name: behavioral eval
+
+# Runs `claude plugin eval` once per skill that ships an evals/ folder
+# (skills/<name>/evals/<case>/prompt.md + graders/*.md): each case is a prompt
+# run in an isolated session with that skill loaded, scored by its graders,
+# plus a no-plugin baseline arm for the score delta. A skill's evals travel
+# with the skill folder, so a copied skill carries its own proof; the static
+# gates stay in lint.yml.
+#
+# Push-to-main only (plus manual dispatch): the run spends the maintainer's
+# Claude subscription quota via CLAUDE_CODE_OAUTH_TOKEN (`claude setup-token`),
+# so it must never trigger on fork PRs. The command is in early access;
+# CLAUDE_CODE_WALNUT_SPIRE enables it on runners that cannot receive the
+# per-organization rollout. Without the secret the job explains and skips
+# rather than failing, so a fork or a fresh clone stays green.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - skills/**
+      - .github/workflows/behavioral-eval.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  eval:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+      CLAUDE_CODE_WALNUT_SPIRE: "1"
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: credential present
+        id: gate
+        run: |
+          if [ -z "$CLAUDE_CODE_OAUTH_TOKEN" ]; then
+            echo "CLAUDE_CODE_OAUTH_TOKEN is not set; skipping the paid eval (add the secret from 'claude setup-token' to run it)"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: install claude code
+        if: steps.gate.outputs.skip != 'true'
+        run: |
+          curl -fsSL https://claude.ai/install.sh | bash
+          echo "$HOME/.local/bin" >> "$GITHUB_PATH"
+
+      - name: materialize claude.ai credentials
+        if: steps.gate.outputs.skip != 'true'
+        # The eval sandbox authenticates each run's child session by copying
+        # the parent's credentials file (~/.claude/.credentials.json on Linux)
+        # into the run's fresh config dir; the OAuth token env var alone is not
+        # passed through. Write the file a real login would have left, from the
+        # same token. expiresAt is metadata here; the setup-token carries the
+        # real expiry.
+        run: |
+          umask 077
+          mkdir -p "$HOME/.claude"
+          EXPIRES=$(( ($(date +%s) + 250*24*3600) * 1000 ))
+          printf '{"claudeAiOauth":{"accessToken":"%s","refreshToken":"","expiresAt":%s,"scopes":["user:inference"]}}' \
+            "$CLAUDE_CODE_OAUTH_TOKEN" "$EXPIRES" > "$HOME/.claude/.credentials.json"
+
+      - name: run behavioral evals, one skill at a time
+        if: steps.gate.outputs.skip != 'true'
+        # --model pinned so a model rollout does not read as a skill regression;
+        # the judge stays the default (haiku). Threshold 0.7 tolerates one noisy
+        # judge vote without letting a broken skill pass. Every skill runs even
+        # after one fails; the step's exit code is the worst of them.
+        run: |
+          status=0
+          mkdir -p eval-results
+          for dir in skills/*/evals; do
+            skill=$(basename "$(dirname "$dir")")
+            echo "::group::$skill"
+            claude plugin eval "skills/$skill" --json "eval-results/$skill.json" \
+              --threshold 0.7 --model claude-sonnet-5 --no-publish || status=1
+            echo "::endgroup::"
+          done
+          exit $status
+
+      - name: summarize
+        if: always() && steps.gate.outputs.skip != 'true'
+        run: |
+          ls eval-results/*.json >/dev/null 2>&1 || { echo "no results produced"; exit 0; }
+          for f in eval-results/*.json; do
+            echo "== $(basename "$f" .json)"
+            jq -r '"partial=\(.partial // false) reason=\(.partialReason // "none")"' "$f"
+            jq -r '.cases[].arms | to_entries[] | .key as $a | .value[] |
+              select(.error != null) | "  [\($a)] run error: \(.error)"' "$f"
+            jq -r '.cases[] | .name as $c | .arms | to_entries[] |
+              "\($c) [\(.key)] score=" +
+              ((([.value[].score] | add / length * 100 | round) / 100) | tostring)' "$f"
+            jq -r '.cases[].arms.with[].graders[] |
+              "  \(.name): passed=\(.passed) scored=\(.scored // true)"' "$f"
+          done
