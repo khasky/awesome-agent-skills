@@ -206,3 +206,29 @@ Specific vocabulary and syntactically bulky constructions that LLMs gravitate to
 **What to do.** When humanizing, restore one or two apt idioms; do not stuff idioms into every paragraph (overuse is itself a tell — see #24a in `communication-patterns.md`).
 
 **False-positive boundary.** Scientific papers, documentation, and legal texts are idiom-sparse by norm. Apply this only to journalism, blogs, and personal writing.
+
+---
+
+### 15g. 🟡 Abstract-noun wrappers, paired abstractions, and the LAMP signature phrases
+
+**Source:** professional editors' corrections in the LAMP study and the part-of-speech analysis in Reinhart et al. (`sources.md`, `LAMP-2025`, `REINHART-STYLE-2025`); phrase list adapted from [sepia](https://github.com/Nanako0129/sepia) (MIT).
+
+**Problem.** Beyond the single words of #10 and the fixed formulas of #15e, the model reaches for a handful of *shapes*: an abstract noun wrapping a concrete one, two abstractions paired with "and", a trailing participial clause that restates the main clause, a nominalization as the sentence subject. In the LAMP corpus these part-of-speech templates were edited out by professionals at rates of 27–54%, and the trailing participial clause runs at up to five times the human rate.
+
+**Typical forms:**
+
+| Shape | Examples | Fix |
+|---|---|---|
+| a/the [abstract noun] of [noun] (and [noun]) | a mix of pride and fear · a sense of wonder · a pang of nostalgia · the weight of expectation | Name the concrete thing, or cut the wrapper noun |
+| the [adjective] [noun] of [possessive] | the intricate tapestry of its · the unspoken plea in her | Rewrite from scratch |
+| Paired abstractions "X and Y" | desperation and resolve · curiosity and caution | Keep one |
+| Nominalization as subject | realization, determination, transformation doing the work of a verb | Turn it back into the verb (see #8) |
+| Trailing participial restatement | "[main clause], [participle phrase saying the same thing]" | Delete after the comma (see #4) |
+
+**Signature phrases** (near-zero in human seed text, frequent across every model family measured): *unspoken*, *the weight of*, *a sense of*, *a mix of*, *hung in the air*, *the air was thick*, *in the pit of her/my stomach*, *a constant reminder of*, *eyes darting*.
+
+**Marker.** Two or more of these shapes in one paragraph, or one signature phrase in text that is not quoting.
+
+**What to do.** Replace with the specific thing meant — never with a blander paraphrase, which is the documented machine repair. If nothing concrete is available, delete the line.
+
+**False-positive boundary.** A single "a sense of" is English. Fiction and personal essays use these shapes on purpose at low density; count them there only alongside other tells, and never inside quoted dialogue.

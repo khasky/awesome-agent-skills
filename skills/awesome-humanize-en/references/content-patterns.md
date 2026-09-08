@@ -143,3 +143,45 @@ The base content patterns (#1–9) are stable; they cross-link to adjacent class
 **Before:** Film critic Roger Ebert underscored the film's enduring influence on American cinema.
 
 **After:** In his review for the Chicago Sun-Times, Roger Ebert noted that the final scene was shot in a single take with no cuts.
+
+---
+
+## Extension: technical-article tells
+
+Four content tells that surface mostly in engineering blog posts, tutorials and write-ups. They are the pattern form of the venue rules in `domains/tech-articles.md`, adapted from [sepia](https://github.com/Nanako0129/sepia) (MIT), and count toward the tell total like any other content pattern.
+
+### 9a. 🟡 Invented concept labels
+
+**Problem.** The model coins a term mid-post to make an ordinary observation sound like a discovery: "the observability paradox", "configuration drift syndrome", "the velocity trap". No one else uses the term, and the post never needed it.
+
+**Marker.** A capitalized or quoted phrase introduced as if it were established, with no source and no prior usage a search would find.
+
+**What to do.** Plain description, or the established term if one exists.
+
+**False-positive boundary.** A term the author defines on purpose and then uses consistently as a working name is craft. The tell is the label that decorates a single paragraph and never returns.
+
+### 9b. 🟡 Listicle in a trench coat
+
+**Problem.** Prose that is secretly a numbered list — "The first consideration… The second aspect… Finally…" — each paragraph a bullet in disguise, no argument connecting them.
+
+**Marker.** Paragraph openers that count; sections of equal length with no dependence between them.
+
+**What to do.** Either honest structure (a real list or table) or real prose with an argument that moves from one paragraph to the next.
+
+### 9c. 🟡 Numbers without conditions, code that never ran
+
+**Problem.** A benchmark figure with no machine, version, dataset size or run count attached; a code example with `foo`, `my_service`, `example.com` that was never executed and could not be.
+
+**Marker.** A percentage or a latency figure standing alone; a snippet with placeholder names in a post that claims to report real work.
+
+**What to do.** Attach the conditions or delete the number; use the real, runnable, tested snippet, or say plainly that it is a sketch.
+
+**False-positive boundary.** A tutorial that announces itself as illustrative may use placeholder names; the tell is placeholder code presented as the work that was done.
+
+### 9d. 🟢 No dead end anywhere
+
+**Problem.** Every step worked, every benchmark confirmed the thesis, nothing was tried first and abandoned. Models systematically omit the failure inside the story, and the dead end is the part readers trust.
+
+**Marker.** An experience report with no "what broke", no "what I tried first", no "what I would skip next time". Weak on its own; strong alongside #29 (symmetric coverage without a stance) from `structure-pass.md`.
+
+**What to do.** When editing, this is a gap to ask the author about, never a detail to invent: a fabricated dead end is a fabricated fact. When the author has none to offer, the honest genre is "notes on X", not a war story.

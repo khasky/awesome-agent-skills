@@ -5,9 +5,13 @@ This file is a reference to the characteristic tells of individual models. Signa
 - **Unambiguous markers** (identify AI with roughly 99% probability) — all collected in `chatbot-artifacts.md`. These are regular expressions for internal-citation tags, UTM tags, and the names of internal tools.
 - **Stylistic tells** (soft signals, must be combined) — collected in this file. These are lexis, syntax, structural preferences. **For English text these stylistic tells are the primary signal:** the marker phrases below (e.g. "It's important to note that…", "delve into", "tapestry", emoji bullets) are themselves the evidence, not a translation layer over some other language.
 
+The stylistic tells come from two source tiers, kept apart in every vendor section: **community-observed** tells (Wikipedia, forums, evaluation reviews — the tables with C/O/Cond confidence codes) and **vendor-documented prose defaults** — what a model's own vendor says its current release does at the sentence level, taken from the vendor's prompting documentation and tagged with the exact release the page names. A vendor row is *operative* for a role whose release matches the tag and a *prior* for any other release of that family; a vendor that publishes no such guidance is recorded as consulted, not guessed. Ledger: `sources.md`, "Vendor guidance".
+
 Tells evolve every 6–8 weeks as new model versions ship. **Freshness of this file: through August 31, 2026**, after which reassessment is mandatory.
 
-> When to load: when working with fresh 2025–2026 text; when you need to tell which model produced a text; when preparing regexes for batch processing.
+> When to load: when the author or executor model is known (the Model identity rule in `SKILL.md`); when working with fresh 2025–2026 text; when preparing regexes for batch processing. **Never to work out which model wrote a text**: model identity comes from the user or from metadata (a commit trailer, a tool signature, a stated source), and the executor's identity from your own system context. Attribution by reading is not a classifier — the best measured six-way attribution from hundreds of narrative features reaches 68.4% macro-F1 (`sources.md`, `STORYSCOPE-2026`), and reading is not that classifier. An unknown role loads nothing from this file and is reported as `none`.
+
+> **Which formatting a model over- or under-uses changes with its release.** The absence of bold, headers, emoji or validation openers is a documented default of some current releases (Fable 5.1, Opus 4.8, Gemini 3), so sparse formatting is not evidence of a human author. Do not add anti-formatting rules to compensate, and do not read terseness as human where the vendor row says terse is the default.
 
 > **Note on file structure.** This reference is deliberately built symmetrically: each vendor follows one template (release dates → tells table → typical openers). The symmetry here is navigational convenience, not a generation signal. Do not confuse it with pattern #13 "symmetric sections" from `language-patterns.md`, where symmetry inside authored content is treated as an AI tell.
 
@@ -70,6 +74,14 @@ Tells evolve every 6–8 weeks as new model versions ship. **Freshness of this f
 
 Unlike the Russian edition (where the English lexis never surfaces in Russian output), in English the lexical tells "delve" and "It's important to note" (#10) appear right alongside the structural ones — so both layers are in play at once. Conclusion: for fresh English text the priority signals are the rule of three (#13), negative parallelism (#12), transition crutches (#15c), and inflated significance (#2), reinforced by the "It's important to note"/"delve" lexis (#10).
 
+**Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read second-hand via sepia's ledger 2026-09-02):**
+
+| Vendor-stated default | Handling |
+|---|---|
+| More concise by default than GPT-5.5; brevity instructions can make answers too brief | Density fails in both directions: as the author's layer, hunt a short answer that dropped a required caveat or the next action; as the executor's layer, re-check your own rewrite for the same loss |
+| The vendor's own recommended trims name the expected residue: introductions, repetition, generic reassurance, optional background, generic praise, sign-offs | Already patterns #22, #24, #25 and #15c; run them at operative strength for this release |
+| Editing tasks drift: the vendor's preservation snippet warns against "adding new claims, sections, or a more promotional tone" | Vendor-implied, not stated as a defect. Enforce the register-drift rule in `edit-trace.md` |
+
 ---
 
 ## Anthropic Claude
@@ -100,6 +112,15 @@ Unlike the Russian edition (where the English lexis never surfaces in Russian ou
 
 Note that because Fable 5 silently reroutes restricted queries to Opus 4.8, a single conversation may show mixed tells — a terser, disclaimer-heavy Opus register spliced into Fable 5 prose. Do not read the switch itself as an anti-tell.
 
+**Vendor-documented prose defaults** (Anthropic prompting pages, read second-hand via sepia's ledger, which compared the quoted blocks against the pages on 2026-09-02/03; `sources.md`, `ANTHROPIC-*-PROMPTING`). Each block is operative for the release named and a prior for every other Claude release, including Sonnet 5 and Opus 4.7, whose pages carry no prose-layer statement. When the executor is a Claude model, these are the habits to hunt in your own rewrite.
+
+| Release | Vendor-stated default | Handling |
+|---|---|---|
+| Claude Fable 5.1 / Mythos 5.1 | Mannered prose: metaphor and flourish where a literal phrase exists — "a dial worth turning" for "a parameter worth varying", "earns its keep" for "still matters". Denser than Fable 5: longer sentences, fewer paragraph breaks. Less bold, fewer headers and lists than earlier Claude | Hunt metaphor standing in for an available literal phrase; the vendor's own fix is "when a literal phrase is available, use it". Split run-ons, break paragraphs where the topic turns. Sparse formatting is this release's default, not a human signal |
+| Claude Fable 5 / Mythos 5 | Un-steered, elaborates past the task: surveys options it will not pursue, explains root causes at length, writes heavily structured PR descriptions and comments that narrate the next line. In long agentic sessions: dense arrow-chain shorthand, deep implementation detail, references to thinking the reader never saw | Hunt option surveys, root-cause essays and structure that outweighs the content (patterns #9, #19, #21a, #30). Expand arrow chains and undefined labels into sentences (`structural-style-patterns.md` #16) |
+| Claude Opus 5 | Default user-facing responses run longer than prior Opus; written files are often padded with filler sections, redundant summaries and boilerplate; narrates what it is about to do and corrections that change nothing for the reader | Hunt the fractal-summary shape (#30) and sections that exist for completeness (#21a); cut announcements of intent and no-op corrections |
+| Claude Opus 4.8 | A direct, opinionated style with minimal validation-forward phrasing and sparing emoji; response length calibrated to the task | Absence of validation openers and emoji is this release's default, not evidence of a human. Stance is usually present; look instead at density and specificity. Uniform length across tasks would be the tell, not variation |
+
 ---
 
 ## Google Gemini
@@ -126,6 +147,8 @@ Note that because Fable 5 silently reroutes restricted queries to Opus 4.8, a si
 | Deep Research mode: a long report with sections, heavy footnoting, and a "Sources" block of dozens of links | M | Cond | New 2026 tell. Differs from ordinary Gemini in length and link density; the report format alone is not a tell — count it only alongside machine lexis. |
 
 **Typical English markers:** 🚀, 💡, ✅ as list bullets; "Here's what I found:" as an opener; a standalone "Sources:" section at the end.
+
+**Vendor-documented prose default** (Gemini 3 series, `GOOGLE-GEMINI-3-DEV-GUIDE`, read second-hand via sepia's ledger 2026-09-03; the vendor scopes the statement to the whole series, so any Gemini 3.x release matches): "By default, Gemini 3 is less verbose and prefers providing direct, efficient answers"; a conversational persona appears only when prompted. Handling: terse and unadorned is this series' default, so brevity is not evidence of a human here; check density in the other direction — required caveats and next steps dropped for efficiency.
 
 ---
 
@@ -313,7 +336,7 @@ What this means for the skill:
 
 1. **Never render a verdict on a single soft tell.** At least three different categories.
 2. **One unambiguous marker is enough.** A single `:contentReference[oaicite:0]` means AI with roughly 99% probability.
-3. **Don't attribute the model to the user.** The skill says "the text carries AI tells", not "GPT-5.5 wrote this". Model attribution can only ever be a reference note.
+3. **Don't attribute the model to the user, and don't infer it from the prose.** The skill says "the text carries AI tells", not "GPT-5.5 wrote this". A vendor block loads only for a model identity the user or the metadata supplied (the author role) or that you are running on (the executor role); the executor's block is applied to your own rewrite, not to the source text. Model attribution can only ever be a reference note.
 4. **Account for genre.** An em-dash in literary prose is the norm. In a corporate email it is a tell.
 5. **Account for date.** A 2023 text with "as an AI language model" is not a tell — it is the historical norm for GPT-3.5.
 
@@ -341,3 +364,6 @@ Minimum: reassess every 90 days.
 - WikiProject AI Cleanup.
 - Reddit communities: r/ChatGPT, r/ClaudeAI, r/Bard, r/LocalLLaMA — community observations.
 - Model release notes from Anthropic, OpenAI, Google, xAI — official changes.
+- Each vendor's prompting guide for the current release (the vendor-documented tier above): re-read the page, compare the quoted defaults against it, and update the release tag and the read date in `sources.md`. A vendor page that says nothing about how the model writes is recorded there as "consulted, no prose-layer statement" so the search is not repeated.
+
+**How a new tell earns its row.** A community observation is a lead, not a row. Before adding a tell, sample it: generate 20 or more outputs from the release on neutral prompts of the venue in question (the way the GPT-5.5 check above was run), record which candidate defaults recur across most samples and which appear once, and add only the recurring ones — with the sample size and date in the Note column. A tell seen in one thread and never reproduced stays out. The method is the one mshumer/unslop applies to find a model's defaults for a domain; it is what separates a fingerprint from an anecdote.

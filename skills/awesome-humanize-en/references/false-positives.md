@@ -157,7 +157,7 @@ The companion to section A.10 of `chatbot-artifacts.md`. Invisible and non-stand
 - **The narrow no-break space `U+202F`** is standard French typography and standard professional layout; Word, InDesign, and automatic typographic tools insert it on their own. Text from a translator, a typesetter, or a publishing pipeline is not a tell.
 - **Zero-width characters** enter text on export from a web CMS (soft-hyphen hints), from some mailing services, and on copy-paste from websites. Before you judge, ask where the text came from.
 - **`U+FEFF` at the start of a file** is a byte-order mark (BOM) — an encoding artifact, not a watermark.
-- **The reverse does not work either.** A total **absence** of em-dashes, or a "suspiciously clean" set of glyphs, is proof of neither human nor machine: 2026 editorial policies in places demand "zero em-dashes", people write that way on purpose, and models are trivially told "don't use em-dashes". Typography is a refining layer, never the verdict.
+- **The reverse does not work either.** A total **absence** of em-dashes, or a "suspiciously clean" set of glyphs, is proof of neither human nor machine: 2026 editorial policies in places demand "zero em-dashes", people write that way on purpose, and models are trivially told "don't use em-dashes". Typography is a refining layer, never the verdict, and detectors normalize it away before scoring (§15 below).
 
 ---
 
@@ -197,7 +197,22 @@ English Wikipedia extended §10 with an observation confirmed by a corpus study 
 - **Everyday intensifiers and hedges**: "very", "maybe", "usually" — living speech is full of them; the machine substitutes "extremely", "potentially", "in most cases".
 - **Wordy, colloquial connectors**: "because of the fact that", "in order to", "the fact that" — a person writes uneconomically, while the machine smooths these into "because" and "to".
 
-Each item is a weak signal; they work by accumulation. A text saturated with plain "is", plain verbs, and categorical judgments is almost certainly human.
+Each item is a weak signal; they work by accumulation. A text saturated with plain "is", plain verbs, and categorical judgments is almost certainly human. The same list, as edits rather than evidence, is the restore table in `edit-trace.md`.
+
+---
+
+## 15. Measured non-signals
+
+Three things editors reach for as tells are not signals, because the measurements contradict each other or contradict the folk belief. Numbers are pinned in `sources.md` (rows marked second-hand were read through another project's ledger and should be checked at the primary before anything new is built on them).
+
+| Not evidence | Why |
+|---|---|
+| Punctuation density, or a comma/period count | On one Chinese Q&A corpus punctuation density reads 0.135 human vs 0.136 ChatGPT while the punctuation share of tokens on the same corpus reads 16.0% vs 13.4%; in English news the human share sits inside the range of four base models. No per-type count (comma, period, semicolon) exists for English. `ZHU-CCL-2023` |
+| Em-dash frequency as a model-agnostic tell | Per 1,000 words across 2025–26 releases: 10.62 (GPT-4.1), 9.09 (Claude Opus 4.6), 1.43 (GPT-5.4), 0.00 (Llama 3.x), against a human mean of 3.23 from only eight essays. It is a release property: the cluster rule in `structural-style-patterns.md` #16 and the vendor rows in `llm-fingerprints.md` apply, never a blanket rule, and a text with no em-dashes proves nothing either way. `FREEBURG-2026` |
+| Paragraph count or average paragraph length | Directions contradict across corpora: machine paragraphs longer in how-to text, shorter in generated papers, and more numerous in Chinese answers (ChatGPT split more, the reverse of the "one wall of text" belief). Only uniformity of paragraph length *within* the text is a signal (`structure-pass.md` #28) |
+| Mean sentence length | Against 2023 base models human sentences were longer; against 2025 aligned models they are shorter. The mean flips with model generation; only the *spread* within a passage is a consistent direction, and no study prints a within-text figure to set a threshold from. `GUDE-2026` |
+
+Detectors read the same way. The strongest commercial detector's published 2025 pipeline lower-cased and unidecode-normalized its input before scoring, so an em-dash arrived as two hyphens and curly quotes as straight ones (`PANGRAM-COLING-2025`): swapping glyphs is not detector evasion, and minimally AI-polished human text was still judged AI 42.56% of the time across twelve detectors (`SAHA-FEIZI-2025`). This skill does not aim at detectors at all — expert human readers are the standard, and typography is an output rule (`SKILL.md`), not a disguise.
 
 ---
 
