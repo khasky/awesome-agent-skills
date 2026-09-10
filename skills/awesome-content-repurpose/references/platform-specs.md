@@ -35,7 +35,7 @@ These are ceilings, not targets, and they are enforced before a post is written 
 | `peerlist` | 480 | nothing visible — it truncates silently |
 | `wonderful-dev` | 2000 | the server, as `too_big, maximum 2000` |
 
-The whole file counts, including URLs, hashtags and emoji. Count the way the platform counts: a URL costs a fixed 23 characters on `x`, emoji cost two.
+The whole file counts, including URLs, hashtags and emoji. Count the way the platform counts: a URL costs a fixed 23 characters on `x`, emoji cost two — which is also how the gate script counts, in UTF-16 units.
 
 Write to roughly 95% of the cap, never to the edge. Two of these punish the edge without saying so: `peerlist` accepts an over-length body and publishes it truncated, with no counter and no error anywhere in the composer, and `wonderful-dev` refuses a long post with a console error the composer never surfaces.
 
@@ -111,58 +111,6 @@ ASCII punctuation throughout: `'` for apostrophes, `"` for quotes, `-` in place 
 
 ## The validation pass
 
-Runnable, and run before the run reports anything. It checks the contract, not the writing; the writing checks are in Phase 5.
+`node scripts/gate.mjs <posts-folder>` checks everything on this page and everything countable in `authored-style.md` in one run: the file set, the slugs, the caps at their 98% margin, the bands, the punctuation, the hashtag counts, the paragraph shape, the banned openers. It exits 0 or prints one `slug: check: detail` line per finding, and `--self-test` proves every check can fire. The numbers in the script and the numbers in these tables are the same numbers; a change to one is a change to both.
 
-```python
-import re, pathlib
-
-CAPS = {"x": 280, "bluesky": 300, "threads": 500,
-        "mastodon": 500, "peerlist": 480, "wonderful-dev": 2000}
-BANDS = {"ko-fi": (1500, 3500), "buymeacoffee": (1500, 5000),
-         "bastyon": (450, 950), "devto": (3000, 6000),
-         "medium": (4500, 8000), "substack": (4000, 8000),
-         "hackernoon": (4500, 7000), "nostr": (250, 400)}
-PLATFORMS = set(CAPS) | set(BANDS) | {
-    "linkedin", "facebook-wall", "instagram", "pinterest", "tumblr",
-    "truthsocial", "nostr", "minds", "patreon", "hashnode", "hackernoon",
-    "daily-dev", "lemmy", "reddit"}
-
-files = sorted(pathlib.Path(out).glob("*.md"))
-assert len(files) == 26, len(files)
-assert not (pathlib.Path(out) / "README.md").exists()
-seen = set()
-
-for p in files:
-    fields = p.stem.split("_")
-    assert len(fields) == 5, p.name           # date_time_tz_title_platform
-    slug = fields[4]
-    assert slug in PLATFORMS, slug
-    assert slug not in seen, ("duplicate platform", slug)
-    seen.add(slug)
-
-    t = p.read_text(encoding="utf-8").strip()
-    n = len(t)
-    assert "#show" not in t
-    assert not re.search(r"[—–―‘’“”→]", t), slug
-    if slug in CAPS:
-        assert n <= CAPS[slug] * 0.98, (slug, n, CAPS[slug])
-    if slug in BANDS:
-        lo, hi = BANDS[slug]
-        assert lo <= n <= hi, (slug, n, lo, hi)
-
-    blocks = re.split(r"\n\s*\n", t)
-    paras = [x.strip() for x in blocks if x.strip()
-             and not x.strip().startswith(("#", "-", "*", ">", "|", "`", "!["))]
-    oneline = [x for x in paras if "\n" not in x and len(x) <= 70]
-    run = best = 0
-    for x in paras:
-        run = run + 1 if x in oneline else 0
-        best = max(best, run)
-    assert best <= 2, (slug, "one-line paragraph run", best)
-    if n > 1500 and paras:
-        assert len(oneline) / len(paras) < 0.45, (slug, "one-line share", len(oneline), len(paras))
-
-assert seen == PLATFORMS, PLATFORMS - seen
-```
-
-A failing assertion is a rewrite of that post, never a trim to satisfy the number.
+A failing check is a rewrite of that post, never a trim to satisfy the number.
