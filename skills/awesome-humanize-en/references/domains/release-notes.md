@@ -6,7 +6,7 @@ Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (M
 
 ## Human baseline
 
-Terse, factual, user-impact first. The reader is deciding **whether to upgrade and what will break**; everything serves that decision. Conventional structure (Keep a Changelog categories Added / Changed / Fixed / Removed / Security, or the repo's own habit) is expected, not a tell.
+Terse, factual, user-impact first. The reader is deciding whether to upgrade and what will break; everything serves that decision. Conventional structure (Keep a Changelog categories Added / Changed / Fixed / Removed / Security, or the repo's own habit) is expected, not a tell.
 
 ## AI tells in this domain
 
@@ -21,7 +21,7 @@ Terse, factual, user-impact first. The reader is deciding **whether to upgrade a
 
 ## Rules
 
-1. **Breaking changes first**, with the exact migration step (the command, the config key, the renamed flag).
+1. Breaking changes first, with the exact migration step (the command, the config key, the renamed flag).
 2. Every claim carries its artifact: issue or PR numbers, commit ranges, exact version strings, real benchmark numbers with conditions. No artifact, no claim.
 3. Credit people plainly ("thanks @name for #398"), no gratitude paragraphs.
 4. Length follows the release: a patch release is three lines; do not inflate it to look substantial.

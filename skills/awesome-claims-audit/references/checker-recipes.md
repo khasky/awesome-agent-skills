@@ -26,7 +26,7 @@ Every check has an `id` (used in findings and in mutations), a `kind`, and an
 optional `"optional": true` — which turns a missing file into a `SKIP` line instead
 of a broken check, for repos that are not always checked out.
 
-**Options every target understands:**
+Options every target understands:
 
 - `"absent": true` — assert the pattern is *gone* rather than present.
 - `"why": "…"` — the sentence that lands in the finding. Write it as the defect,
@@ -48,7 +48,7 @@ asserting, confirm the value or item still appears somewhere in that corpus. It 
 the other half of a quoted-label pair: when the site stops quoting the label, the
 check is guarding nothing and should be deleted, not left green.
 
-Patterns are JavaScript regular expressions **inside JSON**, so every backslash is
+Patterns are JavaScript regular expressions inside JSON, so every backslash is
 doubled: `"([0-9_]+)"` stays as is, `"\\s*"` needs two. Capture group 1 is used
 unless the spec sets `group`. A source spec may carry `within` — a regex whose group
 1 narrows the search to one block, so a second list further down the same file can
@@ -173,7 +173,7 @@ against a revert, a copy-paste from an old draft, or a translation memory.
 
 ## Two recipes worth copying
 
-**A quoted UI label, resolved against the string catalog.** A `value` check whose
+A quoted UI label, resolved against the string catalog. A `value` check whose
 *source* is the catalog entry and whose *target* is the page that quotes it. The
 pattern reaches into the entry by key, so a renamed label fails here instead of
 confusing a user:
@@ -193,7 +193,7 @@ Curate these by hand — only a person can tell which quoted phrase is claiming 
 *be* the UI. And keep the pair honest in both directions: when the site stops
 quoting the label, drop the check rather than leave it green against nothing.
 
-**A documented flag the tool does not parse.** Copy-pasteable commands are the
+A documented flag the tool does not parse. Copy-pasteable commands are the
 claim shape that fails loudest, and it is a plain `list-parity`: every flag the
 docs show must be one the CLI actually reads.
 
@@ -229,12 +229,12 @@ edit:
 
 Read the result as three distinct signals:
 
-- **`CAUGHT`** — the check fires on the drift it claims to own.
-- **`MISSED`** — the check is looking somewhere too broad. The recurring cause: it
+- `CAUGHT` — the check fires on the drift it claims to own.
+- `MISSED` — the check is looking somewhere too broad. The recurring cause: it
   searches a whole file that holds the same value twice (a prerendered map and a
   runtime one), so breaking one copy leaves the other answering. Narrow it with
   `within` and give each map its own check.
-- **`SETUP-FAIL`** — the copy moved. The mutation anchor needs re-pointing; the
+- `SETUP-FAIL` — the copy moved. The mutation anchor needs re-pointing; the
   check itself may be fine.
 
 `prove-checks.mjs` runs the checker once more at the end and expects it green. A
@@ -255,11 +255,11 @@ claim lives; a map that over-promises sends it to the wrong file.
 
 ## Keeping the config honest
 
-- **One check, one claim.** A check that would report two unrelated findings is two
+- One check, one claim. A check that would report two unrelated findings is two
   checks; the mutation test can only prove one thing at a time.
-- **Anchor on the sentence, not the file.** Prefer `within` plus a tight pattern
+- Anchor on the sentence, not the file. Prefer `within` plus a tight pattern
   over "somewhere in this page".
-- **A broken check is a finding, not a pass.** When `could not parse …` appears,
+- A broken check is a finding, not a pass. When `could not parse …` appears,
   fix the pattern before trusting any other line of output.
-- **Add a mutation with every check**, in the same edit. A check added without one
+- Add a mutation with every check, in the same edit. A check added without one
   is unproven, and unproven checks accumulate silently.

@@ -10,11 +10,11 @@ metadata:
 
 # Grammar Check
 
-Advisory copy-editor. It **suggests, it does not rewrite** — the author keeps the pen. It scans prose across three named categories, returns located fixes with a reason, leads with the few that matter, and checks the text against its own purpose.
+Advisory copy-editor. It suggests, it does not rewrite — the author keeps the pen. It scans prose across three named categories, returns located fixes with a reason, leads with the few that matter, and checks the text against its own purpose.
 
 This is the correctness/clarity lane, distinct from its siblings:
-- Removing AI-generation tells (clichés, artifacts, machine rhythm) → **awesome-humanize-en**.
-- Rewriting or de-bloating a Markdown document in place → **awesome-document-style**.
+- Removing AI-generation tells (clichés, artifacts, machine rhythm) → awesome-humanize-en.
+- Rewriting or de-bloating a Markdown document in place → awesome-document-style.
 - awesome-grammar-check never rewrites the whole text and never removes "AI voice" — it flags concrete errors and hands them back.
 
 ## Inputs
@@ -36,10 +36,10 @@ Subject-verb agreement, tense consistency and drift, pronoun agreement and vague
 
 ### 2. Logic
 The highest-value category and the one generic proofreaders miss:
-- **Unsupported claim** — a factual assertion with no basis. Fix by adding the number/proof, or narrow the claim.
-- **Causation without evidence (post-hoc)** — "launched in Q3, so adoption rose" states cause from sequence. Fix by supplying the mechanism/number ("adoption rose 25% the next month, driven by the onboarding change") or downgrading to correlation. The repair **adds evidence, never a hedge**.
-- **Contradiction** — two statements that can't both hold; flag the pair.
-- **Vague quantifier** — "many", "significantly", "most users" with nothing behind it → ask for the figure or cut the intensifier.
+- Unsupported claim — a factual assertion with no basis. Fix by adding the number/proof, or narrow the claim.
+- Causation without evidence (post-hoc) — "launched in Q3, so adoption rose" states cause from sequence. Fix by supplying the mechanism/number ("adoption rose 25% the next month, driven by the onboarding change") or downgrading to correlation. The repair adds evidence, never a hedge.
+- Contradiction — two statements that can't both hold; flag the pair.
+- Vague quantifier — "many", "significantly", "most users" with nothing behind it → ask for the figure or cut the intensifier.
 
 ### 3. Flow
 Missing or jarring transitions, choppy runs of same-length sentences, overuse of the passive where an actor exists, buried lede (the point arrives three sentences late), redundancy (the same idea restated), and jargon the stated audience won't parse.
@@ -55,12 +55,12 @@ Missing or jarring transitions, choppy runs of same-length sentences, overuse of
 
 ## Output
 
-1. **Summary line** — error counts by category (Grammar N · Logic N · Flow N), and whether the text reads as ready / needs-work.
-2. **Top 3–5 fixes** — the highest-impact ones first, each labeled **Critical / High / Medium**, so the author fixes what matters before the long tail.
-3. **Full table** — `# | Location (quote) | Category | Issue | Suggested fix | Why`. Keep the suggestion minimal and quote the span; do not rewrite surrounding text. Explain the "Why" in plain terms, no grammar jargon the author would have to look up.
-4. **Objective/tone check** (only if `objective` was given) — one line on whether the text serves its purpose and the tone fits the audience.
+1. Summary line — error counts by category (Grammar N · Logic N · Flow N), and whether the text reads as ready / needs-work.
+2. Top 3–5 fixes — the highest-impact ones first, each labeled Critical / High / Medium, so the author fixes what matters before the long tail.
+3. Full table — `# | Location (quote) | Category | Issue | Suggested fix | Why`. Keep the suggestion minimal and quote the span; do not rewrite surrounding text. Explain the "Why" in plain terms, no grammar jargon the author would have to look up.
+4. Objective/tone check (only if `objective` was given) — one line on whether the text serves its purpose and the tone fits the audience.
 
-**Generation order is the reverse of the delivery order.** Build the full table first, derive the top list and the counts from it, and only then write the summary line. A verdict or a count committed before the scan steers the scan toward it; a judge that states its reasons before its score agrees measurably better with human experts. The reader still gets the summary on top — it is written last and placed first.
+Generation order is the reverse of the delivery order. Build the full table first, derive the top list and the counts from it, and only then write the summary line. A verdict or a count committed before the scan steers the scan toward it; a judge that states its reasons before its score agrees measurably better with human experts. The reader still gets the summary on top — it is written last and placed first.
 
 Advisory mode is the default and the only mode: return the list, never a rewritten document. If the user then says "apply them", apply only the fixes they name.
 
@@ -76,9 +76,9 @@ Advisory mode is the default and the only mode: return the list, never a rewritt
 Grammar 3 · Logic 2 · Flow 1 — needs work.
 
 Top fixes:
-1. **Critical** — "adoption rose because we shipped in Q3": cause asserted from sequence. Give the mechanism or the number.
-2. **High** — "most users prefer the new flow": no figure behind it. Supply the number or cut the claim.
-3. **Medium** — paragraph 2 reaches its point in sentence four. Lead with it.
+1. Critical — "adoption rose because we shipped in Q3": cause asserted from sequence. Give the mechanism or the number.
+2. High — "most users prefer the new flow": no figure behind it. Supply the number or cut the claim.
+3. Medium — paragraph 2 reaches its point in sentence four. Lead with it.
 
 | # | Location (quote) | Category | Issue | Suggested fix | Why |
 |---|------------------|----------|-------|---------------|-----|

@@ -15,27 +15,27 @@ Execute dependency upgrades so that each step is verified and each batch is reve
 ## When to Activate
 
 - "Upgrade/update dependencies", "bump X to v9", "fix `npm audit`", a bot PR needs handling.
-- An **awesome-dependency-audit** report produced findings to remediate — this skill is its acting half.
+- An awesome-dependency-audit report produced findings to remediate — this skill is its acting half.
 
-Do **not** activate to decide *whether* a package is risky (the audit owns detection) or to add a new dependency (ask-first, outside both skills).
+Do not activate to decide *whether* a package is risky (the audit owns detection) or to add a new dependency (ask-first, outside both skills).
 
 ## Work Process
 
-1. **Inventory before touching** — for each candidate: current resolved version (lockfile, not manifest), target version, direct or transitive, and why it's moving (security fix, feature need, hygiene). No reason → it waits; churn is not hygiene.
-2. **Classify by risk and batch accordingly** — lockfile-only refreshes and patch/minor bumps of well-locked packages batch together; every **major** goes alone, one at a time. Security-driven bumps jump the queue but follow the same verification.
-3. **One upgrade concern per commit** — never mix an upgrade with feature work or refactoring; the commit message names what moved and why. A batch is one revertable unit: if it breaks, one `git revert` restores the world.
-4. **Majors are changelog-driven, not semver-trusted** — read the release notes and migration guide for every major: the breaking-changes list is the work plan, not a formality. Run the project's codemod where one is offered before hand-editing. Semver is a promise, not a guarantee — treat "minor" bumps of frameworks and build tooling with major-grade suspicion, and check the installed version's own docs for renamed APIs rather than trusting memory.
-5. **Verify between batches, not at the end** — after each batch: install from lockfile, typecheck/build, full test suite, and read the output (exit codes, not vibes). A failure identifies its batch immediately; that is the entire point of batching.
-6. **Review the lockfile diff as code** — every added or changed entry accounted for by the manifest change that caused it; a surprise new package, a changed registry URL, or a new install script in the diff is a stop-and-investigate, not a shrug (`awesome-dependency-audit` Track A/B rules apply to the diff).
-7. **Unfixed transitive CVE** — when no upstream fix exists: pin with `overrides`/`resolutions`/`constraints`, comment the CVE id and the removal condition ("remove when `send` ≥ 0.19 reaches `express`"), and record it in the report. An override without a removal condition is how temporary pins become permanent archaeology.
-8. **Bot PRs get the same treatment** — automerge only patch-level bumps with a lockfile and a trustworthy CI suite; group bumps regenerate, never hand-merge conflicting lockfiles. A bot PR whose lockfile diff contains more than its manifest claims is declined and investigated.
+1. Inventory before touching — for each candidate: current resolved version (lockfile, not manifest), target version, direct or transitive, and why it's moving (security fix, feature need, hygiene). No reason → it waits; churn is not hygiene.
+2. Classify by risk and batch accordingly — lockfile-only refreshes and patch/minor bumps of well-locked packages batch together; every major goes alone, one at a time. Security-driven bumps jump the queue but follow the same verification.
+3. One upgrade concern per commit — never mix an upgrade with feature work or refactoring; the commit message names what moved and why. A batch is one revertable unit: if it breaks, one `git revert` restores the world.
+4. Majors are changelog-driven, not semver-trusted — read the release notes and migration guide for every major: the breaking-changes list is the work plan, not a formality. Run the project's codemod where one is offered before hand-editing. Semver is a promise, not a guarantee — treat "minor" bumps of frameworks and build tooling with major-grade suspicion, and check the installed version's own docs for renamed APIs rather than trusting memory.
+5. Verify between batches, not at the end — after each batch: install from lockfile, typecheck/build, full test suite, and read the output (exit codes, not vibes). A failure identifies its batch immediately; that is the entire point of batching.
+6. Review the lockfile diff as code — every added or changed entry accounted for by the manifest change that caused it; a surprise new package, a changed registry URL, or a new install script in the diff is a stop-and-investigate, not a shrug (`awesome-dependency-audit` Track A/B rules apply to the diff).
+7. Unfixed transitive CVE — when no upstream fix exists: pin with `overrides`/`resolutions`/`constraints`, comment the CVE id and the removal condition ("remove when `send` ≥ 0.19 reaches `express`"), and record it in the report. An override without a removal condition is how temporary pins become permanent archaeology.
+8. Bot PRs get the same treatment — automerge only patch-level bumps with a lockfile and a trustworthy CI suite; group bumps regenerate, never hand-merge conflicting lockfiles. A bot PR whose lockfile diff contains more than its manifest claims is declined and investigated.
 
 ## Rules
 
-- **Pin build-time executors exactly** — anything running at build/CI time (`npx pkg@x.y.z`, codegen, formatters) moves by explicit pin, never floats.
-- **Deprecated before deleted** — an upgrade that surfaces deprecation warnings schedules their fixes now, while the migration guide is open; ignoring them stores the same work for a worse day.
-- **Peer-dependency conflicts are decisions** — forcing resolution (`--force`, `--legacy-peer-deps`) hides an incompatibility; resolve it by choosing versions, or record the accepted mismatch and why.
-- **Ecosystem-agnostic** — the same discipline holds for `package.json`/lockfile, `requirements.txt`/`poetry.lock`, `go.mod`, `Cargo.toml`, `pom.xml`/gradle, `Gemfile.lock`; only the freeze and override mechanisms change names.
+- Pin build-time executors exactly — anything running at build/CI time (`npx pkg@x.y.z`, codegen, formatters) moves by explicit pin, never floats.
+- Deprecated before deleted — an upgrade that surfaces deprecation warnings schedules their fixes now, while the migration guide is open; ignoring them stores the same work for a worse day.
+- Peer-dependency conflicts are decisions — forcing resolution (`--force`, `--legacy-peer-deps`) hides an incompatibility; resolve it by choosing versions, or record the accepted mismatch and why.
+- Ecosystem-agnostic — the same discipline holds for `package.json`/lockfile, `requirements.txt`/`poetry.lock`, `go.mod`, `Cargo.toml`, `pom.xml`/gradle, `Gemfile.lock`; only the freeze and override mechanisms change names.
 
 ## Output Format
 

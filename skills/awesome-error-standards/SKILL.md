@@ -21,25 +21,25 @@ Apply consistent patterns for throwing, catching, logging, and surfacing errors 
 
 ## Core Principles
 
-- **Operational vs programmer errors** — Classify first. Operational failures (network timeout, invalid input, missing record) are expected: handle, retry, or surface them. Programmer errors (undefined access, broken invariant) are bugs: crash loudly or restart the process rather than limping on with corrupted state.
-- **Make the bug impossible, not just fixed** — A single-point fix stops one path; defense in depth stops the class. Prefer prevention left of production, in order: (1) make invalid states unrepresentable in the type system (discriminated unions, branded/opaque types) so bad states won't compile; (2) validate at the boundary; (3) runtime guards; (4) error boundaries. For a high-value invariant, guard it at more than one layer and test that bypassing an outer layer still gets caught by an inner one (deliberately skip Layer 1, verify Layer 2 catches it; confirm mocks don't silently disable a validation).
-- **Fail at startup, not in production** — Validate all required config, env vars, and connections at init and refuse to boot on failure, rather than discovering a missing value on the first request.
-- **Fail fast** — Validate inputs and preconditions early; throw or return errors with clear messages. Do not continue with invalid state.
-- **Do not swallow** — Avoid empty catch or broad catch that ignores; log and/or rethrow or return a result type. Propagate with context.
-- **Structured errors** — Use a consistent shape (e.g. code, message, details) for API errors and for logs. Typed error classes or codes help callers handle by type.
-- **User vs developer** — User-facing messages are safe and actionable; developer-facing detail (stack, internal message, request id) in logs or debug only. Never expose stack traces or SQL to end users.
+- Operational vs programmer errors — Classify first. Operational failures (network timeout, invalid input, missing record) are expected: handle, retry, or surface them. Programmer errors (undefined access, broken invariant) are bugs: crash loudly or restart the process rather than limping on with corrupted state.
+- Make the bug impossible, not just fixed — A single-point fix stops one path; defense in depth stops the class. Prefer prevention left of production, in order: (1) make invalid states unrepresentable in the type system (discriminated unions, branded/opaque types) so bad states won't compile; (2) validate at the boundary; (3) runtime guards; (4) error boundaries. For a high-value invariant, guard it at more than one layer and test that bypassing an outer layer still gets caught by an inner one (deliberately skip Layer 1, verify Layer 2 catches it; confirm mocks don't silently disable a validation).
+- Fail at startup, not in production — Validate all required config, env vars, and connections at init and refuse to boot on failure, rather than discovering a missing value on the first request.
+- Fail fast — Validate inputs and preconditions early; throw or return errors with clear messages. Do not continue with invalid state.
+- Do not swallow — Avoid empty catch or broad catch that ignores; log and/or rethrow or return a result type. Propagate with context.
+- Structured errors — Use a consistent shape (e.g. code, message, details) for API errors and for logs. Typed error classes or codes help callers handle by type.
+- User vs developer — User-facing messages are safe and actionable; developer-facing detail (stack, internal message, request id) in logs or debug only. Never expose stack traces or SQL to end users.
 
 ## Work Process
 
-1. **Identify boundaries** — Where do errors originate (validation, DB, external API, auth)? Where are they handled (route handler, middleware, top-level)? Ensure every layer either handles or propagates with context.
-2. **Define error shape** — For API: HTTP status + body envelope (code, message, optional details). For code: error class or result type. Match existing project pattern if present.
-3. **Map errors to HTTP (for APIs)** — Validation → 400 or 422; auth → 401; authz → 403; not found → 404; conflict → 409; server → 500. Do not return 200 with `success: false` for errors. Pick ONE style for validation failures (400 vs 422), document it, and apply it across every endpoint — mixed behavior breaks generated clients and callers' error branching.
-4. **Log before respond** — Log error with context (request id, user id if safe, operation) at appropriate level (error/warn). Then return user-safe response.
-5. **Validate and sanitize** — Use schema (Zod, Pydantic, etc.) at API boundary; return field-level validation errors in consistent format.
+1. Identify boundaries — Where do errors originate (validation, DB, external API, auth)? Where are they handled (route handler, middleware, top-level)? Ensure every layer either handles or propagates with context.
+2. Define error shape — For API: HTTP status + body envelope (code, message, optional details). For code: error class or result type. Match existing project pattern if present.
+3. Map errors to HTTP (for APIs) — Validation → 400 or 422; auth → 401; authz → 403; not found → 404; conflict → 409; server → 500. Do not return 200 with `success: false` for errors. Pick ONE style for validation failures (400 vs 422), document it, and apply it across every endpoint — mixed behavior breaks generated clients and callers' error branching.
+4. Log before respond — Log error with context (request id, user id if safe, operation) at appropriate level (error/warn). Then return user-safe response.
+5. Validate and sanitize — Use schema (Zod, Pydantic, etc.) at API boundary; return field-level validation errors in consistent format.
 
 ## API Error Response
 
-**Standard envelope:**
+Standard envelope:
 
 ```json
 {
@@ -53,29 +53,29 @@ Apply consistent patterns for throwing, catching, logging, and surfacing errors 
 }
 ```
 
-- **code** — Machine-readable (e.g. `validation_error`, `not_found`, `rate_limit_exceeded`). Clients can switch on this.
-- **message** — Human-readable, safe to show to user. No stack traces or internal paths.
-- **details** — Optional; for validation, list field-level errors. Omit for generic 500.
-- **request_id / trace_id** — Optional in envelope or headers for support; do not expose internals.
+- code — Machine-readable (e.g. `validation_error`, `not_found`, `rate_limit_exceeded`). Clients can switch on this.
+- message — Human-readable, safe to show to user. No stack traces or internal paths.
+- details — Optional; for validation, list field-level errors. Omit for generic 500.
+- request_id / trace_id — Optional in envelope or headers for support; do not expose internals.
 
-**HTTP status:** 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests, 500 Internal Server Error. Use semantically; do not use 200 for errors.
+HTTP status: 400 Bad Request, 401 Unauthorized, 403 Forbidden, 404 Not Found, 409 Conflict, 422 Unprocessable Entity, 429 Too Many Requests, 500 Internal Server Error. Use semantically; do not use 200 for errors.
 
 ## Retrying failed calls (client side)
 
 Classify every failure by whether a retry can help — retrying a non-retryable error just wastes time and can double effects:
 
-- **Never retry** (fix the request): 400, 401, 403, 404, 415, most 422 — the input or auth is wrong, retrying won't change it.
-- **Retry after modifying the request**: 402 (top up / change plan), some 422 (adjust payload). Not a blind retry.
-- **Retry with backoff**: 429, 500, 502, 503, 504 — transient. Cap attempts (~5) and total wait (~30s); use exponential backoff **with jitter** to avoid thundering herds.
+- Never retry (fix the request): 400, 401, 403, 404, 415, most 422 — the input or auth is wrong, retrying won't change it.
+- Retry after modifying the request: 402 (top up / change plan), some 422 (adjust payload). Not a blind retry.
+- Retry with backoff: 429, 500, 502, 503, 504 — transient. Cap attempts (~5) and total wait (~30s); use exponential backoff with jitter to avoid thundering herds.
 
 Rules:
-- **Honor the server's signal** — respect `Retry-After` and `X-RateLimit-Reset`/`X-RateLimit-*` headers over your own timer when present.
-- **Idempotency-Key on retried state-mutating requests** — a POST/PATCH that charges, creates, or sends can succeed on the server while the response is lost; a naive retry double-charges. Send a stable idempotency key so the server dedupes.
-- **Streaming (SSE/websocket)** — errors arrive as an in-stream event (an `error` event or a terminal frame), not as an HTTP status, because the status was already 200 when the stream opened. Handle the stream's error channel explicitly, not just the initial response code.
+- Honor the server's signal — respect `Retry-After` and `X-RateLimit-Reset`/`X-RateLimit-*` headers over your own timer when present.
+- Idempotency-Key on retried state-mutating requests — a POST/PATCH that charges, creates, or sends can succeed on the server while the response is lost; a naive retry double-charges. Send a stable idempotency key so the server dedupes.
+- Streaming (SSE/websocket) — errors arrive as an in-stream event (an `error` event or a terminal frame), not as an HTTP status, because the status was already 200 when the stream opened. Handle the stream's error channel explicitly, not just the initial response code.
 
 ## Code Patterns
 
-**Typed errors (recommended):**
+Typed errors (recommended):
 
 ```typescript
 class NotFoundError extends Error {
@@ -87,16 +87,16 @@ class NotFoundError extends Error {
 // Caller: catch (e) { if (e instanceof NotFoundError) return res.status(404).json(...); }
 ```
 
-**Layered handling:** Lower layers throw or return Result; route handler or middleware catches and maps to HTTP + log. Do not catch at every layer; propagate and handle at boundary.
+Layered handling: Lower layers throw or return Result; route handler or middleware catches and maps to HTTP + log. Do not catch at every layer; propagate and handle at boundary.
 
-**Async:** Use try/catch in async functions; ensure promise rejections are handled (e.g. global handler or .catch) so they are logged and not unhandled. Register boundary handlers for `unhandledRejection`/`uncaughtException` (or the platform's equivalent): log with context, then exit for programmer errors — do not resume on corrupted state.
+Async: Use try/catch in async functions; ensure promise rejections are handled (e.g. global handler or .catch) so they are logged and not unhandled. Register boundary handlers for `unhandledRejection`/`uncaughtException` (or the platform's equivalent): log with context, then exit for programmer errors — do not resume on corrupted state.
 
 ## Logging with Errors
 
-- **Level:** error for failures that need attention; warn for recoverable (e.g. retry, fallback).
-- **Content:** Log message, error type, stack (server-side only), request_id. Do not log secrets or full PII.
-- **Once:** Log at the boundary where you handle the error; avoid logging the same error at every layer.
-- **Safe serialization:** In log/error paths use a safe serializer (`safeStringify`, structured logger's own serializer), not raw `JSON.stringify` — it throws on circular references and `BigInt`, which can crash the very handler trying to report the failure.
+- Level: error for failures that need attention; warn for recoverable (e.g. retry, fallback).
+- Content: Log message, error type, stack (server-side only), request_id. Do not log secrets or full PII.
+- Once: Log at the boundary where you handle the error; avoid logging the same error at every layer.
+- Safe serialization: In log/error paths use a safe serializer (`safeStringify`, structured logger's own serializer), not raw `JSON.stringify` — it throws on circular references and `BigInt`, which can crash the very handler trying to report the failure.
 
 ## Rules
 

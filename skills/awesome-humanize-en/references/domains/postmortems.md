@@ -22,7 +22,7 @@ Blameless toward people, merciless toward mechanisms. The real document has abso
 
 ## Rules
 
-1. **Timeline with absolute times and timezone**, including the wrong turns. The 40 minutes on the bad hypothesis is the most instructive part, and models systematically omit the failure inside the failure.
+1. Timeline with absolute times and timezone, including the wrong turns. The 40 minutes on the bad hypothesis is the most instructive part, and models systematically omit the failure inside the failure.
 2. The failure mechanism at code or config level: the exact query, flag, limit, or race. If the writer does not know it, that is a question for the team, not a blank to prose over.
 3. Counterfactuals stated honestly: what would have caught it, and why it did not exist. No "the system worked as designed" face-saving.
 4. Contributing factors as a causal chain, not a bullet cloud: each factor says what it enabled.

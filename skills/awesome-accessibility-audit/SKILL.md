@@ -23,15 +23,15 @@ Read-only: it reports findings, each with the markup or attribute change that re
 
 ## Work Process
 
-1. **Define scope** — Page, component, or flow to review (e.g. login form, report table, modal dialog).
-2. **Check each area** — Semantic HTML, keyboard, labels and names, color and contrast, dynamic content, motion. Use the checklists below.
-3. **Document findings** — Location (component/file or element type), WCAG criterion or principle, issue, impact, and recommended fix. Severity: Critical / High / Medium.
-4. **Give the fix, do not apply it** — A code snippet or attribute change in the report where possible. Prefer native HTML and correct ARIA over custom widgets when they suffice.
-5. **Recommend follow-up** — Suggest automated tools (e.g. axe, Lighthouse, pa11y; in CI, fail the build on critical) and manual testing for broader coverage. Automated tools catch roughly 30–40% of WCAG issues — the rest is manual. Recommend a flow × assistive-tech matrix: test each key user flow across keyboard-only, a screen reader (VoiceOver on Mac/iOS, NVDA on Windows, TalkBack on Android), 200% and 400% zoom / reflow (WCAG 1.4.10), Windows High Contrast, and reduced-motion; note Voice Control/Dragon and Switch Control where relevant. Do not claim full WCAG compliance from a single review.
+1. Define scope — Page, component, or flow to review (e.g. login form, report table, modal dialog).
+2. Check each area — Semantic HTML, keyboard, labels and names, color and contrast, dynamic content, motion. Use the checklists below.
+3. Document findings — Location (component/file or element type), WCAG criterion or principle, issue, impact, and recommended fix. Severity: Critical / High / Medium.
+4. Give the fix, do not apply it — A code snippet or attribute change in the report where possible. Prefer native HTML and correct ARIA over custom widgets when they suffice.
+5. Recommend follow-up — Suggest automated tools (e.g. axe, Lighthouse, pa11y; in CI, fail the build on critical) and manual testing for broader coverage. Automated tools catch roughly 30–40% of WCAG issues — the rest is manual. Recommend a flow × assistive-tech matrix: test each key user flow across keyboard-only, a screen reader (VoiceOver on Mac/iOS, NVDA on Windows, TalkBack on Android), 200% and 400% zoom / reflow (WCAG 1.4.10), Windows High Contrast, and reduced-motion; note Voice Control/Dragon and Switch Control where relevant. Do not claim full WCAG compliance from a single review.
    - For automated assertions in tests: `axe-core` with `.withTags(['wcag2a','wcag2aa'])` targets a specific WCAG tier and can fail CI on violations; Playwright's `page.ariaSnapshot()` (1.59+) asserts the accessibility tree of dialogs, menus, and composite widgets — coverage beyond what axe/Lighthouse give.
    - Run automated scans at more than one viewport (mobile and desktop breakpoints, not only the default): focus-obscured, overlapping targets, and reflow violations appear or vanish with viewport size, so a single-viewport scan silently under-reports.
 
-**Done when:** the scope is stated, every checklist area below has been walked, each finding carries its location, its WCAG criterion and its fix, and whatever only a screen reader or a second viewport could settle is named as untested rather than assumed.
+Done when: the scope is stated, every checklist area below has been walked, each finding carries its location, its WCAG criterion and its fix, and whatever only a screen reader or a second viewport could settle is named as untested rather than assumed.
 
 ## Focus Areas and Checklist
 
@@ -83,12 +83,12 @@ Read-only: it reports findings, each with the markup or attribute change that re
 
 ### 7. WCAG 2.2 additions (often missed)
 
-- [ ] **2.4.11 Focus not obscured** — sticky headers/footers must not hide the focused element (`scroll-margin-top` helps).
-- [ ] **2.5.8 Target size** — interactive targets at least 24×24 CSS px, or sufficient spacing between smaller ones. When the visible control is smaller, extend the hit area to 40–44px with a pseudo-element; two interactive elements must never have overlapping hit areas; a checkbox/radio and its label share one continuous target.
-- [ ] **2.5.7 Dragging movements** — every drag operation has a click/tap alternative.
-- [ ] **3.3.7 Redundant entry** — don't ask for the same information twice within one flow.
-- [ ] **3.3.8 Accessible authentication** — no cognitive test to log in; paste allowed in password fields; passkey or email-link alternative offered.
-- [ ] **3.2.6 Consistent help** — help mechanism appears in the same place on every page.
+- [ ] 2.4.11 Focus not obscured — sticky headers/footers must not hide the focused element (`scroll-margin-top` helps).
+- [ ] 2.5.8 Target size — interactive targets at least 24×24 CSS px, or sufficient spacing between smaller ones. When the visible control is smaller, extend the hit area to 40–44px with a pseudo-element; two interactive elements must never have overlapping hit areas; a checkbox/radio and its label share one continuous target.
+- [ ] 2.5.7 Dragging movements — every drag operation has a click/tap alternative.
+- [ ] 3.3.7 Redundant entry — don't ask for the same information twice within one flow.
+- [ ] 3.3.8 Accessible authentication — no cognitive test to log in; paste allowed in password fields; passkey or email-link alternative offered.
+- [ ] 3.2.6 Consistent help — help mechanism appears in the same place on every page.
 
 ## Output Format
 
@@ -118,13 +118,13 @@ Summary: "Reviewed: [scope]. Found X critical, Y high, Z medium. Recommend autom
 
 ## Severity
 
-- **Critical** — Blocks core task (e.g. cannot submit form, cannot navigate with keyboard, no labels on required fields). Fix before release.
-- **High** — Significant barrier (e.g. poor contrast, missing headings, confusing order). Fix soon.
-- **Medium** — Improvement (e.g. redundant label, minor contrast). Backlog or fix when touching the component.
+- Critical — Blocks core task (e.g. cannot submit form, cannot navigate with keyboard, no labels on required fields). Fix before release.
+- High — Significant barrier (e.g. poor contrast, missing headings, confusing order). Fix soon.
+- Medium — Improvement (e.g. redundant label, minor contrast). Backlog or fix when touching the component.
 
 ## Good vs bad examples
 
-**Button:**
+Button:
 ```html
 <!-- BAD -->
 <div onclick="submit()">Submit</div>
@@ -133,7 +133,7 @@ Summary: "Reviewed: [scope]. Found X critical, Y high, Z medium. Recommend autom
 <button type="submit">Submit</button>
 ```
 
-**Image:**
+Image:
 ```html
 <!-- Decorative -->
 <img src="decoration.svg" alt="" role="presentation">
@@ -142,7 +142,7 @@ Summary: "Reviewed: [scope]. Found X critical, Y high, Z medium. Recommend autom
 <img src="chart.png" alt="Bar chart showing revenue up 20% in Q4">
 ```
 
-**Form:**
+Form:
 ```html
 <!-- BAD -->
 <input type="email" placeholder="Email">
@@ -158,9 +158,9 @@ Each checklist item encodes a default that prevents the most common failure mode
 
 ## Rules
 
-- **Do not claim full compliance** — Frame as "issues found in reviewed scope." Recommend automated and manual testing for full coverage.
-- **Prefer native HTML** — Use `<button>`, `<label>`, `<main>`, etc. Use ARIA when semantics cannot be expressed with HTML (e.g. `aria-expanded` on a custom accordion).
-- **Component libraries** — If the project uses one (e.g. Radix, MUI), note library a11y patterns (focus trap, roles) and ensure they are used correctly rather than reimplementing.
+- Do not claim full compliance — Frame as "issues found in reviewed scope." Recommend automated and manual testing for full coverage.
+- Prefer native HTML — Use `<button>`, `<label>`, `<main>`, etc. Use ARIA when semantics cannot be expressed with HTML (e.g. `aria-expanded` on a custom accordion).
+- Component libraries — If the project uses one (e.g. Radix, MUI), note library a11y patterns (focus trap, roles) and ensure they are used correctly rather than reimplementing.
 
 ## Checklist (before finishing)
 

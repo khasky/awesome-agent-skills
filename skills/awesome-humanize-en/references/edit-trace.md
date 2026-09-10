@@ -2,16 +2,16 @@
 
 Everything else in this skill hunts the *generation* trace: the words, shapes and structures a model produces. This file guards the *editing* trace: what an editor (human or model) leaves behind when it rewrites someone else's text. The two are different and are checked differently.
 
-**Why it is a separate check.** Measured on English (Shan, Lee and Hao 2026, `sources.md` `SHAN-EDIT-2026`; read second-hand, see the ledger note), machine-edited texts differ from their human sources in a way that is the *reverse* of the generation footprint: generation raises entropy and lexical diversity, editing lowers entropy slightly and cuts the share of content words sharply. Read plainly: an editor's fingerprint is the filler it pours in around the content, not the words it changes. That is why the edit budget in `structure-pass.md` skews replace and delete over insert, and why the tests below run before any rewrite is delivered.
+Why it is a separate check. Measured on English (Shan, Lee and Hao 2026, `sources.md` `SHAN-EDIT-2026`; read second-hand, see the ledger note), machine-edited texts differ from their human sources in a way that is the *reverse* of the generation footprint: generation raises entropy and lexical diversity, editing lowers entropy slightly and cuts the share of content words sharply. Read plainly: an editor's fingerprint is the filler it pours in around the content, not the words it changes. That is why the edit budget in `structure-pass.md` skews replace and delete over insert, and why the tests below run before any rewrite is delivered.
 
 ## Two tests, run before delivering a standard, deep or voice-match edit
 
-- **Deletion test**, on every word or phrase you added: strike it. If the sentence still parses and still says the same thing, it was filler. Delete it.
-- **Reversion test**, on every replacement: put back what it replaced. If the old wording was sound and said the same in fewer words, keep the old.
+- Deletion test, on every word or phrase you added: strike it. If the sentence still parses and still says the same thing, it was filler. Delete it.
+- Reversion test, on every replacement: put back what it replaced. If the old wording was sound and said the same in fewer words, keep the old.
 
-**Repair fails both tests and stays.** The article or preposition a broken sentence needs, the subject a split run-on needs, the verb that replaces a nominalization, the reordering that makes an ungrammatical sentence grammatical. Repair is not growth.
+Repair fails both tests and stays. The article or preposition a broken sentence needs, the subject a split run-on needs, the verb that replaces a nominalization, the reordering that makes an ungrammatical sentence grammatical. Repair is not growth.
 
-**The passage must not end longer than it began**, with one exception: real specificity the author supplied (a name, a number, an object, an action from lived detail). Generic detail added to "fix" vagueness is the documented machine repair and makes the text worse.
+The passage must not end longer than it began, with one exception: real specificity the author supplied (a name, a number, an object, an action from lived detail). Generic detail added to "fix" vagueness is the documented machine repair and makes the text worse.
 
 ## What to restore — the underused human register
 

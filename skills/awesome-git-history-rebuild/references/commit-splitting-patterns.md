@@ -6,20 +6,20 @@ How large, long-lived projects decide where one commit ends and the next begins 
 
 Four sources agree almost word for word, which is why the rules below are treated as settled rather than as one project's taste:
 
-- **git's own `SubmittingPatches`** — "Make separate commits for logically separate changes." "If your description starts to get too long, that's a sign that you probably need to split up your commit to finer grained pieces." Subject: ~50 characters, `area: lowercase summary`, no full stop, imperative mood. Body: what is wrong without the change, why this fix is better, what alternatives were discarded.
-- **The Linux kernel's `submitting-patches`** — "Separate each logical change into a separate patch." A bug fix and a performance improvement in the same driver are two patches. The tree must build and run after *every* patch in the series, so `git bisect` never lands on a broken state. Series longer than ~15 patches get posted in batches.
-- **OpenStack's `GitCommitMessages`** — the sharpest statement of the rule: "If a code change can be split into a sequence of patches/commits, then it should be split." Named anti-patterns: whitespace mixed with functional change, two unrelated features in one commit, a giant feature commit that should have been refactor → new API → use of the new API. Metadata trailers go last.
-- **Angular / Conventional Commits** — `type(scope): summary`, types `feat, fix, docs, refactor, perf, test, build, ci, chore`, scope from a fixed vocabulary (the package or area a changelog reader would recognize), summary in present tense, not capitalized, no period. This is the format tooling reads: it decides the version bump and the changelog sections.
+- git's own `SubmittingPatches` — "Make separate commits for logically separate changes." "If your description starts to get too long, that's a sign that you probably need to split up your commit to finer grained pieces." Subject: ~50 characters, `area: lowercase summary`, no full stop, imperative mood. Body: what is wrong without the change, why this fix is better, what alternatives were discarded.
+- The Linux kernel's `submitting-patches` — "Separate each logical change into a separate patch." A bug fix and a performance improvement in the same driver are two patches. The tree must build and run after *every* patch in the series, so `git bisect` never lands on a broken state. Series longer than ~15 patches get posted in batches.
+- OpenStack's `GitCommitMessages` — the sharpest statement of the rule: "If a code change can be split into a sequence of patches/commits, then it should be split." Named anti-patterns: whitespace mixed with functional change, two unrelated features in one commit, a giant feature commit that should have been refactor → new API → use of the new API. Metadata trailers go last.
+- Angular / Conventional Commits — `type(scope): summary`, types `feat, fix, docs, refactor, perf, test, build, ci, chore`, scope from a fixed vocabulary (the package or area a changelog reader would recognize), summary in present tense, not capitalized, no period. This is the format tooling reads: it decides the version bump and the changelog sections.
 
 ## The seven rules
 
-1. **One logical change per commit.** The test is the message: if the subject needs an "and", or the body needs a list, it is two commits.
-2. **Dependencies before consumers.** A module lands after everything it imports. This is what makes a log read as work rather than as a directory listing.
-3. **Mechanical apart from behavioral.** A rename, a move, a format, an import reshuffle — never in the same commit as a change that alters behavior. Reviewers cannot see a bug inside 900 renamed lines.
-4. **Generated and vendored files get their own commit.** Lockfiles, `go.sum`, generated clients, compiled protobufs, minified bundles, checked-in `dist/`. Mixing them into a feature commit buries the human-written diff.
-5. **Formatting alone, and record it.** A repo-wide reformat is one commit, referenced afterwards in `.git-blame-ignore-revs` so `git blame` stays useful.
-6. **Each commit is a state someone could ship** — the kernel's bisect rule. On a rebuild from a finished tree this is often unaffordable; that is exactly the difference between `--mode bisectable` and `--mode story`, and the mode belongs in the report rather than being quietly assumed.
-7. **The message says why.** The diff already says what. A subject that restates the filenames is a wasted line.
+1. One logical change per commit. The test is the message: if the subject needs an "and", or the body needs a list, it is two commits.
+2. Dependencies before consumers. A module lands after everything it imports. This is what makes a log read as work rather than as a directory listing.
+3. Mechanical apart from behavioral. A rename, a move, a format, an import reshuffle — never in the same commit as a change that alters behavior. Reviewers cannot see a bug inside 900 renamed lines.
+4. Generated and vendored files get their own commit. Lockfiles, `go.sum`, generated clients, compiled protobufs, minified bundles, checked-in `dist/`. Mixing them into a feature commit buries the human-written diff.
+5. Formatting alone, and record it. A repo-wide reformat is one commit, referenced afterwards in `.git-blame-ignore-revs` so `git blame` stays useful.
+6. Each commit is a state someone could ship — the kernel's bisect rule. On a rebuild from a finished tree this is often unaffordable; that is exactly the difference between `--mode bisectable` and `--mode story`, and the mode belongs in the report rather than being quietly assumed.
+7. The message says why. The diff already says what. A subject that restates the filenames is a wasted line.
 
 ## Default strategy: layered
 
@@ -38,7 +38,7 @@ The default plan orders commits by dependency depth, which for almost any codeba
 | 9. Automation | CI workflows, release scripts, hooks, dependabot | `ci`, `chore` |
 | 10. Documentation | README, CONTRIBUTING, docs/, screenshots, community files | `docs` |
 
-**Tests: with the feature or after it?** Follow the repo. Angular-style projects require the test in the same commit as the `feat`/`fix` and reject it separately; kernel-style projects and most Go repos do the same. A repo whose log shows standalone `test:` commits gets standalone test commits. Default when nothing indicates either way: fold the test into the commit that adds the code it covers, and use a separate `test:` commit only for test infrastructure (fixtures, harness, setup files).
+Tests: with the feature or after it? Follow the repo. Angular-style projects require the test in the same commit as the `feat`/`fix` and reject it separately; kernel-style projects and most Go repos do the same. A repo whose log shows standalone `test:` commits gets standalone test commits. Default when nothing indicates either way: fold the test into the commit that adds the code it covers, and use a separate `test:` commit only for test infrastructure (fixtures, harness, setup files).
 
 ## Granularity
 
@@ -71,25 +71,25 @@ If the split needs a commit type the tree cannot support, the split is wrong, no
 
 Real logs are not perfectly layered, and a rebuild that is *too* clean reads as generated. These shapes are legitimate because they follow the tree, not a script:
 
-- **Scaffold, then the first vertical slice.** Real projects get one end-to-end path working before broadening. If the tree has an obvious first capability, it lands early and completely.
-- **A module, then its follow-up.** When a module contains a clearly separable hardening artifact (the guard, the retry, the platform workaround), it is honest to land the module and then the artifact — that is how it was written.
-- **Deps early, deps again later.** A lockfile bump that a later module obviously required belongs next to that module, not all at the front.
-- **CI once there is something to build.** A workflow commit before the code it builds is an artifact of alphabetical thinking.
-- **Docs after the thing they document**, and the README's screenshots after the UI exists.
-- **The community and legal files** (`LICENSE`, issue templates, funding, security policy) land as one late housekeeping commit in most repos, not scattered.
+- Scaffold, then the first vertical slice. Real projects get one end-to-end path working before broadening. If the tree has an obvious first capability, it lands early and completely.
+- A module, then its follow-up. When a module contains a clearly separable hardening artifact (the guard, the retry, the platform workaround), it is honest to land the module and then the artifact — that is how it was written.
+- Deps early, deps again later. A lockfile bump that a later module obviously required belongs next to that module, not all at the front.
+- CI once there is something to build. A workflow commit before the code it builds is an artifact of alphabetical thinking.
+- Docs after the thing they document, and the README's screenshots after the UI exists.
+- The community and legal files (`LICENSE`, issue templates, funding, security policy) land as one late housekeeping commit in most repos, not scattered.
 
-What is **not** legitimate: a `fix:` commit that repairs code the same series just deliberately wrote wrong, a `revert:` of a commit that never existed, or padding the count with cosmetic splits. The changelog is read by users; fictional entries in it are a lie with a version number attached.
+What is not legitimate: a `fix:` commit that repairs code the same series just deliberately wrote wrong, a `revert:` of a commit that never existed, or padding the count with cosmetic splits. The changelog is read by users; fictional entries in it are a lie with a version number attached.
 
 ## The six re-split strategies
 
 Offer these by name when the user rejects the proposed table.
 
-- **A. Layered** (default) — the table above. Best for a first release and for a changelog that should read as a feature list.
-- **B. Feature-vertical** — one commit per user-visible capability, each spanning backend, UI and tests. Best when the audience is users rather than reviewers, and when modules are thin.
-- **C. Reconstructed** — rebuild the *actual* old history from `old-history.txt`: keep its real topics and order, condensing runs of `wip`/`fix typo`/`chore: sync` into the meaningful commit they belong to. The most honest shape available, and the right default when the old log has 30+ real commits with real subjects.
-- **D. Coarse or fine** — the same strategy at a different granularity. Coarse (5–9) for a small library; fine (25–40) when the changelog is the deliverable.
-- **E. Changelog-first** — group so the generated release notes read well: every user-visible capability its own `feat`, everything the tooling hides (`chore`, `ci`, `docs`, `style`) swept into as few commits as possible. Check the result with the repo's own changelog dry run before approval.
-- **F. Manual** — the user dictates the grouping. This skill then only validates coverage (every path exactly once), message format against the repo's rules, and the tree diff.
+- A. Layered (default) — the table above. Best for a first release and for a changelog that should read as a feature list.
+- B. Feature-vertical — one commit per user-visible capability, each spanning backend, UI and tests. Best when the audience is users rather than reviewers, and when modules are thin.
+- C. Reconstructed — rebuild the *actual* old history from `old-history.txt`: keep its real topics and order, condensing runs of `wip`/`fix typo`/`chore: sync` into the meaningful commit they belong to. The most honest shape available, and the right default when the old log has 30+ real commits with real subjects.
+- D. Coarse or fine — the same strategy at a different granularity. Coarse (5–9) for a small library; fine (25–40) when the changelog is the deliverable.
+- E. Changelog-first — group so the generated release notes read well: every user-visible capability its own `feat`, everything the tooling hides (`chore`, `ci`, `docs`, `style`) swept into as few commits as possible. Check the result with the repo's own changelog dry run before approval.
+- F. Manual — the user dictates the grouping. This skill then only validates coverage (every path exactly once), message format against the repo's rules, and the tree diff.
 
 Strategies can be mixed per layer — layered for infrastructure, feature-vertical above it, is a common and readable outcome.
 
@@ -139,7 +139,7 @@ Any                 CI: .github/workflows/**, .gitlab-ci.yml, Jenkinsfile, scrip
                     infra: Dockerfile, compose files, terraform/, k8s/, helm/ — their own commit
 ```
 
-**Other ecosystems:** classify by role, not by extension — every project has the same six roles (dependency manifest, build config, generated output, source modules, tests, automation and docs), and the layer order above applies unchanged once each path is assigned to one of them.
+Other ecosystems: classify by role, not by extension — every project has the same six roles (dependency manifest, build config, generated output, source modules, tests, automation and docs), and the layer order above applies unchanged once each path is assigned to one of them.
 
 ## Changelog weighting
 

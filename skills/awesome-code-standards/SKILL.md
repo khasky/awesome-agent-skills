@@ -23,18 +23,18 @@ Apply consistent naming, structure, and patterns so code is readable and maintai
 
 ## Core Principles
 
-1. **Readability first** — Code is read more than written; clear names and structure beat clever tricks.
-2. **KISS** — Simplest solution that works; avoid over-engineering and premature optimization.
-3. **DRY** — Extract common logic into functions/modules; avoid copy-paste.
-4. **YAGNI** — Don't build for speculative future needs; add complexity when required.
-5. **Immutability** — Prefer const; avoid mutating arguments or shared state; use spread/copy where needed.
+1. Readability first — Code is read more than written; clear names and structure beat clever tricks.
+2. KISS — Simplest solution that works; avoid over-engineering and premature optimization.
+3. DRY — Extract common logic into functions/modules; avoid copy-paste.
+4. YAGNI — Don't build for speculative future needs; add complexity when required.
+5. Immutability — Prefer const; avoid mutating arguments or shared state; use spread/copy where needed.
 
 ## Work Process (when applying standards)
 
-1. **Discover project conventions** — Scan existing code: naming (camelCase vs snake_case), file layout, import style, test patterns. Check for CONTRIBUTING, .eslintrc, .prettierrc, or editorconfig.
-2. **Identify violations** — Compare changed or new code against those conventions and the rules below.
-3. **Suggest concrete fixes** — Rename symbols, extract functions, add types, fix formatting. Prefer one logical edit per suggestion.
-4. **Document exceptions** — If the project has an exception (e.g. "use any here for legacy"), note it rather than "fixing" it without context.
+1. Discover project conventions — Scan existing code: naming (camelCase vs snake_case), file layout, import style, test patterns. Check for CONTRIBUTING, .eslintrc, .prettierrc, or editorconfig.
+2. Identify violations — Compare changed or new code against those conventions and the rules below.
+3. Suggest concrete fixes — Rename symbols, extract functions, add types, fix formatting. Prefer one logical edit per suggestion.
+4. Document exceptions — If the project has an exception (e.g. "use any here for legacy"), note it rather than "fixing" it without context.
 
 ## Naming Conventions
 
@@ -74,11 +74,11 @@ function similarity(a, b) {}
 
 The examples above are TypeScript; the rule is "follow the language's own published convention", and that convention differs. Each language's style guide wins over the casing shown here:
 
-- **Python** (PEP 8) — `snake_case` functions, variables, modules; `PascalCase` classes; `UPPER_SNAKE` constants; a leading `_` marks non-public.
-- **Go** (Effective Go) — `MixedCaps`, never underscores; a capital initial *is* the export marker. The package name is part of the name: `chi.NewRouter`, not `chi.NewChiRouter`.
-- **Rust** (RFC 430) — `snake_case` functions, variables, modules; `UpperCamelCase` types and traits; `SCREAMING_SNAKE_CASE` consts and statics.
-- **Java / Kotlin** — `camelCase` methods and fields, `PascalCase` types, one public type per file named after it.
-- **C#** — `PascalCase` for methods, properties, and types; `camelCase` for locals and parameters; interfaces prefixed `I`.
+- Python (PEP 8) — `snake_case` functions, variables, modules; `PascalCase` classes; `UPPER_SNAKE` constants; a leading `_` marks non-public.
+- Go (Effective Go) — `MixedCaps`, never underscores; a capital initial *is* the export marker. The package name is part of the name: `chi.NewRouter`, not `chi.NewChiRouter`.
+- Rust (RFC 430) — `snake_case` functions, variables, modules; `UpperCamelCase` types and traits; `SCREAMING_SNAKE_CASE` consts and statics.
+- Java / Kotlin — `camelCase` methods and fields, `PascalCase` types, one public type per file named after it.
+- C# — `PascalCase` for methods, properties, and types; `camelCase` for locals and parameters; interfaces prefixed `I`.
 
 ## Immutability (critical)
 
@@ -92,13 +92,13 @@ user.name = 'New Name';
 items.push(newItem);
 ```
 
-**Other languages** — same rule, different mechanism:
+Other languages — same rule, different mechanism:
 
-- **Python** — never mutate an argument the caller still owns, and never use a mutable default (`def f(xs=[])` shares one list across calls; use `None` + build inside). Prefer tuples and `frozenset` for fixed collections; `dataclasses.replace(obj, field=…)` for a modified copy.
-- **Go** — a slice you store keeps its caller's backing array, so `append` can write through to it later; copy before retaining (`slices.Clone`). Value receivers for methods that shouldn't mutate.
-- **Rust** — bindings are immutable by default and the borrow checker enforces it; `mut` is the exception you justify, not the default you type.
-- **Java** — `record` for data carriers, `List.copyOf`/`Map.copyOf` for defensive copies at the boundary.
-- **C#** — `record` types plus `with` expressions; `ImmutableArray`/`ImmutableList` for shared collections.
+- Python — never mutate an argument the caller still owns, and never use a mutable default (`def f(xs=[])` shares one list across calls; use `None` + build inside). Prefer tuples and `frozenset` for fixed collections; `dataclasses.replace(obj, field=…)` for a modified copy.
+- Go — a slice you store keeps its caller's backing array, so `append` can write through to it later; copy before retaining (`slices.Clone`). Value receivers for methods that shouldn't mutate.
+- Rust — bindings are immutable by default and the borrow checker enforces it; `mut` is the exception you justify, not the default you type.
+- Java — `record` for data carriers, `List.copyOf`/`Map.copyOf` for defensive copies at the boundary.
+- C# — `record` types plus `with` expressions; `ImmutableArray`/`ImmutableList` for shared collections.
 
 ## Error Handling
 
@@ -124,13 +124,13 @@ async function fetchData(url: string) {
 }
 ```
 
-**Other languages** — the shape changes, "add context, never swallow" does not:
+Other languages — the shape changes, "add context, never swallow" does not:
 
-- **Python** — raise a specific exception type, never a bare `except:` (it eats `KeyboardInterrupt` too). Re-raise with the chain intact: `raise ParseError(...) from err`.
-- **Go** — errors are values: check every one, wrap with context using `%w` so `errors.Is`/`errors.As` still work (`fmt.Errorf("fetch %s: %w", url, err)`). Discarding one with `_ =` needs a comment saying why it's safe.
-- **Rust** — return `Result<T, E>` and propagate with `?`; a typed error enum (or `thiserror`) at library boundaries, `anyhow` only in the binary. `unwrap()`/`expect()` in library code is a panic you shipped.
-- **Java** — one exception type per failure mode, never an empty `catch`; keep the cause (`throw new X(msg, err)`).
-- **C#** — catch the specific exception, rethrow with bare `throw;` (not `throw ex;`, which resets the stack trace).
+- Python — raise a specific exception type, never a bare `except:` (it eats `KeyboardInterrupt` too). Re-raise with the chain intact: `raise ParseError(...) from err`.
+- Go — errors are values: check every one, wrap with context using `%w` so `errors.Is`/`errors.As` still work (`fmt.Errorf("fetch %s: %w", url, err)`). Discarding one with `_ =` needs a comment saying why it's safe.
+- Rust — return `Result<T, E>` and propagate with `?`; a typed error enum (or `thiserror`) at library boundaries, `anyhow` only in the binary. `unwrap()`/`expect()` in library code is a panic you shipped.
+- Java — one exception type per failure mode, never an empty `catch`; keep the cause (`throw new X(msg, err)`).
+- C# — catch the specific exception, rethrow with bare `throw;` (not `throw ex;`, which resets the stack trace).
 
 ## Async and concurrency
 
@@ -148,13 +148,13 @@ const markets = await fetchMarkets();
 const stats = await fetchStats();
 ```
 
-**Other languages** — run independent work concurrently, and give every concurrent unit a way to be cancelled:
+Other languages — run independent work concurrently, and give every concurrent unit a way to be cancelled:
 
-- **Python** — `asyncio.gather(*coros)` for independent awaits; `asyncio.TaskGroup` (3.11+) when a failure should cancel the siblings. Blocking calls go to `run_in_executor`, never inline in a coroutine.
-- **Go** — `errgroup.Group` (`golang.org/x/sync`) for fan-out that must fail as a unit, `sync.WaitGroup` when it must not. `context.Context` is the first parameter of anything that can block, and it is *passed down*, not stored in a struct.
-- **Rust** — `tokio::join!` for independent futures, `try_join!` when the first error should abort; a `CancellationToken` or dropping the `JoinHandle` for teardown.
-- **Java** — `CompletableFuture.allOf(...)`, or structured concurrency (`StructuredTaskScope`) where available.
-- **C#** — `Task.WhenAll(...)`, with a `CancellationToken` threaded through every async signature.
+- Python — `asyncio.gather(*coros)` for independent awaits; `asyncio.TaskGroup` (3.11+) when a failure should cancel the siblings. Blocking calls go to `run_in_executor`, never inline in a coroutine.
+- Go — `errgroup.Group` (`golang.org/x/sync`) for fan-out that must fail as a unit, `sync.WaitGroup` when it must not. `context.Context` is the first parameter of anything that can block, and it is *passed down*, not stored in a struct.
+- Rust — `tokio::join!` for independent futures, `try_join!` when the first error should abort; a `CancellationToken` or dropping the `JoinHandle` for teardown.
+- Java — `CompletableFuture.allOf(...)`, or structured concurrency (`StructuredTaskScope`) where available.
+- C# — `Task.WhenAll(...)`, with a `CancellationToken` threaded through every async signature.
 
 ## Type Safety
 
@@ -171,24 +171,24 @@ function getMarket(id: string): Promise<Market> { /* ... */ }
 function getMarket(id: any): Promise<any> { /* ... */ }
 ```
 
-**Other languages** — the goal is the same: make an invalid value unrepresentable, and check it at the boundary rather than at every call site.
+Other languages — the goal is the same: make an invalid value unrepresentable, and check it at the boundary rather than at every call site.
 
-- **Python** — annotate every public signature and run `mypy`/`pyright` in strict mode in CI; a type hint nothing checks is a comment. `TypedDict`/`dataclass`/Pydantic model at API and parse boundaries, not raw `dict[str, Any]`.
-- **Go** — concrete types over `any`; accept interfaces, return structs. An `any` in a signature is a parse boundary, and it gets a type switch or `errors.As` immediately.
-- **Rust** — newtypes over bare primitives (`struct UserId(u64)`, not `u64`) so the compiler catches a swapped argument; enums over stringly-typed state.
-- **Java / Kotlin** — Kotlin's nullable types, or `Optional` plus nullability annotations in Java; no `Object` in a public signature.
-- **C#** — nullable reference types enabled project-wide (`<Nullable>enable</Nullable>`), warnings as errors.
+- Python — annotate every public signature and run `mypy`/`pyright` in strict mode in CI; a type hint nothing checks is a comment. `TypedDict`/`dataclass`/Pydantic model at API and parse boundaries, not raw `dict[str, Any]`.
+- Go — concrete types over `any`; accept interfaces, return structs. An `any` in a signature is a parse boundary, and it gets a type switch or `errors.As` immediately.
+- Rust — newtypes over bare primitives (`struct UserId(u64)`, not `u64`) so the compiler catches a swapped argument; enums over stringly-typed state.
+- Java / Kotlin — Kotlin's nullable types, or `Optional` plus nullability annotations in Java; no `Object` in a public signature.
+- C# — nullable reference types enabled project-wide (`<Nullable>enable</Nullable>`), warnings as errors.
 
-**Dynamically-typed languages without a checker** (plain JS, Ruby, PHP, Lua) do the same job at runtime: validate at the trust boundary with a schema, and let internal calls stay unguarded.
+Dynamically-typed languages without a checker (plain JS, Ruby, PHP, Lua) do the same job at runtime: validate at the trust boundary with a schema, and let internal calls stay unguarded.
 
 ## Comments and docs
 
-- **Explain why, not what** — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
-- **Plain ASCII punctuation** — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
-- **Doc comments on public APIs** — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
-- **No commented-out code** — Remove or explain in a ticket; use version control for history.
+- Explain why, not what — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
+- Plain ASCII punctuation — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
+- Doc comments on public APIs — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
+- No commented-out code — Remove or explain in a ticket; use version control for history.
 
-That is the bar for code you are writing or touching now. For a repo-wide pass over existing comments — deciding what to delete, condense, or fix, with the false-positive boundaries and the behavior-preserving verification gate — use **awesome-code-cleanup**, which owns that procedure.
+That is the bar for code you are writing or touching now. For a repo-wide pass over existing comments — deciding what to delete, condense, or fix, with the false-positive boundaries and the behavior-preserving verification gate — use awesome-code-cleanup, which owns that procedure.
 
 ## File and project structure
 
@@ -198,11 +198,11 @@ That is the bar for code you are writing or touching now. For a repo-wide pass o
 
 ## Backend layering and boundaries (when applicable)
 
-- **Three-model split** — keep DTO/API models, domain models, and persistence/ORM models separate. One `User` object flowing through transport, business logic, and storage traps API shape to table shape and makes every refactor touch every layer.
-- **Layer-placement heuristic** — needs HTTP status codes → edge/controller; needs business rules → service; needs tables/indexes/ORM → repository. Flow one direction: `controller -> service -> repository -> gateway`.
-- **Cross-cutting concerns once at the edge** — auth, validation, rate-limit, request IDs, logging live in the HTTP pipeline (global middleware/hooks or route-scoped setup), never hand-copied into each handler. The rule: do not repeat policy by hand in every endpoint.
-- **Errors don't know transport** — services and repositories throw domain errors; one global handler maps them to status codes.
-- **Contract-first** — OpenAPI (or equivalent) is the single source of truth for request/response shapes; generate typed clients from it and fail CI on spec drift.
+- Three-model split — keep DTO/API models, domain models, and persistence/ORM models separate. One `User` object flowing through transport, business logic, and storage traps API shape to table shape and makes every refactor touch every layer.
+- Layer-placement heuristic — needs HTTP status codes → edge/controller; needs business rules → service; needs tables/indexes/ORM → repository. Flow one direction: `controller -> service -> repository -> gateway`.
+- Cross-cutting concerns once at the edge — auth, validation, rate-limit, request IDs, logging live in the HTTP pipeline (global middleware/hooks or route-scoped setup), never hand-copied into each handler. The rule: do not repeat policy by hand in every endpoint.
+- Errors don't know transport — services and repositories throw domain errors; one global handler maps them to status codes.
+- Contract-first — OpenAPI (or equivalent) is the single source of truth for request/response shapes; generate typed clients from it and fail CI on spec drift.
 
 ```typescript
 // GOOD: service throws a domain error; the global handler maps NotFoundError -> 404
@@ -212,7 +212,7 @@ throw new NotFoundError('market', id);
 return res.status(404).json({ error: 'not found' });
 ```
 
-This section only places the layers. Designing the error envelope, HTTP status mapping, and retry policy in depth is **awesome-error-standards**' job — go there when the task is the error contract itself.
+This section only places the layers. Designing the error envelope, HTTP status mapping, and retry policy in depth is awesome-error-standards' job — go there when the task is the error contract itself.
 
 ## Code smells to fix
 
@@ -242,17 +242,17 @@ The transferable part is the *shape* of the class, not these three rows: a falsy
 
 ## Frontend rendering and motion (when applicable)
 
-- **Animate only compositor properties** — `transform` and `opacity`. Never animate layout properties (`width`, `height`, `top`, `margin`) — they trigger reflow every frame; use the FLIP technique for position changes.
-- **Never interleave layout reads and writes in one frame** — batch reads (`getBoundingClientRect`, `offsetWidth`) before writes to avoid layout thrashing.
-- **Prefer `animation-timeline: view()/scroll()`** over JS scroll-event listeners for scroll-linked animation; use `will-change` surgically and remove it after.
+- Animate only compositor properties — `transform` and `opacity`. Never animate layout properties (`width`, `height`, `top`, `margin`) — they trigger reflow every frame; use the FLIP technique for position changes.
+- Never interleave layout reads and writes in one frame — batch reads (`getBoundingClientRect`, `offsetWidth`) before writes to avoid layout thrashing.
+- Prefer `animation-timeline: view()/scroll()` over JS scroll-event listeners for scroll-linked animation; use `will-change` surgically and remove it after.
 - Sensible defaults: `text-balance` on headings, `text-pretty` on body, `tabular-nums` for numeric columns, `h-dvh` over `h-screen`, interactions under ~200ms, one accent color per view, a fixed z-index scale.
 
 ## Frontend architecture (when applicable)
 
-- **Feature-first folders** — product code (pages, feature components, state, feature-scoped API adapters, tests) lives together in a feature/module folder. Shared folders hold only cross-app primitives: design system, app shell, routing bootstrap, global config, i18n. Anti-patterns: a `shared`/`common`/`utils` bucket with no boundary; a giant global `components/`; a folder per one-file throwaway.
-- **Colocate** — a component or hook that matters keeps its test, story, styles, and an `index.ts` re-export next to it.
-- **Route-level code-splitting is the default perf win** — lazy-load route chunks; keep dashboard-sized deps out of the initial bundle when the landing page doesn't need them. Profile before hand-optimizing components. (Distinct from the compositor/animation rules above — this is bundle shape, not frame budget.)
-- **Consume the API contract, don't re-type it** — generate TypeScript types from the same OpenAPI spec the backend owns instead of hand-duplicating request/response shapes. Use a server-state library (e.g. TanStack Query) so loading/error/retry stay uniform. Map errors once (a single `parseApiError`) and surface the server `request_id` in error UI so user reports line up with server logs.
+- Feature-first folders — product code (pages, feature components, state, feature-scoped API adapters, tests) lives together in a feature/module folder. Shared folders hold only cross-app primitives: design system, app shell, routing bootstrap, global config, i18n. Anti-patterns: a `shared`/`common`/`utils` bucket with no boundary; a giant global `components/`; a folder per one-file throwaway.
+- Colocate — a component or hook that matters keeps its test, story, styles, and an `index.ts` re-export next to it.
+- Route-level code-splitting is the default perf win — lazy-load route chunks; keep dashboard-sized deps out of the initial bundle when the landing page doesn't need them. Profile before hand-optimizing components. (Distinct from the compositor/animation rules above — this is bundle shape, not frame budget.)
+- Consume the API contract, don't re-type it — generate TypeScript types from the same OpenAPI spec the backend owns instead of hand-duplicating request/response shapes. Use a server-state library (e.g. TanStack Query) so loading/error/retry stay uniform. Map errors once (a single `parseApiError`) and surface the server `request_id` in error UI so user reports line up with server logs.
 
 ## Checklist (when enforcing)
 

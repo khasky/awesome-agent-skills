@@ -18,26 +18,26 @@ Turn a feature request or architectural question into a decision a team can exec
 - A reviewer flagged a load-bearing decision that needs an ADR (awesome-code-review hands the format here).
 - Two credible approaches exist and the choice is expensive to reverse.
 
-Do **not** activate for reversible everyday choices (naming, a helper's location) — an ADR for those is noise; the three-condition test below decides.
+Do not activate for reversible everyday choices (naming, a helper's location) — an ADR for those is noise; the three-condition test below decides.
 
 ## When an ADR is warranted
 
 All three, or don't write one:
-1. **Expensive to reverse** — schema, public API shape, persisted format, event name, framework/storage choice, service boundary.
-2. **Crosses a boundary** — more than one module, team, or service must honor it.
-3. **The context would be lost** — six months from now, the "why" is not recoverable from the code.
+1. Expensive to reverse — schema, public API shape, persisted format, event name, framework/storage choice, service boundary.
+2. Crosses a boundary — more than one module, team, or service must honor it.
+3. The context would be lost — six months from now, the "why" is not recoverable from the code.
 
 One-page ADR for a single decision; full design doc when the feature needs a data model, API surface, and rollout plan together.
 
 ## Work Process
 
-1. **Requirements before components** — functional requirements as testable statements, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after. Read the decisions already recorded (existing ADRs) and the project's own glossary before naming anything: a design that renames a concept the codebase already has costs every reader a translation, and one that silently contradicts an accepted ADR gets re-litigated in review instead of decided here.
-2. **Back-of-envelope the load** — requests/sec, storage/year, working-set size, fan-out per action. Three lines of arithmetic kill more bad designs than any diagram; a design without numbers is a vibe. State the assumptions so a reader can re-run the math when the assumptions age.
-3. **Sketch the contract before the internals** — the API endpoints or events in/out, and the data model's core entities with their invariants. The contract exposes scope errors while they are still cheap (`awesome-api-design` for HTTP resource detail).
-4. **Generate 2–3 genuine alternatives** — including the simplest thing that could work ("do nothing" or "a cron job and a table" is often a legitimate contender). An alternative added only to be knocked down is padding; each one gets its honest best case.
-5. **Evaluate on the trade-off axes the requirements activate** — not a fixed rubric: consistency vs availability, sync vs async, SQL vs NoSQL, monolith-extension vs new service, build vs buy, latency vs cost. For each active axis, say which side the requirements favor and why. Skip axes with no tension — padding dilutes the load-bearing analysis.
-6. **Recommend, grounded in requirements** — one recommendation, tied by name to the requirements that drove it ("eventual consistency suffices because the feed tolerates 30s lag — that unlocks the cheaper fan-out-on-read"). State what new information would flip the decision.
-7. **Invert before you mitigate, then name non-goals and the path** — run the risk pass backwards first: it is a year on, this decision was the wrong one, and the design is being unwound. Name the three things that killed it, in the concrete ("the backfill never finished and writes diverged"), never the abstract ("scaling risk"). Inversion surfaces what a forward pass rationalizes away, because "what would kill this" cannot be answered with "we will be careful". Each named cause then earns an early warning sign a reader could actually observe and either a mitigation or a written acceptance. Then explicit non-goals (what this deliberately does not solve, so scope creep has to argue with a sentence), the top risks with their mitigations, the migration/rollout order for existing data and consumers, and the rollback story (`rules`-level deploy discipline applies; a design that cannot roll out incrementally gets that called out here, not discovered in the PR).
+1. Requirements before components — functional requirements as testable statements, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after. Read the decisions already recorded (existing ADRs) and the project's own glossary before naming anything: a design that renames a concept the codebase already has costs every reader a translation, and one that silently contradicts an accepted ADR gets re-litigated in review instead of decided here.
+2. Back-of-envelope the load — requests/sec, storage/year, working-set size, fan-out per action. Three lines of arithmetic kill more bad designs than any diagram; a design without numbers is a vibe. State the assumptions so a reader can re-run the math when the assumptions age.
+3. Sketch the contract before the internals — the API endpoints or events in/out, and the data model's core entities with their invariants. The contract exposes scope errors while they are still cheap (`awesome-api-design` for HTTP resource detail).
+4. Generate 2–3 genuine alternatives — including the simplest thing that could work ("do nothing" or "a cron job and a table" is often a legitimate contender). An alternative added only to be knocked down is padding; each one gets its honest best case.
+5. Evaluate on the trade-off axes the requirements activate — not a fixed rubric: consistency vs availability, sync vs async, SQL vs NoSQL, monolith-extension vs new service, build vs buy, latency vs cost. For each active axis, say which side the requirements favor and why. Skip axes with no tension — padding dilutes the load-bearing analysis.
+6. Recommend, grounded in requirements — one recommendation, tied by name to the requirements that drove it ("eventual consistency suffices because the feed tolerates 30s lag — that unlocks the cheaper fan-out-on-read"). State what new information would flip the decision.
+7. Invert before you mitigate, then name non-goals and the path — run the risk pass backwards first: it is a year on, this decision was the wrong one, and the design is being unwound. Name the three things that killed it, in the concrete ("the backfill never finished and writes diverged"), never the abstract ("scaling risk"). Inversion surfaces what a forward pass rationalizes away, because "what would kill this" cannot be answered with "we will be careful". Each named cause then earns an early warning sign a reader could actually observe and either a mitigation or a written acceptance. Then explicit non-goals (what this deliberately does not solve, so scope creep has to argue with a sentence), the top risks with their mitigations, the migration/rollout order for existing data and consumers, and the rollback story (`rules`-level deploy discipline applies; a design that cannot roll out incrementally gets that called out here, not discovered in the PR).
 
 ## ADR format
 
@@ -55,9 +55,9 @@ Non-goals: <what this decision deliberately does not cover>
 
 ## Agent brief (when the decision is handed to an implementer)
 
-A design doc explains a decision to a reader; a **brief** tells an implementer — a person or an unattended agent — what to build. When the work is handed off rather than built in the same session, add one per unit of work, and write it to survive the wait: the brief may sit for days while the codebase moves under it.
+A design doc explains a decision to a reader; a brief tells an implementer — a person or an unattended agent — what to build. When the work is handed off rather than built in the same session, add one per unit of work, and write it to survive the wait: the brief may sit for days while the codebase moves under it.
 
-**Durability over precision.** Describe interfaces, types, config shapes and behavioral contracts; never file paths or line numbers, which go stale and send the implementer to a file that no longer exists. Say *what* the system should do, not *how* to change the code — the implementer explores the current tree and makes its own implementation decisions.
+Durability over precision. Describe interfaces, types, config shapes and behavioral contracts; never file paths or line numbers, which go stale and send the implementer to a file that no longer exists. Say *what* the system should do, not *how* to change the code — the implementer explores the current tree and makes its own implementation decisions.
 
 ```text
 ## Brief: <one-line summary of what must happen>

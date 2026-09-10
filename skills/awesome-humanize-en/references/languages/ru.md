@@ -2,14 +2,14 @@
 
 Load this file when the target text is Russian. It changes nothing else about the run: the decision tree, the two-stage protocol, the discourse pass, the artifact regexes, the source checks and the editing-trace tests all apply as written. What does not transfer word for word is the English vocabulary catalog (#10, #15e) and two typography rules, and this file says what each check looks like in Russian.
 
-**Evidence boundary, stated first.** No measured per-feature comparison of human and machine Russian was read while writing this file. A human-vs-generated Russian corpus exists (RuATD, Dialogue 2022; `sources.md` "Consulted, no rule") and is the corpus to measure against; until someone does, every item below is an editorial heuristic drawn from `HUMANIZER-RU` (the Russian humanizer this skill was adapted from) and from the shape of the English patterns. Treat each as a direction observed by editors, not a calibration constant.
+Evidence boundary, stated first. No measured per-feature comparison of human and machine Russian was read while writing this file. A human-vs-generated Russian corpus exists (RuATD, Dialogue 2022; `sources.md` "Consulted, no rule") and is the corpus to measure against; until someone does, every item below is an editorial heuristic drawn from `HUMANIZER-RU` (the Russian humanizer this skill was adapted from) and from the shape of the English patterns. Treat each as a direction observed by editors, not a calibration constant.
 
 ## 1 The two typography flips
 
 | English rule | Russian reality |
 |---|---|
-| #16 em-dash overuse is a weak tell | **Not a tell.** The long dash (тире) is mandatory Russian typography: between subject and predicate with omitted copula («Москва — столица»), in dialogue, in ranges. Do not count dashes, do not "fix" them, and never replace a тире with a hyphen: a hyphen where a тире belongs is a typo, not humanization. Output typography for Russian keeps the тире |
-| Title Case in headings is an ineffective indicator (`false-positives.md` §7) | **Is a tell.** Russian capitalizes only the first word of a heading; «Ключевые Особенности Продукта» is a calque of the English convention that a Russian writer does not produce. Count it as #21a, strong |
+| #16 em-dash overuse is a weak tell | Not a tell. The long dash (тире) is mandatory Russian typography: between subject and predicate with omitted copula («Москва — столица»), in dialogue, in ranges. Do not count dashes, do not "fix" them, and never replace a тире with a hyphen: a hyphen where a тире belongs is a typo, not humanization. Output typography for Russian keeps the тире |
+| Title Case in headings is an ineffective indicator (`false-positives.md` §7) | Is a tell. Russian capitalizes only the first word of a heading; «Ключевые Особенности Продукта» is a calque of the English convention that a Russian writer does not produce. Count it as #21a, strong |
 
 Quotation marks: Russian print uses «ёлочки» with „лапки" for nested quotes; straight `"` quotes in a formatted document are the plain-text default, not a tell either way. The mixed-within-one-document rule (#18) still applies.
 
@@ -17,9 +17,9 @@ Quotation marks: Russian print uses «ёлочки» with „лапки" for nes
 
 The same density gating as `SKILL.md`: tier 1 flags on sight, tier 2 needs two in a paragraph, tier 3 needs high density.
 
-- **Tier 1.** «важно отметить», «стоит отметить», «в современном мире», «в эпоху цифровых технологий», «давайте разберёмся», «погрузиться в» (as *delve*), «ключевую роль», «неотъемлемой частью», «уникальный» as a stock adjective, «в заключение», «подводя итог», «таким образом» as a paragraph opener that concludes nothing.
-- **Tier 2.** «эффективный», «инновационный», «комплексный», «оптимальный», «динамично развивающийся», «широкий спектр», «на сегодняшний день», «в рамках», «данный» for «этот», «является» where a тире or nothing would do.
-- **Tier 3.** «важный», «значительный», «современный», «качественный», «различный».
+- Tier 1. «важно отметить», «стоит отметить», «в современном мире», «в эпоху цифровых технологий», «давайте разберёмся», «погрузиться в» (as *delve*), «ключевую роль», «неотъемлемой частью», «уникальный» as a stock adjective, «в заключение», «подводя итог», «таким образом» as a paragraph opener that concludes nothing.
+- Tier 2. «эффективный», «инновационный», «комплексный», «оптимальный», «динамично развивающийся», «широкий спектр», «на сегодняшний день», «в рамках», «данный» for «этот», «является» where a тире or nothing would do.
+- Tier 3. «важный», «значительный», «современный», «качественный», «различный».
 
 Not signals on their own: scientific and official register in a paper or a statute (the same carve-outs as `false-positives.md` §5 and §11), and канцелярит in a document whose genre requires it.
 

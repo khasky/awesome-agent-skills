@@ -4,9 +4,9 @@ This file collects the reference "sample / expectation" pairs for every regex in
 
 Each regex passes three checks:
 
-- **Positive sample** — the regex must fire.
-- **Negative sample** — similar text unrelated to AI. The regex must not fire.
-- **Boundary sample** — empty string, multiple matches, Unicode. The regex must not break.
+- Positive sample — the regex must fire.
+- Negative sample — similar text unrelated to AI. The regex must not fire.
+- Boundary sample — empty string, multiple matches, Unicode. The regex must not break.
 
 The automated run is `python3 scripts/check_markers.py` (also in CI). A manual PowerShell variant is given at the end of the file.
 
@@ -272,15 +272,15 @@ The samples contain invisible characters; in the table they are shown as `{ZWSP}
 
 ### Example 1: Marketing text with AI tells
 
-**Before:**
+Before:
 
-> 🚀 **Innovation:** This software is undoubtedly a testament to our commitment to quality. Moreover, **it represents the perfect place for synergy**, delivering a seamless, intuitive, and powerful user experience — ensuring efficiency from novices to professionals. Industry experts believe this project lays the foundation for future wins. I hope this text is helpful for your presentation! :contentReference[oaicite:0]{index=0}
+> 🚀 Innovation: This software is undoubtedly a testament to our commitment to quality. Moreover, it represents the perfect place for synergy, delivering a seamless, intuitive, and powerful user experience — ensuring efficiency from novices to professionals. Industry experts believe this project lays the foundation for future wins. I hope this text is helpful for your presentation! :contentReference[oaicite:0]{index=0}
 
-**After:**
+After:
 
 > We added batch processing, keyboard shortcuts, and offline mode. Testers say the interface is simpler and tasks finish faster.
 
-**What was fixed:**
+What was fixed:
 
 - Removed the marker `:contentReference[oaicite:0]{index=0}` (`chatbot-artifacts.md`, section A.1).
 - Removed the emoji and excess bold (patterns #16, #17).
@@ -294,11 +294,11 @@ The samples contain invisible characters; in the table they are shown as `{ZWSP}
 
 ### Example 2: A biography with a fabricated source
 
-**Before:**
+Before:
 
 > Ivan Petrov is an eminent physicist whose contribution to quantum mechanics forever changed the field. He published his major works in the Journal of Applied Physics (DOI:10.5555/vol.2020.42), where he revealed revolutionary principles of entanglement. His research was widely covered in leading scientific outlets, underscoring the significance of his legacy for future generations of scientists.
 
-**What is wrong (unedited, for verification):**
+What is wrong (unedited, for verification):
 
 - The DOI is fabricated (the prefix 10.5555 is reserved for tests and is not issued to real journals).
 - "Revolutionary principles of entanglement" — inflated significance.
@@ -306,7 +306,7 @@ The samples contain invisible characters; in the table they are shown as `{ZWSP}
 - "An eminent physicist" — averaging.
 - "Underscoring the significance of his legacy" — inflated significance.
 
-**After verification:** If the author cannot provide real links and confirm the facts, the article cannot be published. The text is rewritten to the minimally verifiable claim:
+After verification: If the author cannot provide real links and confirm the facts, the article cannot be published. The text is rewritten to the minimally verifiable claim:
 
 > Information about Ivan Petrov's work needs verification. The list of publications is not confirmed in public databases.
 
@@ -314,11 +314,11 @@ The samples contain invisible characters; in the table they are shown as `{ZWSP}
 
 ### Example 3: Text with em-dashes in literary prose
 
-**Before:**
+Before:
 
 > The morning was like that — crisp, clear, thin. The town still slept — only the odd footstep echoed back. She walked slowly — because there was nowhere to hurry.
 
-**Analysis:**
+Analysis:
 
 - An em-dash in every sentence — a tell?
 - No markers from `chatbot-artifacts.md`.
@@ -326,28 +326,28 @@ The samples contain invisible characters; in the table they are shown as `{ZWSP}
 - No inflated significance.
 - Just em-dashes in a literary description.
 
-**Conclusion:** This is a **false positive**. The em-dash is a normal authorial device in literary prose. See `false-positives.md`, item 1. Do not edit the text.
+Conclusion: This is a false positive. The em-dash is a normal authorial device in literary prose. See `false-positives.md`, item 1. Do not edit the text.
 
 ---
 
 ### Example 4: A legal document with officialese
 
-**Before:**
+Before:
 
 > Pursuant to this Agreement and in accordance with applicable law, for the purpose of ensuring the performance of obligations, the Parties shall undertake to carry out activities directed at achieving the objectives set forth in Appendix 1.
 
-**Analysis:**
+Analysis:
 
 - Officialese is present (pattern #8).
 - Little concrete content.
 
-**Conclusion:** This is a legal document. Officialese is a mandatory genre norm. See `false-positives.md`, item 5. Do not edit for "humanity" — it would lose legal force.
+Conclusion: This is a legal document. Officialese is a mandatory genre norm. See `false-positives.md`, item 5. Do not edit for "humanity" — it would lose legal force.
 
 ---
 
 ## Empirical verification of the regular expressions
 
-**The primary method is the automated run.** Every regex from `chatbot-artifacts.md` is checked by a standard-library Python script — three levels per regex (positive, negative, boundary sample plus multiple matches):
+The primary method is the automated run. Every regex from `chatbot-artifacts.md` is checked by a standard-library Python script — three levels per regex (positive, negative, boundary sample plus multiple matches):
 
 ```bash
 python3 scripts/check_markers.py
@@ -355,7 +355,7 @@ python3 scripts/check_markers.py
 
 The script runs in CI (`.github/workflows/regex-check.yml`) on every PR that touches `scripts/` or files with markers. A local run before release is mandatory. When a new regex is added, its samples go into the script and into the "Samples for the regular expressions" section above.
 
-**The alternative method is PowerShell.** A manual check for a Windows environment with no Python:
+The alternative method is PowerShell. A manual check for a Windows environment with no Python:
 
 ```powershell
 $test = @{

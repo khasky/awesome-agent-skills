@@ -24,7 +24,7 @@ Motivated by a real problem the author actually hit. Uneven by design: deep wher
 
 ## Rules
 
-1. **The problem before the topic.** First paragraph: the concrete situation that forced the question. If there is no real situation, the honest genre is "notes on X", not a war story; never fabricate the incident.
+1. The problem before the topic. First paragraph: the concrete situation that forced the question. If there is no real situation, the honest genre is "notes on X", not a war story; never fabricate the incident.
 2. One opinion minimum, stated as yours, with the disagreement condition ("if your writes are under 1k/s, ignore all of this").
 3. Depth budget by interest, not symmetry: the section that surprised you gets five times the words of the setup steps.
 4. Numbers carry conditions; claims carry links; code carries a "this runs" guarantee or a disclaimer.

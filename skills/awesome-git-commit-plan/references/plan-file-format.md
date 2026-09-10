@@ -21,12 +21,12 @@ FILES (<count>):
 
 Rules the format enforces:
 
-- **The file starts with `#1`.** No title, no summary paragraph, no how-to-execute section, no legend, no table of contents. The first byte of the file is `#`.
-- **The file ends with the last commit's file list.** No closing notes, no alternatives, no next steps.
-- **Plain `#1` to `#N`.** No prefix letter, no zero padding, no ranges.
-- **No dates, no timestamps, no durations, anywhere.** Pacing is a property of execution, and the tool that executes decides it.
-- **One blank line** between the number line and the body, between paragraphs, and between the last body paragraph and `FILES`. Two blank lines between commits.
-- **`FILES (<count>)`** where the count is the number of paths listed. It exists so a reader can check the list against it without counting.
+- The file starts with `#1`. No title, no summary paragraph, no how-to-execute section, no legend, no table of contents. The first byte of the file is `#`.
+- The file ends with the last commit's file list. No closing notes, no alternatives, no next steps.
+- Plain `#1` to `#N`. No prefix letter, no zero padding, no ranges.
+- No dates, no timestamps, no durations, anywhere. Pacing is a property of execution, and the tool that executes decides it.
+- One blank line between the number line and the body, between paragraphs, and between the last body paragraph and `FILES`. Two blank lines between commits.
+- `FILES (<count>)` where the count is the number of paths listed. It exists so a reader can check the list against it without counting.
 - Paths are indented two spaces, in the order they should be staged, relative to the repository root.
 - A commit with no body goes straight from its number line to `FILES`.
 

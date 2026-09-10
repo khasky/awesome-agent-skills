@@ -83,21 +83,21 @@ Editing trace (edit-trace.md): deletion test on every addition, reversion test o
 Final pass against the checklist (see below); review operation stops before any edit and writes the report
 ```
 
-**Short answers weigh differently from articles.** Replies, review comments and tickets are judged first on factuality, specificity and templatedness; density and tone matter less at that length. Postmortems, articles and announcements are judged first on relevance, density and stance. Weighting sets the order and depth of attention, not an exemption: a short reply drowning in filler still fails.
+Short answers weigh differently from articles. Replies, review comments and tickets are judged first on factuality, specificity and templatedness; density and tone matter less at that length. Postmortems, articles and announcements are judged first on relevance, density and stance. Weighting sets the order and depth of attention, not an exemption: a short reply drowning in filler still fails.
 
 ## Marker severity scale
 
-- 🔴 **Instant marker** — gives away AI almost certainly, must be removed.
-- 🟡 **Strong signal** — unnatural for a human, common in AI output.
-- 🟢 **Weak signal** — a statistical tell that also occurs in human writing; works only in combination.
+- 🔴 Instant marker — gives away AI almost certainly, must be removed.
+- 🟡 Strong signal — unnatural for a human, common in AI output.
+- 🟢 Weak signal — a statistical tell that also occurs in human writing; works only in combination.
 
 ## Vocabulary tiers — density gating for word-level tells
 
 Vocabulary tells (pattern #10) are gated by density, not flagged one-by-one:
 
-- **Tier 1 — flag on sight**: delve, tapestry, seamless, robust, testament, boasts, "leverage" as a verb, "deliberately" as an appended intent stamp.
-- **Tier 2 — flag only when 2+ co-occur in one paragraph**: harness, foster, elevate, streamline, crucial, pivotal.
-- **Tier 3 — flag only at high density (≈3%+ of running words)**: significant, innovative, effective, comprehensive.
+- Tier 1 — flag on sight: delve, tapestry, seamless, robust, testament, boasts, "leverage" as a verb, "deliberately" as an appended intent stamp.
+- Tier 2 — flag only when 2+ co-occur in one paragraph: harness, foster, elevate, streamline, crucial, pivotal.
+- Tier 3 — flag only at high density (≈3%+ of running words): significant, innovative, effective, comprehensive.
 
 Each entry covers its morphological variants (-ly, -ing, plural, comparative, conjugations) unless a variant has a distinct honest sense ("load-bearing wall" is a literal noun, not the metaphor). A single Tier-2/3 word in otherwise living text is not a tell.
 
@@ -111,21 +111,21 @@ The "it's not X, it's Y" tell (pattern #12 family) hides in split and trailing f
 - Trailing negation fragments: "…, no guessing.", "…, no fluff."
 - Multi-negation countdowns: "No X. No Y. Just Z."
 
-Count these as #12 variants. Repair: state the positive directly; if the distinction genuinely matters, name both sides as parallel positive clauses. **False-positive carve-out:** necessary/sufficient-condition statements in logic, math, and formal proofs ("X holds if and only if not Y") are exempt. Also check rhythm: a run of three or more adjacent sentences of about the same length is a candidate structural signal (the rhythm check under Edit order).
+Count these as #12 variants. Repair: state the positive directly; if the distinction genuinely matters, name both sides as parallel positive clauses. False-positive carve-out: necessary/sufficient-condition statements in logic, math, and formal proofs ("X holds if and only if not Y") are exempt. Also check rhythm: a run of three or more adjacent sentences of about the same length is a candidate structural signal (the rhythm check under Edit order).
 
 ## Additional communicative tells
 
-- **Fake-candor openers** — "Honestly?", "Let's be honest", "Here's the thing:", "The uncomfortable truth is" as a theatrical pause-and-reveal. Flag at document level only when 2+ occur; a mid-sentence "honestly" is normal speech.
-- **False agency / narrator-from-a-distance** — "the data tells us", "the decision emerges", "nobody designed this". Ordinary metonymy ("the paper argues") is fine.
-- **Content-free verdict sentences** — freestanding evaluations that could close any text: "This is a noteworthy finding.", "The implications are significant."
-- **Asserted causation without evidence (post-hoc)** — "launched in Q3, so adoption increased." Repair by adding the proof or downgrading to correlation; never patch it with a hedge.
-- **Summary-stamp openers (as a move, not a fixed phrase)** — any label announcing a summary before delivering it: "In conclusion", "Here's the TL;DR:", "In short:", "一句话总结:". Ban the move, which catches novel variants a phrase-list misses.
-- **Redundant plain-language restatement** — explaining a point, then re-explaining it "simply": "In other words…", "Put simply…", "简单来说…" blocks that add no new information.
-- **Conditional next-step menu** — staged offers where the user must say a magic phrase to unlock the next action: "If you want, I can also…", "If you tell me X, I'll Y." Distinct from leftover chat turns (#22).
-- **Emphasis crutches** — "Full stop.", "Let that sink in.", "Read that again."
-- **Circular/tautological definitions** ("the system enables users to use the functionality") and **noun stacking** ("production-ready deployment system infrastructure") — 🟢 weak tells.
-- **Diff-anchored prose** — text narrating its last revision ("has been updated to", "now uses", "previously") instead of the current state; fine in changelogs and migration guides.
-- **Reasoning-chain leakage** — "Let me think", "Step 1:", "Breaking this down" in connected prose (extends #22); Cyrillic/Greek letter homoglyphs inside Latin words (extends the A.10 marker class).
+- Fake-candor openers — "Honestly?", "Let's be honest", "Here's the thing:", "The uncomfortable truth is" as a theatrical pause-and-reveal. Flag at document level only when 2+ occur; a mid-sentence "honestly" is normal speech.
+- False agency / narrator-from-a-distance — "the data tells us", "the decision emerges", "nobody designed this". Ordinary metonymy ("the paper argues") is fine.
+- Content-free verdict sentences — freestanding evaluations that could close any text: "This is a noteworthy finding.", "The implications are significant."
+- Asserted causation without evidence (post-hoc) — "launched in Q3, so adoption increased." Repair by adding the proof or downgrading to correlation; never patch it with a hedge.
+- Summary-stamp openers (as a move, not a fixed phrase) — any label announcing a summary before delivering it: "In conclusion", "Here's the TL;DR:", "In short:", "一句话总结:". Ban the move, which catches novel variants a phrase-list misses.
+- Redundant plain-language restatement — explaining a point, then re-explaining it "simply": "In other words…", "Put simply…", "简单来说…" blocks that add no new information.
+- Conditional next-step menu — staged offers where the user must say a magic phrase to unlock the next action: "If you want, I can also…", "If you tell me X, I'll Y." Distinct from leftover chat turns (#22).
+- Emphasis crutches — "Full stop.", "Let that sink in.", "Read that again."
+- Circular/tautological definitions ("the system enables users to use the functionality") and noun stacking ("production-ready deployment system infrastructure") — 🟢 weak tells.
+- Diff-anchored prose — text narrating its last revision ("has been updated to", "now uses", "previously") instead of the current state; fine in changelogs and migration guides.
+- Reasoning-chain leakage — "Let me think", "Step 1:", "Breaking this down" in connected prose (extends #22); Cyrillic/Greek letter homoglyphs inside Latin words (extends the A.10 marker class).
 
 ## Edit order: structure, then rhythm, then vocabulary
 
@@ -133,7 +133,7 @@ Fix the discourse layer first, sentence rhythm second, word choice last. Each ea
 
 Restructure sentence rhythm second, then fix word choice — rhythm carries most of the remaining achievable improvement, and deleting an intensifier *without* restructuring makes the shortened sentence fit AI cadence even better.
 
-- **Rhythm check (editorial inference, no numeric threshold).** What is measured is the *spread* of sentence lengths: human text varies more within a passage than instruction-tuned output does, in every study that measured it (`references/sources.md`). The mean is not a signal — it flipped between model generations — and no study prints a within-text figure to set a cutoff from, so none is set here. Look for runs of three or more adjacent sentences of about the same length; "three" and "about the same" are reading conventions. A run is a candidate signal that counts only alongside other tells. Fix by moving words, never by adding them: split one long sentence, merge two short ones, delete a clause; a run of long sentences wants one short one, a run of short ones wants one long one. Do not shorten everything — uniformly short is the same defect from the other side. The check needs running prose of at least paragraph length: a one-line reply, a bullet list, a table or a commit-style changelog has no rhythm to measure, and the report says `none`. Re-check after rewriting; word swaps do not change rhythm.
+- Rhythm check (editorial inference, no numeric threshold). What is measured is the *spread* of sentence lengths: human text varies more within a passage than instruction-tuned output does, in every study that measured it (`references/sources.md`). The mean is not a signal — it flipped between model generations — and no study prints a within-text figure to set a cutoff from, so none is set here. Look for runs of three or more adjacent sentences of about the same length; "three" and "about the same" are reading conventions. A run is a candidate signal that counts only alongside other tells. Fix by moving words, never by adding them: split one long sentence, merge two short ones, delete a clause; a run of long sentences wants one short one, a run of short ones wants one long one. Do not shorten everything — uniformly short is the same defect from the other side. The check needs running prose of at least paragraph length: a one-line reply, a bullet list, a table or a commit-style changelog has no rhythm to measure, and the report says `none`. Re-check after rewriting; word swaps do not change rhythm.
 - Removing transition crutches must not produce choppy asyndeton — a run of short, connector-less sentences is itself a tell of automated cleanup. Repair menu: substitute a natural connective, echo a key noun from the previous sentence, or merge the sentences. Decision test per connective: does it inflate meaning (delete) or make logic explicit (keep)?
 - Hedge calibration is bidirectional: stacked hedges collapse to one, but an over-assertive causal claim built on observational evidence gets a cushion added.
 
@@ -148,24 +148,24 @@ For standard/deep/voice-match edits on texts longer than a couple of sentences:
 
 ## Working rules
 
-- **Document brief first** — before rewriting, fix in one line: document type, audience, dominant register, the text's objective (persuade / explain / inform), and the core domain terms to reuse verbatim. Paragraph-by-paragraph rewriting without a brief drifts back toward model voice. After rewriting, check the result still serves that objective and the tone fits it.
-- **Read the venue first** — before editing, sample 2–3 recent human-written artifacts from the same venue when they are reachable: the repo's past release notes, the maintainer's other replies in the thread, the team's last postmortem, the blog's earlier posts. Match their register, length norms and formatting habits; the venue corpus, not this skill, defines the target voice, and instruction-tuned models are measured to struggle with exactly that genre-aligned variation. This is the default form of voice-match; a user-supplied sample refines it. With no corpus reachable, the domain file's baseline applies, and the report says "none — using the domain baseline".
-- **Model identity** — resolve two roles before starting, each as family plus release or `unknown`: the *author* model (from the user or from metadata: a commit trailer, a tool signature, a stated source) and the *executor* model (the one you are running on, from your own system context). Never infer either from the prose: attribution by reading is not a classifier, and `references/llm-fingerprints.md` says "the text carries AI tells", never "GPT wrote this". For a known family, load that vendor's block from `llm-fingerprints.md`: the author's block is applied to the text you were given, the executor's block to the text you produce — the model running this skill hunts its own vendor-documented habits in its own rewrite (a Claude executor hunts metaphor where a literal phrase exists, an Opus 5 executor hunts filler sections, a GPT-5.6 executor checks that brevity did not drop a required caveat). A block is *operative* when the release matches its tag and a *prior* for any other release of the family. An unknown role loads nothing and is reported as `none`.
-- **Density fails in both directions** — a trimmed answer that lost a required caveat, the next step, or the number the reader came for is a defect, the same as an inflated one. And a rewrite must not come out more promotional or more confident than its source (`references/edit-trace.md`).
-- **Mixed Markdown** — mask fenced code blocks and blockquotes before counting tells (a quoted AI sample must not count against the author); restore them byte-identical. Keep ATX headings byte-identical too unless the user explicitly asks to rewrite headings — renamed headings break anchor links.
-- **Minimum sample** — under ~40 words, do not issue a verdict or score; say the sample is too short to judge.
-- **Output typography** — this is an output rule, not a detection rule (detection still treats curly quotes and em-dashes as the weak, autocorrect-caveated tells #18/#16 — never hard-flag them). When you *produce* rewritten text, default to straight quotes (`'` `"`) and a hyphen or a comma-set clause instead of a gratuitous em-dash (`—`), and spell the relation out in words (or use ASCII `->` in technical text) instead of an arrow glyph (`→`, `⇒`) used as a prose connective, because flawless typography an agent hand-sets is itself a plain-text tell. **Carve-outs — keep the original typography:** the text is a published/formatted article or literary prose where em-dashes and curly quotes are deliberate craft; the arrow is real notation (a diagram, a state machine, a math or chemistry expression, quoted tool output, a UI path like `File → Save`); the glyph sits inside a quotation, a proper name, or code; or the user asks to preserve typography. Never convert to guillemets or any national style, and never touch quotes/dashes inside code or fenced blocks.
+- Document brief first — before rewriting, fix in one line: document type, audience, dominant register, the text's objective (persuade / explain / inform), and the core domain terms to reuse verbatim. Paragraph-by-paragraph rewriting without a brief drifts back toward model voice. After rewriting, check the result still serves that objective and the tone fits it.
+- Read the venue first — before editing, sample 2–3 recent human-written artifacts from the same venue when they are reachable: the repo's past release notes, the maintainer's other replies in the thread, the team's last postmortem, the blog's earlier posts. Match their register, length norms and formatting habits; the venue corpus, not this skill, defines the target voice, and instruction-tuned models are measured to struggle with exactly that genre-aligned variation. This is the default form of voice-match; a user-supplied sample refines it. With no corpus reachable, the domain file's baseline applies, and the report says "none — using the domain baseline".
+- Model identity — resolve two roles before starting, each as family plus release or `unknown`: the *author* model (from the user or from metadata: a commit trailer, a tool signature, a stated source) and the *executor* model (the one you are running on, from your own system context). Never infer either from the prose: attribution by reading is not a classifier, and `references/llm-fingerprints.md` says "the text carries AI tells", never "GPT wrote this". For a known family, load that vendor's block from `llm-fingerprints.md`: the author's block is applied to the text you were given, the executor's block to the text you produce — the model running this skill hunts its own vendor-documented habits in its own rewrite (a Claude executor hunts metaphor where a literal phrase exists, an Opus 5 executor hunts filler sections, a GPT-5.6 executor checks that brevity did not drop a required caveat). A block is *operative* when the release matches its tag and a *prior* for any other release of the family. An unknown role loads nothing and is reported as `none`.
+- Density fails in both directions — a trimmed answer that lost a required caveat, the next step, or the number the reader came for is a defect, the same as an inflated one. And a rewrite must not come out more promotional or more confident than its source (`references/edit-trace.md`).
+- Mixed Markdown — mask fenced code blocks and blockquotes before counting tells (a quoted AI sample must not count against the author); restore them byte-identical. Keep ATX headings byte-identical too unless the user explicitly asks to rewrite headings — renamed headings break anchor links.
+- Minimum sample — under ~40 words, do not issue a verdict or score; say the sample is too short to judge.
+- Output typography — this is an output rule, not a detection rule (detection still treats curly quotes and em-dashes as the weak, autocorrect-caveated tells #18/#16 — never hard-flag them). When you *produce* rewritten text, default to straight quotes (`'` `"`) and a hyphen or a comma-set clause instead of a gratuitous em-dash (`—`), and spell the relation out in words (or use ASCII `->` in technical text) instead of an arrow glyph (`→`, `⇒`) used as a prose connective, because flawless typography an agent hand-sets is itself a plain-text tell. Carve-outs — keep the original typography: the text is a published/formatted article or literary prose where em-dashes and curly quotes are deliberate craft; the arrow is real notation (a diagram, a state machine, a math or chemistry expression, quoted tool output, a UI path like `File → Save`); the glyph sits inside a quotation, a proper name, or code; or the user asks to preserve typography. Never convert to guillemets or any national style, and never touch quotes/dashes inside code or fenced blocks.
 
 ## Operations and intensity levels
 
-Two operations. **Review** diagnoses and edits nothing: it produces the report in Output format below and stops, applying nothing until asked. **Edit** runs at one of four intensities; the default is standard. Any request maps to one of the two — "check this", "is this AI", "what gives it away" is review; "humanize", "rewrite", "clean up" is edit. Never switch operations because of what the text contains: a review that finds six tells still ends as a report.
+Two operations. Review diagnoses and edits nothing: it produces the report in Output format below and stops, applying nothing until asked. Edit runs at one of four intensities; the default is standard. Any request maps to one of the two — "check this", "is this AI", "what gives it away" is review; "humanize", "rewrite", "clean up" is edit. Never switch operations because of what the text contains: a review that finds six tells still ends as a report.
 
-- **light** — remove only 🔴 instant markers and copy-paste artifacts; wording untouched.
-- **standard** (default) — fix 🔴 and 🟡, preserve structure and voice. Two stages, always: the complete finding list first (the review report, kept as working notes), then the fixes, deepest layer first. Paraphrasing without the list makes the fingerprints more visible, not less.
-- **deep** — recreate: extract the facts, claims and intent into a bare list, verify nothing is invented, write fresh under the genre and domain rules. Use when the defects are structural and the text is short enough that surgery costs more than rebuilding.
-- **voice-match** — before rewriting, extract from the venue corpus (Working rules) and any user-provided sample: register, sentence-length variance, contraction rate, punctuation habits, favorite moves, and what the author never does; apply in that order. A voice applied wholesale is a fingerprint of its own: use 3–5 of its signature moves per piece, keep uniformity findings (#28) at full strength even under a declared voice, and where the voice and a de-slop rule directly conflict (a voice that forbids contractions against the restore list), name both and let the user pick rather than resolving it silently.
+- light — remove only 🔴 instant markers and copy-paste artifacts; wording untouched.
+- standard (default) — fix 🔴 and 🟡, preserve structure and voice. Two stages, always: the complete finding list first (the review report, kept as working notes), then the fixes, deepest layer first. Paraphrasing without the list makes the fingerprints more visible, not less.
+- deep — recreate: extract the facts, claims and intent into a bare list, verify nothing is invented, write fresh under the genre and domain rules. Use when the defects are structural and the text is short enough that surgery costs more than rebuilding.
+- voice-match — before rewriting, extract from the venue corpus (Working rules) and any user-provided sample: register, sentence-length variance, contraction rate, punctuation habits, favorite moves, and what the author never does; apply in that order. A voice applied wholesale is a fingerprint of its own: use 3–5 of its signature moves per piece, keep uniformity findings (#28) at full strength even under a declared voice, and where the voice and a de-slop rule directly conflict (a voice that forbids contractions against the restore list), name both and let the user pick rather than resolving it silently.
 
-At every level: humanizing subtracts noise — never add fake warmth, anecdotes, typos, or personality that wasn't there. **Style is how it sounds; stance is how much it agrees.** Move only style — a request to humanize is not a request to agree, so preserve the text's disagreement, uncertainty, hedges of genuine doubt, and refusals at every intensity. Adding warmth adds sycophancy, the loudest tell.
+At every level: humanizing subtracts noise — never add fake warmth, anecdotes, typos, or personality that wasn't there. Style is how it sounds; stance is how much it agrees. Move only style — a request to humanize is not a request to agree, so preserve the text's disagreement, uncertainty, hedges of genuine doubt, and refusals at every intensity. Adding warmth adds sycophancy, the loudest tell.
 
 ## Clarity carve-out and fact preservation
 
@@ -199,7 +199,7 @@ The interpreter's name is platform-dependent: `python3` on Linux and macOS, `py 
 
 ## The main rule
 
-**No single soft tell is sufficient grounds for the verdict "this text was written by AI".** Only these are sufficient:
+No single soft tell is sufficient grounds for the verdict "this text was written by AI". Only these are sufficient:
 
 - One unambiguous marker from `references/chatbot-artifacts.md`.
 - A confirmed source fabrication from `references/source-fabrication.md`.
@@ -209,11 +209,11 @@ Better to miss machine text than to ruin a person's living text.
 
 ## Five key editing principles
 
-1. **Cut the filler.** Remove empty opening phrases and crutch words.
-2. **Break the templates.** Avoid paired comparisons, dramatic lists, rhetorical wind-ups.
-3. **Vary the rhythm.** Alternate sentence length. Two items beat three. Vary how paragraphs end.
-4. **Trust the reader.** State facts plainly. Skip the over-explaining and the justifications.
-5. **No slogans.** If a phrase sounds like a marketing tagline — rewrite it.
+1. Cut the filler. Remove empty opening phrases and crutch words.
+2. Break the templates. Avoid paired comparisons, dramatic lists, rhetorical wind-ups.
+3. Vary the rhythm. Alternate sentence length. Two items beat three. Vary how paragraphs end.
+4. Trust the reader. State facts plainly. Skip the over-explaining and the justifications.
+5. No slogans. If a phrase sounds like a marketing tagline — rewrite it.
 
 ## Signs of lifeless text
 
@@ -226,9 +226,9 @@ Better to miss machine text than to ruin a person's living text.
 
 ## Output format
 
-**Edit operation.** Return only the finished rewritten text (unless the user explicitly asks for an explanation). No opening "Here is your text:" and no closing "Hope this helps!". If you are unsure about an edit — ask; do not edit silently.
+Edit operation. Return only the finished rewritten text (unless the user explicitly asks for an explanation). No opening "Here is your text:" and no closing "Hope this helps!". If you are unsure about an edit — ask; do not edit silently.
 
-**Review operation.** Return the report below and nothing else. Evidence lines come before the verdict line, always: a verdict written first steers the findings toward it, and a judge that states its reasons before its score agrees measurably better with human experts (`references/sources.md`, `WAHI-JUDGE-2026`). The verdict is a count of recorded findings read against the decision tree, not a score, and the report never states an authorship probability.
+Review operation. Return the report below and nothing else. Evidence lines come before the verdict line, always: a verdict written first steers the findings toward it, and a judge that states its reasons before its score agrees measurably better with human experts (`references/sources.md`, `WAHI-JUDGE-2026`). The verdict is a count of recorded findings read against the decision tree, not a score, and the report never states an authorship probability.
 
 ```text
 HUMANIZE REVIEW — <document type, venue>

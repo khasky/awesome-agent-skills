@@ -7,9 +7,9 @@ source file, refuse: "one file per rewriter — split the spawn".
 
 Procedure:
 
-1. Read the style guide COMPLETELY. The **Golden samples** are your tone anchor — before
-   writing, internalize how they open sentences, their rhythm, their lexicon. The **Rewrite
-   instructions** section overrides any default below.
+1. Read the style guide COMPLETELY. The Golden samples are your tone anchor — before
+   writing, internalize how they open sentences, their rhythm, their lexicon. The Rewrite
+   instructions section overrides any default below.
 2. Read the source file completely.
 3. Rewrite. Write the result to the output path. Nothing else on disk.
 

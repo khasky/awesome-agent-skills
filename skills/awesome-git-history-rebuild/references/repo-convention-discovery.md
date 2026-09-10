@@ -9,7 +9,7 @@ A rebuilt history that ignores the repo's own commit rules is worse than the his
 | `CONTRIBUTING.md`, `.github/CONTRIBUTING.md`, `docs/CONTRIBUTING*` | The stated format, allowed types and scopes, sign-off, PR expectations |
 | `README.md` contribution section | Same, for repos too small for a CONTRIBUTING |
 | `docs/**` — development, releasing, maintainers runbooks | How releases are cut and what the commits feed |
-| `commitlint.config.*`, `.commitlintrc*`, `package.json#commitlint` | The **enforced** format: types, scopes, subject case, max lengths |
+| `commitlint.config.*`, `.commitlintrc*`, `package.json#commitlint` | The enforced format: types, scopes, subject case, max lengths |
 | `.husky/commit-msg`, `.husky/pre-commit` | Which hooks fire on every commit, and with what |
 | `core.hooksPath` (`git config core.hooksPath`), `.githooks/` | Hooks outside `.git/hooks` — easy to miss, still enforced |
 | `.pre-commit-config.yaml`, `lefthook.yml`, `.lefthook/` | Non-Node hook frameworks; may reformat files mid-commit |
@@ -19,14 +19,14 @@ A rebuilt history that ignores the repo's own commit rules is worse than the his
 | `.versionrc*`, `release-please-config.json`, `.releaserc*`, `.changeset/`, `cliff.toml` | Which commit types reach the changelog and how versions bump |
 | `.git-blame-ignore-revs` | The repo separates formatting commits and records them |
 | `CODEOWNERS`, `.mailmap` | Multiple contributors — relevant to the multi-author gate |
-| **The existing log** | What the repo actually did, which outranks what a doc claims |
+| The existing log | What the repo actually did, which outranks what a doc claims |
 
 ## Precedence
 
-1. **An enforced rule** (a hook or a CI check that fails the build) — non-negotiable; a plan that violates it cannot be executed.
-2. **A stated rule** (CONTRIBUTING, README, docs) — followed unless it contradicts an enforced rule, in which case surface the contradiction to the user rather than picking silently.
-3. **The existing log's observed style** — fills every gap the first two leave: scope vocabulary, subject length, whether bodies are used, capitalization.
-4. **This skill's defaults** — only where all three above are silent.
+1. An enforced rule (a hook or a CI check that fails the build) — non-negotiable; a plan that violates it cannot be executed.
+2. A stated rule (CONTRIBUTING, README, docs) — followed unless it contradicts an enforced rule, in which case surface the contradiction to the user rather than picking silently.
+3. The existing log's observed style — fills every gap the first two leave: scope vocabulary, subject length, whether bodies are used, capitalization.
+4. This skill's defaults — only where all three above are silent.
 
 ## Reading the style out of the old log
 
@@ -50,7 +50,7 @@ Decide from the counts, not from one sample:
 | `ABC-123: summary` or `[ABC-123]` | Ticket-prefixed — ask the user for the ticket IDs, or omit the prefix and say so |
 | Capitalized imperative sentences, no prefix | Plain style (this repo's own logs, many small projects) |
 
-Whatever the family, copy its **case, punctuation and length** too. A conventional repo whose subjects are all lowercase and under 60 characters does not want a 90-character capitalized one.
+Whatever the family, copy its case, punctuation and length too. A conventional repo whose subjects are all lowercase and under 60 characters does not want a 90-character capitalized one.
 
 ## Message templates
 
@@ -82,23 +82,23 @@ Rules that hold across all of them: imperative mood ("add", not "added"/"adds"),
 
 ## Trailers, sign-off and signing
 
-- **DCO** — a `dco.yml` workflow, a "Signed-off-by" requirement in CONTRIBUTING, or a `Signed-off-by` line on most old commits means every rebuilt commit needs `git commit -s`. The name and email in the trailer must match the committer.
-- **Co-authored-by** — the honest way to keep another contributor's attribution when their code survives into the rebuilt tree. One trailer per co-author, last lines of the body, exactly `Co-authored-by: Name <email>`; hosts parse it and credit the person on the commit.
-- **Issue references** — `Closes #N` / `Fixes #N` only for issues that genuinely exist and that the code in that commit resolves. A rebuilt history referencing issues at random creates false cross-links in the tracker.
-- **Signing** — `git config commit.gpgsign` true, or `Verified` badges on the old commits, means the rebuild signs too (`-S`, or the configured `gpg.format=ssh` key). The old signatures cannot survive a rewrite; every rebuilt commit is signed by whoever runs the rebuild, which is worth stating in the report.
+- DCO — a `dco.yml` workflow, a "Signed-off-by" requirement in CONTRIBUTING, or a `Signed-off-by` line on most old commits means every rebuilt commit needs `git commit -s`. The name and email in the trailer must match the committer.
+- Co-authored-by — the honest way to keep another contributor's attribution when their code survives into the rebuilt tree. One trailer per co-author, last lines of the body, exactly `Co-authored-by: Name <email>`; hosts parse it and credit the person on the commit.
+- Issue references — `Closes #N` / `Fixes #N` only for issues that genuinely exist and that the code in that commit resolves. A rebuilt history referencing issues at random creates false cross-links in the tracker.
+- Signing — `git config commit.gpgsign` true, or `Verified` badges on the old commits, means the rebuild signs too (`-S`, or the configured `gpg.format=ssh` key). The old signatures cannot survive a rewrite; every rebuilt commit is signed by whoever runs the rebuild, which is worth stating in the report.
 
 ## Hooks during the replay
 
 Hooks fire on every rebuilt commit. Know which, and what each does, before commit #1.
 
-- **`commit-msg`** (commitlint, gitlint) — validates the subject. **Pre-validate every planned message** before starting the replay, so a rejection surfaces at planning time:
+- `commit-msg` (commitlint, gitlint) — validates the subject. Pre-validate every planned message before starting the replay, so a rejection surfaces at planning time:
   ```bash
   echo "feat(storage): persist profiles in a lock-guarded store" | npx --no-install commitlint
   ```
   A Node hook needs the dependencies installed — run the repo's install command first, or the hook fails for a reason that has nothing to do with the message.
-- **`pre-commit`** (lint-staged, formatters, type-checkers) — two failure modes. It may **reject** an intermediate commit because a partial tree does not type-check, and it may **rewrite** staged files, which changes the tree the rebuild is supposed to preserve. If either happens, stop and hand the user the choice: coarsen the split so each commit is self-consistent, or accept `--no-verify` for intermediate commits and disclose it in the report. Never bypass a hook silently.
-- **`pre-push`** — runs once at the force-push; make sure its command can actually pass on the rebuilt branch.
-- **`prepare-commit-msg`** — may inject a template or a ticket ID. Let it; then re-read the resulting subjects during Phase 7 validation, because what it injects is what the log will show.
+- `pre-commit` (lint-staged, formatters, type-checkers) — two failure modes. It may reject an intermediate commit because a partial tree does not type-check, and it may rewrite staged files, which changes the tree the rebuild is supposed to preserve. If either happens, stop and hand the user the choice: coarsen the split so each commit is self-consistent, or accept `--no-verify` for intermediate commits and disclose it in the report. Never bypass a hook silently.
+- `pre-push` — runs once at the force-push; make sure its command can actually pass on the rebuilt branch.
+- `prepare-commit-msg` — may inject a template or a ticket ID. Let it; then re-read the resulting subjects during Phase 7 validation, because what it injects is what the log will show.
 
 ## Release tooling
 

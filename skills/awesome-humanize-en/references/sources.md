@@ -2,7 +2,7 @@
 
 Pins the sources the pattern catalogs cite, with the version read, the date, what kind of evidence it is, and which files consume it. A measured association in a study does not validate a prescription in this skill: every "what to do" in the catalogs is an editorial inference unless the row below says the source tested the intervention itself.
 
-**Evidence classes.** `measured` = a study with a corpus and numbers. `vendor` = a model vendor describing its own model's writing in prompting documentation (unmeasured, scoped to the release the page names). `editorial` = a field guide or style manual written by editors. `community` = observations from forums and community catalogs. `second-hand` = read through another project's ledger, not against the primary text; the number is repeated with that caveat and must be verified at the primary before anything new is built on it.
+Evidence classes. `measured` = a study with a corpus and numbers. `vendor` = a model vendor describing its own model's writing in prompting documentation (unmeasured, scoped to the release the page names). `editorial` = a field guide or style manual written by editors. `community` = observations from forums and community catalogs. `second-hand` = read through another project's ledger, not against the primary text; the number is repeated with that caveat and must be verified at the primary before anything new is built on it.
 
 ## Primary studies
 

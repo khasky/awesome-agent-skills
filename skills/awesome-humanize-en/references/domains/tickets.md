@@ -21,7 +21,7 @@ Imperative, minimal, complete enough. The assignee can start without asking a qu
 
 ## Rules
 
-1. **Title = outcome**, not activity ("Retry queue drops jobs on redeploy", not "Investigate queue issue").
+1. Title = outcome, not activity ("Retry queue drops jobs on redeploy", not "Investigate queue issue").
 2. Bug tickets: exact repro (versions, commands, input), expected vs actual with real output pasted, frequency. If you cannot reproduce it, say what you tried.
 3. Acceptance criteria are testable or they are not criteria.
 4. Link, do not repeat: prior tickets, the design doc, the alert. One source of truth.

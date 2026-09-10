@@ -1,6 +1,6 @@
 # Browser-client hardening (extensions, SPAs, web SDKs)
 
-The browser-specific half of the hardening pass. Load it **in addition to** `client-hardening.md` — that file carries the runtime-independent rules (caller validation, token handling, egress, build config, supply chain) and this one carries the browser mechanisms that implement them. Skip this file entirely for a native mobile, desktop, CLI, or server-side SDK client.
+The browser-specific half of the hardening pass. Load it in addition to `client-hardening.md` — that file carries the runtime-independent rules (caller validation, token handling, egress, build config, supply chain) and this one carries the browser mechanisms that implement them. Skip this file entirely for a native mobile, desktop, CLI, or server-side SDK client.
 
 ## 1. Extension permissions and install warnings
 
@@ -13,9 +13,9 @@ The browser-specific half of the hardening pass. Load it **in addition to** `cli
 
 Implements the caller-validation rule in `client-hardening.md` §2.
 
-- **Extension messaging** — check `sender.id === runtime.id` to reject messages from other extensions.
-- **Own privileged page vs content script** — gate by the sender's **origin** (`sender.url` starts with your extension origin), not by whether the message arrived from a tab: your own privileged pages often run *in* tabs, and a compromised content script also has one.
-- **MAIN ↔ isolated world bridges and cross-frame `postMessage`** — check `event.origin` against an allowlist and check `event.source`. An `origin.includes('example.com')` substring test passes `example.com.evil.tld`; compare the full origin.
+- Extension messaging — check `sender.id === runtime.id` to reject messages from other extensions.
+- Own privileged page vs content script — gate by the sender's origin (`sender.url` starts with your extension origin), not by whether the message arrived from a tab: your own privileged pages often run *in* tabs, and a compromised content script also has one.
+- MAIN ↔ isolated world bridges and cross-frame `postMessage` — check `event.origin` against an allowlist and check `event.source`. An `origin.includes('example.com')` substring test passes `example.com.evil.tld`; compare the full origin.
 
 ## 3. Storage tiers for sensitive values
 
@@ -29,9 +29,9 @@ Implements the token-storage rule in `client-hardening.md` §3.
 
 Run this source→sink, not as a grep for bad function names.
 
-- **Attacker-influenced sources** — `location.hash`, `location.search`, `window.name`, `document.referrer`, `postMessage` data, the scraped page DOM, and server-derived values (counts, names, emoji, messages).
-- **HTML-string sinks** — `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `dangerouslySetInnerHTML`, framework `v-html` / `{@html}`, `eval`, `new Function`, string-argument `setTimeout`/`setInterval`.
-- **CSS-value sinks** — `style.cssText`, `CSSStyleSheet.insertRule`. Untrusted CSS enables exfiltration and timing tricks; it is not a cosmetic sink.
+- Attacker-influenced sources — `location.hash`, `location.search`, `window.name`, `document.referrer`, `postMessage` data, the scraped page DOM, and server-derived values (counts, names, emoji, messages).
+- HTML-string sinks — `innerHTML`, `outerHTML`, `insertAdjacentHTML`, `document.write`, `dangerouslySetInnerHTML`, framework `v-html` / `{@html}`, `eval`, `new Function`, string-argument `setTimeout`/`setInterval`.
+- CSS-value sinks — `style.cssText`, `CSSStyleSheet.insertRule`. Untrusted CSS enables exfiltration and timing tricks; it is not a cosmetic sink.
 - Walk each sink back to its source. Server-side escaping ends where the URL fragment begins — the fragment never reaches the server.
 - Prefer text nodes and framework escaping; render into a shadow root or sanitize. Scheme-gate any href or URL built from page/server data (allow `http(s):` only) and put `rel="noopener"` on target-blank links.
 
@@ -44,9 +44,9 @@ Run this source→sink, not as a grep for bad function names.
 
 Implements the build-config rule in `client-hardening.md` §6 with the JS toolchain's specifics.
 
-- **Backend-override gating** — if the build honors `VITE_API_BASE` / `API_URL` / similar env overrides, resolve the override at the `define`/build layer and, in production mode, accept only known-good values (e.g. the staging base an e2e build needs). A pure runtime check still leaves the rejected string inlined by the bundler, so it must be rejected before the artifact is written — including in the manifest and host permissions.
-- **Shipped artifact** — build it and grep: no `*.map`, no `sourceMappingURL`, no secret patterns, no `localhost`/`127.0.0.1`, no internal hostnames.
-- **Source bundles** — a store submission zip or `npm pack` output does **not** honor `.gitignore`. Confirm the `files`/`.npmignore`/submission exclude list drops `.env`, `.env.*`, and any test-credential file, then build the bundle and grep it.
+- Backend-override gating — if the build honors `VITE_API_BASE` / `API_URL` / similar env overrides, resolve the override at the `define`/build layer and, in production mode, accept only known-good values (e.g. the staging base an e2e build needs). A pure runtime check still leaves the rejected string inlined by the bundler, so it must be rejected before the artifact is written — including in the manifest and host permissions.
+- Shipped artifact — build it and grep: no `*.map`, no `sourceMappingURL`, no secret patterns, no `localhost`/`127.0.0.1`, no internal hostnames.
+- Source bundles — a store submission zip or `npm pack` output does not honor `.gitignore`. Confirm the `files`/`.npmignore`/submission exclude list drops `.env`, `.env.*`, and any test-credential file, then build the bundle and grep it.
 
 ## 7. npm supply chain
 

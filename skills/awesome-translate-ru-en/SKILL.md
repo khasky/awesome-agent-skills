@@ -20,17 +20,17 @@ This skill is content-neutral: the source can be a Markdown document, a plain ar
 
 Whatever non-prose elements appear in the source must survive translation byte-for-byte. Common categories — apply only those that are present in the source:
 
-- **Section markers / headings** (Markdown `#`, RST `===`, HTML `<h1>`, plain `1.`/`2.` numbering, etc.) — translate the heading text, but keep the marker, level, and order.
-- **Code blocks** in any format (fenced ` ``` `, indented, `<pre>`, etc.) — keep contents EXACTLY as-is. Do not translate code, identifiers, or comments inside code unless the user explicitly asks.
-- **Inline code / identifiers** in backticks or tags (`like_this`, `<code>like_this</code>`) — never rephrase identifier names.
-- **Links and URLs** (`[text](url)`, `<a href>`, plain URLs) — keep targets intact. Translate only the visible link text.
-- **Markup tags**: HTML, XML, frontmatter (YAML/TOML), JSX — leave the structure untouched, translate only the human-readable text inside.
-- **Tables**: same row count, column count, and cell alignment.
-- **List structure**: same number of items, same nesting depth, same order.
-- **Emphasis markers** on key terms (`**bold**`, `*italic*`, `<strong>`, `<em>`) — keep both the markers and the term they emphasize.
-- **Numbers, version strings, dates, timestamps, units, identifiers** — exactly as they appear.
-- **Emojis and special characters** (❌, ✅, →, em-dashes) — keep in the same positions.
-- **Placeholder tokens** (`{username}`, `%s`, `%d`, `{{var}}`) — keep exactly as-is, and position them so the English sentence reads grammatically around them.
+- Section markers / headings (Markdown `#`, RST `===`, HTML `<h1>`, plain `1.`/`2.` numbering, etc.) — translate the heading text, but keep the marker, level, and order.
+- Code blocks in any format (fenced ` ``` `, indented, `<pre>`, etc.) — keep contents EXACTLY as-is. Do not translate code, identifiers, or comments inside code unless the user explicitly asks.
+- Inline code / identifiers in backticks or tags (`like_this`, `<code>like_this</code>`) — never rephrase identifier names.
+- Links and URLs (`[text](url)`, `<a href>`, plain URLs) — keep targets intact. Translate only the visible link text.
+- Markup tags: HTML, XML, frontmatter (YAML/TOML), JSX — leave the structure untouched, translate only the human-readable text inside.
+- Tables: same row count, column count, and cell alignment.
+- List structure: same number of items, same nesting depth, same order.
+- Emphasis markers on key terms (`**bold**`, `*italic*`, `<strong>`, `<em>`) — keep both the markers and the term they emphasize.
+- Numbers, version strings, dates, timestamps, units, identifiers — exactly as they appear.
+- Emojis and special characters (❌, ✅, →, em-dashes) — keep in the same positions.
+- Placeholder tokens (`{username}`, `%s`, `%d`, `{{var}}`) — keep exactly as-is, and position them so the English sentence reads grammatically around them.
 
 If the source is plain prose with no markup at all, this rule reduces to: preserve numbers, identifiers, and proper nouns. Don't invent structure that isn't there.
 
@@ -117,11 +117,11 @@ If the source is more clinical, formal, or literary, mirror that register instea
 
 For each piece of source text:
 
-1. **Read** the whole source first to understand the genre, register, voice, and key facts.
-2. **Identify** structural and non-prose elements that must stay byte-identical (whatever applies: headings, code, links, lists, tables, markup, identifiers).
-3. **Translate** prose paragraphs, applying the connector map and voice rules.
-4. **Translate** heading text, emphasized terms, and link text.
-5. **Self-check** before output:
+1. Read the whole source first to understand the genre, register, voice, and key facts.
+2. Identify structural and non-prose elements that must stay byte-identical (whatever applies: headings, code, links, lists, tables, markup, identifiers).
+3. Translate prose paragraphs, applying the connector map and voice rules.
+4. Translate heading text, emphasized terms, and link text.
+5. Self-check before output:
    - Same structural elements, same count, same order?
    - Same number of list items, table rows, paragraphs?
    - Code, identifiers, URLs, version numbers untouched?
@@ -129,7 +129,7 @@ For each piece of source text:
    - No literal calques of Russian connectors?
    - Sentence rhythm and register match the source?
    - No meaning degradation: specific→vague, precision loss («p<0,05» → "statistically significant"), causation→correlation, assertion→hedge?
-6. **Deliver** the result (write to a file, or output inline — see Output section).
+6. Deliver the result (write to a file, or output inline — see Output section).
 
 ## Directory mirroring
 
@@ -150,13 +150,13 @@ The user supplies either a single file, a directory tree, or a block of inline t
 
 ## Output
 
-**If the user provided a file or directory:**
+If the user provided a file or directory:
 
 - Write the translated content to the target path the user specified.
 - The chat reply should be a brief report only: files written, any anchor slugs that needed re-pointing, any segment you couldn't confidently translate (proper nouns, ambiguous slang, project-specific jargon).
 - Do NOT paste the translated text into chat — it's already on disk.
 
-**If the user pasted inline text in chat:**
+If the user pasted inline text in chat:
 
 - Output only the translated text — no preamble, no commentary, no list of changes.
 - If the source was wrapped in a code fence or any markup, mirror that wrapping in the output.

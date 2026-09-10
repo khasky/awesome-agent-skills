@@ -6,7 +6,7 @@ Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (M
 
 ## Human baseline
 
-Direct, specific, proportional. Maintainers answer the point in the first sentence, quote the exact code or error, disagree plainly, and say "I don't know" or "won't fix" when that is the truth. Terseness is the norm, not rudeness. **Read the thread and the maintainer's other replies first and match that register**, not a universal politeness standard. With no thread to sample, this baseline applies.
+Direct, specific, proportional. Maintainers answer the point in the first sentence, quote the exact code or error, disagree plainly, and say "I don't know" or "won't fix" when that is the truth. Terseness is the norm, not rudeness. Read the thread and the maintainer's other replies first and match that register, not a universal politeness standard. With no thread to sample, this baseline applies.
 
 ## AI tells in this domain
 
@@ -23,7 +23,7 @@ Direct, specific, proportional. Maintainers answer the point in the first senten
 
 ## Rules
 
-1. **Answer first.** Verdict or answer in sentence one; reasoning after, only as needed.
+1. Answer first. Verdict or answer in sentence one; reasoning after, only as needed.
 2. Cite artifacts: `file.py:214`, the commit SHA, the error text verbatim, the doc link. A claim about code points at the code.
 3. Disagree plainly with a reason ("This breaks the retry path, see #388"). No apology wrapper, no praise sandwich.
 4. State uncertainty honestly and cheaply: "not sure, does it reproduce on 2.4?" beats three hedged paragraphs.

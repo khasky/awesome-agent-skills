@@ -75,43 +75,43 @@ Plain-limits vocabulary is its own register, used unspun in FAQs: "due to API li
 ## Genre notes
 Sub-profiles — only what differs from the base voice:
 
-- **Landing/product pages**: most compressed register. Fragments and 2-sentence modules; a pun is allowed in the hero ("Pin it to win it", "Lights, camera, schedule!"); CTA after every scroll section; one joke per page maximum; no "I" anywhere. Reused stock blurbs are normal ("No long onboarding. No complicated workflows."). Feature sections carry one-word kickers (Schedule, Crosspost, Create, Plan, Community, Templates, Link-in-bio, Save and organize) over a wordplay H2; headings are transformation-framed ("Turn viewers into fans", "Turn your shorts into subscribes") or negative-promise ("Never miss a comment again"). A bridge line separates benefits from features ("One tool, endless possibilities", "Built for creators").
-- **Blog/resources**: the named "I" columnist appears — personal anecdotes, self-deprecating parentheticals at the author's own expense, credential-building, bias disclosure. Furniture: Key takeaways, TOC, emoji callout boxes, comparison tables, expert quotes attributed "says [Name], [Role] at [Company]". Data studies add a warm methodology section ("how the sausage gets made") and hedge every finding; product plugs are quarantined in ⚡ callouts.
-- **Glossary** (`/social-media-terms/*`): chattiest register — slang allowed ("the stuff you love", "your vibe", "win-win"), rhetorical hooks ("Ever noticed how…?"), everyday analogies. Strict template: term → one-sentence definition (repeated verbatim as the first body answer) → question-form H2s ("What is X?" → "How does X work?") → numbered steps → soft conditional plug only after the useful content ("you might enjoy… let us know what you think") → Resources.
-- **Changelog**: team-diary voice with named authors. Opens directly with "You can now…" / "We've…" or by naming a long-standing friction point plainly, gives the exact click-path to find the feature, ends "← Back to changelog" + the "Ready to grow with Buffer?" banner. Exclamation marks are most at home here.
-- **Shareholder letters**: epistolary and template-locked — "Hi there," → summary paragraph front-loading the numbers → "Key numbers" (MRR, ARR, MAU… each with MoM %) → reflections → "What's Coming Up" → teammates' posts by name → thank-you → signed with a dash, the sender's name, and their title ("– [Name], [Title]"). Bad news is narrated plainly, never buried. No emoji, no CTA; the only ask is "Feel free to reply."
-- **Careers/culture**: warmest, most earnest register — values as creeds ("Default to transparency"), salaries published, scam warnings volunteered, a 💛 allowed. Signature anti-gatekeeping move: telling candidates outright that almost no one matches every line, and that mostly matching is reason enough to apply. Culture prose runs longer (3–5 sentence paragraphs) and swaps growth verbs for care verbs ("rest and recharge", "give back").
-- **Integrations how-tos** (`/integrations/*`): near-zero humor, purely instructional. Template: app name → one-line value prop → category tag → "[App] integration for Buffer" 2-sentence intro → "Getting started" with prerequisite line ("You'll need a … account") → numbered UI-verbatim steps → honest third-party disclaimer ("This is a third-party plugin. For support, contact … directly.") → standard closing banner. Real CLI commands and JSON configs are embedded when relevant.
-- **Press page**: the one page that does not sell. Boilerplate "About Buffer" paragraph, values statement, a named human contact with a real email, a label-value metrics table, two card links (transparency dashboard, fact sheet) — no persuasion beyond the standard header/footer CTAs.
+- Landing/product pages: most compressed register. Fragments and 2-sentence modules; a pun is allowed in the hero ("Pin it to win it", "Lights, camera, schedule!"); CTA after every scroll section; one joke per page maximum; no "I" anywhere. Reused stock blurbs are normal ("No long onboarding. No complicated workflows."). Feature sections carry one-word kickers (Schedule, Crosspost, Create, Plan, Community, Templates, Link-in-bio, Save and organize) over a wordplay H2; headings are transformation-framed ("Turn viewers into fans", "Turn your shorts into subscribes") or negative-promise ("Never miss a comment again"). A bridge line separates benefits from features ("One tool, endless possibilities", "Built for creators").
+- Blog/resources: the named "I" columnist appears — personal anecdotes, self-deprecating parentheticals at the author's own expense, credential-building, bias disclosure. Furniture: Key takeaways, TOC, emoji callout boxes, comparison tables, expert quotes attributed "says [Name], [Role] at [Company]". Data studies add a warm methodology section ("how the sausage gets made") and hedge every finding; product plugs are quarantined in ⚡ callouts.
+- Glossary (`/social-media-terms/*`): chattiest register — slang allowed ("the stuff you love", "your vibe", "win-win"), rhetorical hooks ("Ever noticed how…?"), everyday analogies. Strict template: term → one-sentence definition (repeated verbatim as the first body answer) → question-form H2s ("What is X?" → "How does X work?") → numbered steps → soft conditional plug only after the useful content ("you might enjoy… let us know what you think") → Resources.
+- Changelog: team-diary voice with named authors. Opens directly with "You can now…" / "We've…" or by naming a long-standing friction point plainly, gives the exact click-path to find the feature, ends "← Back to changelog" + the "Ready to grow with Buffer?" banner. Exclamation marks are most at home here.
+- Shareholder letters: epistolary and template-locked — "Hi there," → summary paragraph front-loading the numbers → "Key numbers" (MRR, ARR, MAU… each with MoM %) → reflections → "What's Coming Up" → teammates' posts by name → thank-you → signed with a dash, the sender's name, and their title ("– [Name], [Title]"). Bad news is narrated plainly, never buried. No emoji, no CTA; the only ask is "Feel free to reply."
+- Careers/culture: warmest, most earnest register — values as creeds ("Default to transparency"), salaries published, scam warnings volunteered, a 💛 allowed. Signature anti-gatekeeping move: telling candidates outright that almost no one matches every line, and that mostly matching is reason enough to apply. Culture prose runs longer (3–5 sentence paragraphs) and swaps growth verbs for care verbs ("rest and recharge", "give back").
+- Integrations how-tos (`/integrations/*`): near-zero humor, purely instructional. Template: app name → one-line value prop → category tag → "[App] integration for Buffer" 2-sentence intro → "Getting started" with prerequisite line ("You'll need a … account") → numbered UI-verbatim steps → honest third-party disclaimer ("This is a third-party plugin. For support, contact … directly.") → standard closing banner. Real CLI commands and JSON configs are embedded when relevant.
+- Press page: the one page that does not sell. Boilerplate "About Buffer" paragraph, values statement, a named human contact with a real email, a label-value metrics table, two card links (transparency dashboard, fact sheet) — no persuasion beyond the standard header/footer CTAs.
 - Other registers worth knowing: legal pages pair formal text with plain-English one-liners ("In other words, you might get sued."); free-tools pages open with the full usage recipe and state privacy as plain fact in one sentence (nothing leaves the reader's device); transparency dashboards are nearly copy-free — exact numbers do the persuasion.
 
 ## Synthetic samples
 
 Composed to demonstrate the register — not text from the site.
 
-1. **Landing/product page**
+1. Landing/product page
 > Plan your whole week in one sitting, and let your queue handle the rest — so you can get back to making things. Set your posting times once. Add ideas as they come in. Everything publishes on schedule, even when your day runs away from you. No spreadsheets. No 2 a.m. scramble. A calm, consistent presence, not another job.
 
-2. **Blog/resources (how-to opener)**
+2. Blog/resources (how-to opener)
 > Confession: I am not a naturally organized person. (My camera roll — 14,308 unsorted screenshots — will happily testify.) But after a few years of running social for very small teams, I've learned that consistency doesn't come from discipline. It comes from a system that's easier to follow than to skip.
 > You need a routine, not a resolution.
 > Here's the one that finally stuck for me — plus the 3 tweaks that made it stick for good.
 
-3. **Glossary**
+3. Glossary
 > A content pillar is one of the 3–5 big topics you keep coming back to — the themes your audience learns to expect from you. Think of pillars like the departments of a small magazine: every issue looks different, but the sections stay put. Ever noticed how your favorite creators feel focused without feeling repetitive? That's pillars at work. Pick yours, and every "what should I post today?" moment gets a whole lot smaller.
 
-4. **Changelog**
+4. Changelog
 > You can now reorder your queue by dragging posts up and down the calendar — no more deleting and re-adding just to swap two slots. Open your queue, grab any post, and drop it where you want it; the times update on their own. This one came straight from your feature requests, and we're so glad it's finally out the door!
 
-5. **Shareholder letter**
+5. Shareholder letter
 > Hi there,
 > The short version: a flat month. Revenue grew 0.4%, and churn ticked up for the second month running, driven mostly by annual plans that didn't renew. That's not the trend we want, and we won't dress it up — the honest read is that our onboarding hasn't kept pace with our pricing changes. Two fixes are underway, and we'll report on both next month, whichever way the numbers land.
 > Feel free to reply.
 
-6. **Careers/culture**
+6. Careers/culture
 > We work asynchronously across 12 time zones, which means your best hours are yours to choose — school pickup, a morning swim, a nap. (We mean it. Calendars here are quiet.) What we ask in return is ownership: when you say a thing will ship, teammates plan around it. If most of this sounds like the way you already want to work, we'd love to hear from you — even if you don't tick every box.
 
-7. **Integrations how-to**
+7. Integrations how-to
 > You'll need a Formwise account (any plan works).
 > 1. In Formwise, open Settings → API and click "Generate key."
 > 2. In your dashboard, go to Integrations → Add new and paste the key.
@@ -121,9 +121,9 @@ Composed to demonstrate the register — not text from the site.
 ## Rewrite instructions
 When restyling a foreign document into buffer.com voice:
 
-**Preserve from the source:** every fact, number, name, date, price, technical claim, and the document's language (do not translate). Keep the argument's structure of meaning — what is claimed, what supports it, what is concluded — and keep any legally or technically required statements verbatim. Keep exact figures exact; Buffer never rounds for comfort, so precision in the source is an asset, not a problem.
+Preserve from the source: every fact, number, name, date, price, technical claim, and the document's language (do not translate). Keep the argument's structure of meaning — what is claimed, what supports it, what is concluded — and keep any legally or technically required statements verbatim. Keep exact figures exact; Buffer never rounds for comfort, so precision in the source is an asset, not a problem.
 
-**Replace:** the voice, rhythm, lexicon, and formatting. Concretely:
+Replace: the voice, rhythm, lexicon, and formatting. Concretely:
 - Recast to second person ("you") with "we" as the authoring team; kill passive voice and third-person institutional framing.
 - Swap jargon for the preferred lexicon (see Lexicon): "leverage" → "use", "employees" → "teammates", "users" → "creators"/"people"/"customers", "solution" → the product's plain name.
 - Break paragraphs to 1–3 sentences; add single-sentence pivot beats; convert buried benefits into "so you can …" tails and "without X-ing" relief clauses.
@@ -133,6 +133,6 @@ When restyling a foreign document into buffer.com voice:
 - Apply the formatting habits: numerals, spaced em-dashes, arrow UI paths, descriptive links, at most one functional emoji per callout, "X (Twitter)".
 - If the piece sells anything, use the fixed CTA strings verbatim ("Get started for free"; closer "Grow your social presence with confidence" + "No credit card needed. Free forever.") — never invent new CTA copy.
 
-**Imitate the synthetic samples strictly for register, rhythm, and structure — never copy their sentences.** They are cadence templates: match their sentence lengths, dash pivots, verdict-first answers, and parenthetical warmth with the source document's own content.
+Imitate the synthetic samples strictly for register, rhythm, and structure — never copy their sentences. They are cadence templates: match their sentence lengths, dash pivots, verdict-first answers, and parenthetical warmth with the source document's own content.
 
-**Pick the sub-profile by target document type:** marketing/sales page → Landing; article, tutorial, or report → Blog/resources (add the named-"I" columnist, Key takeaways, and a de-hyped closing; use the data-study hedging register for anything statistics-driven); definition or concept explainer → Glossary; release note or product update → Changelog; investor or financial update → Shareholder letter; job posting or company-values page → Careers/culture; setup or configuration guide → Integrations how-to (drop the humor, keep numbered UI-verbatim steps). If nothing fits, default to the base voice with the Landing structure removed — short paragraphs, verdict-first candor, no CTA.
+Pick the sub-profile by target document type: marketing/sales page → Landing; article, tutorial, or report → Blog/resources (add the named-"I" columnist, Key takeaways, and a de-hyped closing; use the data-study hedging register for anything statistics-driven); definition or concept explainer → Glossary; release note or product update → Changelog; investor or financial update → Shareholder letter; job posting or company-values page → Careers/culture; setup or configuration guide → Integrations how-to (drop the humor, keep numbered UI-verbatim steps). If nothing fits, default to the base voice with the Landing structure removed — short paragraphs, verdict-first candor, no CTA.

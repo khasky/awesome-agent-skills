@@ -10,21 +10,21 @@ metadata:
 
 # Git History Salvage
 
-Answer one question completely: **what has this repository ever contained?** Not what `git log` shows — that is only the current branch. The full set includes commits erased by every force-push the repository has taken, commits that live only on a merged pull request's ref, and commits on branches deleted years ago.
+Answer one question completely: what has this repository ever contained? Not what `git log` shows — that is only the current branch. The full set includes commits erased by every force-push the repository has taken, commits that live only on a merged pull request's ref, and commits on branches deleted years ago.
 
-**Why it is not just `git log --all`:** a force-push replaces a ref, it does not delete objects. The objects stay on the host, unreachable, and the host keeps a public record of every ref state in its activity log. Those two facts together are what makes the old history recoverable — but only if you know that `git fetch origin <sha>` serves an unreachable commit while `GET /repos/{owner}/{repo}/commits/{sha}` answers `422 No commit found` for the same SHA. The git protocol succeeds where REST refuses, and that asymmetry is the whole technique.
+Why it is not just `git log --all`: a force-push replaces a ref, it does not delete objects. The objects stay on the host, unreachable, and the host keeps a public record of every ref state in its activity log. Those two facts together are what makes the old history recoverable — but only if you know that `git fetch origin <sha>` serves an unreachable commit while `GET /repos/{owner}/{repo}/commits/{sha}` answers `422 No commit found` for the same SHA. The git protocol succeeds where REST refuses, and that asymmetry is the whole technique.
 
-**Measured case.** A repository whose default branch had just been rebuilt showed 67 commits in `git log`. Merging the four sources below produced **319** — 252 of them off-branch, including a whole erased 62-commit history, 50 bot commits on pull-request refs, and 5 commits under a differently-capitalized author name that exist nowhere in the current tree. All 74 ref states the activity log recorded were still fetchable; none had aged out.
+Measured case. A repository whose default branch had just been rebuilt showed 67 commits in `git log`. Merging the four sources below produced 319 — 252 of them off-branch, including a whole erased 62-commit history, 50 bot commits on pull-request refs, and 5 commits under a differently-capitalized author name that exist nowhere in the current tree. All 74 ref states the activity log recorded were still fetchable; none had aged out.
 
 ## Core principle
 
-**READ-ONLY, AND HONEST ABOUT THE EDGES.** This skill fetches and reports. It never pushes, never deletes a ref, and never touches the user's own checkout — every fetch lands in a disposable scratch clone, because salvage writes dozens of refs (`refs/salvage/*`, `refs/pr/*`) that nobody wants in a working repository.
+READ-ONLY, AND HONEST ABOUT THE EDGES. This skill fetches and reports. It never pushes, never deletes a ref, and never touches the user's own checkout — every fetch lands in a disposable scratch clone, because salvage writes dozens of refs (`refs/salvage/*`, `refs/pr/*`) that nobody wants in a working repository.
 
 Three invariants:
 
-- **Never work in the user's checkout.** The salvage adds one ref per recovered SHA. In a scratch clone that is free; in a working copy it is litter the user has to clean up, and `git log --all` there is wrong from then on.
-- **Every source is additive and deduplicated by SHA.** A commit found in three places is one row. A commit found in none is not invented.
-- **State what could not be reached.** The activity log records **ref states**, not commit lists. A commit that only ever existed mid-branch and was never the tip of a push has no row anywhere, and no technique here finds it. Say so in the report rather than implying completeness.
+- Never work in the user's checkout. The salvage adds one ref per recovered SHA. In a scratch clone that is free; in a working copy it is litter the user has to clean up, and `git log --all` there is wrong from then on.
+- Every source is additive and deduplicated by SHA. A commit found in three places is one row. A commit found in none is not invented.
+- State what could not be reached. The activity log records ref states, not commit lists. A commit that only ever existed mid-branch and was never the tip of a push has no row anywhere, and no technique here finds it. Say so in the report rather than implying completeness.
 
 ## Invocation
 
@@ -33,7 +33,7 @@ Three invariants:
 ```
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with a remote gets both the local objects and the host's record; a local path with no remote gets the local sources only, which is still worth doing — a reflog and a `fsck` often hold what a rewrite dropped.
-- `--level` — optional. Which report to emit; see **Detail level** below. Default when the flag is absent: **ask the user**, never assume.
+- `--level` — optional. Which report to emit; see Detail level below. Default when the flag is absent: ask the user, never assume.
 - `--out` — optional. Where to write the report. With one level, that exact path. With several, the base name for the set (`<repo>-history-<level>.txt`). Default: `<repo>-history-<level>.txt` beside the repository.
 - `--backup` — optional. Path to a mirror clone (`*.git`) to merge in. A backup taken before a rewrite is the single richest source; without one the erased history is recoverable only through the activity log's ref states.
 - `--since` — optional. Restrict the activity-log sweep to a year. Default: everything the host returns.
@@ -57,25 +57,25 @@ Ask once, in Phase 0, before the clone; the level changes nothing about what get
 ## Tooling check (run first)
 
 - `git --version` — required. Every retrieval is plain git.
-- **A host CLI** — `gh` (GitHub) or `glab` (GitLab). Without one the activity log is unreachable and the salvage is limited to refs the remote still advertises plus whatever local sources exist. That is a real gap: it is exactly the erased history that only the activity log names. Say so rather than reporting a short list as complete.
+- A host CLI — `gh` (GitHub) or `glab` (GitLab). Without one the activity log is unreachable and the salvage is limited to refs the remote still advertises plus whatever local sources exist. That is a real gap: it is exactly the erased history that only the activity log names. Say so rather than reporting a short list as complete.
 - `jq` is not required — `gh --jq` and `glab --jq` are built in.
 
 Confirm each is on `PATH` (exit 0) before relying on it.
 
-**Shell.** Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. The reporting pipelines below are POSIX shell — `awk`, `sed`, `sort`, `wc`, `fmt`, `while read` — and PowerShell parses none of it. On Windows run them in Git Bash, which ships with Git for Windows and carries every one of those tools. The `git` and `gh`/`glab` calls themselves run the same everywhere.
+Shell. Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. The reporting pipelines below are POSIX shell — `awk`, `sed`, `sort`, `wc`, `fmt`, `while read` — and PowerShell parses none of it. On Windows run them in Git Bash, which ships with Git for Windows and carries every one of those tools. The `git` and `gh`/`glab` calls themselves run the same everywhere.
 
 ---
 
 ## Phase 0 — Identify the target and the host
 
-1. **Parse the target.** A URL gives `<owner>/<repo>` and the host. A local path: read `git -C <path> remote -v`; no remote means local-only mode, which skips Phase 3.
+1. Parse the target. A URL gives `<owner>/<repo>` and the host. A local path: read `git -C <path> remote -v`; no remote means local-only mode, which skips Phase 3.
 
-2. **Detect the default branch** — it is the reference the report marks against, and it is never safe to assume `main`:
+2. Detect the default branch — it is the reference the report marks against, and it is never safe to assume `main`:
    ```bash
    git ls-remote --symref <url> HEAD    # the `ref:` line names it
    ```
 
-3. **Pick the ref namespace for merged changes.** It differs per host, and getting it wrong silently drops the largest off-branch source:
+3. Pick the ref namespace for merged changes. It differs per host, and getting it wrong silently drops the largest off-branch source:
 
    | Host | Namespace | Fetch refspec |
    |---|---|---|
@@ -85,7 +85,7 @@ Confirm each is on `PATH` (exit 0) before relying on it.
 
    Do not guess. `git ls-remote <url> | awk '{print $2}' | sed 's#/[0-9]*/#/*/#' | sort -u` prints the namespaces the remote actually advertises.
 
-4. **Ask for the detail level** unless `--level` was passed — the table above, in one question. Do it now rather than at report time: a caller who wanted `unique` and got `dedup` cannot tell from the file whether the extra rows are recovered history or rewritten twins of rows already there.
+4. Ask for the detail level unless `--level` was passed — the table above, in one question. Do it now rather than at report time: a caller who wanted `unique` and got `dedup` cannot tell from the file whether the extra rows are recovered history or rewritten twins of rows already there.
 
 ---
 
@@ -120,7 +120,7 @@ git rev-list --all | sort -u | wc -l                   # baseline commit count
 
 Record that baseline. Everything Phase 3 adds is history the remote no longer advertises, and the difference between the two numbers is the headline finding.
 
-**Merged pull requests are the quiet source.** Their `head` refs are refs, so garbage collection never touches what they reach. A pull request branched off a since-erased tip drags its whole ancestry along permanently — in the measured case, 20 such refs kept 88 commits of a deleted history alive.
+Merged pull requests are the quiet source. Their `head` refs are refs, so garbage collection never touches what they reach. A pull request branched off a since-erased tip drags its whole ancestry along permanently — in the measured case, 20 such refs kept 88 commits of a deleted history alive.
 
 ---
 
@@ -128,7 +128,7 @@ Record that baseline. Everything Phase 3 adds is history the remote no longer ad
 
 This is the phase that recovers what nothing else can.
 
-**The activity log is a list of ref states, not commits.** Each row carries `before` and `after` SHAs for a push, force-push, branch creation or deletion. Those SHAs are tips that once existed; fetching one recovers it *and its entire ancestry*, which is how a 40-row log yields hundreds of commits.
+The activity log is a list of ref states, not commits. Each row carries `before` and `after` SHAs for a push, force-push, branch creation or deletion. Those SHAs are tips that once existed; fetching one recovers it *and its entire ancestry*, which is how a 40-row log yields hundreds of commits.
 
 ```bash
 R=<owner>/<repo>
@@ -142,7 +142,7 @@ wc -l < shas.txt
 - `grep -v '^0\{40\}$'` drops the all-zero SHA, which is how a creation or deletion writes "nothing was here".
 - `--jq '.[] | .timestamp, .activity_type, .ref, .actor.login'` on the same endpoint gives the human-readable log, worth capturing alongside as context for *why* a state existed.
 
-Then fetch each one. **This is the step that works where the REST API does not:**
+Then fetch each one. This is the step that works where the REST API does not:
 
 ```bash
 i=0
@@ -157,18 +157,18 @@ done < shas.txt
 
 Four things this loop gets right, each of which is a way it goes wrong otherwise:
 
-- **`git fetch origin <sha>` retrieves commits no ref points at.** `gh api repos/$R/commits/<sha>` answers `422 No commit found for SHA` for the same object. Reach for the protocol, not the API; an agent that tries REST first concludes the history is gone when it is one fetch away.
-- **`git update-ref` is what makes the fetch stick.** A bare `git fetch <sha>` leaves the object reachable only through `FETCH_HEAD`, which the next fetch overwrites. Without a ref per SHA, `git log --all` never sees them and the whole phase silently yields nothing.
-- **`^{commit}` peels, and some rows are not commits.** An annotated tag's SHA appears in the log like any other; peeling turns it into the commit it names, and a row that peels to nothing is a tag object, not a loss.
-- **A failure is recorded, not swallowed.** `gone.txt` is a finding — the count of ref states the host no longer serves belongs in the report, and it is the only honest measure of what aged out.
+- `git fetch origin <sha>` retrieves commits no ref points at. `gh api repos/$R/commits/<sha>` answers `422 No commit found for SHA` for the same object. Reach for the protocol, not the API; an agent that tries REST first concludes the history is gone when it is one fetch away.
+- `git update-ref` is what makes the fetch stick. A bare `git fetch <sha>` leaves the object reachable only through `FETCH_HEAD`, which the next fetch overwrites. Without a ref per SHA, `git log --all` never sees them and the whole phase silently yields nothing.
+- `^{commit}` peels, and some rows are not commits. An annotated tag's SHA appears in the log like any other; peeling turns it into the commit it names, and a row that peels to nothing is a tag object, not a loss.
+- A failure is recorded, not swallowed. `gone.txt` is a finding — the count of ref states the host no longer serves belongs in the report, and it is the only honest measure of what aged out.
 
-**GitLab.** There is no `activity` endpoint. `GET /projects/:id/events` carries push events with commit data under `push_data`, and `glab api "projects/<url-encoded>/events?per_page=100"` reaches it — but the field names and how far back an instance retains events differ, so read one response before scripting against it and report the endpoint as verified or not. Self-managed instances vary further. Other hosts: check for an equivalent, and when there is none, declare Phase 3 **unavailable** rather than passed.
+GitLab. There is no `activity` endpoint. `GET /projects/:id/events` carries push events with commit data under `push_data`, and `glab api "projects/<url-encoded>/events?per_page=100"` reaches it — but the field names and how far back an instance retains events differ, so read one response before scripting against it and report the endpoint as verified or not. Self-managed instances vary further. Other hosts: check for an equivalent, and when there is none, declare Phase 3 unavailable rather than passed.
 
 ---
 
 ## Phase 4 — Local sources the host never saw
 
-Run these against the user's own checkout **read-only**, and against any other clone they name. They reach commits that were never pushed at all:
+Run these against the user's own checkout read-only, and against any other clone they name. They reach commits that were never pushed at all:
 
 ```bash
 git -C <checkout> reflog --all --date=iso --format='%H %gd %gs'   # local rewrites, rebases, resets
@@ -228,14 +228,14 @@ fmt() {   # stdin: sha \t aI \t an \t subject \t annotation
 
 Sorting the *output* by date with the short SHA as tiebreak is what makes two runs produce byte-identical files.
 
-**`full` — one row per (source, sha).** The annotation is the source, and a commit held by three sources gets three rows:
+`full` — one row per (source, sha). The annotation is the source, and a commit held by three sources gets three rows:
 
 ```bash
 LC_ALL=C join -t"$(printf '\t')" -1 1 -2 1 commits.tsv sha-source.txt \
   | awk -F'\t' -v OFS='\t' '{print $1,$2,$4,$5,"  ["$6"]"}' | fmt
 ```
 
-**`dedup` — one row per sha**, the sources collapsed into one bracket:
+`dedup` — one row per sha, the sources collapsed into one bracket:
 
 ```bash
 awk -F'\t' '{s[$1] = s[$1] (s[$1] ? "," : "") $2} END {for (k in s) print k "\t" s[k]}' sha-source.txt \
@@ -244,7 +244,7 @@ awk -F'\t' '{s[$1] = s[$1] (s[$1] ? "," : "") $2} END {for (k in s) print k "\t"
   | awk -F'\t' -v OFS='\t' '{print $1,$2,$4,$5,"  ["$6"]"}' | fmt
 ```
 
-**`unique` — one row per logical commit.** Collapse on author timestamp + author email + subject, which is exactly what a rebase, a cherry-pick and a `filter-repo` rewrite all preserve while changing the SHA. The surviving on-branch copy wins the row; the twins it absorbed are named after it, because "this commit also exists as `2052f425`" is the finding:
+`unique` — one row per logical commit. Collapse on author timestamp + author email + subject, which is exactly what a rebase, a cherry-pick and a `filter-repo` rewrite all preserve while changing the SHA. The surviving on-branch copy wins the row; the twins it absorbed are named after it, because "this commit also exists as `2052f425`" is the finding:
 
 ```bash
 awk -F'\t' -v OFS='\t' 'NR==FNR {on[$1]; next} {print ($1 in on ? 0 : 1), $0}' on-branch.txt commits.tsv \
@@ -309,17 +309,17 @@ Omit a source line entirely when that source did not apply — a listed source w
 
 ### Report alongside the file
 
-- **The three counts**, whichever level was written: distinct commit objects, how many the current branch reaches, and how many distinct pieces of work those objects amount to. The first gap answers "what did the rewrite destroy"; the second answers "how much of that was the same work under a new SHA".
-- **Authors across the whole set** (`git log --all --format='%an <%ae>' | sort | uniq -c | sort -rn`). Bot commits and name-capitalization variants that exist only off-branch are usually a surprise, and they are what defeats a contributors-sidebar cleanup.
-- **The earliest commit, and whether the current history predates it.** A rebuilt history that starts before its own `Initial commit` is visible in one line of this file.
-- **Ref states that no longer resolve**, counted from `gone.txt`.
-- **What this cannot reach**, always: commits that were never a pushed tip, never on a surviving ref, and are in no backup or reflog. The activity log records ref states; a commit that only existed mid-branch has no row.
+- The three counts, whichever level was written: distinct commit objects, how many the current branch reaches, and how many distinct pieces of work those objects amount to. The first gap answers "what did the rewrite destroy"; the second answers "how much of that was the same work under a new SHA".
+- Authors across the whole set (`git log --all --format='%an <%ae>' | sort | uniq -c | sort -rn`). Bot commits and name-capitalization variants that exist only off-branch are usually a surprise, and they are what defeats a contributors-sidebar cleanup.
+- The earliest commit, and whether the current history predates it. A rebuilt history that starts before its own `Initial commit` is visible in one line of this file.
+- Ref states that no longer resolve, counted from `gone.txt`.
+- What this cannot reach, always: commits that were never a pushed tip, never on a surviving ref, and are in no backup or reflog. The activity log records ref states; a commit that only existed mid-branch has no row.
 
 ---
 
 ## Phase 6 — Leave nothing behind
 
-The scratch clone is disposable; say where it is and let the user delete it. Do **not** delete a mirror backup — it may be someone's only rollback path, and this skill never created it.
+The scratch clone is disposable; say where it is and let the user delete it. Do not delete a mirror backup — it may be someone's only rollback path, and this skill never created it.
 
 If the salvage turned up commits the user did not know were still public — a leaked secret in an erased commit is the usual one — that is a finding to raise immediately, not a line in a table. Unreachable is not deleted: the objects are still served by SHA, exactly as this skill just proved. The fix is rotation, never another rewrite.
 
