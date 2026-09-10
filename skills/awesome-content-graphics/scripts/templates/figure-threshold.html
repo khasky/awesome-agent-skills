@@ -1,0 +1,11 @@
+<div class="head" data-mark="headline" style="top:{{headTop}}%">{{headLines}}</div>
+<div data-mark="figure" data-figure style="position:absolute;left:6%;top:{{figTop}}%;width:88%;height:{{figH}}%">
+  <div style="position:relative;height:{{trackH}}px;margin-top:{{trackTop}}px;background:{{muted}};opacity:.9;border-radius:{{trackH}}px">
+    <div style="position:absolute;left:0;top:0;height:100%;width:{{fillPct}}%;background:{{accent}};border-radius:{{trackH}}px"></div>
+    <div style="position:absolute;left:calc({{markPct}}% - 3px);top:-{{markOver}}px;width:6px;height:calc(100% + {{markOver2}}px);background:{{fg}};border-radius:3px"></div>
+  </div>
+  <div style="display:flex;justify-content:space-between;margin-top:{{capGap}}px">
+    <div><div data-value style="font-size:{{valueSize}}px;font-weight:800;line-height:1">{{valueA}}</div><div class="cap" data-caption style="margin-top:{{capGap}}px">{{labelA}}</div></div>
+    <div style="text-align:right"><div data-value style="font-size:{{valueSize}}px;font-weight:800;line-height:1;color:{{accent}}">{{valueB}}</div><div class="cap" data-caption style="margin-top:{{capGap}}px">{{labelB}}</div></div>
+  </div>
+</div>

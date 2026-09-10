@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="{{lang}}"><head><meta charset="utf-8">
+<style>
+{{fontFace}}
+html,body{margin:0;padding:0}
+body{width:{{W}}px;height:{{H}}px;overflow:hidden;position:relative;background:{{bg}};{{groundCss}}
+  color:{{fg}};font-family:{{fontFamily}},system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.grain{position:absolute;inset:0;opacity:{{grainAlpha}};pointer-events:none;mix-blend-mode:overlay}
+.blob{position:absolute;border-radius:50%;filter:blur({{blobBlur}}px);opacity:{{blobAlpha}};pointer-events:none}
+.head{position:absolute;left:6%;width:88%;font-size:{{headSize}}px;padding:.16em 0;font-weight:{{weight}};letter-spacing:{{tracking}};line-height:{{lineHeight}};text-wrap:balance}
+.head span{display:block;font-size:1em;line-height:1.04}
+.head span+span{margin-top:.16em}
+.head .acc{color:{{accent}}}
+.head .slab{background:{{accent}};color:{{bg}};display:inline-block;padding:0 .12em;border-radius:.06em}
+.head .dim{opacity:.62}
+.cap{font-size:{{capSize}}px;font-weight:600;letter-spacing:.02em;color:{{muted}};text-transform:uppercase}
+.rule{position:absolute;left:6%;width:88%;height:{{ruleH}}px;background:{{accent}};border-radius:{{ruleH}}px}
+{{extraCss}}
+</style></head>
+<body>
+{{ground}}
+{{content}}
+</body></html>

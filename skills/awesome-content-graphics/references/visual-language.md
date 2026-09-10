@@ -94,13 +94,35 @@ One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.
 
 Render in a spawned browser, not the user's. This step loads a local `file://` page and screenshots it — there is no account, no session and nothing to log into, so it has no business taking over a browser the user is working in. Prefer, in order: a headless browser the automation can launch itself, an installed CLI (`wkhtmltoimage` or a browser's own `--screenshot`, verified with `--version` exiting 0), and only then a live bridge. Using a live bridge means the user's window fills with `file://` tabs while the batch renders, so ask first when there is more than one bridge, say which browser is being used, and warn that it is busy.
 
-```js
-await page.setViewportSize({ width: W, height: H });
-await page.goto('file:///absolute/path/to/graphic.html');
-await page.screenshot({ path: '<out>/<name>.png', scale: 'device', animations: 'disabled' });
+```text
+node scripts/render-set.mjs <run> [--width 1080 --height 1080 --scale 2]
 ```
 
+One browser for the whole set, found by `scripts/cdp.mjs` (`CHROME_PATH`, then the Playwright browser cache, then the installed Chrome or Edge) and driven over the DevTools protocol with no npm dependency. It sets the viewport once, loads each page, waits for fonts, runs the check, and captures at device scale only when the check passes.
+
 Say which renderer was used, in the report.
+
+## The set file
+
+`set.json` in the run folder is the plan and the source at once; `scripts/build-set.mjs` turns it into pages. Top level: `width`, `height`, `lang`, and `headline` as an array of authored lines that every variant inherits unless its row overrides it. Then `variants`, one object per canvas:
+
+| Field | Values | Notes |
+| --- | --- | --- |
+| `id` | `"01"`, `"02"`, … | Becomes the filename. Zero-padded so the gallery sorts |
+| `kind` | `statement` · `glyph` · `lockup` · `figure` | The four kinds of the catalog |
+| `pattern` | `mass` · `arc` · `threshold` | Figures only |
+| `palette` | `{bg, fg, accent, muted}` | Hexes, from `references/palettes.json` or a proved brand scheme |
+| `ground` | `solid` · `vignette` · `gradient` · `blob` · `band` | Plus `gradientAngle` and `grain` (0 to 0.1) where they apply |
+| `face` | a family name in the asset cache | Omitted, the system stack |
+| `effect` | `plain` · `accent-word` · `accent-line` · `slab` · `dim-last` · `mixed-weight` | With `accentWord` or `accentLine` where the effect needs one; all on the R17 list |
+| `anchor` | `top` (default) · `bottom` | Headline above or below the figure; the two are different layout skeletons |
+| `headline` | array of lines | Overrides the set's headline; required on a lockup so the digits leave the sentence (R6) |
+| `subjectType`, `subject` | `icon` + a Lucide name · `emoji` + the character | Glyph canvases; `align` left, right or centre |
+| `value`, `caption` | strings | Lockups and arc figures; the caption names what the value measures (R8) |
+| `values` | `[{v, text?, label}, {v, text?, label}]` | Mass and threshold figures: two printed values with their captions |
+| `fraction` | 0 to 1 | Arc sweep and threshold position |
+
+The build rebalances a headline's line breaks when the authored lines would set too small to hold 22 percent of the canvas, and refuses a lockup whose headline still carries the lockup's digits. A row the templates cannot express is a hand-written page in `src/` under the data-attribute contract below, and the render script treats it exactly like a built one.
 
 ## The geometry check, before the screenshot
 
@@ -114,107 +136,7 @@ The contract that makes it possible:
 - Text set inside a shape carries `data-fit="<id of the container>"`.
 - There is no `data-bleed`. The attribute existed for two revisions and produced clipped arrowheads and blocks sliced by the frame; nothing crosses the safe margin now, and a composition that wants to feel unbounded does it inside the frame.
 
-```js
-const check = await page.evaluate(() => {
-  const W = innerWidth, H = innerHeight, m = 0.04;      // 4% safe margin
-  const marks = [...document.querySelectorAll('[data-mark]')];
-  const over = [], cells = new Set();
-  let x0 = W, y0 = H, x1 = 0, y1 = 0;
-  for (const el of marks) {
-    const r = el.getBoundingClientRect();
-    const sides = { left: r.left < W*m, right: r.right > W*(1-m),
-                    top: r.top < H*m, bottom: r.bottom > H*(1-m) };
-    for (const s in sides) if (sides[s]) over.push(`${el.dataset.mark}:${s}`);   // R1: no exceptions
-    x0 = Math.min(x0, Math.max(r.left, 0)); y0 = Math.min(y0, Math.max(r.top, 0));
-    x1 = Math.max(x1, Math.min(r.right, W)); y1 = Math.max(y1, Math.min(r.bottom, H));
-    for (let c = 0; c < 10; c++) for (let v = 0; v < 10; v++)          // 10x10 occupancy
-      if (r.left < W*(c+1)/10 && r.right > W*c/10 &&
-          r.top < H*(v+1)/10 && r.bottom > H*v/10) cells.add(c + ',' + v);
-  }
-  let voidBlock = false;                                  // any empty 4x4 block = a dead 40%
-  for (let c = 0; c <= 6; c++) for (let v = 0; v <= 6; v++) {
-    let empty = true;
-    for (let i = c; i < c+4 && empty; i++) for (let j = v; j < v+4 && empty; j++)
-      if (cells.has(i + ',' + j)) empty = false;
-    if (empty) voidBlock = true;
-  }
-  const head = document.querySelector('[data-mark="headline"]').getBoundingClientRect();
-
-  const lines = [...document.querySelectorAll('[data-line]')]
-                  .map(el => el.getBoundingClientRect()).sort((a,b) => a.top - b.top);
-  const gaps = lines.slice(1).map((r,i) => r.top - lines[i].bottom);   // between line boxes
-  const lh = Math.max(1, lines[0] ? lines[0].height : 1);
-  const gapMin = gaps.length ? Math.min(...gaps) / lh : 1;             // R2: must stay positive
-  const gapSpread = gaps.length < 2 ? 0 : (Math.max(...gaps) - Math.min(...gaps)) / lh;
-  const lineOver = lines.filter(r => r.left < W*m || r.right > W*(1-m)).length;
-
-  const STOP = new Set(['a','an','the','of','in','on','at','to','and','or','is','it','for','per']);
-  const words = el => el.textContent.toLowerCase().replace(/[^\p{L}\p{N}]+/gu, ' ')
-                        .trim().split(' ').filter(w => w && !STOP.has(w));
-  const headWords = new Set();                                          // R5, R6: nothing said twice
-  for (const el of document.querySelectorAll('[data-line]')) words(el).forEach(w => headWords.add(w));
-  const dup = [];
-  for (const el of document.querySelectorAll('[data-value],[data-caption],[data-mark="wordmark"],[data-echo]'))
-    for (const w of words(el)) if (headWords.has(w)) dup.push(w);
-  const digits = [...document.body.textContent.matchAll(/\d+/g)].map(x => x[0]);
-  const dupDigits = digits.filter((d,i) => digits.indexOf(d) !== i);
-
-  let fitFail = [];                                                     // R4: text inside a shape
-  for (const el of document.querySelectorAll('[data-fit]')) {
-    const box = document.getElementById(el.dataset.fit).getBoundingClientRect();
-    const r = el.getBoundingClientRect(), padX = box.width*0.1, padY = box.height*0.1;
-    if (r.left < box.left+padX || r.right > box.right-padX ||
-        r.top < box.top+padY || r.bottom > box.bottom-padY) fitFail.push(el.dataset.fit);
-  }
-
-  const clipped = [];                                                   // R16: nothing cut by any box
-  for (const el of marks) {
-    if (el.scrollWidth > el.clientWidth + 1 || el.scrollHeight > el.clientHeight + 1)
-      clipped.push(el.dataset.mark + ':self');
-    const r = el.getBoundingClientRect();
-    for (let a = el.parentElement; a && a !== document.body; a = a.parentElement) {
-      const cs = getComputedStyle(a);
-      if (cs.overflow === 'visible') continue;
-      const b = a.getBoundingClientRect();
-      if (r.left < b.left - 1 || r.right > b.right + 1 ||
-          r.top < b.top - 1 || r.bottom > b.bottom + 1) clipped.push(el.dataset.mark + ':ancestor');
-    }
-  }
-  const subjEl = document.querySelector('[data-mark="subject"]');       // R18: no plate behind a glyph
-  let plated = false;
-  if (subjEl) for (let a = subjEl.parentElement; a && a !== document.body; a = a.parentElement) {
-    const cs = getComputedStyle(a);
-    const painted = cs.backgroundImage !== 'none' ||
-      !/rgba\(0, 0, 0, 0\)|transparent/.test(cs.backgroundColor);
-    if (painted && a.getBoundingClientRect().width < W * 0.9) plated = true;
-  }
-  const skeleton = marks.map(el => {                                    // R21: layout fingerprint
-    const r = el.getBoundingClientRect(), q = v => Math.round(v * 20);
-    return `${el.dataset.mark}:${q(r.left/W)},${q(r.top/H)},${q(r.width/W)},${q(r.height/H)}`;
-  }).sort().join('|');
-
-  const figs = [...document.querySelectorAll('[data-figure]')];         // R7, R8: labelled figures
-  const unlabelled = figs.filter(f => f.querySelectorAll('[data-value]').length < 2 &&
-    !(f.querySelector('[data-value]') && f.querySelector('[data-caption]'))).length;
-  const uncaptioned = figs.filter(f => !f.querySelector('[data-caption]')).length;
-
-  const subj = document.querySelector('[data-mark="subject"]');
-  let clearance = 1;
-  if (subj) {
-    const s = subj.getBoundingClientRect();
-    for (const r of lines) {
-      const dx = Math.max(s.left - r.right, r.left - s.right);
-      const dy = Math.max(s.top - r.bottom, r.top - s.bottom);
-      clearance = Math.min(clearance, Math.max(dx, dy) / W);   // negative = overlapping
-    }
-  }
-  return { over, spanX: (x1-x0)/W, spanY: (y1-y0)/H, voidBlock,
-           headW: head.width/W, headH: head.height/H,
-           gapMin, gapSpread, lineOver, clearance,
-           dup, dupDigits, fitFail, unlabelled, uncaptioned,
-           clipped, plated, skeleton };
-});
-```
+The measurement lives in `scripts/render-set.mjs`, which runs it on every page in `src/` before deciding whether to screenshot it, and writes every field below to `report.json`. It is not re-typed into an evaluate call per run; a hand-written page follows the contract above and is measured by the same script as a built one. The fields it returns, per page: `over`, `spanX`, `spanY`, `voidBlock`, `headW`, `headH`, `gapMin`, `gapSpread`, `lineOver`, `wrapped`, `clearance`, `dup`, `dupDigits`, `fitFail`, `unlabelled`, `uncaptioned`, `clipped`, `plated`, `stroke`, `skeleton`.
 
 The gate, and a variant that fails any part of it is fixed and re-rendered or dropped — never shipped:
 
@@ -224,12 +146,14 @@ The gate, and a variant that fails any part of it is fixed and re-rendered or dr
 | `gapMin` | at least 0.06 | R2 |
 | `gapSpread` | at most 0.08 | R2 |
 | `lineOver` | 0 | R2 |
+| `wrapped` | 0 — no headline line wrapped inside its own box | R2 |
 | `clearance` | at least 0.02 | R3 |
 | `fitFail` | empty | R4 |
 | `dup`, `dupDigits` | both empty | R5, R6 |
 | `clipped` | empty | R16 |
 | `plated` | false | R18 |
 | `skeleton` | unique across the set | R21 |
+| `stroke` | false | R9 |
 | `unlabelled` | 0 | R7 |
 | `uncaptioned` | 0 | R8 |
 | `spanX`, `spanY` | at least 0.8 | R11 |

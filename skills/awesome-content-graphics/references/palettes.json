@@ -1,0 +1,564 @@
+{
+ "rule": "accent and muted >= 3:1 on the ground, fg >= 4.5:1, accent/muted separable under protan and tritan",
+ "schemes": [
+  {
+   "name": "paper-0",
+   "mode": "light",
+   "bg": "#fdf2f5",
+   "fg": "#1e1216",
+   "accent": "#ad215f",
+   "muted": "#826b67",
+   "contrast": {
+    "accent": 6.08,
+    "muted": 4.52,
+    "fg": 16.64
+   }
+  },
+  {
+   "name": "tint-0",
+   "mode": "light",
+   "bg": "#fee3ea",
+   "fg": "#1e1216",
+   "accent": "#ad215f",
+   "muted": "#826b67",
+   "contrast": {
+    "accent": 5.5,
+    "muted": 4.09,
+    "fg": 15.08
+   }
+  },
+  {
+   "name": "paper-20",
+   "mode": "light",
+   "bg": "#fdf2f2",
+   "fg": "#1e1212",
+   "accent": "#b32035",
+   "muted": "#816d62",
+   "contrast": {
+    "accent": 6.03,
+    "muted": 4.46,
+    "fg": 16.65
+   }
+  },
+  {
+   "name": "tint-20",
+   "mode": "light",
+   "bg": "#ffe4e3",
+   "fg": "#1e1212",
+   "accent": "#b32035",
+   "muted": "#816d62",
+   "contrast": {
+    "accent": 5.5,
+    "muted": 4.06,
+    "fg": 15.18
+   }
+  },
+  {
+   "name": "deep-40",
+   "mode": "dark",
+   "bg": "#05101c",
+   "fg": "#fcf3f0",
+   "accent": "#f08d6a",
+   "muted": "#9eb4ca",
+   "contrast": {
+    "accent": 7.95,
+    "muted": 8.96,
+    "fg": 17.51
+   }
+  },
+  {
+   "name": "dusk-40",
+   "mode": "dark",
+   "bg": "#081e33",
+   "fg": "#fcf3f0",
+   "accent": "#f08d6a",
+   "muted": "#9eb4ca",
+   "contrast": {
+    "accent": 7.01,
+    "muted": 7.91,
+    "fg": 15.45
+   }
+  },
+  {
+   "name": "paper-40",
+   "mode": "light",
+   "bg": "#fdf3ef",
+   "fg": "#1e130f",
+   "accent": "#a24019",
+   "muted": "#7d6f5f",
+   "contrast": {
+    "accent": 5.86,
+    "muted": 4.46,
+    "fg": 16.66
+   }
+  },
+  {
+   "name": "tint-40",
+   "mode": "light",
+   "bg": "#fee5dc",
+   "fg": "#1e130f",
+   "accent": "#a24019",
+   "muted": "#7d6f5f",
+   "contrast": {
+    "accent": 5.32,
+    "muted": 4.05,
+    "fg": 15.11
+   }
+  },
+  {
+   "name": "deep-60",
+   "mode": "dark",
+   "bg": "#0a0f1c",
+   "fg": "#faf4ef",
+   "accent": "#f68c11",
+   "muted": "#949eb8",
+   "contrast": {
+    "accent": 7.9,
+    "muted": 7.14,
+    "fg": 17.53
+   }
+  },
+  {
+   "name": "dusk-60",
+   "mode": "dark",
+   "bg": "#141b34",
+   "fg": "#faf4ef",
+   "accent": "#f68c11",
+   "muted": "#949eb8",
+   "contrast": {
+    "accent": 7.02,
+    "muted": 6.34,
+    "fg": 15.57
+   }
+  },
+  {
+   "name": "deep-80",
+   "mode": "dark",
+   "bg": "#0f0d1c",
+   "fg": "#f9f4ee",
+   "accent": "#d5a13c",
+   "muted": "#9d9bb6",
+   "contrast": {
+    "accent": 8.21,
+    "muted": 7.12,
+    "fg": 17.54
+   }
+  },
+  {
+   "name": "dusk-80",
+   "mode": "dark",
+   "bg": "#1d1833",
+   "fg": "#f9f4ee",
+   "accent": "#d5a13c",
+   "muted": "#9d9bb6",
+   "contrast": {
+    "accent": 7.31,
+    "muted": 6.34,
+    "fg": 15.6
+   }
+  },
+  {
+   "name": "deep-100",
+   "mode": "dark",
+   "bg": "#130c19",
+   "fg": "#f6f5ee",
+   "accent": "#d1bf53",
+   "muted": "#94869f",
+   "contrast": {
+    "accent": 10.32,
+    "muted": 5.64,
+    "fg": 17.56
+   }
+  },
+  {
+   "name": "dusk-100",
+   "mode": "dark",
+   "bg": "#24162e",
+   "fg": "#f6f5ee",
+   "accent": "#d1bf53",
+   "muted": "#94869f",
+   "contrast": {
+    "accent": 9.18,
+    "muted": 5.02,
+    "fg": 15.63
+   }
+  },
+  {
+   "name": "deep-120",
+   "mode": "dark",
+   "bg": "#170a16",
+   "fg": "#f4f6ef",
+   "accent": "#b0cd39",
+   "muted": "#9b8498",
+   "contrast": {
+    "accent": 10.66,
+    "muted": 5.63,
+    "fg": 17.66
+   }
+  },
+  {
+   "name": "dusk-120",
+   "mode": "dark",
+   "bg": "#2a1328",
+   "fg": "#f4f6ef",
+   "accent": "#b0cd39",
+   "muted": "#9b8498",
+   "contrast": {
+    "accent": 9.52,
+    "muted": 5.03,
+    "fg": 15.77
+   }
+  },
+  {
+   "name": "deep-140",
+   "mode": "dark",
+   "bg": "#190a11",
+   "fg": "#f2f7f0",
+   "accent": "#6bc456",
+   "muted": "#b395a2",
+   "contrast": {
+    "accent": 8.84,
+    "muted": 7.08,
+    "fg": 17.7
+   }
+  },
+  {
+   "name": "dusk-140",
+   "mode": "dark",
+   "bg": "#2e1220",
+   "fg": "#f2f7f0",
+   "accent": "#6bc456",
+   "muted": "#b395a2",
+   "contrast": {
+    "accent": 7.89,
+    "muted": 6.32,
+    "fg": 15.8
+   }
+  },
+  {
+   "name": "paper-140",
+   "mode": "light",
+   "bg": "#f1f7f0",
+   "fg": "#111810",
+   "accent": "#1f6708",
+   "muted": "#6f867d",
+   "contrast": {
+    "accent": 6.43,
+    "muted": 3.59,
+    "fg": 16.61
+   }
+  },
+  {
+   "name": "tint-140",
+   "mode": "light",
+   "bg": "#e1f1de",
+   "fg": "#111810",
+   "accent": "#1f6708",
+   "muted": "#6f867d",
+   "contrast": {
+    "accent": 5.94,
+    "muted": 3.31,
+    "fg": 15.35
+   }
+  },
+  {
+   "name": "deep-160",
+   "mode": "dark",
+   "bg": "#1a0a0c",
+   "fg": "#f0f7f3",
+   "accent": "#53c48e",
+   "muted": "#a38386",
+   "contrast": {
+    "accent": 8.84,
+    "muted": 5.63,
+    "fg": 17.67
+   }
+  },
+  {
+   "name": "dusk-160",
+   "mode": "dark",
+   "bg": "#301217",
+   "fg": "#f0f7f3",
+   "accent": "#53c48e",
+   "muted": "#a38386",
+   "contrast": {
+    "accent": 7.88,
+    "muted": 5.02,
+    "fg": 15.76
+   }
+  },
+  {
+   "name": "deep-180",
+   "mode": "dark",
+   "bg": "#1b0a08",
+   "fg": "#eef7f5",
+   "accent": "#1dc5ae",
+   "muted": "#a3847e",
+   "contrast": {
+    "accent": 8.82,
+    "muted": 5.63,
+    "fg": 17.61
+   }
+  },
+  {
+   "name": "dusk-180",
+   "mode": "dark",
+   "bg": "#31130e",
+   "fg": "#eef7f5",
+   "accent": "#1dc5ae",
+   "muted": "#a3847e",
+   "contrast": {
+    "accent": 7.84,
+    "muted": 5.01,
+    "fg": 15.66
+   }
+  },
+  {
+   "name": "deep-200",
+   "mode": "dark",
+   "bg": "#1a0b04",
+   "fg": "#eef7f8",
+   "accent": "#28d6df",
+   "muted": "#b49889",
+   "contrast": {
+    "accent": 10.77,
+    "muted": 7.13,
+    "fg": 17.64
+   }
+  },
+  {
+   "name": "dusk-200",
+   "mode": "dark",
+   "bg": "#2f1505",
+   "fg": "#eef7f8",
+   "accent": "#28d6df",
+   "muted": "#b49889",
+   "contrast": {
+    "accent": 9.57,
+    "muted": 6.33,
+    "fg": 15.68
+   }
+  },
+  {
+   "name": "deep-220",
+   "mode": "dark",
+   "bg": "#180d02",
+   "fg": "#eef7fa",
+   "accent": "#1ebde3",
+   "muted": "#af9b84",
+   "contrast": {
+    "accent": 8.61,
+    "muted": 7.15,
+    "fg": 17.61
+   }
+  },
+  {
+   "name": "dusk-220",
+   "mode": "dark",
+   "bg": "#2c1800",
+   "fg": "#eef7fa",
+   "accent": "#1ebde3",
+   "muted": "#af9b84",
+   "contrast": {
+    "accent": 7.63,
+    "muted": 6.34,
+    "fg": 15.61
+   }
+  },
+  {
+   "name": "deep-240",
+   "mode": "dark",
+   "bg": "#140f02",
+   "fg": "#eff6fb",
+   "accent": "#52b5f4",
+   "muted": "#a89e83",
+   "contrast": {
+    "accent": 8.44,
+    "muted": 7.17,
+    "fg": 17.51
+   }
+  },
+  {
+   "name": "dusk-240",
+   "mode": "dark",
+   "bg": "#261b00",
+   "fg": "#eff6fb",
+   "accent": "#52b5f4",
+   "muted": "#a89e83",
+   "contrast": {
+    "accent": 7.48,
+    "muted": 6.36,
+    "fg": 15.53
+   }
+  },
+  {
+   "name": "deep-260",
+   "mode": "dark",
+   "bg": "#101002",
+   "fg": "#f1f5fc",
+   "accent": "#7aabfc",
+   "muted": "#9fa185",
+   "contrast": {
+    "accent": 8.26,
+    "muted": 7.21,
+    "fg": 17.51
+   }
+  },
+  {
+   "name": "dusk-260",
+   "mode": "dark",
+   "bg": "#1e1f00",
+   "fg": "#f1f5fc",
+   "accent": "#7aabfc",
+   "muted": "#9fa185",
+   "contrast": {
+    "accent": 7.24,
+    "muted": 6.32,
+    "fg": 15.35
+   }
+  },
+  {
+   "name": "paper-260",
+   "mode": "light",
+   "bg": "#f0f5fd",
+   "fg": "#11161f",
+   "accent": "#2f60b2",
+   "muted": "#7f7e91",
+   "contrast": {
+    "accent": 5.58,
+    "muted": 3.62,
+    "fg": 16.56
+   }
+  },
+  {
+   "name": "paper-280",
+   "mode": "light",
+   "bg": "#f3f4fd",
+   "fg": "#14151f",
+   "accent": "#544ec5",
+   "muted": "#867c8e",
+   "contrast": {
+    "accent": 5.86,
+    "muted": 3.63,
+    "fg": 16.57
+   }
+  },
+  {
+   "name": "paper-300",
+   "mode": "light",
+   "bg": "#f6f3fc",
+   "fg": "#17141e",
+   "accent": "#6731a8",
+   "muted": "#8b7a89",
+   "contrast": {
+    "accent": 7.42,
+    "muted": 3.65,
+    "fg": 16.57
+   }
+  },
+  {
+   "name": "tint-300",
+   "mode": "light",
+   "bg": "#eee7fd",
+   "fg": "#17141e",
+   "accent": "#6731a8",
+   "muted": "#8b7a89",
+   "contrast": {
+    "accent": 6.77,
+    "muted": 3.33,
+    "fg": 15.13
+   }
+  },
+  {
+   "name": "deep-320",
+   "mode": "dark",
+   "bg": "#02140d",
+   "fg": "#f8f3f9",
+   "accent": "#d984ed",
+   "muted": "#86a79b",
+   "contrast": {
+    "accent": 7.64,
+    "muted": 7.23,
+    "fg": 17.3
+   }
+  },
+  {
+   "name": "dusk-320",
+   "mode": "dark",
+   "bg": "#002419",
+   "fg": "#f8f3f9",
+   "accent": "#d984ed",
+   "muted": "#86a79b",
+   "contrast": {
+    "accent": 6.69,
+    "muted": 6.33,
+    "fg": 15.14
+   }
+  },
+  {
+   "name": "paper-320",
+   "mode": "light",
+   "bg": "#f9f3fa",
+   "fg": "#1a131c",
+   "accent": "#8e35a1",
+   "muted": "#8f7983",
+   "contrast": {
+    "accent": 6.06,
+    "muted": 3.68,
+    "fg": 16.66
+   }
+  },
+  {
+   "name": "tint-320",
+   "mode": "light",
+   "bg": "#f5e5f8",
+   "fg": "#1a131c",
+   "accent": "#8e35a1",
+   "muted": "#8f7983",
+   "contrast": {
+    "accent": 5.5,
+    "muted": 3.34,
+    "fg": 15.12
+   }
+  },
+  {
+   "name": "deep-340",
+   "mode": "dark",
+   "bg": "#001312",
+   "fg": "#faf3f7",
+   "accent": "#ef7bcc",
+   "muted": "#95bab7",
+   "contrast": {
+    "accent": 7.6,
+    "muted": 9.06,
+    "fg": 17.45
+   }
+  },
+  {
+   "name": "paper-340",
+   "mode": "light",
+   "bg": "#fbf2f8",
+   "fg": "#1c1319",
+   "accent": "#a02a83",
+   "muted": "#826b6d",
+   "contrast": {
+    "accent": 6.07,
+    "muted": 4.48,
+    "fg": 16.56
+   }
+  },
+  {
+   "name": "tint-340",
+   "mode": "light",
+   "bg": "#fae4f2",
+   "fg": "#1c1319",
+   "accent": "#a02a83",
+   "muted": "#826b6d",
+   "contrast": {
+    "accent": 5.53,
+    "muted": 4.08,
+    "fg": 15.08
+   }
+  }
+ ]
+}
