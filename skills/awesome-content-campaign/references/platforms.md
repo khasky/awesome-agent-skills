@@ -56,10 +56,39 @@ A platform the user names that is not on this list is written for like any other
 - Post length cap, and whether it differs by account tier (X: free vs premium) or by instance (mastodon). **A cap the composer does not enforce is still a cap**: `peerlist` accepted a 495-character body and published it truncated mid-URL, so a platform whose composer shows no counter gets a deliberately short unit, and the published post is compared to the source afterwards, tail first.
 - Media: which formats, whether mandatory, count limits per post.
 - Links: clickable? auto-previewed? deprioritized by the feed? caption links dead (instagram)?
-- Hashtag norms: how many read as native, where they are a separate field (tumblr tags), where they do not exist (reddit).
+- Hashtag norms: how many read as native, where they are a separate field (tumblr tags), where they do not exist (reddit). The counts below are the starting point; the per-platform section and Phase 3 refine them.
 - Editor: plain text / markdown / rich — decides what formatting survives.
 - Promo and disclosure rules: platform-level policy plus the specific subreddit/group/community rules for the user's target.
 - Publication gates: group admin approval, editorial review, automod.
+
+## The hashtag table
+
+**Tag count is a platform property, not an author preference.** The same tag block that lifts a Mastodon post suppresses an X post and is silently discarded by Instagram. So the campaign carries one tag set and each platform takes its own share of it, per the row below. `awesome-content-publisher` enforces these numbers at its pre-submit gate and asks the user before changing any post to satisfy them.
+
+`Count` is tags on the finished post. `Where` is the structural fact — whether tags belong in the body, in the composer's own field, or nowhere — and that part is stable enough to rely on. The numbers marked **(verified 2026-09)** were researched against current platform guidance and published engagement data; every other row's count is a starting point that Phase 3 verifies live like any other volatile value.
+
+| Slug | Count | Where | Why that number |
+| --- | --- | --- | --- |
+| `x` | **1–2** (verified 2026-09) | body, mid-post | The one platform where more tags cost reach. 1–2 outperforms zero by roughly a fifth; 3+ loses about as much again, and 5+ falls off a cliff. Zero is a miss, not a neutral choice. |
+| `instagram` | **3–5** (verified 2026-09) | caption | Hard platform cap of five since 19 Dec 2025 — a sixth tag is not rejected, it is **silently ignored**, so a longer block is wasted text, not a penalty. |
+| `linkedin` | **3–5** (verified 2026-09) | body, after the text | 3–5 measurably beats zero; 6+ adds almost nothing. |
+| `mastodon` | **3–5** (verified 2026-09) | body, own line at the end | Hashtags are the discovery mechanism on the fediverse — there is no algorithmic feed to find the post otherwise. Zero means invisible. |
+| `bluesky` | **1–3** (verified 2026-09) | body | Clickable and real; up to eight accepted. Every tag spends part of the 300-character budget, so the budget, not the ceiling, sets the count. |
+| `threads` | **exactly 1** (verified 2026-09) | topic-tag field, no `#` | The platform allows one by design, and a tag may contain spaces. The campaign's set collapses to a single choice here. |
+| `pinterest` | **2–5** (verified 2026-09) | description | Hashtags are secondary keyword signals now, not the discovery path — keyword-rich title and description do the work. 10+ reads as spam. |
+| `facebook-wall`, `facebook-group` | **0–3** (verified 2026-09) | body | The platform where tags matter least; more than three actively costs engagement. |
+| `tumblr` | 5–20 | **tag field, never the body** | Up to 30 accepted, only the first ~20 index, and the earliest carry the search weight. Tags in the body are a style error here. |
+| `truthsocial`, `minds`, `bastyon` | 3–5 | body | Mastodon-style discovery by tag. On `bastyon` the body's tags are also **auto-extracted into the category chips** that its Post button requires — see the posting note. |
+| `vk-wall`, `telegram`, `nostr` | verify live | body | Tag culture varies by community and channel; check what the account's own audience does. |
+| `devto` | up to 4 | front-matter `tags:` | A trailing `#tag` line in the body renders as an `<h1>` instead — it must move to the field. |
+| `hashnode`, `medium`, `hackernoon`, `substack` | up to 5 | the platform's own tag/topic field | Medium's publish panel states the five-topic cap in the UI. A body tag line is not the mechanism on any of them. |
+| `peerlist` | **none — refused** | — | The composer says so in words: *"We don't support hashtags (yet)."* A tag line must be dropped before submitting. |
+| `reddit`, `lemmy`, `hackernews` | **none** | — | No hashtag system at all. Flair (reddit) and the title do this job; a tag block marks the post as imported spam. |
+| `wonderful-dev`, `daily-dev` | 0–4 | body | Developer feeds where a short tag line is native but optional. |
+| `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
+| `write-as`, `telegraph` | **none** | — | Plain publishing surfaces with no tag index to feed. |
+
+Two rules bind the whole table. **Tags never displace prose**: where a cap forces a choice between a sentence and a tag, the tag goes. And **a count is met by choosing from the campaign's one set**, not by inventing platform-specific tags — the same post on three platforms should show recognisably the same tags, just more or fewer of them.
 
 ## Profiles
 
@@ -100,7 +129,7 @@ Short posts, hard cap (verify current), no markdown. Link cards from pasted URLs
 ### x
 Short posts; cap differs sharply by account tier — verify which tier the user has before writing a single post. Reply chains are the native long form. Media boosts reach.
 
-**Hashtags: one or two, and never more than two.** This is the one platform where more tags measurably cost reach rather than adding it — engagement peaks at one to two per post and falls off from three, with a steep drop past five. So `x` takes the top one or two tags of the campaign's set and drops the rest; it does not get the fuller block that `mastodon` and `instagram` carry. A post with zero is also fine here. What is not fine is omitting them by accident: pick the one or two deliberately, and make sure the cap trim never leaves half a tag at the end.
+**Hashtags: one or two — never three, and never zero.** This is the one platform where more tags measurably cost reach rather than adding it: one to two beats an untagged post by roughly a fifth, three or more gives that back, and five or more falls off a cliff. So `x` takes the top one or two tags of the campaign's set and drops the rest; it does not get the fuller block that `mastodon` and `instagram` carry. **Zero is a miss too** — it is the cheapest reach on the platform left unclaimed, so a post that arrives untagged gets one or two added rather than shipped bare. Two beats one where a second tag is genuinely apt; one beats two where the second would be filler. Place them **inside the sentence they belong to** rather than as a trailing block, and never open the post with one. Make sure the cap trim never leaves half a tag at the end.
 
 ### threads
 Meta's text feed, bound to an Instagram account: the handle and the login are Instagram's, so wherever an Instagram presence exists a Threads one usually does too — check for it rather than assuming its absence. Conversational register close to `x`. Unlike Instagram, links in the post body are clickable and media is optional. Verify the current character cap and which domain the account answers on.
@@ -150,7 +179,9 @@ Supporter posts, same family as ko-fi: short, personal, update-flavored.
 **A post here is a small formatted article, not a status line.** The composer is a rich editor with bold, italic, underline, headings, lists, quotes, code blocks, an image control and a link control, so the post carries a picture at the top and a real clickable link where it points at something. Writing it as plain text with a bare URL wastes every affordance the platform gives and ships a post that looks unfinished next to the author's own.
 
 ### instagram
-Image or video **required** — no media, no post. Caption links are not clickable ("link in bio" is the native CTA phrasing); hashtag blocks are native. Web composer exists at instagram.com. Verify caption cap and current media specs.
+Image or video **required** — no media, no post. Caption links are not clickable ("link in bio" is the native CTA phrasing). Web composer exists at instagram.com. Verify caption cap and current media specs.
+
+**Five hashtags is a hard cap, not a norm** (since 19 Dec 2025). A sixth is not an error and does not block the post — it is **silently ignored**, so an old-style twenty-tag block publishes as five working tags plus fifteen tags' worth of dead text in the caption. Three to five specific tags is the platform's own stated advice. A caption arriving with more gets trimmed to its best five before submitting.
 
 **The composer opens from the sidebar, not from a URL.** `instagram.com/create/…` paths are not the app's own route to the composer and land on unrelated shells; the entry point is the `+` in the left sidebar, then the `Post` entry that appears under it. The dialog that opens accepts PNG among other formats — a run that reached a route accepting `image/jpeg` only has gone in the wrong door, and converting the file is treating the symptom.
 
@@ -161,6 +192,8 @@ Decentralized platform; account identity is a key pair and login flows differ fr
 A pin is image + title + description + destination link, filed to a board. Image required. Target detail required: board. Discovery is search-driven — the description carries keywords, not hashtag walls.
 
 **The description is sentences, and it ends as a sentence.** Search-driven does not mean keyword-stuffed: a description that trails off into `Claude Code parallel sessions, git worktrees, cross-session messaging, AI coding workflow.` is a comma-separated word list wearing a full stop, and it reads as machine output to the one person who actually opens the pin. Write the description as prose that stands on its own, and if the keywords matter put them where keywords belong — the pin's own tag field, or a short hashtag line — not welded onto the last sentence.
+
+**Two to five hashtags, and they are a secondary signal.** Pinterest indexes them as keywords but no longer routes discovery through them; the title, the description and the board name carry the ranking. Ten or more reads as spam and can cost distribution. A pin with none is not broken — it is a small miss worth two or three tags.
 
 ### vk-wall
 Wall posts, medium prose, hashtags in use, images common. A personal wall and a community differ in tone and in who may post — target detail required: which one.
@@ -180,7 +213,7 @@ So: the client the user named or is signed into, plus `another client, I will ty
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
 
 ### peerlist
-Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Composer is a dialog with an optional title field plus a body; **the body is silently truncated on publish** — a 495-character body came back cut two characters into the closing URL, with no counter and no warning in the composer. Keep the body at 400 characters or less, put the link where a few lost characters would not destroy it, and compare the published post's tail against the source. Small platform otherwise — read the live feed during Phase 3 for length norms and whether the composer supports anything beyond plain text.
+Developer profile network: a feed of short posts attached to a public professional profile, closer to `linkedin` in register than to `x`. The audience is other developers and the people hiring them, so shipped work and how it was built read native, and marketing cadence does not. Composer is a dialog with an optional title field plus a body. **The body cap is 480 characters and the composer now counts down from it** — a later run watched the counter go 480 → 470 on a ten-character probe, where an earlier one saw a 495-character body published silently truncated two characters into its closing URL. Treat 480 as hard, keep the unit near 400 so the trim never reaches the link, and compare the published tail against the source anyway. **The composer also refuses hashtags in as many words** — it prints *"We don't support hashtags (yet)"* beside the editor — so a unit written for this platform carries none at all. Small platform otherwise — read the live feed during Phase 3 for length norms and whether the composer supports anything beyond plain text.
 
 ### daily-dev
 Developer news aggregator. **The default is Direct Posting from the personal profile**, audience everyone, no squad involved.
