@@ -202,6 +202,8 @@ const ok = el.contains(top) || el === top;
 
 Widening the window does not always help: HackerNoon's story-settings sidebar (the *original / category* gates) sits at `x≈2624` and moves further right as the viewport grows, because the layout scales with it. A control that no viewport size can reach is the one legitimate case for `el.click()` from `page.evaluate` — that is what cleared both HackerNoon gates.
 
+**When the page refuses to scroll, make the window taller instead of fighting it.** Lemmy's create-post page reported `scrollHeight` 1778 against a 1068 viewport with no scrollable ancestor, and `window.scrollTo`, `scrollIntoView` and `mouse.wheel` all left `scrollY` at 0 and the `Create` button pinned at `y≈1647`. One `browser_resize` to a viewport taller than the document put it in reach and the click landed first try. The check is cheap: if a control's `y` exceeds `innerHeight` and one scroll attempt does not move its rect, resize rather than climbing the click ladder. A taller viewport is also worth keeping for the rest of a run — it removes this whole class of failure on long editor pages — but re-read every cached coordinate afterwards, because the resize reflows the page.
+
 ## Enumerate the controls; do not guess their labels
 
 Twice in one run a control that existed was reported as missing because the probe filtered `document.querySelectorAll('button')` through a guessed regex: LinkedIn's `button[aria-label="Add media"]` and wonderful.dev's `input[type=file][accept="image/jpeg,image/png,image/gif"]`. Both were plainly there. The conclusions written from those probes ("the sharebox has no media control", "the composer exposes no file input") were false, and both posts shipped without their picture.
@@ -275,6 +277,17 @@ for (let i = 0; i < 12; i++) {
 ```
 
 Only after that leave the page for read-back. Keep `states` — it is the evidence trail when something goes wrong.
+
+**But that loop only works where the submit keeps you on the page.** Where the click *navigates* — Lemmy's `Create`, Substack's send, most full-page editors — the very next `page.evaluate` races the navigation and hangs, the whole tool call is parked as a background task after two minutes, and the run is left unable to say whether the post exists. Both Lemmy and Substack did exactly this in one run, at five minutes each.
+
+So split by composer type, and decide before clicking:
+
+- **Composer is a dialog on a page that stays** (Instagram, Mastodon, Threads, X, Facebook, Minds) → click and poll in the same script, as above.
+- **Composer is a page that navigates on submit** (Lemmy, Substack, Hashnode, Medium, dev.to, Patreon, daily.dev) → **click, wait once, return.** Verify in the *next* call, from the URL or a fresh navigation. A short `waitForTimeout` after the click is fine; a polling loop is not.
+
+**A parked call is not a slow call.** When a call whose own budget was under a minute is still running at three or five, it has hung: `TaskStop` it, then establish from a fresh page what actually happened before touching the control again. Do not re-click on the assumption that nothing landed — that is how a duplicate gets made on a platform that cannot edit.
+
+**A wedged tab answers the bridge and nothing else.** After Substack's hung send, `browser_tabs list` still reported the tab and its title, while every `evaluate` against it hung — the page's JS thread was blocked, not the connection. The tab list answering is not proof the page is alive. Open a new tab, read the public surface there (an archive page, a profile, a permalink), and close the dead one; see also *An SPA tab that has stopped hydrating never recovers*.
 
 ## Read-back needs a baseline
 
