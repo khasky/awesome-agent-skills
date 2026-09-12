@@ -231,7 +231,7 @@ skills/<skill-name>/
 └── scripts/          # optional: helper scripts
 ```
 
-**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names, which means `SKILL.md` plus `references/` and `scripts/` and nothing else. No eval folder, no fixture runs and no example posts: sample content is the author's own material and a published skill has no business carrying it, and a check a script makes is proved by that script's own `--self-test`, which needs no stored posts. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/` or `scripts/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
+**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/` or `scripts/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
 
 The frontmatter `description` tells the agent when to activate the skill; the body loads only after activation, and `references/` files only when needed — so a large skill still costs little context until used.
 
