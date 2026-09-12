@@ -2,7 +2,7 @@
 
 English Wikipedia §6 "Markup" and §7 "Citations". These are unambiguous tells: one such marker in text written outside a programmer's technical documentation means the text was almost certainly copied from an AI answer without review.
 
-This file holds the tells that are caught by regular expressions. The sibling `llm-fingerprints.md` holds the soft stylistic tells of specific models, which work only in combination. The empirical verification of the regexes in this file is in `test-fixtures.md`.
+This file holds the tells that are caught by regular expressions. The sibling `llm-fingerprints.md` holds the soft stylistic tells of specific models, which work only in combination.
 
 > When to load: when copy-paste from a chat is suspected, when working with publishable text, when editing an article before publishing to Wikipedia or a blog, when checking any text that claims independent authorship.
 
@@ -78,7 +78,7 @@ False-positive boundary. `[1]:`, `[2]:` in text can be normal Markdown reference
 
 ### A.6. New-platform markers
 
-Formats that appeared or became common in 2025–2026. Each is confirmed by an external source and run through the fixtures in `test-fixtures.md`.
+Formats that appeared or became common in 2025–2026. Each is confirmed by an external source and checked the three ways below.
 
 | Marker | Who leaves it | Regular expression |
 |---|---|---|
@@ -170,7 +170,7 @@ From August 2, 2026, Article 50 of the EU AI Act applies: the output of generati
 | Zero-width characters `U+200B`–`U+200D`, `U+2060`, `U+FEFF` in connected text | OpenAI o3/o4-mini and successors (spring 2025 observations); also seen in other models | `[\u200b-\u200d\u2060\ufeff]` |
 | Homoglyph spaces: narrow no-break `U+202F`, thin `U+2009`, `U+2004`, ideographic `U+3000` instead of a normal space | Seen in long ChatGPT o3/o4-mini answers (Rumi analysis, April 2025; OpenAI called it "a side effect of reinforcement learning") | 🟡 manual review only, not in the regex run |
 
-On zero-width characters. Invisible to the eye, they survive copy-paste (including into Google Docs). In text typed by a human in an editor or a messenger, there is nowhere for them to come from. The regex is included in the automated `check_markers.py` run.
+On zero-width characters. Invisible to the eye, they survive copy-paste (including into Google Docs). In text typed by a human in an editor or a messenger, there is nowhere for them to come from.
 
 On homoglyph spaces. They look like a normal space and differ only by code. Single occurrences mean nothing; the tell is a systematic pattern (for example, every Nth space replaced). Deliberately not in the regex run — the false-positive risk is too high (see the boundaries).
 
@@ -239,10 +239,10 @@ What to do. If this shows up in an edit discussion or in an email — it is almo
 
 ## The principle of using regular expressions
 
-All the regexes above are verified empirically — see `test-fixtures.md`. Each regex passed three levels of checking:
+Every pattern above earns its place by surviving three readings before it is trusted on someone's text, and a pattern added later earns it the same way:
 
-1. Positive sample. The regex finds the marker in real AI output.
-2. Negative sample. The regex does not trigger on similar text unrelated to AI (programmer documentation, a quotation from an English article).
-3. Boundary sample. The regex does not break on empty strings, multiple matches, Unicode.
+1. It fires on the marker as the tool actually emits it.
+2. It stays silent on the nearest innocent neighbour — technical documentation, a quotation, a format named rather than used.
+3. It survives the edges: empty input, several matches in one text, non-Latin characters around it.
 
-If a new regex is added to the skill — it must pass these three checks before publication.
+Check all three against the text in front of you, in whatever way is quickest, before reporting a hit as a tell. A pattern that has only been reasoned about has not been checked. No working pattern is ever dropped: an older generation's marker still identifies an older text.

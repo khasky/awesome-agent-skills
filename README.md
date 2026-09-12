@@ -228,11 +228,12 @@ Each skill follows the [Agent Skills specification](https://agentskills.io/speci
 ```text
 skills/<skill-name>/
 ├── SKILL.md          # required: YAML frontmatter (name, description) + instructions
-├── references/       # optional: detailed docs the agent loads on demand
-└── scripts/          # optional: helper scripts
+└── references/       # optional: detailed docs the agent loads on demand
 ```
 
-**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/` or `scripts/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
+**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
+
+**Instructions only, no code.** A skill is Markdown and nothing else: no scripts, no templates, no fixtures, no binaries. A check is written as what to look for, what counts as a pass and what evidence to report, and the agent writes whatever it needs in whatever language fits its own environment — which is also the one that knows the platform, the shell and the project in front of it. Nothing here runs the author's code on your machine.
 
 The frontmatter `description` tells the agent when to activate the skill; the body loads only after activation, and `references/` files only when needed — so a large skill still costs little context until used.
 

@@ -91,14 +91,7 @@ Prefer:
 
 Watch for and rewrite:
 
-- Filler adverbs of ease: “simply”, “just”, “easily”, “obviously”, “of course”
-- “It is important to note that...”
-- “In today’s fast-paced landscape...”
-- “This comprehensive guide explores...”
-- “plays a crucial/pivotal/key role...”
-- “underscores/highlights/showcases...”
-- “robust/seamless/cutting-edge/innovative...”
-- “deliberately/intentionally” stamped on a choice instead of the reason for it (say “on purpose”)
+- Every word and phrase of the shared inventory: `awesome-humanize-en`'s `references/lexicon.md` — the three vocabulary tiers with the plain word each entry displaces, filler adverbs, transition crutches, era openers, inflation, bureaucratese, unsourced attribution, and the intent stamp (“deliberately”, “intentionally”) that replaces the reason instead of giving it.
 - “not only X but also Y”
 - “from X to Y” ranges used for drama rather than meaning
 - forced groups of three
@@ -109,7 +102,7 @@ Watch for and rewrite:
 
 Density fails in both directions. A paragraph trimmed until it lost the caveat, the next step or the one number the reader came for is a defect, the same as a padded one; cut filler, not content. And a rewrite must not come out more promotional, more upbeat or more confident than its source: hedges of genuine doubt, disagreement and refusals are the author's stance, and stance is not the editor's to move.
 
-That list is the working bar for this pass. If `awesome-humanize-en` is installed alongside, its `references/language-patterns.md` extends it with the wider filler and cliché catalog, `references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and `references/domains/` carries per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. None is required to finish this pass.
+That list is the working bar for this pass, and the vocabulary half of it now lives once, in `awesome-humanize-en`'s `references/lexicon.md`: with that skill installed the words come from there, and without it this pass runs on the shapes above and says so in the report. The same skill's `references/language-patterns.md` carries the pattern numbers and the before-and-after shape behind each entry, `references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and `references/domains/` carries per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. Those three are optional; the lexicon is where the word list went.
 
 ## Pass 4: Specificity and source discipline
 

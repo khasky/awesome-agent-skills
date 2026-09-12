@@ -20,7 +20,6 @@ Reference files (load on demand — read the one you need, don't inline all of t
 - [`references/client-hardening.md`](references/client-hardening.md) — runtime-independent client-side security checklist (capabilities, cross-context entry points, tokens, network, build config, supply chain).
 - [`references/browser-client.md`](references/browser-client.md) — the browser half of that checklist (extension permissions, storage tiers, DOM/CSS sinks, bundler config, npm lifecycle scripts). Load it *with* `client-hardening.md` for an extension, SPA, or web SDK; skip it for a native, desktop, or CLI client.
 - [`references/report-template.md`](references/report-template.md) — the output report structure.
-- [`scripts/leak-sweep.sh`](scripts/leak-sweep.sh) / [`scripts/leak-sweep.ps1`](scripts/leak-sweep.ps1) — the same parameterized ripgrep sweep, for POSIX shells and for native Windows PowerShell (customize the pattern arrays per product). Run whichever matches the shell you are in; their output matches.
 
 ## The core mental model
 
@@ -46,7 +45,7 @@ Done when: the public artifact and its private counterparts are named, the backe
 
 ### Phase 2 — Sweep for leaks
 
-Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Run `scripts/leak-sweep.sh <target-dir>` (or `scripts/leak-sweep.ps1 <target-dir>` on native Windows) as a starting sweep, then read the hits in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. An area that came back clean is not recorded and never reaches the report — it costs the reader tokens and gives them nothing to act on. Only an area you could not check gets written down, with the reason.
+Walk the taxonomy in `references/leak-taxonomy.md`. Cover the whole repo, not just `src/`: tests/e2e, docs, README/CHANGELOG, CI/workflow files, `.env*` and their `.example` twins, build/config files, package manifests (scripts, `postinstall`), and locale/i18n strings (they ship inside the package). Sweep the taxonomy's starter patterns with whatever search the environment gives you, in one pass over the target directory, with build output, dependency trees, version-control internals, vendored code and lockfiles excluded, and group the hits by category so the reading has an order. Then read every hit in context — a pattern match is a lead, not a verdict. For each real finding record `file:line`, a short quote, and a one-clause reason. An area that came back clean is not recorded and never reaches the report — it costs the reader tokens and gives them nothing to act on. Only an area you could not check gets written down, with the reason.
 
 For each confirmed leak, sketch the attacker's next step as a one-line attack path — leaked detail → what it enables → why it matters — and rate severity by how *easy* the abuse is, not only how bad the worst case would be.
 

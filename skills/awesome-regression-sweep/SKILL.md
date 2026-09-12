@@ -24,15 +24,14 @@ Reference files (load the one the run needs):
 - [`references/live-contract-checks.md`](references/live-contract-checks.md) — the black-box checklist for a public read surface, the invariants of append-only and derived data, and the golden-vector method for cross-implementation parity.
 - [`references/deployment-and-infrastructure.md`](references/deployment-and-infrastructure.md) — proving the deployed code is the tested code, and the infrastructure layer that fails with no code change at all.
 
-Scripts (Node ≥18, no dependencies):
-- [`scripts/sweep.mjs`](scripts/sweep.mjs) — runs the aspect list from a config: one line per aspect, deltas against a stored baseline, per-aspect timeouts, output assertions for tools whose exit code lies, and a `SKIP` where a prerequisite is absent.
-- [`scripts/http-contract.mjs`](scripts/http-contract.mjs) — black-box probe of a public read endpoint: cache-key canonicalization, validation before work, CORS, ETag/`304`, `HEAD` parity, security headers.
+Running the sweep is yours to arrange: the aspect table below is the contract, and whatever you drive it with — a
+shell loop, a small program you write for this repository, or the commands one at a time — is an implementation
+detail that never leaves your side of the boundary. What the run has to produce is fixed: one line per aspect, its
+delta against the stored baseline, and a verdict.
 
-- Other runtimes — the runner is Node so one file works on every platform; the
-  aspects it runs are the project's own commands, whatever the stack (`cargo
-  test`, `go vet`, `pytest`, `mvn verify`, `dotnet build`). If the project has no
-  Node toolchain, run the aspect table by hand and keep the baseline in a text
-  file — the runner is convenience, the table is the contract.
+- Any stack: the aspects are the project's own commands, whatever the language (`cargo test`, `go vet`, `pytest`,
+  `mvn verify`, `dotnet build`). Keep the baseline in a plain text file beside the run so the next sweep has something
+  to subtract from — the table is the contract, the way it is driven is not.
 
 ## Scope and prerequisites
 
@@ -52,9 +51,16 @@ those, never a guessed equivalent.
 
 ## Phase 1 — the aspect sweep
 
-```bash
-node scripts/sweep.mjs --config sweep.config.json --baseline baseline.json
-```
+Every aspect is read-only: it runs what the project already defines and never deploys, writes or mutates. Four rules
+hold the sweep together, and each exists because a sweep without it reported green over something nobody ran:
+
+- A prerequisite that is absent makes the aspect a SKIP, reported with its reason, never a failure and never dropped
+  silently. A required working copy that is absent is a failure instead.
+- An exit code is not enough. Wrappers, shims and some suites print a failure and still exit 0, so an aspect whose
+  output carries a result line is judged on that line as well as on the code.
+- Every aspect has a ceiling on how long it may run, so one hung command cannot swallow the sweep.
+- A count is not a result. Each aspect is reported against the baseline from the previous pass: the same number, or
+  the delta, plus what moved. Update the baseline only from a pass you are willing to call the new reference.
 
 Nine aspects, one line each, then a verdict. Include the ones that exist:
 
@@ -115,7 +121,7 @@ hunts.
 
 - Safe to fan out concurrently: the static/read-only aspects (typecheck, lint,
   generated-artifact drift, docs-vs-code constants — angle 7) and the black-box
-  HTTP probes (`http-contract.mjs`, one sub-agent per endpoint or `--bad` shape).
+  HTTP probes, one agent per endpoint or per malformed shape.
   They share no port, database, or browser.
 - Must stay serial: the unit / integration / e2e suites and any live browser
   suite. Concurrent runs fight over ports, test databases, and browsers and
@@ -176,17 +182,18 @@ system exposes: the public read surface, the durable data behind it, and any for
 two implementations serialize independently. Each item there is cheap to re-check
 and expensive to discover in production.
 
-```bash
-node scripts/http-contract.mjs --base https://api.example.com --path /v1/status \
-  --collection "/v1/items?from=1&to=3" --origin https://example.org \
-  --bad "/v1/items?from=abc" --bad "/v1/items?from=9&to=1" --bad "/v1/items?from=1&to=99999" \
-  --moving "/v1/feed?from=1" --private /v1/account --unknown /v1/no-such-route
-```
+Probe the live surface with plain read requests — GET, HEAD and OPTIONS only, nothing that writes. Against a
+stable public endpoint, check what no in-process test can see: that two spellings of the same query land on one cache
+key, that a malformed request is rejected before any work is done, that the CORS answer is the one the endpoint
+intends for an unlisted origin and for a route that does not exist, that an ETag round-trips into a 304, that HEAD
+agrees with GET on headers, that an open-ended view is never served as immutable, and that the security headers the
+service promises are actually on the response.
 
-Repeat `--bad` per malformed shape — non-numeric, reversed, zero, oversize, too
-many items, over-long value, missing separator. Each takes a different branch
-through the validator, and the branch that forgets to reject is the one that
-reaches the database before validation finishes.
+Send the malformed request once per shape rather than once per endpoint: non-numeric, reversed range, zero or
+negative, oversize range, too many items, an over-long value, and a value missing its separator each take a different
+branch through the validator, and the branch that forgets to reject is the one that reaches the database before
+validation finishes. Where a path separator would be rewritten by the shell you are in, quote it or escape the
+rewriting — a probe that silently asked for the wrong path proves nothing.
 
 Done when: every invariant has been checked or marked NOT ASSESSED with
 its reason.

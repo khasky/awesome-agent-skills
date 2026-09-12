@@ -4,8 +4,8 @@ The invariants that have actually been broken, or nearly broken, in production
 systems — grouped by the layer that owns them. Each is cheap to re-check and
 expensive to discover from a user report.
 
-`scripts/http-contract.mjs` automates most of the first section. The rest need the
-note beside them.
+The first section is all black-box request work: drive it however your environment makes cheapest, as long as
+every request is a read. The rest need the note beside them.
 
 ## The public read surface
 

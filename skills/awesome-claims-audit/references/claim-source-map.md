@@ -21,7 +21,7 @@ re-derives where a fact lives, and the second pass reaches a different answer.
    needs two files to settle, that is itself a finding: the product has two sources
    of truth and they will diverge.
 4. Mark the rows a script can check, by check id — write `**auto:<check-id>**`
-   at the head of the row, so `scripts/map-coverage.mjs` can cross-check the map
+   at the head of the row, so the coverage cross-check can match the map
    against the config in both directions. The rest need a person, because the claim
    is prose or because only a person can tell which quoted phrase is claiming to
    *be* a UI label.
@@ -46,7 +46,7 @@ re-derives where a fact lives, and the second pass reaches a different answer.
 ```
 
 A row with no `**auto:…**` marker is a claim a person settles. Keep the split
-honest: `scripts/map-coverage.mjs` fails when the map promises a check that does not
+honest: the cross-check fails when the map promises a check that does not
 exist, and when a check exists that no row accounts for.
 
 Keep a second, short table for surface-internal contracts — pairs that must

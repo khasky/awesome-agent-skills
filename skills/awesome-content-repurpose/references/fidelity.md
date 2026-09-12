@@ -50,7 +50,7 @@ Every post file also carries `source_anchor: pN` or `pN-pM`, the paragraphs its 
 
 ## The mechanical checks against the source
 
-`node scripts/gate.mjs repurpose/<slug>/posts --notes repurpose/<slug>/source-notes.md` adds, on top of the checks that need nothing but the posts:
+Checked against the run's source notes, the mechanical pass adds these on top of the checks that need nothing but the posts:
 
 - grounding — every number, every product or version identifier (a token with a digit or an inner capital) and every quotation of four words or more in a post appears in the notes or in `source/`; quotations match verbatim. An added entity or a changed number is the commonest error compression makes, and it is the one a reader cannot see.
 - absolute — `always`, `never`, `guarantees`, `proves`, `eliminates`, `completely`, `entirely`, `perfectly`, `flawless`, `without exception` and `100%` in a post when the source never used the word. The author's own habits in the first person are exempt; a claim about the thing is not.

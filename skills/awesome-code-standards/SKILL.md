@@ -185,6 +185,7 @@ Dynamically-typed languages without a checker (plain JS, Ruby, PHP, Lua) do the 
 
 - Explain why, not what — "Use exponential backoff to avoid overwhelming the API" not "Increment retry count." A comment that only restates the code is noise; delete it or rename the code so it isn't needed.
 - Plain ASCII punctuation — Write comments the way a developer types them: `-` not `—`, `...` not `…`, straight quotes, no decorative glyphs or emoji. Typographic glyphs in a comment are an AI-generation tell, not house style. (Comment text only — never string literals, identifiers, or data.)
+- Plain verbs in comment text — A closed list of borrowed diction never appears in a comment: the ceremonial verb where the plain one exists. The list and its replacements are the Borrowed diction section of `awesome-humanize-en`'s [`references/lexicon.md`](references/lexicon.md), which also carries the domains where one of the words is the product's own vocabulary. (Comment text only — inside a string literal or product data the word is content.)
 - Doc comments on public APIs — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
 - No commented-out code — Remove or explain in a ticket; use version control for history.
 

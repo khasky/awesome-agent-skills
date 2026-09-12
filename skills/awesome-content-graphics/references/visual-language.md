@@ -94,17 +94,16 @@ One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.
 
 Render in a spawned browser, not the user's. This step loads a local `file://` page and screenshots it — there is no account, no session and nothing to log into, so it has no business taking over a browser the user is working in. Prefer, in order: a headless browser the automation can launch itself, an installed CLI (`wkhtmltoimage` or a browser's own `--screenshot`, verified with `--version` exiting 0), and only then a live bridge. Using a live bridge means the user's window fills with `file://` tabs while the batch renders, so ask first when there is more than one bridge, say which browser is being used, and warn that it is busy.
 
-```text
-node scripts/render-set.mjs <run> [--width 1080 --height 1080 --scale 2]
-```
-
-One browser for the whole set, found by `scripts/cdp.mjs` (`CHROME_PATH`, then the Playwright browser cache, then the installed Chrome or Edge) and driven over the DevTools protocol with no npm dependency. It sets the viewport once, loads each page, waits for fonts, runs the check, and captures at device scale only when the check passes.
+One browser for the whole set: find a Chromium-family binary the way the machine exposes it (an explicit path in the
+environment first, then an automation cache, then an installed browser), drive it over its own debugging protocol,
+set the viewport once, load each page, wait for fonts, run the check and capture at device scale only on a pass.
+Measure at device pixel ratio 1 and capture through page zoom: capturing at ratio 2 stalls on some layers.
 
 Say which renderer was used, in the report.
 
 ## The layout catalog
 
-Twenty-nine layouts, each a distinct skeleton, settled by review: a hundred renders were cut to the layouts that survived three rounds, and what was cut is named below so it is not rebuilt. A variant is a layout carrying a headline (and a photo, where it has one); the set's honest size is these layouts multiplied by the headlines in play, and palette, face, ground and icon never add to it. The render script's R21 sweep fingerprints layout, headline and printed values together, so two rows on one layout under one line in two palettes are caught as the same variant.
+Twenty-nine layouts, each a distinct skeleton, settled by review: a hundred renders were cut to the layouts that survived three rounds, and what was cut is named below so it is not rebuilt. A variant is a layout carrying a headline (and a photo, where it has one); the set's honest size is these layouts multiplied by the headlines in play, and palette, face, ground and icon never add to it. The R21 sweep fingerprints layout, headline and printed values together, so two rows on one layout under one line in two palettes are caught as the same variant.
 
 | Kind | Layout | Row |
 | --- | --- | --- |
@@ -141,7 +140,7 @@ Grounds that remain: `solid`, `gradient`, `blob`, `spot`, `glow` (an off-canvas 
 
 ### Photos
 
-A photo is a subject like an icon is, and it obeys the same rule (R19): it is on the canvas because the claim names or implies it, and the row says which claim in one clause. It comes from the asset cache, fetched once by `fetch-assets.mjs --photos "<query>;<query>" --per 3` from Openverse, CC0 first and CC BY second, several candidates per query (`<slug>.jpg`, `<slug>-2.jpg`, ...), at least 900 pixels on the delivered file (the catalogue's width is the original's, and some providers serve a smaller copy, so the bytes are measured), resampled to 1400 (heavier files to 1100), captured once at 2x as a probe, and inlined into the page so the file stays self-contained. A photo that stalls the probe is rejected the way a photo with a logo is, since it would stall every canvas it lands on; the query fetches the next candidate. `credits.json` beside the files carries the title, creator, licence and source of each; a CC BY image carries an `attribution` line that must travel with the post, and `build-set.mjs` prints that obligation whenever such a photo is used.
+A photo is a subject like an icon is, and it obeys the same rule (R19): it is on the canvas because the claim names or implies it, and the row says which claim in one clause. It comes from the asset cache, fetched once into that cache from Openverse, a few candidates per query, CC0 first and CC BY second, several candidates per query (`<slug>.jpg`, `<slug>-2.jpg`, ...), at least 900 pixels on the delivered file (the catalogue's width is the original's, and some providers serve a smaller copy, so the bytes are measured), resampled to 1400 (heavier files to 1100), captured once at 2x as a probe, and inlined into the page so the file stays self-contained. A photo that stalls the probe is rejected the way a photo with a logo is, since it would stall every canvas it lands on; the query fetches the next candidate. A credits file beside the images carries the title, creator, licence and source of each; a CC BY image carries an attribution line that must travel with the post, and the build says so out loud whenever such a photo is used, so the obligation reaches the report rather than the cache.
 
 The search is not the gate; the look is. Openverse answers a query literally, and one run's "lottery ticket" came back as a real ticket with two brand logos on it, "scratch card" as a soap advertisement, "darkroom print" as a bowl of bananas. So every fetch ends by writing `photos/sheet.png`, the run reads it before any photo goes on a canvas, and a picture that shows the wrong thing, a logo, a brand, a recognisable person or text that will read as a second headline is refused with `--reject <slug>`, which deletes it, remembers its id, and lets the same query fetch the next candidate. A photo that survives the look is named in the row; a row naming a photo nobody looked at is the anti-pattern. Nothing drawn sits beside a photograph, no icon, no emoji, no spark, no shape: the picture is the subject, and the builder refuses a photo row that names one.
 
@@ -151,14 +150,14 @@ A photo counts toward the variant rule like any other content: two rows on the s
 
 ## The set file
 
-`set.json` in the run folder is the plan and the source at once; `scripts/build-set.mjs` turns it into pages. Top level: `width`, `height`, `lang`, and `headline` as an array of authored lines that every variant inherits unless its row overrides it. Then `variants`, one object per canvas:
+The set plan in the run folder is the plan and the source at once, and the pages are built from it. Top level: `width`, `height`, `lang`, and `headline` as an array of authored lines that every variant inherits unless its row overrides it. Then `variants`, one object per canvas:
 
 | Field | Values | Notes |
 | --- | --- | --- |
 | `id` | `"01"`, `"02"`, … | Becomes the filename. Zero-padded so the gallery sorts |
 | `kind` | `glyph` · `lockup` · `figure` · `list` · `photo` | The five kinds of the catalog |
 | `pattern` | `mass` · `bars` · `squares` · `discs` · `rows` · `arc` · `arc-hero` · `duel` · `steps` — `compare` · `bullets` · `checklist` · `stats` | Figures and lists; `steps` takes `steps: [three captions]` instead of values |
-| `palette` | `{bg, fg, accent, muted}` | Hexes, from `references/palettes.json` or a proved brand scheme |
+| `palette` | `{bg, fg, accent, muted}` | Hexes, from `references/palettes.md` or a proved brand scheme |
 | `ground` | `solid` · `gradient` · `blob` · `spot` · `glow` · `paper` | Plus `gradientAngle` and `grain` (0 to 0.1) where they apply |
 | `face` | a family name in the asset cache | Omitted, the system stack |
 | `effect` | `plain` · `mixed-weight` · `accent-line` · `slab` · `highlight` · `underline` · `quote` · `knockout` (lockups only) | With `accentLine` or `markWord` where the effect needs one; all on the R17 list |
@@ -172,7 +171,7 @@ A photo counts toward the variant rule like any other content: two rows on the s
 | `values` | `[{v, text?, label}, …]` | Two for mass, squares, discs and duel; three for bars; up to four for rows |
 | `fraction` | 0 to 1 | Arc sweep and threshold position |
 
-The build picks the line count (up to five) that sets the headline largest among the counts whose block clears the 22 percent floor (R11): fewer, wider lines fill the width, more lines fill the height, and sizing for height alone produced short lines stopping mid-canvas. The size it computes is an estimate from an average advance, so every page then sizes its own headline against the real face: a script in the page grows or shrinks the type until the widest line meets the block width or the block reaches the height its layout reserved (the `data-max-h` attribute), steps back from any line that wrapped, never passes a seventh of the canvas height (R22), centres a column headline on the canvas and sits the small-top glyph's headline on the rule at the foot (the `data-center` and `data-bottom` attributes); the render script waits for it before measuring. A layout reserves the headline budget as a block, and the photo or the list takes what is left. The build refuses a lockup whose headline still carries the lockup's digits. A row the templates cannot express is a hand-written page in `src/` under the data-attribute contract below, and the render script treats it exactly like a built one.
+The build picks the line count (up to five) that sets the headline largest among the counts whose block clears the 22 percent floor (R11): fewer, wider lines fill the width, more lines fill the height, and sizing for height alone produced short lines stopping mid-canvas. The size it computes is an estimate from an average advance, so every page then sizes its own headline against the real face: a script in the page grows or shrinks the type until the widest line meets the block width or the block reaches the height its layout reserved (the `data-max-h` attribute), steps back from any line that wrapped, never passes a seventh of the canvas height (R22), centres a column headline on the canvas and sits the small-top glyph's headline on the rule at the foot (the `data-center` and `data-bottom` attributes); the render script waits for it before measuring. A layout reserves the headline budget as a block, and the photo or the list takes what is left. A lockup whose headline still carries the lockup's digits is a row to fix before it is built. A row the catalog cannot express is a one-off page in `src/` under the data-attribute contract below, and it is measured exactly like a built one.
 
 ## The geometry check, before the screenshot
 
@@ -186,7 +185,7 @@ The contract that makes it possible:
 - Text set inside a shape carries `data-fit="<id of the container>"`.
 - There is no `data-bleed`. The attribute existed for two revisions and produced clipped arrowheads and blocks sliced by the frame; nothing crosses the safe margin now, and a composition that wants to feel unbounded does it inside the frame.
 
-The measurement lives in `scripts/render-set.mjs`, which runs it on every page in `src/` before deciding whether to screenshot it, and writes every field below to `report.json`. It is not re-typed into an evaluate call per run; a hand-written page follows the contract above and is measured by the same script as a built one. The fields it returns, per page: `over`, `spanX`, `spanY`, `contentX`, `contentY`, `voidBlock`, `headW`, `headH`, `headSize`, `lineFill`, `numberWords`, `semicolon`, `titleChars`, `titleWords`, `titleShape`, `gapMin`, `gapSpread`, `lineOver`, `wrapped`, `clearance`, `dup`, `dupDigits`, `fitFail`, `unlabelled`, `uncaptioned`, `clipped`, `plated`, `stroke`, `skeleton`.
+The measurement runs in the page, on every page in `src/`, before anything decides whether to screenshot it, and every field below is recorded per page so a finding can be read after the fact. A one-off page follows the contract above and is measured like a built one. The fields, per page: `over`, `spanX`, `spanY`, `contentX`, `contentY`, `voidBlock`, `headW`, `headH`, `headSize`, `lineFill`, `numberWords`, `semicolon`, `titleChars`, `titleWords`, `titleShape`, `gapMin`, `gapSpread`, `lineOver`, `wrapped`, `clearance`, `dup`, `dupDigits`, `fitFail`, `unlabelled`, `uncaptioned`, `clipped`, `plated`, `stroke`, `skeleton`.
 
 The gate, and a variant that fails any part of it is fixed and re-rendered or dropped — never shipped:
 

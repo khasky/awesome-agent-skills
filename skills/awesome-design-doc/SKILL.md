@@ -82,13 +82,22 @@ Full design doc: Title → Problem & requirements (with numbers) → Proposed de
 
 ## Self-check before delivering
 
-Run the structural gate first, so the reading below is spent on judgement rather than on spotting a placeholder:
+Settle the mechanical half first, so the reading below is spent on judgement rather than on spotting a placeholder. Each line is a yes or no about the document as it now stands; how you settle it is yours to decide — a read, a search, or a throwaway check you write for this document and throw away after.
 
-```bash
-node scripts/check-design-doc.mjs <path to the doc>   # exit 0 clean, 1 findings
-```
+Blocking, a document with any of these is not ready to hand over:
 
-It settles only what a machine can settle (sections present and non-empty, at least two alternatives, no leftover placeholder, ADR status valid) and says nothing about whether the recommendation is right. `--self-test` proves each check can fail before it is trusted to pass anything.
+- No leftover placeholder anywhere in the body: TBD, TODO, FIXME, a citation-needed marker, lorem ipsum, "fill this in", a bracketed <your thing>, a sentence trailing into a continuation note.
+- A full doc carries a section for each of requirements or problem, design or proposal, alternatives, recommendation or decision, non-goals, risks, and rollout or rollback — each with a body under it, not a heading standing alone. An ADR instead carries Status, Context, Decision, Alternatives considered and Consequences, none of them empty.
+- An ADR status reads proposed, accepted or superseded, and nothing else.
+- Alternatives number two or more, counted as list items or table rows. A paragraph mentioning one option is one alternative however long it runs.
+
+Warnings, each answered or explicitly waived:
+
+- The opening third carries at least one number. A context with no quantity has not stated the problem.
+- The risks (or an ADR's consequences) name an early warning: what a reader would observe if the risk is materialising.
+- A full doc has an open-questions section, marked rather than hidden.
+
+Then the judgement, which no check settles:
 
 - The three-condition test verdict is stated in one line — why this decision earned a document at all.
 - Every scale number traces to a stated assumption a reader can re-run; a number with no assumption is a vibe with digits.

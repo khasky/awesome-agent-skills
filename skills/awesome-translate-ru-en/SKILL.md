@@ -57,22 +57,14 @@ UI labels and menu paths: keep them exactly as they appear in the source. If the
 
 ### 4. Forbidden English AI-marker phrases
 
-Avoid these — they make text sound machine-generated:
+Avoid these — they make text sound machine-generated.
 
-- "delve into", "delve deeper"
-- "navigate the landscape of", "in the realm of", "in the world of"
-- "it is important to note that", "it should be noted"
-- "furthermore" (as a paragraph crutch), "moreover" (overused)
-- "thus", "hence" (as opening words)
-- "in conclusion" (use "to wrap up", "all told", or just start the closing differently)
-- "leverage" (as a verb when "use" works)
-- "utilize" (use "use")
-- "deliberately" (use "on purpose", or give the reason)
-- "robust", "seamless", "cutting-edge" (overused marketing words)
-- "comprehensive", "holistic" (when not specifically meaningful)
-- "in today's world", "in the modern era", "as of today"
-- "a wide array of", "a plethora of", "a myriad of"
-- "tapestry", "testament to"
+The inventory is shared across the collection and lives once, in `awesome-humanize-en`'s `references/lexicon.md`: the three vocabulary tiers with the plain word each entry displaces, the literary register, transition crutches, conclusion filler, era openers, quantity clichés, bureaucratese and unsourced attribution. Read it when that skill is installed; without it the three notes below still bind and the report says the word list was not loaded.
+
+Three entries carry a translator's note on top of the inventory:
+
+- "in conclusion" has natural English replacements a translation reaches for first — "to wrap up", "all told", or a closing that simply starts differently.
+- "deliberately" as an intent stamp is usually a calque of «специально» / «намеренно»; write "on purpose", or give the reason the Russian sentence implies.
 - Negation-frame calques of «не X, а Y» / «X, а не Y» rendered as a theatrical "It's not X, it's Y" — translate to a direct positive statement, or, if the contrast genuinely matters, two parallel positive clauses.
 
 ### 5. Russian connectors → natural English

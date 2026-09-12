@@ -8,7 +8,7 @@ Specific vocabulary and syntactically bulky constructions that LLMs gravitate to
 
 ## 10. 🔴 Overuse of AI vocabulary
 
-List: delve, tapestry, testament, boasts, nestled, underscore, leverage, seamless, robust, showcase, realm, landscape, navigate, foster, pivotal, crucial, vibrant, intricate, multifaceted, comprehensive, meticulous, bustling, deliberately, "treasure trove".
+List: `lexicon.md`, Tier 1 and Tier 2 — the inventory lives there once, with the plain word each entry displaces, and the density gate below is what turns a hit into a finding.
 
 Problem. These words show up together far too often in generated text. One on its own can be perfectly fine; five or more in a single paragraph is almost always AI.
 
@@ -129,19 +129,7 @@ Source: Composite — English Wikipedia "Signs of AI writing" (lexical diversity
 
 Problem. AI marks every logical turn with the same connective.
 
-Transition crutches (mid-text):
-- "However, it's worth noting that…"
-- "That said, it's important to understand…"
-- "Furthermore, it should be emphasized that…"
-- "It is important to note that…"
-- "With that in mind, one must consider…"
-
-Conclusion filler (at the end):
-- "In conclusion…"
-- "To sum up…"
-- "Ultimately, we can see that…"
-- "All in all…"
-- "In summary, it is clear that…"
+Both inventories are in `lexicon.md`: Transition crutches for the mid-text openers, Conclusion filler and summary stamps for the closing formulas. What this pattern adds is the density rule below — any one of them can open a paragraph honestly; the tell is the cadence.
 
 Marker. A connective or closing formula in every second or third paragraph. A living writer varies transitions and sometimes uses none at all.
 

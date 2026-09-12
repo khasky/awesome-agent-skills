@@ -1,6 +1,6 @@
 # Leak taxonomy
 
-The categories of disclosure to hunt in a public client. For each: what it is, why it leaks, and starter patterns (ripgrep syntax, case-insensitive). Patterns are *leads* — read every hit in context, and expand the lists with the product's own vocabulary from Phase 1 (its real backend stack, service names, defense names, env-var prefixes). `scripts/leak-sweep.sh` bundles these into one pass.
+The categories of disclosure to hunt in a public client. For each: what it is, why it leaks, and starter patterns (ripgrep syntax, case-insensitive). Patterns are *leads* — read every hit in context, and expand the lists with the product's own vocabulary from Phase 1 (its real backend stack, service names, defense names, env-var prefixes). Run them as one pass over the repository with build output, dependency trees, version-control internals and lockfiles excluded, and keep the hits grouped by the category that found them.
 
 Search the whole repo, not just application source: tests/e2e, `docs/`, `README`/`CHANGELOG`, CI/workflow YAML, `.env*` and `.example` twins, build/config files, package manifests, and locale/i18n files (they ship inside the package).
 

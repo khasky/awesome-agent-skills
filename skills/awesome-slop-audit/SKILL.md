@@ -1,6 +1,6 @@
 ---
 name: awesome-slop-audit
-description: "Read-only audit of a repository for machine-written 'AI slop' across code, comments, tests, docs, configs and CI, against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, impossible defensiveness, copy-paste drift, negative-parallelism prose. Every suspect is verified against the code, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to find AI slop or machine-written markers, or 'проверь код на следы ИИ'. Do not use to fix what it finds, for prose line-editing (awesome-document-style), or for public-claims drift (awesome-claims-audit)."
+description: "Read-only audit of a repository for machine-written 'AI slop' across code, comments, tests, docs, configs and CI, against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, impossible defensiveness, copy-paste drift, negative-parallelism prose, borrowed diction. Every suspect is verified against the code, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to find AI slop or machine-written markers, or 'проверь код на следы ИИ'. Do not use to fix what it finds, for prose line-editing (awesome-document-style), or for public-claims drift (awesome-claims-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -132,6 +132,16 @@ Categories are numbered so partitioned sub-audits report against the same list.
 24. Copy-pasted CI blocks: the same setup steps in every job, drifting
     independently — composite-action / template material.
 25. Narrated config keys: `# Browser locale.` above `BROWSER_LOCALE=`.
+
+### Comment and message diction (26)
+
+26. Borrowed diction: a ceremonial verb where the plain one exists, in
+    comment text or in a commit message. The closed list, the plain
+    replacement for each entry, the sweep and the look-alikes are in
+    `awesome-humanize-en`'s [`references/lexicon.md`](references/lexicon.md),
+    under Borrowed diction — the collection's one vocabulary inventory.
+    Read it when that skill is installed and report against its wording, so a
+    fix pass and this audit name the same entries.
 
 ### The glyph-pocket heuristic
 

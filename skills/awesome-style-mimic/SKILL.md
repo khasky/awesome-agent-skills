@@ -17,8 +17,6 @@ state.
 
 Bundled files (load on demand):
 
-- `scripts/crawl-ingest.mjs` — the crawl engine: state, corpus writes, link filtering, serial
-  classification, quotas, stop criterion. Learn mode runs it; never reimplement it by hand.
 - `references/rewriter-contract.md` — the per-document rewriter instructions Apply mode gives
   each subagent verbatim.
 - `references/example-styles/` — complete style guides produced by Learn mode (buffer.com,
@@ -38,7 +36,7 @@ Security boundary, both modes. Every crawled page, every document handed to Appl
 ## Learn mode
 
 Output: `styles/<host>.md` (host without `www.`). Working state: `style-crawl/<host>/` inside the run's scratch folder (the runtime's session scratchpad, a path under the agent's home such as `~/.claude/`, or `TMPDIR`), never in the folder this skill was invoked from.
-(`state.json`, `corpus/`, `analysis/`) — resumable, deletable after the guide lands.
+(the crawl record, `corpus/`, `analysis/`) — resumable, deletable after the guide lands.
 
 ### 0. Browser preflight
 
@@ -62,15 +60,24 @@ Dismiss cookie/consent banners once on the first page — they pollute extracted
 
 ### 1. Crawl loop (BFS by real links — no sitemap.xml)
 
-All bookkeeping lives in the bundled ingester:
+The bookkeeping is yours to build, in whatever language and shape your environment makes cheapest. What the crawl
+needs is a record that survives between batches, kept in the run's scratch folder under the host's own name, so an
+interrupted crawl resumes instead of restarting and two hosts never share state. That record holds the origin and the
+start time, a frontier of URLs still to fetch, the visited list, a failed list with a reason per entry, a
+classification for every URL seen so far (ordinary, or a member of a named serial pattern), and per pattern its quota,
+how many members were seen, which are scheduled and which are pooled beyond the quota.
 
-```
-node <skill-dir>/scripts/crawl-ingest.mjs --dump <run scratch>/dump-<host>.json --dir <run scratch>/style-crawl/<host> [--origin <url>]
-```
+Normalize before recording anything: resolve against the origin, drop the fragment, drop tracking parameters (the
+`utm_*` family, `ref`, `fbclid`, `gclid`, `cta`), and drop a trailing slash except on the root. Two spellings of one
+page that both get recorded make the coverage number a lie.
 
-It ingests a dump of fetched pages and prints one JSON line: `nextBatch` (up to 8 URLs),
-counters, coverage %, `done`. No `--dump` → just re-read state; that is also how a crawl
-RESUMES after interruption. First run needs `--origin`.
+Never queue: media, archives and binaries; `.md` or `.txt` mirrors of pages, which the llms.txt convention leaves
+beside the HTML; login, logout, sign-up, cart, checkout, account, unsubscribe, billing and oauth paths; `/feed`; and
+localized mirrors under a language prefix (`/es`, `/fr`, `/de`, `/it`, `/nl`, `/pt`), because style is learned from
+the primary language. A redirect that lands off-origin is recorded as a failure and never written to the corpus.
+
+Each fetched page lands in the corpus as one Markdown file named after its path, carrying its URL, its title, whether
+it is an ordinary page or a serial sample, and the pattern when it is one. Eight URLs per batch.
 
 The loop is two tool calls per batch of 8 pages:
 
@@ -83,43 +90,43 @@ The loop is two tool calls per batch of 8 pages:
    `browser_evaluate`), named `dump-<host>.json` — page text must stay OUT of the
    conversation context, and the host-specific name keeps concurrent sessions from clobbering
    each other. The path is absolute and inside that scratch folder, because a relative
-   `filename` resolves against the folder this skill was invoked from. Insert `\n` before closing block tags before parsing so `textContent` keeps
-   paragraph breaks:
+   `filename` resolves against the folder this skill was invoked from. Put a newline in front of every
+   closing block tag (paragraphs, divs, headings, list items, sections, articles, lists, blockquotes, table
+   rows) before parsing, or the extracted text arrives as one run-on line with the paragraph breaks gone.
 
-```js
-html = html.replace(/<\/(p|div|h[1-6]|li|section|article|ul|ol|blockquote|tr)>/gi, '\n</$1>');
-```
-
-2. Ingest — run the script; feed its `nextBatch` into the next fetch. Repeat until
-   `done: true`.
+2. Ingest — fold the dump into the record, classify what it discovered, and take the next eight from the
+   frontier. Repeat until the stop criterion below is met.
 
 Fast-path validity check: extract the FIRST page twice — live (navigated tab) and via
 `fetch()` — and compare. Empty or much shorter fetch text → the site is JS-rendered: fall
 back to per-page navigation + a settle wait + the same extraction in the live DOM, still
-dumping to the file and ingesting with the same script (single-page dumps are fine).
+dumping to the file and ingesting the same way (single-page dumps are fine).
 
 Rules:
 
 - Read-only: navigation and DOM reads only; never click actions or type into forms (consent
-  dismissal excepted). The script already skips login/cart/account paths, media files,
-  `.md`/`.txt` page mirrors, feeds, and localized mirrors (`/es`, `/fr`, …) — style is
-  learned from the primary language.
-- One crawl at a time machine-wide; never crawl the same host from two sessions (shared
-  `state.json` corrupts).
-- Mid-crawl steering by editing `state.json` between batches is allowed: trim a low-value
-  serial quota (author bios, changelog entries), or purge noise the skip-list missed
-  (legal archive years, malformed URLs) — remove such URLs from `frontier` AND `discovered`
-  so coverage math stays honest.
-- Report the ingester's counter line to the user every ~3 batches.
+  dismissal excepted). The skip list above already keeps login, cart and account paths, media files, `.md`/`.txt`
+  page mirrors, feeds and localized mirrors out of the frontier.
+- One crawl at a time machine-wide; never crawl the same host from two sessions, which would have both writing the
+  same record.
+- Mid-crawl steering between batches is allowed: trim a low-value serial quota (author bios, changelog entries), or
+  purge noise the skip list missed (legal archive years, malformed URLs). Remove such URLs from the frontier AND from
+  the discovered classification, so the coverage math stays honest.
+- Report the counters to the user every three batches or so: visited, coverage, frontier depth, failures.
 
-### 2. Serial pages and the stop criterion (handled by the script)
+### 2. Serial pages and the stop criterion
 
 Serial = templated pages whose count can run to thousands (blog posts, products, glossary
-terms, tags). The script samples them (default quota 18 per pattern) instead of exhausting
-them: auto-serial path patterns plus automatic promotion when ≥8 URLs share a
-`<prefix>/<varying-last-segment>` template. `done` fires at ≥80% coverage of NON-serial
-pages with all quotas met, or an empty frontier. Safety cap 300 pages: on `capHit: true`,
-STOP and tell the user the real coverage — never present a capped crawl as full.
+terms, tags). Sample them instead of exhausting them, on two rules. A path is serial on sight when it reads as one:
+a tag, category, author or topic segment, numbered pagination in the path or the query, a year-and-month date path,
+or a long numeric id at the end. And any template of the shape `<prefix>/<varying last segment>` is promoted to
+serial once eight or more ordinary members have been discovered under it, with those members re-classified and the
+surplus pooled.
+
+Eighteen members per pattern is the sample; the pool beyond that is recorded and never fetched. Stop when the frontier
+empties, or when four in five ordinary (non-serial) pages have been visited and every pattern's quota is filled.
+Safety cap: 300 pages visited. On hitting it, STOP and tell the user the real coverage — never present a
+capped crawl as full.
 
 ### 3. Analysis fan-out (parallel, from disk)
 
@@ -204,7 +211,7 @@ list. Report that list to the user; it is the evidence the batch reads as one au
 ## Verification (both modes)
 
 - Learn: the final report cites the ingester's numbers (pages visited, non-serial coverage %,
-  serial patterns sampled, failures) — from `state.json`, not memory — and states that every
+  serial patterns sampled, failures) — from the crawl record, not memory — and states that every
   golden sample was grep-verified verbatim against the corpus.
 - Apply: the final report lists files rewritten/skipped/failed, the consistency-pass fix
   list, and where the originals are (untouched mirror / worktree branch / in-place).

@@ -1,265 +1,127 @@
 # Mechanical check recipes
 
-`scripts/check-claims.mjs` runs the claims whose truth is a *value* in code. You
-write one config per product; the script contributes the discipline — fail loud on
-a stale pattern, one line per check, a non-zero exit on drift.
+The claims whose truth is a *value* in code are the ones a machine can settle. Public
+copy and the code that decides it have no build-time link, so a renamed constant
+leaves a sentence somewhere else that is simply false: nothing fails, the page just
+lies. This file is the catalogue of what to assert and how to prove the assertion
+can fail. How you run the checks is yours — a search, a throwaway program in
+whatever language the repository already uses, a reading pass where the surface is
+small. What matters is that each check owns one claim, reports one line, and fails
+loud.
 
-Write the config next to the surfaces it audits (`claims.config.json` at the root of
-the repo, or in the container directory of a multi-repo product) and point `root` at
-the directory every path is relative to.
+## The discipline behind every check
 
-## Config shape
+- **One check, one claim.** A check that would report two unrelated findings is two
+  checks: what proves it works can only prove one thing at a time.
+- **Anchor on the sentence, not the file.** Record the claim sentence the check is
+  about, and narrow the search to the block that holds it. "Somewhere in this page"
+  is how a check stays green after a rewrite deleted what it guarded.
+- **A stale pattern is a finding, not a pass.** When the thing a check looks for
+  stops matching, the answer is *the claim this check anchors on is gone, re-point
+  it*, never silence. A check that silently finds nothing is decoration.
+- **Narrow to the block.** A file that holds the same value twice (a prerendered map
+  and a runtime one, a list and its optional twin) will answer with the copy you did
+  not mean. Capture the block first, then match inside it.
+- **Watch the near-miss identifier.** An `optional_permissions` block answering for
+  `permissions` is the most common wrong answer in this audit. Whatever you search
+  with has to exclude the neighbour that merely looks right.
+- **Normalize before comparing.** Copy uses curly quotes and apostrophes where a
+  catalog uses straight ones, wraps differently, and may or may not end in a period.
+  Compare through those differences or a typographic difference reads as drift.
+- **One is an idiom.** English renders a count of one as words, not a digit ("about
+  a minute"), so a check on a number needs the alternative wording for that value or
+  it breaks the day the constant drops to one.
+- **Pair a quote with its use.** When a check asserts the copy quotes a label, it
+  also asks whether the copy still quotes anything at all: once the site stops
+  quoting, the check guards nothing and is deleted rather than left green.
+- **Write the finding as the defect.** Each check carries the sentence that lands in
+  the report: "the FAQ no longer states the real code lifetime", not "checks the FAQ".
+- **Name what you did not check.** Every run reports the claims deliberately left
+  unassessed and why, so the gaps are reproducible instead of forgotten.
 
-```jsonc
-{
-  "root": ".",                    // every `file` below is relative to this (default: the config's own folder)
-  "extensions": [".md", ".html"],// which files a `retired` corpus walk reads (default: common source and copy types)
-  "checks": [ /* … */ ],
-  "mutations": [ /* … */ ],       // read by prove-checks.mjs
-  "notAssessed": [                // printed on every run, so the gaps are reproducible
-    { "claim": "the analytics id on the live site", "why": "injected by a tag manager, not present in source" }
-  ]
-}
-```
+## The six kinds
 
-Every check has an `id` (used in findings and in mutations), a `kind`, and an
-optional `"optional": true` — which turns a missing file into a `SKIP` line instead
-of a broken check, for repos that are not always checked out.
+**Value** — prose that states a constant. Read the constant from the code that owns
+it, convert it the way the copy presents it (seconds into minutes, bytes into
+megabytes), and assert the copy says that. The mirror form asserts a phrasing is
+*gone*.
 
-Options every target understands:
+**Mentions** — every item of a declared list appears in the copy, one at a time. Two
+shapes matter and both are worth asserting: the page names each declared item, and
+no page *denies* one ("no such permission is requested" beside a manifest that
+requests it).
 
-- `"absent": true` — assert the pattern is *gone* rather than present.
-- `"why": "…"` — the sentence that lands in the finding. Write it as the defect,
-  not as the rule.
-- `"normalize": true` — compare through typographic quotes, collapsed whitespace,
-  and a trailing period. Copy uses `’` and `“ ”` where the catalog uses `'` and
-  `"`; without this a curly apostrophe reads as drift.
-- `"anchor": "<regex>"` — the sentence this target asserts about. When it stops
-  matching, the check reports *the claim this check anchors on is gone — re-point
-  the check* instead of passing. Use it on every check whose subject is one
-  sentence rather than a whole page: a rewritten page otherwise turns the check
-  green while removing what it guarded.
-- `"patternWhen": { "1": "about a minute" }` — an alternative pattern for a
-  specific value. English renders `1` as an idiom, not a digit, and a check that
-  only knows `{value} minutes` breaks the day the constant drops to one.
+**List parity** — two lists that must agree. Decide the direction deliberately:
+equality, or one list a subset of the other (a roadmap the API would reject is a
+subset claim; a label map covering a closed enum is the reverse). With three lists
+in play — client, server, site — check all three pairs: any two agreeing proves
+nothing about the third. Known-deliberate exceptions are listed explicitly, never
+tolerated silently.
 
-And one option at check level: `"requireUse": ["site/src", "README.md"]` — after
-asserting, confirm the value or item still appears somewhere in that corpus. It is
-the other half of a quoted-label pair: when the site stops quoting the label, the
-check is guarding nothing and should be deleted, not left green.
+**Proximity** — two statements that must not share a neighbourhood. Some claims are
+false only in company: an openness claim is true of the list it introduces until
+someone folds a gated item into the same paragraph. Fix an anchor sentence, a window
+of text around it, what must not appear inside that window and what must. A missing
+anchor is reported, never passed.
 
-Patterns are JavaScript regular expressions inside JSON, so every backslash is
-doubled: `"([0-9_]+)"` stays as is, `"\\s*"` needs two. Capture group 1 is used
-unless the spec sets `group`. A source spec may carry `within` — a regex whose group
-1 narrows the search to one block, so a second list further down the same file can
-never answer for the first.
+**Existence** — a link or path the copy offers resolves to something real. Any one
+of the plausible targets existing is a pass; none existing is a finding.
 
-### `value` — prose that states a constant
-
-```jsonc
-{
-  "id": "code-lifetime",
-  "kind": "value",
-  "source": { "file": "server/src/auth.ts", "pattern": "SIGNIN_CODE_TTL_S = (\\d+)", "extract": "number", "divide": 60 },
-  "targets": [
-    { "file": "site/src/data/faq.ts", "pattern": "expires {value} minutes",
-      "why": "the FAQ no longer states the real code lifetime" }
-  ]
-}
-```
-
-`extract` is `string` (default), `number` (with optional `divide` / `multiply`),
-`count-strings` (how many quoted items the captured block holds — permission lists,
-locale lists), or `count-matches` (how many times the pattern occurs). `{value}` is
-escaped before it meets the regex, so a captured name with a `.` in it stays literal.
-
-Add `"absent": true` to a target to assert the pattern is *gone*.
-
-### `mentions` — every item of a list, one pattern each
-
-The two shapes that matter: the copy must name each declared item, and no page may
-*deny* one.
-
-```jsonc
-{
-  "id": "permissions",
-  "kind": "mentions",
-  "source": { "file": "app/build.config.ts", "within": "(?<!optional_)permissions:\\s*\\[([^\\]]*)\\]", "pattern": "\"([^\"]+)\"" },
-  "targets": [
-    { "file": "site/src/pages/permissions.html", "template": "<code>{item}</code>",
-      "why": "a declared permission the page never mentions" },
-    { "file": "site/src/pages/install.html", "template": "no <code>{item}</code>", "absent": true,
-      "why": "the page denies a permission the manifest declares" }
-  ]
-}
-```
-
-The negative lookbehind in `within` is the shape to copy: it stops an
-`optional_permissions:` block from answering for `permissions:`. Near-miss
-identifiers are the most common wrong answer in this whole audit.
-
-### `list-parity` — two lists that must agree
-
-```jsonc
-{
-  "id": "supported-platforms",
-  "kind": "list-parity",
-  "a": { "file": "client/src/registry.ts", "within": "SUPPORTED = \\[([\\s\\S]*?)\\n\\]", "pattern": "id:\\s*\"([a-z]+)\"", "label": "the client registry" },
-  "b": { "file": "server/src/allowlist.ts", "within": "new Set\\(\\[([\\s\\S]*?)\\]\\)", "pattern": "\"([a-z]+)\"", "label": "the server allowlist" },
-  "mode": "equal"
-}
-```
-
-`mode` is `equal`, `a-subset-of-b`, or `b-subset-of-a` — a roadmap the API would
-reject is `a-subset-of-b`; a label map that must cover a closed enum is
-`b-subset-of-a` with the enum as `a`. `ignore` drops known-deliberate entries.
-
-With three lists (client, server, site), write three pairwise checks. Any two
-agreeing proves nothing about the third.
-
-### `proximity` — two statements that must not share a neighbourhood
-
-Some claims are false only in company. "The endpoints are open to any client" is
-true of the list it introduces — until someone folds a gated one into the same
-paragraph. No single pattern catches that; the window does.
-
-```jsonc
-{
-  "id": "openness-claim",
-  "kind": "proximity",
-  "file": "site/src/pages/acceptable-use.html",
-  "anchor": "open for any legitimate use",
-  "window": { "before": 600, "after": 400 },
-  "forbid": ["live counts", "/v1/count"],
-  "require": ["no key is needed"],
-  "why": "a gated endpoint folded into an openness claim"
-}
-```
-
-`window` is a number for a symmetric window, or `{ before, after }`. `forbid`
-patterns must not appear near the anchor; `require` patterns must. A missing anchor
-is reported, never passed — the claim moved and the check needs re-pointing.
-
-### `exists` — a link the copy offers that resolves to nothing
-
-```jsonc
-{
-  "id": "catalog-links",
-  "kind": "exists",
-  "source": { "file": "site/src/data/platforms.ts", "pattern": "href:\\s*\"(/[a-z-]+)\"" },
-  "resolve": ["site/src/pages{match}.html", "site/src/pages{match}/index.html"]
-}
-```
-
-Any one candidate existing passes.
-
-### `retired` — a sentence that was false once
-
-```jsonc
-{
-  "id": "retired",
-  "kind": "retired",
-  "corpus": ["site/src", "site/public", "README.md"],
-  "phrases": [
-    { "text": "no caps on how often you can", "why": "the API enforces a per-minute budget" },
-    { "text": "the last 1000", "why": "history is uncapped now; 1000 was the legacy storage format" }
-  ]
-}
-```
-
-Directories are walked (filtered by `extensions`), files are read directly. Every
-finding this audit fixes earns a phrase here — it is the cheapest possible guard
-against a revert, a copy-paste from an old draft, or a translation memory.
+**Retired** — a sentence that was false once and must not come back. Every finding
+this audit fixes earns a phrase here, with the reason it was wrong. It is the
+cheapest guard against a revert, a copy-paste from an old draft, or a translation
+memory refilling the old wording.
 
 ## Two recipes worth copying
 
-A quoted UI label, resolved against the string catalog. A `value` check whose
-*source* is the catalog entry and whose *target* is the page that quotes it. The
-pattern reaches into the entry by key, so a renamed label fails here instead of
-confusing a user:
+**A quoted UI label.** The source is the string catalog entry, reached by its key;
+the target is the page that quotes it. A renamed label then fails here instead of
+confusing a user. Curate these by hand — only a person can tell which quoted phrase
+is claiming to *be* the interface.
 
-```jsonc
-{
-  "id": "label-hide-native",
-  "kind": "value",
-  "source": { "file": "app/locales/en/messages.json",
-              "pattern": "\"settingHideNative\":\\s*\\{[^}]*\"message\":\\s*\"([^\"]+)\"" },
-  "targets": [{ "file": "site/src/data/faq.ts", "pattern": "\"{value}\"",
-                "why": "the site quotes a label the catalog no longer renders" }]
-}
-```
+**A documented flag.** Copy-pasteable commands are the claim shape that fails
+loudest: every flag the documentation shows must be one the program actually reads,
+which is a subset claim in one direction. Check the package name in the same pass —
+an install-and-run line resolves the package *named* like the binary, which is often
+not the package that ships it.
 
-Curate these by hand — only a person can tell which quoted phrase is claiming to
-*be* the UI. And keep the pair honest in both directions: when the site stops
-quoting the label, drop the check rather than leave it green against nothing.
+## Proving a check can fail
 
-A documented flag the tool does not parse. Copy-pasteable commands are the
-claim shape that fails loudest, and it is a plain `list-parity`: every flag the
-docs show must be one the CLI actually reads.
+A check that has only ever passed has proven nothing. For each one, break the claim
+it owns — change the copy to a wrong value, in a working copy you can restore — and
+confirm that this check, by name, reports it. Then restore. Read three distinct
+outcomes:
 
-```jsonc
-{
-  "id": "documented-flags",
-  "kind": "list-parity",
-  "a": { "file": "docs/cli.md", "pattern": "(--[a-z][a-z-]+)", "label": "the docs" },
-  "b": { "file": "src/cli.mjs", "pattern": "\"(--[a-z][a-z-]+)\"", "label": "the parser" },
-  "mode": "a-subset-of-b"
-}
-```
+- **Caught.** The check fires on the drift it claims to own.
+- **Missed.** The check is looking somewhere too broad. The recurring cause is a
+  whole-file search where the file holds the value twice, so breaking one copy
+  leaves the other answering. Narrow it to the block and give each copy its own
+  check.
+- **Setup failed.** The copy moved, so the break could not be applied. The anchor
+  needs re-pointing; the check itself may be fine.
 
-Check the package name in the same pass: an `npx <binary>` line resolves the
-package *named* like the binary, which is often not the package that ships it.
+Two conditions around the proof: start from a tree that has no findings, or a real
+one will be read as your own break, and finish by confirming the surface is back
+exactly as it was — anything left modified is a mutation that did not restore. Prove
+a new check in the same edit that adds it; unproven checks accumulate silently.
 
-## Proving the checks
+## Keeping the map and the checks in step
 
-```bash
-node scripts/check-claims.mjs --config claims.config.json
-node scripts/prove-checks.mjs  --config claims.config.json
-```
+The claim-source map says which claim classes are covered mechanically; the checks
+say what is really asserted. They drift apart exactly the way copy drifts from code
+— a check is renamed or dropped and the map still promises coverage nobody has.
+Compare them in both directions: a row promising coverage no check provides, and a
+check no row accounts for. The map is what the next audit reads before deciding
+where a claim lives, so an over-promising map sends it to the wrong file.
 
-Each mutation names the check it should trip, the file to break, and the exact
-edit:
+## Committing a copy fix out of a shared file
 
-```jsonc
-"mutations": [
-  { "check": "permissions",  "file": "site/src/pages/permissions.html", "from": "The 5 permissions", "to": "The 4 permissions" },
-  { "check": "code-lifetime", "file": "site/src/data/faq.ts", "from": "expires 10 minutes", "to": "expires 15 minutes" }
-]
-```
-
-Read the result as three distinct signals:
-
-- `CAUGHT` — the check fires on the drift it claims to own.
-- `MISSED` — the check is looking somewhere too broad. The recurring cause: it
-  searches a whole file that holds the same value twice (a prerendered map and a
-  runtime one), so breaking one copy leaves the other answering. Narrow it with
-  `within` and give each map its own check.
-- `SETUP-FAIL` — the copy moved. The mutation anchor needs re-pointing; the
-  check itself may be fine.
-
-`prove-checks.mjs` runs the checker once more at the end and expects it green. A
-`RESTORE-FAIL` means either a mutation did not restore (check `git diff`) or the
-tree already had findings before the run — fix those first, then re-prove.
-
-## Keeping the map and the config in step
-
-```bash
-node scripts/map-coverage.mjs --map claim-source-map.md --config claims.config.json
-```
-
-Mark each automated row in the map with the check that owns it —
-`| **auto:permissions** which capabilities the app requests | … |` — and this
-reports both directions: a row promising coverage no check provides, and a check no
-row accounts for. The map is what the next audit reads before deciding where a
-claim lives; a map that over-promises sends it to the wrong file.
-
-## Keeping the config honest
-
-- One check, one claim. A check that would report two unrelated findings is two
-  checks; the mutation test can only prove one thing at a time.
-- Anchor on the sentence, not the file. Prefer `within` plus a tight pattern
-  over "somewhere in this page".
-- A broken check is a finding, not a pass. When `could not parse …` appears,
-  fix the pattern before trusting any other line of output.
-- Add a mutation with every check, in the same edit. A check added without one
-  is unproven, and unproven checks accumulate silently.
+A copy fix lands in files an in-flight feature is also editing — every locale
+catalog, in practice. Staging takes the file, not the change, so the usual answer
+commits someone else's unfinished work under a message that does not describe it.
+Stage the change key by key instead: build the staged version from the committed
+file plus only the values you changed, leave the working tree untouched so the
+unrelated edits stay uncommitted, and match the file's own indentation exactly — a
+mismatch stages the whole file reformatted and buries the real change. Read the
+staged diff afterwards: nothing you do here can know which of the changes in a file
+are yours.

@@ -103,7 +103,7 @@ The repair is the same in every case: replace the abstraction with the concrete 
 
 The frame is invented; the detail is not, and the detail is what makes the frame credible. A post that reports finding something useful and carries no number, no command, no version, no file name and no quotation is an opinion with nothing under it, and it reads as one.
 
-So every first-person post carries at least a couple of checkable specifics, taken from the source and the Phase 4 verification: the figure with its condition, the exact command, the flag that has to be set, the line the documentation actually uses, the limit that bites, the thing that is on the roadmap rather than shipped. Depth comes from the same place: what the mechanism is, what it costs, where it breaks, what surprised the author when they looked.
+So every first-person post carries at least a couple of checkable specifics, taken from the source and the Phase 4 verification: the number with its condition, the exact command, the flag that has to be set, the line the documentation actually uses, the limit that bites, the thing that is on the roadmap rather than shipped. Depth comes from the same place: what the mechanism is, what it costs, where it breaks, what surprised the author when they looked.
 
 This is the difference between a repurposed paraphrase and a post worth reading. The paraphrase says the release is interesting. The analysis names which line in the release changes the work, quotes it, and says what it costs. Both are first person; only one proves the author opened the thing.
 
@@ -138,6 +138,8 @@ The test: delete every sentence that is about the source document rather than th
 
 A number that is the payoff is written in digits: a size, a speed, a ratio, a price, a score, a count that is itself the claim. Digits are what the eye catches in a feed, and the number is usually the reason the sentence exists; spelling it out smears the one thing that should land. Spelled-out numbers belong to small incidental counts inside a sentence, where no reader is scanning for them. Idioms stay idioms.
 
+The word for a number is number. "Figure" is report register, and it is the word a run reaches for every time it hands a number back to whoever measured it, so the same clause arrives in post after post. Once in a post is the ceiling and none is usually better: the count, the score, the rate, the reading, the price, or simply what the project measured.
+
 A number that is only inventory is not written at all. The count of items in a list, a roundup, a comparison or a collection describes the container, and the reader can do nothing with it, so the sentence keeps the thing and drops the count. A count survives only where it is the claim itself: the size of a catalog when that size is what the product offers, the number of providers when breadth is the argument.
 
 ## The product is not the subject
@@ -153,6 +155,14 @@ Three shapes are banned outright, on every platform including the shortest:
 | The bare bullet stack | Four or more short bullets, each a fragment, standing where sentences belonged. | A list earns its place when the items are genuinely a list, and even then one of them gets a sentence saying which one the author cares about. |
 
 The test is the swap: if the product's name could be replaced by a competitor's and the post would still be true, the post has no author in it. Rewrite it around what changed for the person writing.
+
+## Access boilerplate
+
+A public repository is free to read, asks for no account and carries a permissive licence. Saying any of it tells the reader what they assumed before they clicked, and because it is the cheapest clause in the post to write, it ends up on every version in the run: the same three words in front of the same link, two dozen times.
+
+So a post never says the thing is free, never names the licence it ships under, and never lists what it does not require: no account, no key, no sign-up, no registration, no credit card, no limits. The link goes in bare, or behind a clause that says what is on the other side of it.
+
+The exception is a post where price, licence or signup is the news: a project that relicensed, a free tier that is ending, source that closed, a tool that now wants an account. There it is the subject, the headline says so, and it is written once, as the claim it is.
 
 ## Read the opener literally
 
@@ -214,7 +224,7 @@ A semicolon is a written-register joint that nobody speaks, and a post that lean
 
 The author's effort lands on the thing, never on one of its documents. A post whose author spent the evening with the README, opened the docs, or saved a table from the model card has reviewed a file, and the reader came for the project. The same goes for closing a post on what a file does or does not settle.
 
-So the verbs of experience (read, opened, spent, went through, saved, dug into) take the project, the repository, the release or the model as their object, and a document is named only to attribute a specific figure or quotation, the way a citation names its page: once, where the number lands, and then it leaves. The gate fails a post where an effort verb takes a document as its object, and a post that names a document more often than once per 1200 characters. The exception is a post whose subject genuinely is the document, a changelog read or a documentation review, and the title says so.
+So the verbs of experience (read, opened, spent, went through, saved, dug into) take the project, the repository, the release or the model as their object, and a document is named only to attribute a specific number or quotation, the way a citation names its page: once, where the number lands, and then it leaves. The gate fails a post where an effort verb takes a document as its object, and a post that names a document more often than once per 1200 characters. The exception is a post whose subject genuinely is the document, a changelog read or a documentation review, and the title says so.
 
 ## The author's own angle
 
@@ -222,7 +232,7 @@ A first-person post that only restates what the project published, with a pronou
 
 What counts as the author's own work, in the order it is usually available:
 
-- Arithmetic the source did not do. Numbers the source states can be combined: a total against an active count, a checkpoint size against a peak memory figure, a price against a rate. The derivation is shown in the sentence, its inputs are the source's numbers, and it lands in the notes as a `[D]` line (`references/fidelity.md`) so the gate can ground the result.
+- Arithmetic the source did not do. Numbers the source states can be combined: a total against an active count, a checkpoint size against a peak memory reading, a price against a rate. The derivation is shown in the sentence, its inputs are the source's numbers, and it lands in the notes as a `[D]` line (`references/fidelity.md`) so the gate can ground the result.
 - A reading of what a published metric does and does not count, stated as the author's reading, with the wording of the source beside it.
 - A comparison against a public fact the run verified in Phase 4: another project's documented approach, a platform's stated limit, a price list. Never against a recalled figure.
 - The question the source leaves open, and the author's reasoning about it, marked as reasoning.

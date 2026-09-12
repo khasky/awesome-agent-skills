@@ -61,17 +61,10 @@ Two traps worth naming:
 
 Prove the link handling before the destructive run (optional, ten seconds, and the one check that stands between a mistake and a deleted repository):
 
-```bash
-t=$(mktemp -d); mkdir "$t/target"; echo alive > "$t/target/keep.txt"; ln -s "$t/target" "$t/link"
-rm -- "$t/link"; cat "$t/target/keep.txt"    # must print: alive
-```
-
-```powershell
-$t = Join-Path $env:TEMP ("purge-check-" + [guid]::NewGuid())
-New-Item -ItemType Directory "$t\target" -Force | Out-Null; 'alive' | Set-Content "$t\target\keep.txt"
-New-Item -ItemType Junction -Path "$t\link" -Target "$t\target" | Out-Null
-[System.IO.Directory]::Delete("$t\link", $false); Get-Content "$t\target\keep.txt"   # must print: alive
-```
+Make a throwaway directory holding a file, point a symbolic link at it, delete the link, and read the file back: it
+has to still be there. On Windows the same proof uses a junction and the directory-delete call that removes the
+junction itself rather than its contents. Ten seconds, and it is the one check standing between a mistake and a
+deleted repository.
 
 ---
 
@@ -104,24 +97,8 @@ For `--scope project <path>`, search that path instead: `<path>/.claude/skills`,
 
 Classify every entry — this is the part that decides how it gets deleted:
 
-```bash
-for root in $ROOTS; do
-  for e in "$root"/*; do
-    [ -e "$e" ] || [ -L "$e" ] || continue
-    if [ -L "$e" ]; then printf 'link  %s -> %s\n' "$e" "$(readlink "$e")"
-    else printf 'real  %s\n' "$e"; fi
-  done
-done
-```
-
-```powershell
-foreach ($root in $roots) {
-  Get-ChildItem $root -Force -ErrorAction SilentlyContinue | ForEach-Object {
-    '{0}  {1}{2}' -f $(if ($_.LinkType) { 'link' } else { 'real' }), $_.FullName,
-                     $(if ($_.Target) { ' -> ' + $_.Target } else { '' })
-  }
-}
-```
+Per root, list every entry including hidden ones and print one line each: whether it is a link or a real directory,
+its full path, and — for a link — what it points at.
 
 Then, for every real directory and every link target, check whether it sits inside a git work tree:
 
@@ -157,10 +134,7 @@ Archive the real directories (links cost nothing to recreate, and archiving thro
 tar -czf "$HOME/agent-skills-backup-$(date +%Y%m%d-%H%M%S).tgz" -C / <each real dir, relative>
 ```
 
-```powershell
-$stamp = Get-Date -Format 'yyyyMMdd-HHmmss'
-Compress-Archive -Path $realDirs -DestinationPath "$env:USERPROFILE\agent-skills-backup-$stamp.zip"
-```
+On Windows, archive the same real directories into a zip beside it, with the same timestamp in the name.
 
 Report the archive's absolute path and its size. Nothing here deletes it. If the user passed `--no-backup`, state plainly in the gate that there is no rollback path.
 
@@ -176,34 +150,11 @@ No explicit confirmation → stop. Everything so far was read-only.
 
 Links first, then real directories. Links first is not cosmetic: it means that at every moment a link either points at live content or is already gone, so nothing ever recurses into a half-deleted store.
 
-```bash
-for root in $ROOTS; do
-  for e in "$root"/*; do
-    [ -e "$e" ] || [ -L "$e" ] || continue
-    case " $KEEP " in *" $(basename "$e") "*) continue;; esac
-    if [ -L "$e" ]; then rm -- "$e"; fi
-  done
-done
-# second pass, same loop, real entries only:
-#   else rm -rf -- "$e"
-```
-
-```powershell
-foreach ($pass in 'link','real') {
-  foreach ($root in $roots) {
-    foreach ($e in Get-ChildItem $root -Force -ErrorAction SilentlyContinue) {
-      if ($keep -contains $e.Name) { continue }
-      if ($pass -eq 'link' -and $e.LinkType) {
-        if ($e.PSIsContainer) { [System.IO.Directory]::Delete($e.FullName, $false) }
-        else { [System.IO.File]::Delete($e.FullName) }
-      }
-      elseif ($pass -eq 'real' -and -not $e.LinkType) {
-        Remove-Item $e.FullName -Recurse -Force
-      }
-    }
-  }
-}
-```
+Two passes over the same entry list, per root, skipping anything on the keep list. First pass: every entry that is a
+link is removed as a link — the link itself, never its target, which is the whole reason for the proof
+above. Second pass: every remaining entry, now a real directory, is removed with its contents. On Windows the link
+pass uses the delete that removes a junction without recursing into it; the real pass is an ordinary recursive
+remove.
 
 - `rm --` and `Get-ChildItem -Force` handle the two things that break naive loops: an entry whose name starts with `-`, and dot-prefixed entries an unforced listing skips.
 - A real directory inside a git work tree is skipped and reported, never deleted, even when the keep list does not name it.

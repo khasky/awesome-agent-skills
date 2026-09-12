@@ -26,11 +26,6 @@ Reference files (load the one you need, don't inline both):
 - [`references/claim-source-map.md`](references/claim-source-map.md) — the map from each class of claim to the one file that settles it: how to build it, the template, and the resolution traps that cost the most time.
 - [`references/checker-recipes.md`](references/checker-recipes.md) — the four mechanical check kinds, the config schema the scripts read, and the mutation discipline that proves a check can fail.
 
-Scripts (Node ≥18, no dependencies):
-- [`scripts/check-claims.mjs`](scripts/check-claims.mjs) — runs the mechanical checks from a config you write for the product.
-- [`scripts/prove-checks.mjs`](scripts/prove-checks.mjs) — breaks one claim at a time and asserts the owning check names it.
-- [`scripts/map-coverage.mjs`](scripts/map-coverage.mjs) — cross-checks the claim-source map against the config, both directions.
-- [`scripts/stage-json-keys.mjs`](scripts/stage-json-keys.mjs) — stages only named JSON keys when the file also carries someone else's unfinished work.
 
 - Other runtimes — the runner is Node because that is what most public-facing
   repos already have. The four check kinds are ~40 lines in Python, Ruby, or Go;
@@ -82,14 +77,11 @@ where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Phase 1 — the mechanical pass
 
-Every claim whose truth is a *value* in code becomes an executable check. One line
-of output per check, findings tallied at the end, non-zero exit on drift.
+Every claim whose truth is a *value* in code becomes a check you can run again. Hold the output to one line per
+check, the findings tallied at the end, and the claims deliberately left unassessed named with their reason.
+the end, and the claims you deliberately did not assess named with their reason.
 
-```bash
-node scripts/check-claims.mjs --config claims.config.json
-```
-
-Six check kinds cover most of them (schema and worked examples in
+Six kinds cover most of them (each one, and how to prove it can fail, in
 `references/checker-recipes.md`):
 
 | Kind | Catches |
@@ -113,26 +105,16 @@ Three rules make the difference between a checker and decoration:
 - A check that has only ever passed has proven nothing. After writing or
   editing checks, run the mutation pass:
 
-```bash
-node scripts/prove-checks.mjs --config claims.config.json
-```
+  break one claim at a time in a copy you can restore, confirm the owning check names it, and put the file back.
 
-It breaks one claim at a time, asserts the owning check names it, and restores the
-file from an in-memory copy. `SETUP-FAIL` means the copy moved and the mutation
-needs re-pointing; `MISSED` means the check is looking somewhere too broad — the
-classic failure is asserting a value appears *anywhere in a file* that contains a
-second map still holding it. Add a mutation whenever you add a check.
+  A break that could not be applied means the copy moved and the anchor needs re-pointing; a break the check did not
+  report means it is looking somewhere too broad — the classic failure is asserting a value appears anywhere
+  in a file that holds a second copy of it. Prove a check in the same edit that adds it.
 
 Green here means the *mechanical* claims hold. It says nothing about prose, which
 is where most of the drift lives.
 
-Keep the map and the config in step. The map marks which rows are automated;
-the config says what is really asserted. They drift apart the same way copy drifts
-from code:
-
-```bash
-node scripts/map-coverage.mjs --map claim-source-map.md --config claims.config.json
-```
+Keep the map and the checks in step. The map marks which rows are covered mechanically; the checks say what is really asserted. They drift apart the same way copy drifts from code, so compare them in both directions:
 
 It names both directions — a row promising coverage that no check provides, and a
 check no row accounts for.
@@ -261,14 +243,9 @@ Committing when the file also carries someone else's work. Copy fixes land in
 files an in-flight feature is editing — every locale catalog, in practice. `git add`
 takes the file, not the change, and `git add -p` is interactive:
 
-```bash
-node scripts/stage-json-keys.mjs --repo <dir> --keys key1,key2 -- locales/*/messages.json
-git diff --cached          # read it; the script cannot know which changes are yours
-```
-
-It rebuilds each index entry from `HEAD` plus the named keys and writes it to the
-index without touching the working tree. Match `--indent` to the file's own
-formatting, or the whole file stages reformatted and buries the real change.
+Build each staged entry from the committed file plus only the keys you changed, leaving the working tree untouched,
+and match the file's own indentation — a mismatch stages the whole file reformatted and buries the real
+change. Read the staged diff afterwards; nothing you run can know which of the changes in a file are yours.
 
 Done when: every accepted fix has landed in one place per meaning, and the
 claims that were deliberately left alone are listed with the reason.

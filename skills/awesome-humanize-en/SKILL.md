@@ -95,9 +95,8 @@ Short answers weigh differently from articles. Replies, review comments and tick
 
 Vocabulary tells (pattern #10) are gated by density, not flagged one-by-one:
 
-- Tier 1 — flag on sight: delve, tapestry, seamless, robust, testament, boasts, "leverage" as a verb, "deliberately" as an appended intent stamp.
-- Tier 2 — flag only when 2+ co-occur in one paragraph: harness, foster, elevate, streamline, crucial, pivotal.
-- Tier 3 — flag only at high density (≈3%+ of running words): significant, innovative, effective, comprehensive.
+- Tier 1 — flag on sight. Tier 2 — flag only when 2+ co-occur in one paragraph. Tier 3 — flag only at high density (≈3%+ of running words).
+- Every entry of all three tiers, the phrase catalog that is out regardless of density, and the plain word each one displaces: [`references/lexicon.md`](references/lexicon.md), the collection's single vocabulary inventory. Load it with this section; the other skills that ban a word cite the same file.
 
 Each entry covers its morphological variants (-ly, -ing, plural, comparative, conjugations) unless a variant has a distinct honest sense ("load-bearing wall" is a literal noun, not the metaphor). A single Tier-2/3 word in otherwise living text is not a tell.
 
@@ -181,6 +180,7 @@ This file is a map. The detailed description of patterns and checks lives in the
 |---|---|---|
 | `references/content-patterns.md` | Content patterns #1–9 + #6a: averaging, inflated significance, vague attributions, formulaic "challenges and prospects", officialese, text about the text | Always when analyzing content |
 | `references/language-patterns.md` | Language patterns #10–15 + extensions #15a–15f: dangling modifiers, hedging cascade, transition crutches, conclusion filler, abrupt style shift, formulaic collocations, lack of idiom | Always when analyzing connected prose |
+| `references/lexicon.md` | The vocabulary inventory shared across the collection: Tier 1/2/3 words with their plain replacements, the literary-register list, the phrase catalog (transition crutches, conclusion filler, era openers, inflation, bureaucratese, filler adverbs, unsourced attribution, borrowed diction for comments and commit messages), and which script mirrors it | With the vocabulary tiers, and whenever another skill cites a tier |
 | `references/structural-style-patterns.md` | Structural and style patterns #16–21 + extension #21a: em-dash, arrow glyph, bold, emoji bullets, quotation marks, tables, Markdown residue, heading hierarchy, boilerplate section headings | When working with formatted text, or for direct publication |
 | `references/structure-pass.md` | Discourse patterns #26–31: summary-shaped skeleton (the outline test), templated question sequence, position uniformity, symmetric coverage without a stance, fractal summarization, the reflection tail — plus the two-stage protocol, the edit budget, and the over-correction advisory | Any text longer than a few paragraphs, before the sentence-level work |
 | `references/domains/release-notes.md`, `dev-replies.md`, `postmortems.md`, `tickets.md`, `tech-articles.md` | Per-venue human baseline, the tells specific to that venue with their fix, and the rules a human artifact there follows | When the decision tree's venue branch names one |
@@ -192,8 +192,6 @@ This file is a map. The detailed description of patterns and checks lives in the
 | `references/source-fabrication.md` | Citation checks: 404, DOI resolves to a different article, non-existent ISBN, author died before publication, book citation with no page, stale access date | Always when source citations are present |
 | `references/false-positives.md` | What is NOT an AI tell: em-dash in fiction, curly quotes from macOS autocorrect, rule of three in rhetoric and journalism, officialese in legal text, academic and scientific register, ineffective indicators, human syntax, different error types in humans vs models, Title Case in headings | Before ruling on machine origin |
 | `references/llm-fingerprints.md` | Model fingerprints by vendor, in two tiers — community-observed tells and vendor-documented prose defaults: OpenAI GPT-5.5 / 5.6, Anthropic Claude Fable 5.1 / Fable 5 / Opus 5 / Sonnet 5 / Opus 4.8, Google Gemini 3.x (+ Deep Research), xAI Grok 4.3, DeepSeek V4, Qwen 3.7, Meta Muse Spark, Mistral Large 3 / Magistral, Perplexity, Amazon Nova, Cohere Command A+ | When the author or executor model is known (Model identity, Working rules); when working with fresh 2025–2026 text |
-| `references/test-fixtures.md` | Reference "sample / expectation" pairs for every regex + full before/after edits | When updating the skill, for regression protection |
-| `scripts/check_markers.py` | Automated run of every regex across three sample levels; runs in CI and before release. The `--scan` mode checks arbitrary text for markers | When updating markers: `python3 scripts/check_markers.py`; to scan text: `python3 scripts/check_markers.py --scan file.md` |
 
 The interpreter's name is platform-dependent: `python3` on Linux and macOS, `py -3` or `python` on Windows, where a bare `python3` often resolves to nothing or to a store stub. Check which one answers (`python3 --version`, then `py -3 --version`) and use that, rather than assuming either. The script itself is standard-library-only and runs the same under all of them.
 

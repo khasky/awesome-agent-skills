@@ -43,7 +43,7 @@ A unit that will not fit is not a cap problem, it is a writing problem, and it i
 
 ## Depth bands
 
-The band each platform's version is written to. Write inside the range and aim near its middle unless the source genuinely carries less; a post outside its band is rewritten, not padded or trimmed.
+The band each platform's version is written to. Write inside the range and aim near its middle only as far as the material reaches, under the rule below; a post outside its band is rewritten, not padded or trimmed.
 
 | Platform | Band | Aim | Notes |
 | --- | --- | --- | --- |
@@ -75,9 +75,19 @@ The band each platform's version is written to. Write inside the range and aim n
 
 Depth comes from mechanism, examples, caveats and implications. Padding to reach a band is the same defect as undershooting it: a `buymeacoffee` post of 400 characters and one of 5000 characters of filler both fail.
 
+### The material sets the length, the band only shapes it
+
+A band is a shape, never a quota. How long a post may run comes from what the source actually carries for it, counted in `claims.md`: about one substantive claim per 250 characters of prose. Past that ratio the paragraphs are restating each other, and the gate reports it as `padding`.
+
+A thin source therefore produces short posts, and the floor stands down for them: the gate drops the under-band finding for any post whose ledger cannot reach the floor. Nothing is invented, stretched or said twice to get there, and the run reports which posts came in under band and why.
+
+Where a whole set of long-form platforms cannot be filled from one source, the honest answer is fewer platforms, put to the user in Phase 2, rather than five essays of the same thin material cut to five lengths.
+
+Padding has a small number of shapes, and they are what to read for before the script is run: a paragraph restating the one above it in other words, a section whose content is its own title, a sentence announcing what the next sentence will say, the same caveat in three places, one mechanism explained twice at two depths, and a closing that summarises the body the reader has just finished.
+
 ### The two mini-blogs are not status updates
 
-`ko-fi` and `buymeacoffee` are the two platforms this skill most often gets wrong, because their composers look like feed boxes and their surfaces are blogs. Posts there run two to four thousand characters, and a short one does not read as concise, it reads as abandoned next to its neighbours. Both take the full structure: headline, why it matters, the mechanism, the caveat, what to do with it, the link.
+`ko-fi` and `buymeacoffee` are the two platforms this skill most often gets wrong, because their composers look like feed boxes and their surfaces are blogs. Posts there run two to four thousand characters, and a short one does not read as concise, it reads as abandoned next to its neighbours. Both take the full structure: headline, why it matters, the mechanism, the caveat, what to do with it, the link. The material rule still outranks this one: where the source carries two thousand characters of substance, the post is two thousand characters, not four thousand with the middle said twice.
 
 One mechanical consequence: a `ko-fi` post over 800 characters cannot go through the feed composer at all, because that textarea carries a hard `maxlength` of 800. It belongs in Ko-fi's Blog editor, and writing it to this band is what makes the publisher pick the right composer.
 
@@ -137,6 +147,6 @@ ASCII punctuation throughout: `'` for apostrophes, `"` for quotes, `-` in place 
 
 ## The validation pass
 
-`node scripts/gate.mjs <posts-folder>` checks everything on this page and everything countable in `authored-style.md` in one run: the file set, the slugs, the caps at their 98% margin, the bands, the punctuation, the hashtag counts, the paragraph shape, the banned openers. It exits 0 or prints one `slug: check: detail` line per finding, and `--self-test` proves every check can fire. With `--notes` it also checks every post against the run's source notes, source text, unit and claims ledger, and `--before` proves a wording fix changed no number, name or negation (`references/fidelity.md`). The numbers in the script and the numbers in these tables are the same numbers; a change to one is a change to both.
+The validation pass covers everything on this page and everything countable in `authored-style.md` in one run: the file set, the slugs, the caps at their 98% margin, the bands, the punctuation, the hashtag counts, the paragraph shape, the banned openers. Report one line per finding, naming the post and the check. Run it against the source notes as well and it also covers every post against the run's notes, source text, unit and claims ledger; run it against the copies taken before a wording fix and it proves that fix changed no number, name or negation (`references/fidelity.md`). The numbers you count against are the numbers in these tables — there is no second copy of them anywhere.
 
 A failing check is a rewrite of that post, never a trim to satisfy the number.

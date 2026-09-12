@@ -119,15 +119,25 @@ jobs:
           found=$(ls skills/*/README.md 2>/dev/null || true)
           [ -z "$found" ] || { echo "remove; describe the skill in the root README instead:"; echo "$found"; exit 1; }
 
+      # A skill instructs; it never ships code. Markdown is the only format a
+      # skill folder may carry, so nothing here can put the author's program on
+      # someone else's machine.
+      - name: skills ship Markdown only
+        run: |
+          found=$(find skills -type f ! -name '*.md')
+          [ -z "$found" ] || { echo "a skill may hold only Markdown; remove or convert:"; echo "$found"; exit 1; }
+          dirs=$(find skills -mindepth 2 -maxdepth 2 -type d ! -name references)
+          [ -z "$dirs" ] || { echo "a skill folder holds SKILL.md and references/ only:"; echo "$dirs"; exit 1; }
+
       - name: referenced asset files exist
         run: |
-          # A named references/ or scripts/ file must exist in the skill's own
+          # A named references/ file must exist in the skill's own
           # folder — or in a sibling skill's, for cross-skill mentions that the
           # prose qualifies ("if awesome-humanize-en is installed, its ...").
           status=0
           for f in skills/*/SKILL.md; do
             dir=$(dirname "$f")
-            for p in $(grep -ohE '(references|scripts)/[A-Za-z0-9._-]+\.[a-z0-9]+' "$f" | sort -u); do
+            for p in $(grep -ohE 'references/[A-Za-z0-9._-]+\.[a-z0-9]+' "$f" | sort -u); do
               if [ ! -e "$dir/$p" ] && ! ls skills/*/"$p" >/dev/null 2>&1; then
                 echo "$f: names missing asset $p"; status=1
               fi
@@ -135,24 +145,6 @@ jobs:
           done
           exit $status
 
-      # The two sweep scripts are pattern-for-pattern twins by convention;
-      # this keeps the category lists from silently diverging.
-      - name: leak-sweep scripts stay in sync
-        run: |
-          sh_labels=$(grep -ohE '"[0-9]+\. [^"]+"' skills/awesome-leak-audit/scripts/leak-sweep.sh | sort)
-          ps_labels=$(grep -ohE '"[0-9]+\. [^"]+"' skills/awesome-leak-audit/scripts/leak-sweep.ps1 | sort)
-          if [ "$sh_labels" != "$ps_labels" ]; then
-            echo "leak-sweep.sh and leak-sweep.ps1 category labels diverge:"
-            diff <(printf '%s\n' "$sh_labels") <(printf '%s\n' "$ps_labels") || true
-            exit 1
-          fi
-          echo "leak-sweep parity OK ($(printf '%s\n' "$sh_labels" | grep -c .) categories)"
-
-      # Partial guard for the "Framework- and stack-agnostic" rule in CONTRIBUTING.
-      # Only the mechanical half is checkable: a skill whose worked examples are all
-      # in one language must also carry the per-language mapping the rule requires.
-      # The other half (description not claiming wider coverage than the body
-      # delivers, vendor tooling naming its alternative) stays a review check.
       - name: single-language skills carry a per-language mapping
         run: |
           python3 - <<'PY'
@@ -251,15 +243,3 @@ jobs:
           print("\n".join(fail) if fail else f"plugin manifests OK ({plugin['name']} v{plugin['version']})")
           sys.exit(1 if fail else 0)
           PY
-
-      - name: humanize-en marker regexes still match their fixtures
-        run: python3 skills/awesome-humanize-en/scripts/check_markers.py
-
-      # A gate nobody proved can fail is decoration. Each self-test runs its own
-      # checks against a known-bad fixture and a known-good one: it must reject the
-      # first and pass the second.
-      - name: design-doc gate rejects a bad doc and passes a good one
-        run: node skills/awesome-design-doc/scripts/check-design-doc.mjs --self-test
-
-      - name: campaign gate rejects a bad campaign and passes a good one
-        run: node skills/awesome-content-campaign/scripts/check-campaign.mjs --self-test
