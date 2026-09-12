@@ -77,6 +77,7 @@ Run all of it, in the composer, before the submit click. Every item is here beca
 4. Character-for-character diff of every block against the source. Rich editors *move characters*: Patreon produced `very little tex` and `/eli5 Fourier trans` with the missing `t` and `forms` appended to the closing URL as `eli5formst`; Ko-fi's Froala did the same to four blocks at once. Compare per block, not by total length — the totals matched in both cases.
 5. Attachment count equals what the post file declares.
 6. No `�` anywhere.
+7. Every backticked span in the source is a code element (or, on Patreon, a Quote block; on Tumblr, a Chat block) in the composer, and none of those spans contains an `a[href]`. Stripping the backticks for a plain-text class is right for `x`, `mastodon` or `bluesky`, where nothing renders; it is wrong for a rich editor, where the bare command gets autolinked from the `https://` inside it — Patreon and Tumblr both shipped `pip install -e 'git+https://…[fetch]'` with a dead anchor and the closing quote inside it. Count code spans against the source the way attachments are counted.
 
 A failure here is a fix in the composer, never a publish followed by a repair.
 

@@ -180,6 +180,10 @@ So after the first click that changes nothing:
 
 The same applies to a disabled-looking control: check `disabled`, `aria-disabled` and whether a required field elsewhere in the form is empty, before concluding the button is unreachable.
 
+## A tab that keeps vanishing mid-script is closed from outside — stop and ask
+
+A working tab opened through `browser_tabs new` is a script-opened tab, and script-opened tabs are the only ones a page may close with `window.close()`. In one session the tab died three times within seconds of reaching Patreon's `/posts/<id>/edit` route, each time mid-script (`Target page, context or browser has been closed`), while the same route had been driven for ten minutes earlier in the run and a tab on the post's public page survived idle. Whether the page closed it or the user did, the edit was lost each time because `Update` had not been clicked. Two rules: reach editors by in-page navigation from a page that has already proven stable (the post's `Edit` control, not a fresh `goto` of the edit URL), and after the second loss stop retrying, leave the ledger entry as it was, and ask the user to open the editor themselves and leave it open — a tab the user opened cannot be closed by script, and `browser_tabs list` then shows it to attach to.
+
 ## An SPA tab that has stopped hydrating never recovers — open a new one
 
 Bastyon rendered its app shell (46 KB of HTML, all the container divs) with `document.body.innerText.length === 0` on every route, through reloads, cache-bypassing reloads and 20-second waits. Both `/index` and the profile route were dead in that tab, while the same browser rendered the site normally for the user. Opening a new tab booted the app immediately, draft intact.
@@ -316,10 +320,10 @@ The user's UI can be in any language — this run met Russian Instagram and Ukra
 `browser_take_screenshot` times out on heavy pages. Fall back to:
 
 ```js
-await page.screenshot({ path: 'name.png', scale: 'css', animations: 'disabled', timeout: 25000 });
+await page.screenshot({ path: '<run scratch>/x-submit.png', scale: 'css', animations: 'disabled', timeout: 25000 });
 ```
 
-Screenshots and the server's `.playwright-mcp/` directory land in the current working directory — often the user's git repo. Move them to the session scratchpad at the end of the run; do not leave untracked artifacts in a project tree.
+Every path these tools take is resolved against the current working directory, which is the folder the run was invoked from and usually the user's git repo. That covers `page.screenshot({ path })`, `browser_take_screenshot`, and the `filename` of `browser_evaluate` and `browser_run_code_unsafe`. Each of them gets an absolute path inside the run's scratch folder (Phase 1) from the first call: a bare `name.png` is the defect, and sweeping files up at the end does not repair it, because an interrupted run never reaches its cleanup and what it leaves is a screenshot per platform and a helper script per composer sitting in someone's repository. Create that folder before the first browser call — a path whose directory does not exist fails with `ENOENT` before anything runs. The server's own `.playwright-mcp/` is the one path the run does not choose; it appears wherever the server runs, and the report names it.
 
 ## The run_code sandbox: what is and is not in scope
 
@@ -327,13 +331,13 @@ The function handed to `browser_run_code_unsafe` runs in the Playwright server p
 
 Never retype a body into a script by hand. Twice in one run a body was reconstructed from memory instead of generated from the source file, and both times the last line went missing — a hashtag line on one platform, a whole trailing tag line on another. The pre-submit diff caught them, but only because the diff compares against the file. If a script needs the text inline, generate it; if it is already inline, diff it against the file before submitting.
 
-When `filename` names a file that already exists, the file on disk is what runs — the `code` argument is ignored. Two symptoms follow from not knowing this: a stale script keeps executing while you edit the `code` payload and nothing changes, and a `SyntaxError` appears from a file you never looked at. Write the script to the path first (a shell heredoc is the cheapest way), then call the tool with that `filename` and any placeholder in `code`. The directory must exist too — a missing `.playwright-mcp/` fails the call with `ENOENT` before anything runs, and Phase 9 cleanup is what deletes it between runs.
+When `filename` names a file that already exists, the file on disk is what runs — the `code` argument is ignored. Two symptoms follow from not knowing this: a stale script keeps executing while you edit the `code` payload and nothing changes, and a `SyntaxError` appears from a file you never looked at. Write the script to the path first (a shell heredoc is the cheapest way), then call the tool with that `filename` and any placeholder in `code`. The path is an absolute one in this run's scratch folder, which also settles the stale-script trap: a folder of the run's own cannot hand the tool last run's file under the same name. The directory must exist — a missing one fails the call with `ENOENT` before anything runs.
 
 Write Windows paths with forward slashes inside the inline `code`. `D:\repos\...` survives one layer of JSON encoding and arrives as `eposgithub...` — the backslashes are eaten and the path is unrecognisable. `D:/repos/...` works everywhere Playwright takes a path, including `setInputFiles`.
 
 Arguments must be passed, not closed over. `page.evaluate(fn, arg)` serialises `arg`; a name referenced inside `fn` that only exists in the outer script throws `ReferenceError` in the page. It reads like a typo and costs a round trip.
 
-`browser_evaluate` accepts a `filename` and writes the result there instead of returning it — the way to pull a whole editor's block list out for a local diff without flooding the context. Note where it lands: `filename` is relative to the current working directory (the repo root), not to `.playwright-mcp/`, and the same is true of `page.screenshot({ path })`. Both are Phase 9 cleanup.
+`browser_evaluate` accepts a `filename` and writes the result there instead of returning it — the way to pull a whole editor's block list out for a local diff without flooding the context. Note where it lands: a relative `filename` resolves against the current working directory (the repo root), not against `.playwright-mcp/`, and the same is true of `page.screenshot({ path })`. Give both an absolute path in the run's scratch folder.
 
 ## A hung tool call can leave a process eating the machine
 
