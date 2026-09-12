@@ -1,11 +1,11 @@
 <div class="{{headClass}}" data-mark="headline" data-effect="{{effect}}" data-max-h="{{headMaxH}}" data-center="{{headCenter}}" style="top:{{headTop}}%">{{headLines}}</div>
-<div data-mark="figure" data-figure style="position:absolute;left:6%;top:{{figTop}}%;width:88%;height:{{figH}}%;display:flex;align-items:center;gap:5%">
+<div data-mark="figure" data-figure style="position:absolute;left:6%;top:{{figTop}}%;width:88%;height:{{figH}}%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;gap:{{capGap}}px">
   <div id="hole" data-mark="form" style="position:relative;width:{{arcSize}}px;height:{{arcSize}}px;flex:none">
     <svg viewBox="0 0 100 100" width="{{arcSize}}" height="{{arcSize}}" style="display:block;transform:rotate(-90deg)">
-      <circle cx="50" cy="50" r="40" fill="none" stroke="{{muted}}" stroke-opacity=".35" stroke-width="16"/>
-      <circle cx="50" cy="50" r="40" fill="none" stroke="{{accent}}" stroke-width="16" stroke-linecap="butt" stroke-dasharray="{{arcDash}} 251.3"/>
+      <circle cx="50" cy="50" r="41" fill="none" stroke="{{muted}}" stroke-opacity=".3" stroke-width="13"/>
+      <circle cx="50" cy="50" r="41" fill="none" stroke="{{accent}}" stroke-width="13" stroke-dasharray="{{arcDash}} 257.6"/>
     </svg>
     <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><span data-value data-fit="hole" style="font-size:{{arcValueSize}}px;font-weight:800;letter-spacing:-.03em;line-height:1">{{value}}</span></div>
   </div>
-  <div class="cap" data-caption style="font-size:{{capSizeBig}}px;text-transform:none;letter-spacing:0;line-height:1.25;color:{{fg}};font-weight:600">{{caption}}</div>
+  <div class="cap" data-caption style="font-size:{{capSizeBig}}px;text-transform:none;letter-spacing:0;line-height:1.25;color:{{fg}};font-weight:600;text-align:center;max-width:80%">{{caption}}</div>
 </div>

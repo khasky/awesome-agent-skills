@@ -76,7 +76,7 @@ Generate shapes from math instead of drawing them. A scalloped disc is a polar p
 
 Vary the composition, not just the form. Across the set, move the subject's anchor between corners and edges, change how much of the canvas the marks occupy (a dense field in one, a single large mass with deep negative space in another), let some forms run off the edge and keep others fully inside, and change the scale relationship between largest and smallest element. Two variants using the same form at the same size in the same place are one variant.
 
-And vary the kind and the surface before varying anything else. Composition differences inside one kind on one surface are the smallest available difference; a bare statement on warm paper next to a glyph canvas on deep dark next to two masses on a gradient field is what a real set looks like. The combination rule that counts this is in `style-catalog.md`.
+And vary the kind and the surface before varying anything else. Composition differences inside one kind on one surface are the smallest available difference; a photo card on warm paper next to a glyph canvas on deep dark next to two bars on a gradient field is what a real set looks like. The combination rule that counts this is in `style-catalog.md`.
 
 Give the set one system and per-variant tokens. Define the surface, ink, accent, secondary accent and the two ring washes once, and let each variant pick its emphasis within them. Shadows come from a small scale rather than ad hoc: a tight one for resting elements, a large offset one with negative spread for floating ones. A gradient ring around a shape needs no extra element — `background-image: linear-gradient(surface, surface), linear-gradient(90deg, …)` with a transparent border and `background-clip` does it in one box.
 
@@ -102,6 +102,53 @@ One browser for the whole set, found by `scripts/cdp.mjs` (`CHROME_PATH`, then t
 
 Say which renderer was used, in the report.
 
+## The layout catalog
+
+Twenty-nine layouts, each a distinct skeleton, settled by review: a hundred renders were cut to the layouts that survived three rounds, and what was cut is named below so it is not rebuilt. A variant is a layout carrying a headline (and a photo, where it has one); the set's honest size is these layouts multiplied by the headlines in play, and palette, face, ground and icon never add to it. The render script's R21 sweep fingerprints layout, headline and printed values together, so two rows on one layout under one line in two palettes are caught as the same variant.
+
+| Kind | Layout | Row |
+| --- | --- | --- |
+| glyph | drawn icon centred under the headline | `layout: stack` |
+| glyph | small icon top-left, headline large above the rule at the foot | `layout: small-top` |
+| lockup | headline top, value beneath | default |
+| lockup | value top, headline bottom | `anchor: bottom` |
+| lockup | value in the left column, headline in the right | `layout: side` |
+| lockup | value flush right under a knocked-out headline | `effect: knockout` |
+| figure | two bars | `pattern: mass` |
+| figure | three bars | `pattern: bars` |
+| figure | two squares scaled by area | `pattern: squares` |
+| figure | two discs scaled by area | `pattern: discs` |
+| figure | four horizontal rows with values at the right | `pattern: rows` |
+| figure | ring left, caption right | `pattern: arc` |
+| figure | ring centred, caption beneath | `pattern: arc-hero` |
+| figure | two values facing each other across a "vs" | `pattern: duel` |
+| figure | three numbered steps with their captions | `pattern: steps` |
+| list | two cards side by side, a title and three items each, for two things the source sets against each other | `kind: list, pattern: compare, cards: [{title, items}, {title, items}]` |
+| list | a numbered list of four or five of the source's own claims | `pattern: bullets, items: [...]` |
+| list | three big values, each with its caption and one line saying what it means | `pattern: stats, values: [{text, label, desc}]` |
+| list | a checklist of four or five of the source's own claims, a drawn check in the accent before each | `pattern: checklist, items: [...]` |
+| photo | photo in the left column, headline in the right, no rule under the headline | `kind: photo, layout: split, photo: <slug>` |
+| photo | photo in a tilted card with a soft shadow under the headline | `layout: card, tilt` |
+| photo | photo tinted to the scheme, greyscale under a colour blend | `layout: duotone` |
+| photo | photo inside a thick-bezel screen on a stand | `layout: frame` |
+| photo | photo under the headline with one fact line beneath it | `layout: caption, note` |
+| photo | full-bleed photo, the headline in its quiet zone under a local tint that fades out by the middle of the canvas, never a full mask; four zones, each its own skeleton | `layout: quiet, zone: top \| bottom \| left \| right` |
+| photo | photo across the top, the headline in a solid band beneath it | `layout: band` |
+
+Removed after review, and the builder refuses them by name: the `statement` kind (a line between two rules on an empty canvas; ten of them on one sheet read as captions, and the `highlight`, `underline` and `quote` effects it carried now go on the other kinds), the `size-step` effect that lived on it, the `dots` and `lines` grounds (a worksheet behind the type), the `burst` ground (drawn sparks beside a photograph are a second subject), the `scrim` photo layout (a full-bleed photo with the headline on a plate at the foot left the upper half of the canvas empty, and carried a rule above it; `quiet` with `zone: bottom` is the reachable version), the `threshold` figure (0 of 18 kept), the `band` and `diagonal` grounds, the `vignette` ground and any inset shadow or darkened edge on a canvas, the `panel` figure, the side layout on a glyph, the `bottom` anchor anywhere except a lockup, the `dim-last` and `accent-word` effects, the `dusk` palette family, and every emoji whose own colours do not already sit in the scheme (the pencil, scissors and brush glyphs are the ones that do).
+
+Grounds that remain: `solid`, `gradient`, `blob`, `spot`, `glow` (an off-canvas light in the accent, more than half of it outside the frame), `paper` (a warm tone with heavier grain). Effects that remain: `plain`, `mixed-weight`, `accent-line`, `slab`, `highlight`, `underline`, `quote`, and `knockout` on lockups. Faces in rotation: Sora, Inter, Archivo, Space Grotesk, and for the serif layouts Fraunces, Playfair Display and Instrument Serif.
+
+### Photos
+
+A photo is a subject like an icon is, and it obeys the same rule (R19): it is on the canvas because the claim names or implies it, and the row says which claim in one clause. It comes from the asset cache, fetched once by `fetch-assets.mjs --photos "<query>;<query>" --per 3` from Openverse, CC0 first and CC BY second, several candidates per query (`<slug>.jpg`, `<slug>-2.jpg`, ...), at least 900 pixels on the delivered file (the catalogue's width is the original's, and some providers serve a smaller copy, so the bytes are measured), resampled to 1400 (heavier files to 1100), captured once at 2x as a probe, and inlined into the page so the file stays self-contained. A photo that stalls the probe is rejected the way a photo with a logo is, since it would stall every canvas it lands on; the query fetches the next candidate. `credits.json` beside the files carries the title, creator, licence and source of each; a CC BY image carries an `attribution` line that must travel with the post, and `build-set.mjs` prints that obligation whenever such a photo is used.
+
+The search is not the gate; the look is. Openverse answers a query literally, and one run's "lottery ticket" came back as a real ticket with two brand logos on it, "scratch card" as a soap advertisement, "darkroom print" as a bowl of bananas. So every fetch ends by writing `photos/sheet.png`, the run reads it before any photo goes on a canvas, and a picture that shows the wrong thing, a logo, a brand, a recognisable person or text that will read as a second headline is refused with `--reject <slug>`, which deletes it, remembers its id, and lets the same query fetch the next candidate. A photo that survives the look is named in the row; a row naming a photo nobody looked at is the anti-pattern. Nothing drawn sits beside a photograph, no icon, no emoji, no spark, no shape: the picture is the subject, and the builder refuses a photo row that names one.
+
+A layout that repeats under another line takes the opposite tone (a dark scheme against a light one), a different ground recipe and, where it is a photo layout, a different photo, so the two read apart at thumbnail size; the render script flags two renders on one layout that come out closer than its distance floor, whatever their headlines say, and the pair is rebuilt. A layout repeats only as far as its own levers separate the renders: two tones, times the photos where it takes one. A layout with no lever beyond tone, a glyph canvas, carries at most two lines, and the plan counts that into the ceiling.
+
+A photo counts toward the variant rule like any other content: two rows on the same photo layout are two variants only when they carry different headlines or different photos, and under one headline only when the photos differ; the `note` on the caption layout is a fact written down. The queries come from the headline pool: one or two per line, naming the visible thing the line implies, written before the rows are planned so the photos are on disk when the set is built.
+
 ## The set file
 
 `set.json` in the run folder is the plan and the source at once; `scripts/build-set.mjs` turns it into pages. Top level: `width`, `height`, `lang`, and `headline` as an array of authored lines that every variant inherits unless its row overrides it. Then `variants`, one object per canvas:
@@ -109,20 +156,23 @@ Say which renderer was used, in the report.
 | Field | Values | Notes |
 | --- | --- | --- |
 | `id` | `"01"`, `"02"`, … | Becomes the filename. Zero-padded so the gallery sorts |
-| `kind` | `statement` · `glyph` · `lockup` · `figure` | The four kinds of the catalog |
-| `pattern` | `mass` · `arc` · `threshold` | Figures only |
+| `kind` | `glyph` · `lockup` · `figure` · `list` · `photo` | The five kinds of the catalog |
+| `pattern` | `mass` · `bars` · `squares` · `discs` · `rows` · `arc` · `arc-hero` · `duel` · `steps` — `compare` · `bullets` · `checklist` · `stats` | Figures and lists; `steps` takes `steps: [three captions]` instead of values |
 | `palette` | `{bg, fg, accent, muted}` | Hexes, from `references/palettes.json` or a proved brand scheme |
-| `ground` | `solid` · `vignette` · `gradient` · `blob` · `band` | Plus `gradientAngle` and `grain` (0 to 0.1) where they apply |
+| `ground` | `solid` · `gradient` · `blob` · `spot` · `glow` · `paper` | Plus `gradientAngle` and `grain` (0 to 0.1) where they apply |
 | `face` | a family name in the asset cache | Omitted, the system stack |
-| `effect` | `plain` · `accent-word` · `accent-line` · `slab` · `dim-last` · `mixed-weight` | With `accentWord` or `accentLine` where the effect needs one; all on the R17 list |
-| `anchor` | `top` (default) · `bottom` | Headline above or below the figure; the two are different layout skeletons |
-| `headline` | array of lines | Overrides the set's headline; required on a lockup so the digits leave the sentence (R6) |
-| `subjectType`, `subject` | `icon` + a Lucide name · `emoji` + the character | Glyph canvases; `align` left, right or centre |
+| `effect` | `plain` · `mixed-weight` · `accent-line` · `slab` · `highlight` · `underline` · `quote` · `knockout` (lockups only) | With `accentLine` or `markWord` where the effect needs one; all on the R17 list |
+| `anchor` | `top` (default) · `bottom` (lockups only) | Headline above or below the value; the two are different layout skeletons |
+| `headline` | array of lines | The row's own line. Under Random headlines every row carries one; under a typed line the set-level `headline` serves every row. Required on a lockup so the digits leave the sentence (R6) |
+| `subjectType`, `subject` | `icon` + a Lucide name · `emoji` + one of the three that survived | Glyph canvases; `layout` stack or small-top |
+| `photo`, `focus`, `note`, `tilt`, `zone` | a slug from the asset cache; a CSS background-position; the fact line for the caption layout; degrees for the card; the quiet zone (`top`, `bottom`, `left`, `right`) | Photo canvases, `layout` split, card, duotone, frame, caption, quiet or band |
+| `cards`, `items` | `[{title, items: [..]}, {title, items: [..]}]`; `[four or five strings]` | The compare, bullets and checklist lists; every line is a claim the source-notes hold, in its own words, and none of its content words repeats the row's headline (R5) |
+| `markWord` | a word or phrase in the target line | Where the `highlight` or `underline` mark lands; the whole line when omitted |
 | `value`, `caption` | strings | Lockups and arc figures; the caption names what the value measures (R8) |
-| `values` | `[{v, text?, label}, {v, text?, label}]` | Mass and threshold figures: two printed values with their captions |
+| `values` | `[{v, text?, label}, …]` | Two for mass, squares, discs and duel; three for bars; up to four for rows |
 | `fraction` | 0 to 1 | Arc sweep and threshold position |
 
-The build rebalances a headline's line breaks when the authored lines would set too small to hold 22 percent of the canvas, and refuses a lockup whose headline still carries the lockup's digits. A row the templates cannot express is a hand-written page in `src/` under the data-attribute contract below, and the render script treats it exactly like a built one.
+The build picks the line count (up to five) that sets the headline largest among the counts whose block clears the 22 percent floor (R11): fewer, wider lines fill the width, more lines fill the height, and sizing for height alone produced short lines stopping mid-canvas. The size it computes is an estimate from an average advance, so every page then sizes its own headline against the real face: a script in the page grows or shrinks the type until the widest line meets the block width or the block reaches the height its layout reserved (the `data-max-h` attribute), steps back from any line that wrapped, never passes a seventh of the canvas height (R22), centres a column headline on the canvas and sits the small-top glyph's headline on the rule at the foot (the `data-center` and `data-bottom` attributes); the render script waits for it before measuring. A layout reserves the headline budget as a block, and the photo or the list takes what is left. The build refuses a lockup whose headline still carries the lockup's digits. A row the templates cannot express is a hand-written page in `src/` under the data-attribute contract below, and the render script treats it exactly like a built one.
 
 ## The geometry check, before the screenshot
 
@@ -136,7 +186,7 @@ The contract that makes it possible:
 - Text set inside a shape carries `data-fit="<id of the container>"`.
 - There is no `data-bleed`. The attribute existed for two revisions and produced clipped arrowheads and blocks sliced by the frame; nothing crosses the safe margin now, and a composition that wants to feel unbounded does it inside the frame.
 
-The measurement lives in `scripts/render-set.mjs`, which runs it on every page in `src/` before deciding whether to screenshot it, and writes every field below to `report.json`. It is not re-typed into an evaluate call per run; a hand-written page follows the contract above and is measured by the same script as a built one. The fields it returns, per page: `over`, `spanX`, `spanY`, `voidBlock`, `headW`, `headH`, `gapMin`, `gapSpread`, `lineOver`, `wrapped`, `clearance`, `dup`, `dupDigits`, `fitFail`, `unlabelled`, `uncaptioned`, `clipped`, `plated`, `stroke`, `skeleton`.
+The measurement lives in `scripts/render-set.mjs`, which runs it on every page in `src/` before deciding whether to screenshot it, and writes every field below to `report.json`. It is not re-typed into an evaluate call per run; a hand-written page follows the contract above and is measured by the same script as a built one. The fields it returns, per page: `over`, `spanX`, `spanY`, `contentX`, `contentY`, `voidBlock`, `headW`, `headH`, `headSize`, `lineFill`, `numberWords`, `semicolon`, `titleChars`, `titleWords`, `titleShape`, `gapMin`, `gapSpread`, `lineOver`, `wrapped`, `clearance`, `dup`, `dupDigits`, `fitFail`, `unlabelled`, `uncaptioned`, `clipped`, `plated`, `stroke`, `skeleton`.
 
 The gate, and a variant that fails any part of it is fixed and re-rendered or dropped — never shipped:
 
@@ -157,9 +207,16 @@ The gate, and a variant that fails any part of it is fixed and re-rendered or dr
 | `unlabelled` | 0 | R7 |
 | `uncaptioned` | 0 | R8 |
 | `spanX`, `spanY` | at least 0.8 | R11 |
+| `contentX`, `contentY` | at least 0.7: the marks without the accent rules | R11 |
 | `voidBlock` | false | R11 |
 | `headW`, `headH` | at least 0.7 and 0.22 | R11 |
+| `lineFill` | at least 0.66 (0.24 in a column): the widest headline line's text spans that share of the canvas width | R11 |
+| `headSize` | between 0.05 (0.042 in a column) and 0.14: the headline's font size as a share of the canvas height | R22 |
+| `numberWords` | empty: no number spelled out in the headline (the list covers English and Russian; the rule holds in every language) | R22 |
+| `semicolon` | false | R22 |
+| `titleChars`, `titleWords` | at most 70 and 12: a post title's length | R22 |
+| `titleShape` | empty: none of the title shapes that fail on sight (a why opener, the announcement voice, two sentences, a roll-call, a terminal period, a qualifier bolted on after the point), the same list `awesome-content-repurpose` counts on a post title | R22 |
 
 The typesetting fields are the ones that catch what a contact sheet does not. `gapSpread` is the leading rhythm: the gaps between consecutive line boxes may differ by no more than 8 percent of a line's height, so a line set at a different size, wrapped in a slab or knocked out of a block still sits on the same rhythm as its neighbours — which is exactly where a slab line, whose box is taller and wider than its text, breaks a headline that looked fine in the markup. `lineOver` catches the same slab pushing past the safe margin, since its padding is part of its width and a line that fits without it does not fit with it. `clearance` is the gap between the type and the subject: 2 percent of the canvas at the narrowest point, and a negative value means the headline is sitting on the emoji.
 
-Two notes on running it. Read the rects after fonts have settled — `await document.fonts.ready` before the evaluate, or a wide headline measures short and passes a check it should fail. And `getBoundingClientRect` covers transforms and layout but not a `filter: blur()` halo or a large `box-shadow`; where a blurred blob is doing background work, leave it untagged, since a background is allowed to cross the edge and only marks are being measured.
+Two notes on running it. Read the rects after fonts have settled and after the page's own fit has run (`window.__fitted`) — `await document.fonts.ready` before the evaluate, or a wide headline measures short and passes a check it should fail. And `getBoundingClientRect` covers transforms and layout but not a `filter: blur()` halo or a large `box-shadow`; where a blurred blob is doing background work, leave it untagged, since a background is allowed to cross the edge and only marks are being measured.

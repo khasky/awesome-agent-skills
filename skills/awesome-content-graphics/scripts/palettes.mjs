@@ -81,7 +81,7 @@ function generate() {
   for (let h = 0; h < 360; h += 20) {
     const cool = (h + 210) % 360;
     // dark grounds: a deep tinted ground, light foreground, vivid accent, cool muted neutral
-    for (const [gL, gC, name] of [[0.17, 0.03, "deep"], [0.23, 0.05, "dusk"]]) {
+    for (const [gL, gC, name] of [[0.17, 0.03, "deep"], [0.14, 0.05, "ink"]]) {   // "dusk" (L 0.23) was removed after review
       tryScheme(`${name}-${h}`, "dark", oklchToRgb(gL, gC, cool), oklchToRgb(0.97, 0.01, h),
         [0.74, 0.8, 0.86].flatMap((L) => [0.17, 0.13, 0.2].map((C) => oklchToRgb(L, C, h))),
         [0.7, 0.76, 0.64].flatMap((L) => [0.04, 0.02].map((C) => oklchToRgb(L, C, cool))));

@@ -2,17 +2,17 @@
 
 `visual-language.md` answers "what shape draws this idea". This file answers the question before it: what kind of picture is this at all.
 
-This catalog used to carry twelve archetypes and spread every set across them, on the theory that variety comes from reaching further. It does not. Half of those archetypes produce canvases that read as a screenshot, a spec table or a saved reference sheet, and in a feed they lose to a line of type set large. So a set is built from four type-led kinds, and its variety comes from moving inside that family — palette, background, figure, face, type effect, anchor, atmosphere — rather than from adding a kind of picture nobody wanted.
+This catalog used to carry twelve archetypes and spread every set across them, on the theory that variety comes from reaching further. It does not. Half of those archetypes produce canvases that read as a screenshot, a spec table or a saved reference sheet, and in a feed they lose to a line of type set large. So a set is built from five kinds, three of them type-led and two carrying content the source itself supplies (a list of its claims, a photograph of the thing it names), and its variety comes from the layouts of `visual-language.md` multiplied by the headlines in play, with palette, background, face, type effect, anchor and atmosphere moving underneath, rather than from adding a kind of picture nobody wanted.
 
 ## The five axes
 
 Any graphic here is a point in this space. Varying one axis while holding the others is what makes a set of fifty read as fifty.
 
-1. Density — how much the canvas is asked to carry. The family lives on the first two rows. The last two are what the removed archetypes were.
+1. Density — how much the canvas is asked to carry. The family lives on the Anchored row. The others are what was removed.
 
 | Level | Type on canvas | Reads as | In the family |
 | --- | --- | --- | --- |
-| Bare | one headline | a statement | yes, and it is the centre of gravity |
+| Bare | one headline | a statement | no: cut after review, a line between two rules on an empty canvas read as a caption |
 | Anchored | headline plus one object or one composition | a claim you can see | yes |
 | Structured | headline plus 2 to 4 labelled groups | an explanation | no |
 | Dense | headline plus 6 or more labelled cells | a poster, a reference sheet | no |
@@ -21,31 +21,25 @@ Any graphic here is a point in this space. Varying one axis while holding the ot
 
 3. Typography as image. Type is not a caption here; it *is* the picture. Solid heavy caps filling the canvas edge to edge. Editorial serif at quotation size. A phrase sitting on a highlighter slab. A line knocked out of a solid accent block. A headline where exactly one word takes the accent and the rest stay ink. Always filled, never hollow.
 
-4. The subject — the one thing beside the type. A single tinted glyph. A figure set at display scale. A chart carrying its real values. There is exactly one subject per canvas, or none at all, and the bare canvas is the rarest of the four.
+4. The subject — the one thing beside the type. A single tinted glyph. A figure set at display scale. A chart carrying its real values. There is exactly one subject per canvas.
 
 5. Atmosphere — the layer that separates a designed image from a diagram. A field of faint symbols scattered behind everything at low alpha. Bloom behind the subject. A vignette pulling the corners down. Grain over the whole print. Each is optional and each one, added alone, is the difference between flat and finished.
 
-## The four kinds
+## The five kinds
 
-A set is built from these, and from nothing else unless the user asks for something else by name. The share column is not a suggestion: a set that is a third bare statements is a set of captions, and the user is choosing between wordings they already chose in the headline gate.
+A set is built from these, and from nothing else unless the user asks for something else by name. The share column is not a suggestion, and the bare statement is no longer in the table: a sheet of headline-only canvases is a sheet of captions, and the kind was cut for it.
 
 | Kind | What it is | Share of a set |
 | --- | --- | --- |
-| Statement | The headline is the whole picture | at most 15 percent |
-| Glyph canvas | Headline plus one oversized, palette-tinted glyph | about 25 percent |
-| Number lockup | The figure at display scale, the headline under it | about 25 percent when the headline carries a number, otherwise redistributed |
-| Data figure | A readable chart carrying its real values and what they measure | the rest, and never under a third |
+| Glyph canvas | Headline plus one oversized, palette-tinted glyph or drawn icon | about a fifth |
+| Number lockup | The figure at display scale, the headline under it | about a fifth when a headline carries a number, otherwise redistributed |
+| Data figure | A readable chart carrying its real values and what they measure | with lists and photos, the rest; figures, lists and photos together never under a third |
+| List | The source's own claims as a compare card, a numbered list, a checklist or three stats | with figures and photos, the rest |
+| Photo | A commercially usable photograph of the thing a headline names, in a split, a tilted card, a duotone, a frame, a caption, a quiet zone or a band | at least a quarter wherever the claims name something a photograph can show |
 
-### 1. Statement
+Photographs come first when they are in range. A feed is flat type and flat colour, and a real picture of the thing the claim names is what stops the scroll in it; the popular graphics skills read before this catalog was settled all reach for a stock photograph before they reach for a shape, and the one that measures its text against the photo's quiet zones is the one whose cards read as designed. So the photo queries are written from the headline pool before the rows are planned, several candidates per query are fetched, the sheet is read, and the survivors go on at least a quarter of the rows. What does not change: R19 binds a photo exactly as it binds an icon, and a picture kept for its colours rather than for what it shows is a wrong subject.
 
-One line of type, huge, on an otherwise empty canvas. Nothing competes with it, and the accent falls on the phrase that carries the claim.
-
-- Type budget: headline, plus an optional wordmark set small and quiet in a corner. No subhead.
-- Layout: the headline block occupies 35 to 55 percent of the canvas height and holds the frame from margin to margin. What is left is negative space around type set large, never a small block with a void beside it.
-- Devices: vignette, off-canvas light, bloom behind the type, a faint symbol field, a highlight slab under one phrase.
-- Fails when: the line is a topic instead of a claim — or when there are twelve of these in a set of forty, which is the failure the share cap exists to stop.
-
-### 2. Glyph canvas
+### 1. Glyph canvas
 
 The same headline treatment, plus exactly one subject — a drawn stroke icon or a system emoji — rendered large enough to be a subject rather than a bullet. The icon is the default at least a third of the time (R12).
 
@@ -57,9 +51,9 @@ The same headline treatment, plus exactly one subject — a drawn stroke icon or
 - Relevance (R19): the glyph or icon depicts what the headline says, and the plan row records the link in one clause before the canvas is built. Nothing fits → the canvas takes no subject and becomes another kind.
 - Fails when: the glyph is decorative rather than the subject — a sparkle, a generic checkmark, praying hands under a claim about speed — or when there are two of them, or when a plate appears behind it.
 
-### 3. Number lockup
+### 2. Number lockup
 
-The figure is the picture. When the headline carries a number — a duration, a count, a multiple, a percentage — it comes out of the sentence and is set at display scale in the accent, with the rest of the headline underneath it at normal size.
+The figure is the picture. When a headline carries a number — a duration, a count, a multiple, a percentage — it comes out of the sentence and is set at display scale in the accent, with the rest of the headline underneath it at normal size.
 
 - Type budget: the figure, its unit or suffix (`s`, `x`, `%`, `+`) at about 40 percent of the figure's size, the headline, an optional wordmark.
 - Layout: the figure at two and a half to four times the headline's size, top-left or centred, the headline block directly under it. The figure and the headline read as one lockup, not as two elements sharing a canvas.
@@ -67,7 +61,27 @@ The figure is the picture. When the headline carries a number — a duration, a 
 - Devices: the figure in the accent against ink headline, or knocked out of an accent block; a second smaller figure beside it where the claim is a comparison (`5s` next to `3s`); bloom behind the figure on a dark ground.
 - Fails when: the number is not the point of the sentence, or when two numbers compete at the same size and neither wins. One figure is the subject; anything else beside it is smaller.
 
-### 4. Data figure
+### 4. List
+
+The source's own claims, set as a card: two columns for two things the source sets against each other, a numbered list of four or five claims, a checklist with a drawn check in the accent before each, or three big values with a caption and one line each. Every line is a claim the source-notes hold, in its own words, and no content word of any line repeats the row's headline (R5), which is what decides which headlines a list row may carry.
+
+- Type budget: the headline, the list's own lines, the card titles on a compare. Nothing else.
+- Layout: the headline holds the top, the list owns the rest of the canvas; a list line never wraps past two lines, and four or five items is the ceiling, since six is a poster.
+- Fails when: an item restates the headline, when the items are the post's paragraphs rather than its claims, or when the compare card invents the other column (what the source does not say about the alternative is the boundary, and it holds here).
+
+### 5. Photo
+
+A photograph the claim names, fetched once under a commercial licence into the asset cache, looked at on the sheet, and put on the canvas in one of the photo layouts. The headline reads over it or beside it; the picture is the subject.
+
+- Type budget: the headline, plus the one fact line on the caption layout. Nothing on the photo itself.
+- Placement: the headline sits where the photo is quiet, over a local tint that fades out by the middle of the canvas, never a full-canvas mask; or beside the photo in a split, a band or a caption where the photo needs its whole frame. The tint takes the scheme's ground colour, so the canvas stays in its palette.
+- Grain on the photo is a device, not a default: 4 to 8 percent, where the photo is clean enough to take it.
+- No rule above or below the photo, and no plate across its foot. The accent rule belongs to the small-top glyph; on a photo canvas it reads as a stripe somebody forgot to remove.
+- Nothing drawn beside the photograph: no icon, no emoji, no spark, no shape. The picture is the subject and a second one argues with it. The ground under a photo canvas stays a flat colour, a gradient, paper or a soft light; the `burst` sparks were removed for exactly this, and the builder refuses a photo row that names a subject.
+- Above or below the photo the headline runs the photo's width: the widest line spans at least two thirds of the canvas, the type is sized to that width first, and the photo takes the height that is left. Short lines stopping at the middle of the canvas over a full-width picture read as a caption under somebody else's image.
+- Fails when: the photo shows a logo, a recognisable face, on-screen text that reads as a second headline, or a subject the claim does not name; when the headline lands on the busy part of the picture; when the same photo carries two rows under one headline.
+
+### 3. Data figure
 
 A chart from `visual-language.md`'s pattern table, drawn large, carrying its real values as printed text. There is no unlabelled variant of this kind: the abstract composition was tried across three sets and read as coloured rectangles every time, so a figure that compares anything prints what it compares.
 
@@ -80,20 +94,20 @@ A chart from `visual-language.md`'s pattern table, drawn large, carrying its rea
 
 ## The variation levers
 
-Four kinds is a narrow family, and a set of 50 out of it is only possible because the levers underneath multiply. These are the values a variant is assembled from; a run that keeps a lever fixed across the whole set has thrown away most of its range.
+Five kinds is a narrow family, and a set of 50 out of it is only possible because the levers underneath multiply. These are the values a variant is assembled from; a run that keeps a lever fixed across the whole set has thrown away most of its range.
 
 These tables are the no-reference defaults. Where the user supplied a site, a product or a brand as the look input, the run is in reference mode and builds from that reference's own grounds, components, type system and motifs instead — the values below are then not a base to blend with, they are simply not in play. `SKILL.md`'s Phase 1 has the extraction and the rule.
 
 | Lever | Values |
 | --- | --- |
 | Palette | a scheme per variant, built and validated as below — not one palette stretched over the whole set |
-| Background | flat surface · linear gradient at an angle · radial or mesh gradient · a field of two to four large soft blobs · a duotone split · any of those plus grain, a symbol field or a vignette |
+| Background | flat surface · linear gradient at an angle · radial or mesh gradient · an off-canvas glow · a field of two to four large soft blobs · warm paper · a duotone split · any of those plus grain or a symbol field |
 | Face | one display face per variant from the free-licence set below — heavy grotesque · condensed poster · geometric or rounded · editorial serif · technical mono |
-| Type treatment | solid heavy caps · mixed case at headline weight · one word in the accent · one whole line in the accent · a highlight slab under one phrase · a knockout line reversed out of a solid accent block · editorial serif at quotation size · one word dropped to its own line at double size |
-| Type effect | none · accent word or line · gradient fill along the type's axis · highlight slab · knockout block · mixed weight in one line · size step · opacity tier · tight-tracked caps · drop figure — and nothing outside this list (R17) |
-| Headline shape | two lines · three lines · four lines · one long line running edge to edge · a block set narrow with a deep right margin |
+| Type treatment | solid heavy caps · mixed case at headline weight · one word in the accent · one whole line in the accent · a highlight slab under one phrase · a knockout line reversed out of a solid accent block · editorial serif at quotation size |
+| Type effect | none · accent word or line · gradient fill along the type's axis · highlight slab · knockout block · mixed weight in one line · opacity tier · tight-tracked caps · drop figure · quotation marks in the accent around a serif line — and nothing outside this list (R17) |
+| Headline shape | two lines · three lines · four lines · one long line running edge to edge · a block set narrow with a deep right margin — whichever count sets the type largest; the widest line runs at least two thirds of the canvas |
 | Anchor | top-left against a deep margin · centred with deep margins · bottom-left · headline left with the subject right · headline top with the subject filling the lower half · the subject large and centred with the type wrapped around one side |
-| Subject | none, the type is the whole picture · one tinted glyph · one stroke icon from a free-licence set · the figure at display scale · any data-figure pattern in `visual-language.md`, drawn to the scale gate |
+| Subject | one tinted glyph · one stroke icon from a free-licence set · a stock photograph the claim names · a list of the source's claims · the figure at display scale · any data-figure pattern in `visual-language.md`, drawn to the scale gate |
 | Atmosphere | nothing · vignette · bloom behind the subject · an off-canvas light · a faint symbol field · grain |
 
 Type on a canvas is always solid filled. Outlined caps, hollow letters, a stroke with the background showing through, a shadow or a glow standing in for the fill: all out, in every kind and on every surface. They read as an unfinished render rather than a treatment, they lose their edges the moment the background behind them has any texture, and at feed size a hollow headline is a smear. The knockout line is the reachable version of the same idea — solid surface-coloured type inside a solid accent block, both fills real.
@@ -113,8 +127,10 @@ Type is set on one rhythm. A headline is a block of lines that share a baseline 
 - Equal gaps between line boxes, whatever each line is doing. A line scaled up, wrapped in a slab or knocked out of a block has a taller box than its neighbours, and left alone it opens a hole above and below itself. Set the leading on the block and give the slab symmetric padding inside its line box, then measure: the gaps may differ by no more than 8 percent of a line's height.
 - A slab or knockout line is wider than its text. Its padding counts against the width budget, so a line that fit at full measure does not fit once it is boxed. Size it to the padded width, not the text width.
 - Type never touches the subject. Two percent of the canvas clear at the narrowest point between any line box and the glyph or figure, measured on the render.
+- Numbers are digits and there is no semicolon. `35B`, `2.9 GB`, `3s`, never `thirty-five billion`; a headline that needs a semicolon is two headlines, and the pool keeps the stronger one (R22).
+- The type is sized to be read at feed size and no larger: between a twentieth and a seventh of the canvas height (a twenty-fourth in a column). Below the floor it is a caption beside a picture; above the ceiling a two-word line dwarfs the icon or the figure beside it (R22).
 
-All three are enforced by the geometry check in `visual-language.md`, because all three look perfectly correct in the markup.
+All of these are enforced by the geometry check in `visual-language.md`, because all three look perfectly correct in the markup.
 
 Two more rules keep the levers honest. The accent falls on the phrase that carries the claim — the verb, the subject or the number, never an adjective and never a different phrase per variant chosen for variety's sake. And a lever change that is invisible at feed size is not a variant: an atmosphere swap alone, or a one-step type-size change, produces two files and one graphic.
 
@@ -147,7 +163,6 @@ The list is closed (R17). Every entry keeps the letterforms solidly filled, and 
 | Highlight slab | A solid rectangle behind one phrase, its padding symmetric and inside the line box |
 | Knockout block | Ground-coloured type inside a solid accent block |
 | Mixed weight in one line | The claim's verb at 900 against the rest at 500, same face, same size |
-| Size step | The claim's phrase set one or two steps larger than the lines around it, same colour, same rhythm |
 | Opacity tier | The supporting line at 60 to 70 percent of the ink's alpha, so hierarchy comes from weight of colour rather than from a second hue |
 | Tight-tracked caps | `letter-spacing: -.04em` at display size, with optical corrections on the ends |
 | Drop figure | The first figure at three times the line height, the rest of the line set beside it |
@@ -200,9 +215,11 @@ A set built on one accent hue over four surfaces is four looks wearing ninety-si
 
 ## No two variants alike
 
-Every variant carries a signature: palette, background recipe, kind, subject, face and type effect, anchor. Two variants may not share a signature, and no two may match on more than three of its six components. Record the signature of each as it is planned, before any markup is written, so the collision is caught in the plan rather than in the contact sheet.
+A variant is a layout carrying a headline, and a photo where it has one. Two rows on one layout under one line are one variant whatever their palettes, faces, grounds or icons do, and the render script's R21 sweep says so after the fact; the plan says so before it, by never writing such a pair.
 
-Where n is large enough that the honest combinations run out, say so and build fewer. A hundred files where the last twenty are near-duplicates is worse than eighty the user can actually tell apart.
+On top of that identity every variant carries a look signature: palette, background recipe, kind, subject, face and type effect, anchor. No two rows share a signature, and no two match on more than three of its six components, so the set reads as many rather than as one image recoloured. Record the signature of each row as it is planned, before any markup is written, so the collision is caught in the plan rather than in the contact sheet.
+
+Where n is larger than the layouts times the lines the source can honestly carry, say so and build fewer. A hundred files where the last twenty are near-duplicates is worse than eighty the user can actually tell apart.
 
 ## The scale gate
 
@@ -220,6 +237,7 @@ The scale gate governs one form; this one governs the canvas. The type and the s
 - The marks span at least 80 percent of the canvas width and 80 percent of its height. Not their combined area — their extent. A headline in one corner and a glyph in the opposite one can pass this and still be wrong, which is what the next rule is for.
 - No empty square larger than 40 percent of the canvas side. That is the dead middle: the void between a small headline top-left and a small subject bottom-right. Fix it by growing the type, growing the subject, or moving them until the composition holds the frame.
 - The headline block spans at least 70 percent of the content width and at least 22 percent of the canvas height. A two-line headline at a tenth of the canvas is small type with a picture next to it, not a type-led graphic.
+- The content holds the frame without the rules: type, subject, figure or photo together span at least 70 percent of the width and of the height once the accent rules are left out. A rule at the foot of an empty lower half was how a small headline used to pass the span test.
 - The subject, where there is one, spans at least a third of the canvas on its long axis. Below that it is an icon sitting on an empty field.
 
 Margins are absolute: 4 percent of the canvas on every side, and nothing crosses into them. No bleed, no crop, no shape running off the edge — that allowance existed for two revisions and produced clipped arrowheads and blocks cut in half by the frame, so it is gone. A composition that wants to feel unbounded does it inside the frame.
@@ -228,7 +246,7 @@ And nothing is clipped by an inner box either (R16). A donut whose left and righ
 
 ## Out of the catalog
 
-Four archetypes were removed after a full set was built and read. They are not a matter of taste to be re-litigated per run, and they do not return through a side door — no drawn code window as a "proof" beside a statement, no two-column comparison dressed as an emphasis diagram, no numbered section list under a headline.
+Five archetypes were removed after a full set was built and read. They are not a matter of taste to be re-litigated per run, and they do not return through a side door — no drawn code window as a "proof" beside a headline, no two-column comparison dressed as an emphasis diagram, no numbered section list under a headline, no headline alone between two rules.
 
 | Removed | What it was | Why it is gone |
 | --- | --- | --- |
@@ -236,6 +254,7 @@ Four archetypes were removed after a full set was built and read. They are not a
 | Split compare | Two parallel columns of labels and values under a rule | A spec table. It says the comparison in words and draws none of it |
 | Poster | Masthead, manifesto column, four to six numbered sections, footer | Six type levels at feed size is texture, not a poster. It is built for a tap-through that does not happen |
 | Cut paper | Every word in heavy caps on its own rotated, differently coloured tile | A typographic gimmick that fragments the one line the reader was supposed to take in at a glance |
+| Bare statement | One line between a thick rule above and a thin rule below, on an otherwise empty canvas | Ten of them on one sheet read as captions with nothing to look at. The same line does more on a glyph, a lockup, a list or a photo row, and the size-step effect that lived on it went with it |
 
 ## The optional shelf
 
@@ -252,15 +271,15 @@ These stay buildable, and a run never reaches for one on its own initiative. The
 
 ## Spreading a set of n
 
-The old rule counted distinct archetypes and capped each at 40 percent of the set. With four kinds in the family that rule is unsatisfiable at any real n, and it was the rule that pushed sets into the archetypes above. The spread is now counted on combinations.
+The old rule counted distinct archetypes and capped each at 40 percent of the set. With five kinds in the family that rule is unsatisfiable at any real n, and it was the rule that pushed sets into the archetypes above. The spread is now counted on combinations.
 
-Every variant is a point on six: palette, background recipe, kind (4), shape or subject (nine data-figure patterns, the glyph, the stroke icon, the figure, the empty canvas), face and type effect, and anchor (where the block sits, how the type and the subject are balanced inside the frame).
+Every variant is a point on six: palette, background recipe, kind (5), shape or subject (nine data-figure patterns, the glyph, the stroke icon, the figure, the list, the photograph), face and type effect, and anchor (where the block sits, how the type and the subject are balanced inside the frame).
 
 - No two variants share a signature, and none match on more than three of the six. Two variants at the same kind, palette, shape and anchor are one variant rendered twice, whatever the type is doing.
-- No single background recipe takes more than a quarter of the set, no ground family (dark, light, paper, saturated) more than 40 percent, and no single shape is used more than twice.
-- All four kinds appear once n is 8 or more, at the shares in the kinds table. Bare statements stay at or under 15 percent, data figures never fall under a third, and a run that finds itself with a third of the set as headline-only canvases has drifted into the cheapest kind to build.
-- Weight toward what the idea is. A quantity or a comparison wants data figures; a number in the headline wants the lockup; a subject with an obvious symbol wants the glyph; an opinion or a quotable line is the one case for a bare statement.
-- The honest ceiling: past about 50 the remaining differences are fine ones. Say so at the set-size gate rather than shipping the eightieth canvas as a fresh idea.
+- No single background recipe takes more than a quarter of the set, no ground family (dark, light, paper, saturated) more than 40 percent, and no layout is repeated under one headline.
+- Every kind the source can carry appears once n is 10 or more, at the shares in the kinds table (the lockup and the figure only where a headline carries a number). Figures, lists and photos together never fall under a third, photos take at least a quarter where the claims name something a photograph can show, and no row is a headline alone on an empty canvas.
+- Weight toward what the idea is. A quantity or a comparison wants data figures; a number in the headline wants the lockup; a subject with an obvious symbol wants the glyph; an opinion or a quotable line goes on a glyph canvas with the `quote` effect.
+- The honest ceiling is the layouts the source supports times the headlines in play. `SKILL.md`'s Phase 3 states it beside the count question rather than shipping the eightieth canvas as a fresh idea.
 
 ## Device library
 
@@ -277,24 +296,25 @@ Cross-cutting, all renderable offline with CSS and inline SVG.
 | Big numeral | The figure at two and a half to four times the headline size, in the accent, with its unit smaller beside it | The number lockup's whole vocabulary. Only when the number is the point, and only one figure per canvas |
 | Emoji as artwork | A system emoji rendered at 400 to 800 px as the subject, tinted into the scheme | Available offline from the system emoji font, no asset needed. Raw, it drags its own palette onto the canvas — see the glyph rule above |
 | Grain | A tiled noise overlay at 3 to 8 percent | Turns a flat print into a printed one. Generate as an inline SVG turbulence filter, never as a fetched texture. Watch the file size: grain at 2x device scale is near-incompressible |
-| Off-canvas light | A large radial gradient positioned so more than half of it sits outside the frame | Reads as a light in the room rather than a glow drawn on the picture |
+| Off-canvas light | A large radial gradient positioned so more than half of it sits outside the frame | Reads as a light in the room rather than a glow drawn on the picture. The `glow` ground |
+| Quiet-zone tint | A local gradient in the ground colour from one edge, fading out by the middle of the canvas, under a headline set over a photograph | The reachable version of text over a photo: the picture stays visible, the type stays legible, and there is no full-canvas mask |
 
 Devices that belong only to the shelf archetypes, and that a family canvas never carries: UI chrome, skeleton bars, chip rows, fanned cards, node-and-connector plates, callout leaders, ruled dividers and ornaments.
 
 ## What the words on the canvas are allowed to be
 
-Every word on the canvas does one of four jobs. It is the headline that carries the claim. It is a value that is itself the point. It is the one-to-three-word caption naming what that value measures. Or it is the wordmark. A word doing none of those is decoration, and it is cut.
+Every word on the canvas does one of five jobs. It is the headline that carries the claim, written as the post's title (subject named, point stated, one clause) rather than as a line from its body. It is a value that is itself the point. It is the one-to-three-word caption naming what that value measures. It is a list line that is itself a claim from the source. Or it is the wordmark. A word doing none of those is decoration, and it is cut.
 
 And no word or number is said twice. A canvas carries each content word once: no decorative echo of the headline behind the headline, no numeral repeated as ornament, no caption restating the line above it, no lockup holding a figure the sentence still carries. Where a second element wants the same words, it becomes a glyph, a figure or empty space instead. The shelf archetypes add a fourth job — a label naming a real thing the picture depicts — and that job exists only on a canvas the user asked for by name.
 
 Two consequences:
 
-- The kind declares the budget and the budget is not exceeded. A statement that grows a subhead, a chip row or a caption is not a richer statement, it is a worse one.
+- The kind declares the budget and the budget is not exceeded. A glyph canvas that grows a subhead, a chip row or a caption is not a richer canvas, it is a worse one.
 - Read order is forced, always. One element is unmistakably first, by size, by position, or by being the only thing in the accent.
 
 ## Honesty rules
 
-- Numbers on the canvas come from the facts, with the condition they carry. A big numeral is the loudest claim the format has.
+- Numbers on the canvas come from the facts, with the condition they carry, and every one of them is digits, in the headline included. A big numeral is the loudest claim the format has.
 - No calendar date, no "checked on" stamp, in any kind.
 - No trademark word carrying its ordinary meaning, and no third-party logo the sources do not connect to the subject — offline there is nothing to fetch anyway.
 - A depicted interface shows real behaviour, on the shelf archetypes where one appears at all. A mocked-up third-party screen showing a behaviour it does not have is a fabricated screenshot whether or not it is drawn by hand.

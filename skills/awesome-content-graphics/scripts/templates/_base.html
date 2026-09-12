@@ -3,21 +3,56 @@
 <style>
 {{fontFace}}
 html,body{margin:0;padding:0}
-body{width:{{W}}px;height:{{H}}px;overflow:hidden;position:relative;background:{{bg}};{{groundCss}}
+body{width:{{W}}px;height:{{H}}px;overflow:hidden;position:relative;background:{{bg}};
   color:{{fg}};font-family:{{fontFamily}},system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+.ground{position:absolute;inset:0;pointer-events:none}
 .grain{position:absolute;inset:0;opacity:{{grainAlpha}};pointer-events:none;mix-blend-mode:overlay}
-.blob{position:absolute;border-radius:50%;filter:blur({{blobBlur}}px);opacity:{{blobAlpha}};pointer-events:none}
+.blob{position:absolute;border-radius:50%;opacity:{{blobAlpha}};pointer-events:none}
 .head{position:absolute;left:6%;width:88%;font-size:{{headSize}}px;padding:.16em 0;font-weight:{{weight}};letter-spacing:{{tracking}};line-height:{{lineHeight}};text-wrap:balance}
 .head span{display:block;font-size:1em;line-height:1.04}
-.head span+span{margin-top:.16em}
+.head span+span{margin-top:{{lineGap}}px}
 .head .acc{color:{{accent}}}
 .head .slab{background:{{accent}};color:{{bg}};display:inline-block;padding:0 .12em;border-radius:.06em}
-.head .dim{opacity:.62}
+.head.knock{background:{{accent}};color:{{bg}};padding:.3em .34em;border-radius:.08em;width:88%;box-sizing:border-box}
+.head.knock .acc{color:{{bg}}}
 .cap{font-size:{{capSize}}px;font-weight:600;letter-spacing:.02em;color:{{muted}};text-transform:uppercase}
+[data-mark="value"],[data-mark="value-b"]{padding:.16em 0}
+.photo{position:absolute;background-size:cover;background-repeat:no-repeat}
+.photo.full{inset:0}
+.scrim{position:absolute;inset:0;pointer-events:none}
+.head .hl{background:linear-gradient(transparent 46%, {{accent}} 46%, {{accent}} 94%, transparent 94%);padding:0 .06em;margin:0 -.06em}
+.head .ul{text-decoration:underline;text-decoration-color:{{accent}};text-decoration-thickness:.11em;text-underline-offset:.1em;text-decoration-skip-ink:none}
 .rule{position:absolute;left:6%;width:88%;height:{{ruleH}}px;background:{{accent}};border-radius:{{ruleH}}px}
 {{extraCss}}
 </style></head>
-<body>
+<body{{bodyAttrs}}>
+<div class="ground" style="{{groundCss}}"></div>
 {{ground}}
 {{content}}
+<script>
+(async () => {
+  if (document.fonts) await document.fonts.ready;
+  const h = document.querySelector('[data-mark="headline"]');
+  const maxH = h && +h.dataset.maxH;
+  if (h && maxH) {
+    const lines = [...h.querySelectorAll("[data-line]")];
+    const widest = () => Math.max(...lines.map((el) => { const r = document.createRange(); r.selectNodeContents(el); return r.getBoundingClientRect().width; }));
+    for (let i = 0; i < 3; i++) {
+      const box = h.clientWidth - (parseFloat(getComputedStyle(h).paddingLeft) + parseFloat(getComputedStyle(h).paddingRight));
+      const size = parseFloat(getComputedStyle(h).fontSize);
+      // a slab's padding and a quote mark sit outside the measured text; the type ceiling is R22's
+      const scale = Math.min(box * 0.95 / widest(), maxH / h.getBoundingClientRect().height, innerHeight * 0.14 / size, 1.8);
+      if (Math.abs(scale - 1) < 0.01) break;   // grows into the width, shrinks out of an overflow
+      h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * scale).toFixed(2) + "px";
+    }
+    // a line that wrapped inside its own box after the growth steps back down until every line is one line again
+    const wrapped = () => lines.some((el) => el.getBoundingClientRect().height > parseFloat(getComputedStyle(el).fontSize) * 1.7);
+    for (let i = 0; i < 6 && wrapped(); i++) h.style.fontSize = (parseFloat(getComputedStyle(h).fontSize) * 0.96).toFixed(2) + "px";
+    if (h.dataset.center) h.style.top = Math.round((innerHeight - h.getBoundingClientRect().height) / 2) + "px";
+    // a block anchored to a foot line ends there whatever size it reached, so the canvas has no dead lower third
+    if (h.dataset.bottom) h.style.top = Math.round(innerHeight * (+h.dataset.bottom / 100) - h.getBoundingClientRect().height) + "px";
+  }
+  window.__fitted = true;
+})();
+</script>
 </body></html>

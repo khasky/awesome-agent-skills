@@ -133,5 +133,21 @@ class Page {
     });
     return Buffer.from(data, "base64");
   }
+  // The same pixels as deviceScaleFactor=f, produced through CSS zoom at DPR 1. Headless Chromium
+  // stalls captureScreenshot at DPR 2 on some gradient and blur layers; the zoom path does not.
+  async screenshotZoomed(f) {
+    const { w, h } = this;
+    await this.send("Emulation.setDeviceMetricsOverride", { width: w * f, height: h * f, deviceScaleFactor: 1, mobile: false });
+    await this.evaluate(`document.documentElement.style.zoom='${f}'; new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)))`);
+    try {
+      const { data } = await this.send("Page.captureScreenshot", {
+        format: "png", captureBeyondViewport: false, clip: { x: 0, y: 0, width: w * f, height: h * f, scale: 1 },
+      });
+      return Buffer.from(data, "base64");
+    } finally {
+      await this.evaluate("document.documentElement.style.zoom=''");
+      await this.send("Emulation.setDeviceMetricsOverride", { width: w, height: h, deviceScaleFactor: 1, mobile: false });
+    }
+  }
   async close() { await this.b.send("Target.closeTarget", { targetId: this.t }); }
 }
