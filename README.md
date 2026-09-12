@@ -13,6 +13,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
 - [Awesome Agent Skills](#awesome-agent-skills)
   - [Contents](#contents)
   - [Quick start](#quick-start)
+  - [Install](#install)
   - [Skills](#skills)
     - [Code review](#code-review)
     - [Code quality and refactoring](#code-quality-and-refactoring)
@@ -25,7 +26,6 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
   - [Picking between similar skills](#picking-between-similar-skills)
-  - [Install](#install)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
   - [How these were built](#how-these-were-built)
@@ -55,6 +55,30 @@ cd awesome-agent-skills && git pull   # updates every symlinked skill in place
 Re-run the `skills add` command to pick up skills added since. Then ask the agent naturally ("review this diff against main") or invoke a skill explicitly (`/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex).
 
 Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs straight from GitHub — but it won't auto-sync with `git pull`.
+
+On Claude Code it also installs as a plugin: `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. That pulls every skill at once and updates with the plugin; the symlink above stays the better choice if you want `git pull` to move them.
+
+## Install
+
+The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, or to install by hand without the CLI, a skill is a folder: copy it into the directory your agent reads. Most agents also read the shared `.agents/skills/` path, so one copy can serve several tools at once. To stay in sync with `git pull`, symlink from your clone instead of copying (`ln -s`).
+
+| Agent | Project path | Global path | Docs |
+| --- | --- | --- | --- |
+| Claude Code | `.claude/skills/` | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
+| OpenAI Codex | `.agents/skills/` | `~/.agents/skills/` | [docs](https://developers.openai.com/codex/skills) |
+| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` or `~/.agents/skills/` | [docs](https://geminicli.com/docs/cli/skills/) |
+| Cursor | `.cursor/skills/` or `.agents/skills/` | `~/.cursor/skills/` or `~/.agents/skills/` | [docs](https://cursor.com/docs/context/skills) |
+| GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | [docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
+| opencode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
+| Amp | `.agents/skills/` | `~/.agents/skills/` | [docs](https://ampcode.com/manual#agent-skills) |
+| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
+| Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
+
+- **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
+- **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
+- Restart or reload the agent after copying so it picks up new skills.
+
+What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version.
 
 ## Skills
 
@@ -182,29 +206,6 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | awesome-style-mimic · awesome-content-voice | Both write the same section set, so either file feeds a rewrite or a campaign | A site's brand voice, learned by crawling it → style-mimic. The author's own voice from their own evidence, with consent, counted absence and a confidence stamp → content-voice. |
 | awesome-content-campaign · awesome-content-repurpose | Both write platform-native posts into the file format the publisher reads | Product sources plus a schedule → content-campaign. One existing text, no schedule → content-repurpose. |
 | awesome-content-campaign · awesome-content-publisher | Two halves of one shipping pipeline | Write the post files → content-campaign. Post them to your accounts through your own browser → content-publisher. |
-
-## Install
-
-The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, or to install by hand without the CLI, a skill is a folder: copy it into the directory your agent reads. Most agents also read the shared `.agents/skills/` path, so one copy can serve several tools at once. To stay in sync with `git pull`, symlink from your clone instead of copying (`ln -s`).
-
-| Agent | Project path | Global path | Docs |
-| --- | --- | --- | --- |
-| Claude Code | `.claude/skills/` | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
-| OpenAI Codex | `.agents/skills/` | `~/.agents/skills/` | [docs](https://developers.openai.com/codex/skills) |
-| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` or `~/.agents/skills/` | [docs](https://geminicli.com/docs/cli/skills/) |
-| Cursor | `.cursor/skills/` or `.agents/skills/` | `~/.cursor/skills/` or `~/.agents/skills/` | [docs](https://cursor.com/docs/context/skills) |
-| GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | [docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
-| opencode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
-| Amp | `.agents/skills/` | `~/.agents/skills/` | [docs](https://ampcode.com/manual#agent-skills) |
-| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
-| Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
-
-- **Claude Code plugin:** `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. Installs every skill at once and updates with the plugin; the Quick start's symlink path stays the better choice if you want `git pull` to move them.
-- **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
-- **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
-- Restart or reload the agent after copying so it picks up new skills.
-
-What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version.
 
 ## Usage examples
 
