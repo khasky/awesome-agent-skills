@@ -23,7 +23,6 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `x` | x.com | — | optional | `genre-micro-post.md` |
 | `threads` | threads.com | — | optional | `genre-micro-post.md` |
 | `truthsocial` | truthsocial.com | — | optional | `genre-micro-post.md` |
-| `nostr` | client-dependent | the web client the user posts through | optional | `genre-micro-post.md` |
 | `bastyon` | bastyon.com | — | optional | `genre-micro-post.md` |
 | `vk-wall` | vk.com | own wall or a community the user may post to | optional | `genre-micro-post.md` |
 | `telegram` | t.me | channel or group | optional | `genre-micro-post.md` |
@@ -79,7 +78,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `facebook-wall`, `facebook-group` | 0–3 (verified 2026-09) | body | The platform where tags matter least; more than three actively costs engagement. |
 | `tumblr` | 5–20 | tag field, never the body | Up to 30 accepted, only the first ~20 index, and the earliest carry the search weight. Tags in the body are a style error here. |
 | `truthsocial`, `minds`, `bastyon` | 3–5 | body | Mastodon-style discovery by tag. On `bastyon` the body's tags are also auto-extracted into the category chips that its Post button requires — see the posting note. |
-| `vk-wall`, `telegram`, `nostr` | verify live | body | Tag culture varies by community and channel; check what the account's own audience does. |
+| `vk-wall`, `telegram` | verify live | body | Tag culture varies by community and channel; check what the account's own audience does. |
 | `devto` | up to 4 | front-matter `tags:` | A trailing `#tag` line in the body renders as an `<h1>` instead — it must move to the field. |
 | `hashnode`, `medium`, `hackernoon`, `substack` | up to 5 | the platform's own tag/topic field | Medium's publish panel states the five-topic cap in the UI. A body tag line is not the mechanism on any of them. |
 | `peerlist` | none — refused | — | The composer says so in words: *"We don't support hashtags (yet)."* A tag line must be dropped before submitting. |
@@ -101,8 +100,12 @@ A post into a community someone else moderates. Group rules gate promo harder th
 ### linkedin
 Professional register. The feed shows only the first lines before a "…see more" fold — the hook must land above it. Hashtags used in moderation; document links in the post body as the user prefers (folk practice varies; do not assert unverified algorithm claims). Media optional, images common.
 
+Document posts, a PDF shown as swipeable pages, are LinkedIn's carousel; in Buffer's 2026 engagement data they were among the highest-engagement LinkedIn formats, though the page's own tables disagree on the figures, and it is correlation rather than cause. Offered as a media answer, never assumed.
+
 ### reddit
 Title + body, markdown supported, no hashtags. Everything is per-subreddit: rules, flair (sometimes mandatory), automod filters, self-promotion limits (many subs enforce participation ratios). Marketing register is punished by design — posts must lead with value and disclose affiliation. Target detail required: subreddit; fetch and read its rules before writing.
+
+Reddit refuses the agent's fetcher outright, on `www.reddit.com` and `old.reddit.com` alike, including the `about/rules.json` endpoint; retrying the URL or a mirror host does not change that. The rules are read through the user's own logged-in browser (the publisher's browser bridge) or the user confirms them; the run never records "rules read" on the strength of a fetch. Lemmy is the opposite case: its instance API answers plain fetches, and the community search and `community?name=` endpoints return the sidebar, the rules and the subscriber and post counts.
 
 ### lemmy
 Federated link-and-discussion aggregator, reddit-shaped: title + markdown body or a link submission, per-community rules, no hashtags, votes and moderators. The instance is part of the address — `lemmy.world` is the largest but one among many, and a community name means nothing without it. Target detail required: instance domain and community; read that community's sidebar rules for self-promotion limits before writing, exactly as with a subreddit. Small, technically literate audience that reads marketing register as an intrusion.
@@ -135,6 +138,8 @@ Hashtags: one or two — never three, and never zero. This is the one platform w
 Meta's text feed, bound to an Instagram account: the handle and the login are Instagram's, so wherever an Instagram presence exists a Threads one usually does too — check for it rather than assuming its absence. Conversational register close to `x`. Unlike Instagram, links in the post body are clickable and media is optional. Verify the current character cap and which domain the account answers on.
 
 Threads has topic tags, not hashtag blocks, and takes exactly one per post — the platform caps it there deliberately to keep tag spam down, and a tag may contain spaces. So this is the one platform where the campaign's tag set collapses to a single choice: pick the tag closest to the post's subject and drop the rest. A block of five hashtags copied from the `mastodon` version is wrong here, and zero tags is a miss.
+
+A post can also carry a text attachment of up to 10,000 characters with a prominent link (TechCrunch, 4 September 2025). The attachment is not indexed by search engines and not federated, so fediverse readers see only the post itself: the post carries the point, the attachment the long version.
 
 ### truthsocial
 Mastodon-derived microblog with its own single network — short posts, media optional, links clickable. Politically homogeneous audience whose interests rarely overlap a technical product's; say so if the user selects it for a product with no fit rather than writing copy that will land as noise. Verify the current character cap and media specs live: the fork's numbers are not Mastodon's.
@@ -185,6 +190,8 @@ Five hashtags is a hard cap, not a norm (since 19 Dec 2025). A sixth is not an e
 
 The composer opens from the sidebar, not from a URL. `instagram.com/create/…` paths are not the app's own route to the composer and land on unrelated shells; the entry point is the `+` in the left sidebar, then the `Post` entry that appears under it. The dialog that opens accepts PNG among other formats — a run that reached a route accepting `image/jpeg` only has gone in the wrong door, and converting the file is treating the symptom.
 
+A carousel of several images in one post outperformed single images in Buffer's 2026 engagement data; like the LinkedIn figure, that is correlation, so it is offered, never assumed.
+
 ### bastyon
 Decentralized platform; account identity is a key pair and login flows differ from mainstream platforms. Crypto/free-speech-adjacent culture. Verify caps and media support live — documentation is thin, the live UI is the source of truth.
 
@@ -201,13 +208,6 @@ Wall posts, medium prose, hashtags in use, images common. A personal wall and a 
 ### telegram
 A channel or group broadcast rather than a social feed: no ranking algorithm and no discovery surface, so subscribers see every post in order and frequency is felt directly — over-posting reads as noise here faster than on an algorithmic feed. Clickable links with previews that can be suppressed, light markup, media optional. Publishing needs admin rights on the target. Target detail required: channel or group. Verify the current message cap and the media-caption cap, which are not the same number.
 
-
-### nostr
-A protocol rather than a site: the account is a key pair, and posting happens through whichever web client the user prefers, so the client is part of the address. Short posts, no algorithmic feed, discovery through relays and follows; media is usually uploaded to a separate host and linked. Key material is the user's alone — never request it, read it, or paste it, and a signing-extension prompt is theirs to accept. Culture is technical and hostile to marketing cadence. Target detail required: the client. Verify caps and media handling on that client live.
-
-The default is the site the user actually has an account on, and for most people that is `nostr.com` itself. The question exists because a Nostr key works in any client, not because the run gets to pick one; a menu of `primal.net · snort.social · iris.to` offered to someone who signed up at `nostr.com` is three sites they have no relationship with, and nothing in the question explains the basis for choosing. `nostr.com` is a client in its own right and not merely a directory — it carries a feed, a sign-in, a configured relay set (`relay.nostr.com`, `relay.damus.io`, `nos.lol` and others, read/write) and an installable app — so naming it as the default is correct rather than a fallback. It also publishes its own explainer at `nostr.com/clients` and points at `nostrapps.com` for the rest, which is the honest place to send a user who wants to change.
-
-So: the client the user named or is signed into, plus `another client, I will type it`. And check the signer before promising the post can go out: posting through a web client needs a NIP-07 browser extension or a remote signer, so if `window.nostr` is absent in the browser that will do the publishing, say so at interview time rather than letting the publisher discover it at the composer. Never ask for, read, or paste the private key in any case.
 
 ### hashnode
 Developer blogging platform: markdown articles with tags, a cover image and canonical-URL support (set it when the article mirrors the user's own blog). An article can go to the author's personal blog or to a publication, and those differ in audience and in who reviews. Community norms match `devto` — tutorials and experience reports over announcements. Frequency: articles per campaign, never per day. Target detail required when posting into a publication.
