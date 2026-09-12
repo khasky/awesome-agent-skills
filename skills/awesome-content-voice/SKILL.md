@@ -92,7 +92,7 @@ Contradictions stay contradictions. Two samples that disagree about a habit are 
 
 Ask only what the evidence could not answer (use the agent's structured-question UI when available; plain questions otherwise). Every question takes a custom answer.
 
-1. Who is writing — first person singular · first person plural (team or company) · a persona distinct from the author. 
+1. Who is writing — first person singular · first person plural (team or company) · a persona distinct from the author.
 2. Audience — who reads this, in the user's own words.
 3. What this voice is for — the reason someone follows it: teaching, shipping in public, opinion, curation, reporting.
 4. Register floor and ceiling — how casual it may get, how formal it must stay, and where the line moves per platform.

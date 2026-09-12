@@ -94,10 +94,7 @@ One self-contained `.html` file per graphic in `<out>/src/`, and one rendered `.
 
 Render in a spawned browser, not the user's. This step loads a local `file://` page and screenshots it — there is no account, no session and nothing to log into, so it has no business taking over a browser the user is working in. Prefer, in order: a headless browser the automation can launch itself, an installed CLI (`wkhtmltoimage` or a browser's own `--screenshot`, verified with `--version` exiting 0), and only then a live bridge. Using a live bridge means the user's window fills with `file://` tabs while the batch renders, so ask first when there is more than one bridge, say which browser is being used, and warn that it is busy.
 
-One browser for the whole set: find a Chromium-family binary the way the machine exposes it (an explicit path in the
-environment first, then an automation cache, then an installed browser), drive it over its own debugging protocol,
-set the viewport once, load each page, wait for fonts, run the check and capture at device scale only on a pass.
-Measure at device pixel ratio 1 and capture through page zoom: capturing at ratio 2 stalls on some layers.
+One browser for the whole set: find a Chromium-family binary the way the machine exposes it (an explicit path in the environment first, then an automation cache, then an installed browser), drive it over its own debugging protocol, set the viewport once, load each page, wait for fonts, run the check and capture at device scale only on a pass. Measure at device pixel ratio 1 and capture through page zoom: capturing at ratio 2 stalls on some layers.
 
 Say which renderer was used, in the report.
 

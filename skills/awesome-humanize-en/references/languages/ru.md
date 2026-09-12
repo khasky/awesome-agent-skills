@@ -2,7 +2,7 @@
 
 Load this file when the target text is Russian. It changes nothing else about the run: the decision tree, the two-stage protocol, the discourse pass, the artifact regexes, the source checks and the editing-trace tests all apply as written. What does not transfer word for word is the English vocabulary catalog (#10, #15e) and two typography rules, and this file says what each check looks like in Russian.
 
-Evidence boundary, stated first. No measured per-feature comparison of human and machine Russian was read while writing this file. A human-vs-generated Russian corpus exists (RuATD, Dialogue 2022; `sources.md` "Consulted, no rule") and is the corpus to measure against; until someone does, every item below is an editorial heuristic drawn from `HUMANIZER-RU` (the Russian humanizer this skill was adapted from) and from the shape of the English patterns. Treat each as a direction observed by editors, not a calibration constant.
+Evidence boundary, stated first. No measured per-feature comparison of human and machine Russian was read while writing this file. A human-vs-generated Russian corpus exists (RuATD, Dialogue 2022; `sources.md` "Consulted, no rule") and is the corpus to measure against; until someone does, every item below is an editorial heuristic: Russian-language editing practice read against the shape of the English patterns. Treat each as a direction observed by editors, not a calibration constant.
 
 ## 1 The two typography flips
 
@@ -35,7 +35,7 @@ Not signals on their own: scientific and official register in a paper or a statu
 | #15b hedging cascade | «возможно, в некоторых случаях, при определённых условиях, может» in one sentence | One hedge or none |
 | #15c transition crutches | «Однако стоит отметить», «Кроме того, важно понимать», «Тем не менее», «Более того» at every turn; «В заключение», «Подводя итоги» at the end | Delete, or replace with a content-bearing transition |
 | #11 avoiding "to be" | «является», «представляет собой», «выступает в качестве» for a plain тире or nothing: «Галерея является выставочным пространством» | «Галерея — выставочное пространство» |
-| Semantic shift through the English field (the humanizer-ru slot #15e) | A Russian word used in its English cognate's sense: «драматический» for *dramatic* (значительный), «амбициозный» as praise, «комфортный» for any convenience, «экспертиза» for *expertise* (опыт), «фокусироваться на», «делать смысл» | The Russian word with that meaning, or a rewrite |
+| Semantic shift through the English field | A Russian word used in its English cognate's sense: «драматический» for *dramatic* (значительный), «амбициозный» as praise, «комфортный» for any convenience, «экспертиза» for *expertise* (опыт), «фокусироваться на», «делать смысл» | The Russian word with that meaning, or a rewrite |
 
 ## 4 Communicative tells (#22–25)
 

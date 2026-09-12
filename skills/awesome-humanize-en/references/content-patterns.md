@@ -148,7 +148,7 @@ After: In his review for the Chicago Sun-Times, Roger Ebert noted that the final
 
 ## Extension: technical-article tells
 
-Four content tells that surface mostly in engineering blog posts, tutorials and write-ups. They are the pattern form of the venue rules in `domains/tech-articles.md`, adapted from [sepia](https://github.com/Nanako0129/sepia) (MIT), and count toward the tell total like any other content pattern.
+Four content tells that surface mostly in engineering blog posts, tutorials and write-ups. They are the pattern form of the venue rules in `domains/tech-articles.md`, and count toward the tell total like any other content pattern.
 
 ### 9a. 🟡 Invented concept labels
 

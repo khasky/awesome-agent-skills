@@ -2,7 +2,7 @@
 
 Covers incident reports, outage retrospectives, RCA documents. Article-like weighting: relevance, density, stance; plus the outline test from `structure-pass.md` (#26).
 
-Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (MIT); the tells are editorial heuristics, not measured findings, except where `sources.md` says otherwise. `awesome-root-cause` produces the analysis; this file governs how the write-up reads.
+The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise. `awesome-root-cause` produces the analysis; this file governs how the write-up reads.
 
 ## Human baseline
 

@@ -93,9 +93,7 @@ Composed to demonstrate the register — not text from the site.
 > Plan your whole week in one sitting, and let your queue handle the rest — so you can get back to making things. Set your posting times once. Add ideas as they come in. Everything publishes on schedule, even when your day runs away from you. No spreadsheets. No 2 a.m. scramble. A calm, consistent presence, not another job.
 
 2. Blog/resources (how-to opener)
-> Confession: I am not a naturally organized person. (My camera roll — 14,308 unsorted screenshots — will happily testify.) But after a few years of running social for very small teams, I've learned that consistency doesn't come from discipline. It comes from a system that's easier to follow than to skip.
-> You need a routine, not a resolution.
-> Here's the one that finally stuck for me — plus the 3 tweaks that made it stick for good.
+> Confession: I am not a naturally organized person. (My camera roll — 14,308 unsorted screenshots — will happily testify.) But after a few years of running social for very small teams, I've learned that consistency doesn't come from discipline. It comes from a system that's easier to follow than to skip. You need a routine, not a resolution. Here's the one that finally stuck for me — plus the 3 tweaks that made it stick for good.
 
 3. Glossary
 > A content pillar is one of the 3–5 big topics you keep coming back to — the themes your audience learns to expect from you. Think of pillars like the departments of a small magazine: every issue looks different, but the sections stay put. Ever noticed how your favorite creators feel focused without feeling repetitive? That's pillars at work. Pick yours, and every "what should I post today?" moment gets a whole lot smaller.
@@ -104,19 +102,13 @@ Composed to demonstrate the register — not text from the site.
 > You can now reorder your queue by dragging posts up and down the calendar — no more deleting and re-adding just to swap two slots. Open your queue, grab any post, and drop it where you want it; the times update on their own. This one came straight from your feature requests, and we're so glad it's finally out the door!
 
 5. Shareholder letter
-> Hi there,
-> The short version: a flat month. Revenue grew 0.4%, and churn ticked up for the second month running, driven mostly by annual plans that didn't renew. That's not the trend we want, and we won't dress it up — the honest read is that our onboarding hasn't kept pace with our pricing changes. Two fixes are underway, and we'll report on both next month, whichever way the numbers land.
-> Feel free to reply.
+> Hi there, The short version: a flat month. Revenue grew 0.4%, and churn ticked up for the second month running, driven mostly by annual plans that didn't renew. That's not the trend we want, and we won't dress it up — the honest read is that our onboarding hasn't kept pace with our pricing changes. Two fixes are underway, and we'll report on both next month, whichever way the numbers land. Feel free to reply.
 
 6. Careers/culture
 > We work asynchronously across 12 time zones, which means your best hours are yours to choose — school pickup, a morning swim, a nap. (We mean it. Calendars here are quiet.) What we ask in return is ownership: when you say a thing will ship, teammates plan around it. If most of this sounds like the way you already want to work, we'd love to hear from you — even if you don't tick every box.
 
 7. Integrations how-to
-> You'll need a Formwise account (any plan works).
-> 1. In Formwise, open Settings → API and click "Generate key."
-> 2. In your dashboard, go to Integrations → Add new and paste the key.
-> 3. Click "Connect" — new form responses land in your queue as drafts within a minute.
-> This is a third-party integration. For help with the Formwise side, contact their support team directly.
+> You'll need a Formwise account (any plan works). 1. In Formwise, open Settings → API and click "Generate key." 2. In your dashboard, go to Integrations → Add new and paste the key. 3. Click "Connect" — new form responses land in your queue as drafts within a minute. This is a third-party integration. For help with the Formwise side, contact their support team directly.
 
 ## Rewrite instructions
 When restyling a foreign document into buffer.com voice:

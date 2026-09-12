@@ -1,9 +1,6 @@
 # Palette pool
 
-Ready schemes, each already proved against the rule a set's colours have to meet: the accent and the muted neutral
-both clear 3:1 against the ground, the foreground clears 4.5:1, and accent and muted stay apart under protan and
-tritan simulation. Pick from here rather than inventing a scheme, and prove any scheme that comes from outside this
-table the same way before it goes on a canvas.
+Ready schemes, each already proved against the rule a set's colours have to meet: the accent and the muted neutral both clear 3:1 against the ground, the foreground clears 4.5:1, and accent and muted stay apart under protan and tritan simulation. Pick from here rather than inventing a scheme, and prove any scheme that comes from outside this table the same way before it goes on a canvas.
 
 Contrast ratios are against the ground.
 
@@ -55,8 +52,4 @@ Contrast ratios are against the ground.
 
 ## Proving a scheme that is not in the table
 
-A brand palette, or a scheme lifted from a reference, is measured before use, not eyeballed: compute the relative
-luminance contrast of the accent, the muted neutral and the foreground against the ground, and check the accent and
-the muted still read apart when the image is simulated for red-blind and blue-blind vision at full severity. A scheme
-that misses any of the four is adjusted until it passes or dropped; a set never ships a canvas whose accent cannot be
-told from its neutral.
+A brand palette, or a scheme lifted from a reference, is measured before use, not eyeballed: compute the relative luminance contrast of the accent, the muted neutral and the foreground against the ground, and check the accent and the muted still read apart when the image is simulated for red-blind and blue-blind vision at full severity. A scheme that misses any of the four is adjusted until it passes or dropped; a set never ships a canvas whose accent cannot be told from its neutral.

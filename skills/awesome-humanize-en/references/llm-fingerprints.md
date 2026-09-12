@@ -74,7 +74,7 @@ Empirical check on English output (May 31, 2026). GPT-5.5 (xHigh) was run on neu
 
 Unlike the Russian edition (where the English lexis never surfaces in Russian output), in English the lexical tells "delve" and "It's important to note" (#10) appear right alongside the structural ones — so both layers are in play at once. Conclusion: for fresh English text the priority signals are the rule of three (#13), negative parallelism (#12), transition crutches (#15c), and inflated significance (#2), reinforced by the "It's important to note"/"delve" lexis (#10).
 
-Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read second-hand via sepia's ledger 2026-09-02):
+Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read second-hand, 2026-09-02):
 
 | Vendor-stated default | Handling |
 |---|---|
@@ -112,7 +112,7 @@ Typical English openers and closers: "I'd be happy to help!", "Certainly, I can 
 
 Note that because Fable 5 silently reroutes restricted queries to Opus 4.8, a single conversation may show mixed tells — a terser, disclaimer-heavy Opus register spliced into Fable 5 prose. Do not read the switch itself as an anti-tell.
 
-Vendor-documented prose defaults (Anthropic prompting pages, read second-hand via sepia's ledger, which compared the quoted blocks against the pages on 2026-09-02/03; `sources.md`, `ANTHROPIC-*-PROMPTING`). Each block is operative for the release named and a prior for every other Claude release, including Sonnet 5 and Opus 4.7, whose pages carry no prose-layer statement. When the executor is a Claude model, these are the habits to hunt in your own rewrite.
+Vendor-documented prose defaults (Anthropic prompting pages, read second-hand, with the quoted blocks compared against the pages on 2026-09-02/03; `sources.md`, `ANTHROPIC-*-PROMPTING`). Each block is operative for the release named and a prior for every other Claude release, including Sonnet 5 and Opus 4.7, whose pages carry no prose-layer statement. When the executor is a Claude model, these are the habits to hunt in your own rewrite.
 
 | Release | Vendor-stated default | Handling |
 |---|---|---|
@@ -148,7 +148,7 @@ Stylistic tells:
 
 Typical English markers: 🚀, 💡, ✅ as list bullets; "Here's what I found:" as an opener; a standalone "Sources:" section at the end.
 
-Vendor-documented prose default (Gemini 3 series, `GOOGLE-GEMINI-3-DEV-GUIDE`, read second-hand via sepia's ledger 2026-09-03; the vendor scopes the statement to the whole series, so any Gemini 3.x release matches): "By default, Gemini 3 is less verbose and prefers providing direct, efficient answers"; a conversational persona appears only when prompted. Handling: terse and unadorned is this series' default, so brevity is not evidence of a human here; check density in the other direction — required caveats and next steps dropped for efficiency.
+Vendor-documented prose default (Gemini 3 series, `GOOGLE-GEMINI-3-DEV-GUIDE`, read second-hand, 2026-09-03; the vendor scopes the statement to the whole series, so any Gemini 3.x release matches): "By default, Gemini 3 is less verbose and prefers providing direct, efficient answers"; a conversational persona appears only when prompted. Handling: terse and unadorned is this series' default, so brevity is not evidence of a human here; check density in the other direction — required caveats and next steps dropped for efficiency.
 
 ---
 

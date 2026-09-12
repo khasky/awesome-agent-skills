@@ -2,7 +2,7 @@
 
 Covers issue tickets, tasks, work orders, and bug reports you file (replies to them are `dev-replies.md`). Short-answer weighting.
 
-Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (MIT); the tells are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
+The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
 
 ## Human baseline
 

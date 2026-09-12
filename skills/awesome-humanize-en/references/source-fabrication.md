@@ -32,9 +32,7 @@ The DOI is well-formed and resolves, but it opens a completely different article
 
 Example from a Wikipedia "Ohm's law" article:
 
-> M. E. Van Valkenburg, "The validity and limitations of Ohm's law in non-linear circuits",
-> Proceedings of the IEEE, vol. 62, no. 6, pp. 769–770, Jun. 1974.
-> doi:10.1109/PROC.1974.9547
+> M. E. Van Valkenburg, "The validity and limitations of Ohm's law in non-linear circuits", Proceedings of the IEEE, vol. 62, no. 6, pp. 769–770, Jun. 1974. doi:10.1109/PROC.1974.9547
 
 The DOI resolves. But it lands on an article about methods for solving transient and dynamic stability problems, which has nothing to do with Ohm's law.
 
@@ -61,8 +59,7 @@ The AI cites an article with a specific year, but by that date the author was al
 
 Example from a Wikipedia "Ohm's law" article:
 
-> C. L. Fortescue, "Ohm's Law in alternating current circuits",
-> Proceedings of the IEEE, vol. 55, no. 11, pp. 1934–1936, Nov. 1967.
+> C. L. Fortescue, "Ohm's Law in alternating current circuits", Proceedings of the IEEE, vol. 55, no. 11, pp. 1934–1936, Nov. 1967.
 
 Charles LeGeyt Fortescue died in 1936, 31 years before the cited publication date. A fabrication.
 
@@ -76,8 +73,7 @@ The AI cites a book as the source for a specific claim, but gives no page number
 
 Example:
 
-> R. C. Dorf, J. A. Svoboda, "Introduction to Electric Circuits" (8th ed.).
-> Hoboken, NJ: John Wiley & Sons, 2010. ISBN 9780470521571.
+> R. C. Dorf, J. A. Svoboda, "Introduction to Electric Circuits" (8th ed.). Hoboken, NJ: John Wiley & Sons, 2010. ISBN 9780470521571.
 
 The book is real. But the claim in the text is a single sentence, while the book runs to 800 pages. To verify it, you would have to read the whole thing.
 

@@ -1,32 +1,17 @@
 # Lexicon of machine-writing tells
 
-The one word and phrase inventory for the whole collection. Every skill that
-bans a word bans it from here: the pattern files in this folder carry the
-*shapes*, this file carries the *vocabulary*, and a skill that acts on a word
-cites a section instead of keeping a copy to drift.
+The one word and phrase inventory for the whole collection. Every skill that bans a word bans it from here: the pattern files in this folder carry the *shapes*, this file carries the *vocabulary*, and a skill that acts on a word cites a section instead of keeping a copy to drift.
 
-Sweeping it is a search, not a program: take the entries of the sections whose scope matches the text in front of
-you, search for each with whatever tool the environment gives you, and read every hit in place. The entries are
-written in base form and each covers its family, so search for the stem rather than the exact spelling — the
-word boundary at the start is what keeps a compound that merely contains the stem out of the results.
+Sweeping it is a search, not a program: take the entries of the sections whose scope matches the text in front of you, search for each with whatever tool the environment gives you, and read every hit in place. The entries are written in base form and each covers its family, so search for the stem rather than the exact spelling — the word boundary at the start is what keeps a compound that merely contains the stem out of the results.
 
 ## How to read it
 
 Two axes decide whether a hit is a finding.
 
-- **Tier** is density. Tier 1 is flagged on sight; Tier 2 only when two or more
-  share a paragraph; Tier 3 only at high density (about 3% of running words).
-  The sections below the tiers are out regardless of density.
-- **Scope** is in each section heading: `prose` (documents, posts, articles,
-  release notes), `comment` (comment text of any language), `commit` (the prose
-  of a commit message). An entry binds in its scope only — a word banned in a
-  comment can be ordinary in an article, and the reverse.
+- **Tier** is density. Tier 1 is flagged on sight; Tier 2 only when two or more share a paragraph; Tier 3 only at high density (about 3% of running words). The sections below the tiers are out regardless of density.
+- **Scope** is in each section heading: `prose` (documents, posts, articles, release notes), `comment` (comment text of any language), `commit` (the prose of a commit message). An entry binds in its scope only — a word banned in a comment can be ordinary in an article, and the reverse.
 
-Every entry is one backticked span at the head of its bullet, with the plain word it displaces after the dash. An
-entry is written in its base form and covers its family (`-s`, `-es`, `-ed`, `-ing`) unless a variant carries a
-distinct honest sense. A phrase or a hyphenated compound turns up written both ways, so read a space and a hyphen as
-the same thing when you search for one.
-carries a distinct honest sense.
+Every entry is one backticked span at the head of its bullet, with the plain word it displaces after the dash. An entry is written in its base form and covers its family (`-s`, `-es`, `-ed`, `-ing`) unless a variant carries a distinct honest sense. A phrase or a hyphenated compound turns up written both ways, so read a space and a hyphen as the same thing when you search for one. carries a distinct honest sense.
 
 ## Tier 1 (prose)
 
@@ -239,10 +224,7 @@ Each is a plain *is*.
 
 ## Borrowed diction (comment, commit)
 
-The register of a model describing code; a developer typing the same comment
-uses the plain verb. Scope matters more here than anywhere else on this page:
-each of these is ordinary English in a document and ordinary vocabulary in some
-products, so outside comment text and message prose they are not findings.
+The register of a model describing code; a developer typing the same comment uses the plain verb. Scope matters more here than anywhere else on this page: each of these is ordinary English in a document and ordinary vocabulary in some products, so outside comment text and message prose they are not findings.
 
 - `honored` — applied, enforced, respected
 - `honoured` — applied, enforced, respected
@@ -252,32 +234,14 @@ products, so outside comment text and message prose they are not findings.
 
 ## Shapes that travel with the vocabulary
 
-Named here so a skill can cite one place, defined in full by the pattern files
-in this folder: negative parallelism (not only X but also Y; it's not just X,
-it's Y; more than just X; not so much X as Y; mirrored "X, not Y"), the forced
-rule of three, the "from X to Y" range used for drama, circular definitions,
-noun stacking, and the vague positive ending. `language-patterns.md` carries
-their numbers, their before-and-after shape and their false-positive
-boundaries.
+Named here so a skill can cite one place, defined in full by the pattern files in this folder: negative parallelism (not only X but also Y; it's not just X, it's Y; more than just X; not so much X as Y; mirrored "X, not Y"), the forced rule of three, the "from X to Y" range used for drama, circular definitions, noun stacking, and the vague positive ending. `language-patterns.md` carries their numbers, their before-and-after shape and their false-positive boundaries.
 
 ## False positives
 
-The word is not the signal; the mismatch between register and genre is. A
-humanities text that delves into an archive, a product whose feature genuinely
-mints tokens, a diff tool whose contract is verbatim output, a quotation, a
-test title, a locale catalog, product data, an identifier: each keeps its word.
-`false-positives.md` carries the boundaries in full, and it outranks every
-entry above — a rewrite that strips a word out of a sentence that earned it is
-a worse defect than the word.
+The word is not the signal; the mismatch between register and genre is. A humanities text that delves into an archive, a product whose feature genuinely mints tokens, a diff tool whose contract is verbatim output, a quotation, a test title, a locale catalog, product data, an identifier: each keeps its word. `false-positives.md` carries the boundaries in full, and it outranks every entry above — a rewrite that strips a word out of a sentence that earned it is a worse defect than the word.
 
 ## Adding an entry
 
-Add the bullet here and nowhere else. A candidate needs three things: the plain
-word it displaces, evidence it appears in machine-written text across more than
-one source, and a check that it is not ordinary vocabulary in some common
-domain. An entry that fires on hand-written text more often than on generated
-text belongs in `false-positives.md`, not here.
+Add the bullet here and nowhere else. A candidate needs three things: the plain word it displaces, evidence it appears in machine-written text across more than one source, and a check that it is not ordinary vocabulary in some common domain. An entry that fires on hand-written text more often than on generated text belongs in `false-positives.md`, not here.
 
-Then read the new entry back against its own section: the scope line above it has to be true of it, and a text that a
-human wrote is the only thing that proves the entry does not fire on ordinary writing. Nothing else needs editing:
-every skill that bans a word points here rather than keeping a list.
+Then read the new entry back against its own section: the scope line above it has to be true of it, and a text that a human wrote is the only thing that proves the entry does not fire on ordinary writing. Nothing else needs editing: every skill that bans a word points here rather than keeping a list.

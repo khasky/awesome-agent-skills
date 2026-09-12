@@ -201,14 +201,11 @@ Composed to demonstrate the register — not text from the site.
 
 3 — Product landing feature blocks
 
-> Catch broken redirects before your visitors do
-> Track every redirect chain on your site and get flagged the moment one turns into a loop. No crawler to configure, no waiting for a weekly report.
+> Catch broken redirects before your visitors do Track every redirect chain on your site and get flagged the moment one turns into a loop. No crawler to configure, no waiting for a weekly report.
 >
-> Fix what actually costs you
-> Sort issues by estimated traffic at risk, not raw error count — no vanity totals, just the pages worth your afternoon. Learn more →
+> Fix what actually costs you Sort issues by estimated traffic at risk, not raw error count — no vanity totals, just the pages worth your afternoon. Learn more →
 >
-> Start in under a minute
-> No sign-up required, and absolutely free of charge.
+> Start in under a minute No sign-up required, and absolutely free of charge.
 
 4 — Academy lesson
 
@@ -220,8 +217,7 @@ Composed to demonstrate the register — not text from the site.
 >
 > Navigate to Coverage > By depth and set the filter to "4+". Let's say 40% of your pages sit 4 clicks or deeper — that's a navigation problem, not a content problem.
 >
-> TIP
-> Export the filtered view before you change anything, so you have a before-and-after to compare.
+> TIP Export the filtered view before you change anything, so you have a before-and-after to compare.
 
 5 — Docs / crawler policy
 

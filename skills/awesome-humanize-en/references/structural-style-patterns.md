@@ -140,22 +140,15 @@ Addendum. English Wikipedia's "Signs of AI writing" flags a neighboring pattern 
 
 ### 21a. 🔴 Boilerplate section headings
 
-> Note on this slot. In humanizer-ru, #21a covered "Title Case in Russian headings" — a calque of the English convention forced onto Russian, where it does not belong. In English, Title Case in headings is normal and is not a tell; it is documented in `false-positives.md` among the ineffective indicators. This slot has therefore been repurposed for the English edition to cover boilerplate section headings instead.
+> Note on this slot. Title Case in an English heading is normal and is not a tell — it sits in `false-positives.md` among the ineffective indicators. The slot covers boilerplate section headings instead.
 
 Problem. The model reaches for the same generic, templated section headings no matter the subject — "Introduction", "Conclusion", "Key Takeaways", "Final Thoughts", "In Summary", "Overview", "Understanding X", "The Importance of X" — and pours every article into one identical skeleton: Introduction → Key Features (bullets) → Benefits (bullets) → Conclusion. A piece on espresso machines and a piece on tax law come out with the same scaffolding.
 
 Example (AI style):
-> # Understanding Widgets
-> ## Introduction
-> ## Key Features
-> ## Benefits
-> ## Conclusion
+> # Understanding Widgets ## Introduction ## Key Features ## Benefits ## Conclusion
 
 After:
-> # How the widget assembly line was rebuilt in 2023
-> ## Why the old jig kept jamming
-> ## The two-week retooling
-> ## What the line looks like now
+> # How the widget assembly line was rebuilt in 2023 ## Why the old jig kept jamming ## The two-week retooling ## What the line looks like now
 
 Markers:
 - Generic boilerplate heading words ("Introduction", "Overview", "Key Takeaways", "Final Thoughts", "In Summary", "The Importance of…", "Understanding…") in place of headings that name real content.

@@ -2,7 +2,7 @@
 
 Covers changelogs, GitHub Releases, version announcements, and short launch posts. Short-answer weighting for a changelog; article-like weighting (`structure-pass.md` too) for anything longer.
 
-Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (MIT); the tells are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
+The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
 
 ## Human baseline
 

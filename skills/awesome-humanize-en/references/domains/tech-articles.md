@@ -2,7 +2,7 @@
 
 Covers engineering blog posts, tutorials, architecture write-ups, experience reports. The richest domain: article-like weighting, the discourse pass in `structure-pass.md` (#26–31), and the full sentence-level catalogs.
 
-Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (MIT); the tells are editorial heuristics, not measured findings, except where `sources.md` says otherwise. The four tells marked (9a–9d) also live in `content-patterns.md` as patterns, so they count toward the tell total.
+The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise. The four tells marked (9a–9d) also live in `content-patterns.md` as patterns, so they count toward the tell total.
 
 ## Human baseline
 

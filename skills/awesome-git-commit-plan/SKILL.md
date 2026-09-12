@@ -70,8 +70,7 @@ Shell. Detect the platform before running anything (`uname -s`, or `$IsWindows` 
 4. Detect the gates. The commands the verification ladder will run, read from the repository rather than assumed:
    - build or compile: `package.json` scripts, `cargo build`, `go build ./...`, `tsc --noEmit`, `mvn -q compile`, `dotnet build`, a `Makefile` target
    - test: the runner the repository actually configures
-   - lint and format: only when the repository enforces them in CI or a hook
-   Record each gate's exact command and whether it is available on this machine. A gate that cannot run is unavailable, and unavailable is reported, never counted as passed.
+   - lint and format: only when the repository enforces them in CI or a hook Record each gate's exact command and whether it is available on this machine. A gate that cannot run is unavailable, and unavailable is reported, never counted as passed.
 
 5. Size the work. Tracked path count, total lines, largest files, language mix. Above ~1500 paths or ~200k lines, switch to directory-level analysis, say so explicitly, and default to `--granularity coarse`.
 

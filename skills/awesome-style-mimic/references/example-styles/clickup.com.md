@@ -114,13 +114,11 @@ Composed to demonstrate the register — not text from the site.
 
 1 — Product hero (product / solution marketing) — fragment headline, imperative-plus-payoff lines, CTA welded to a friction remover.
 
-> Your launch plan lives in five tabs.
-> Bring it home.
+> Your launch plan lives in five tabs. Bring it home.
 >
 > Plan the sprint. Assign the owners. Watch the work move without leaving the page.
 >
-> Start free today
-> Free while you decide. No card, no sales call.
+> Start free today Free while you decide. No card, no sales call.
 
 2 — Feature block (product / solution marketing) — outcome headline, mechanics in two sentences, negative fragments, closes on the fix.
 
@@ -142,10 +140,7 @@ Composed to demonstrate the register — not text from the site.
 
 5 — Blog opener — pain question with emoji, question-answer beat, tricolon benefit, promise sentence with a parenthetical wink.
 
-> Ever opened Monday to nine tabs, three pings, and no idea which list is the real one? 😵
-> The fix? One page that owns the week. 🎯
-> It sets the priorities, holds the deadlines, and answers the "what's next" question before anyone asks it.
-> This guide walks through building that page step by step (without the color-coding spiral!). 💪
+> Ever opened Monday to nine tabs, three pings, and no idea which list is the real one? 😵 The fix? One page that owns the week. 🎯 It sets the priorities, holds the deadlines, and answers the "what's next" question before anyone asks it. This guide walks through building that page step by step (without the color-coding spiral!). 💪
 
 6 — Learn hub verdict — refuses the sale, colons doing the em dash's job, no contractions, no emoji.
 

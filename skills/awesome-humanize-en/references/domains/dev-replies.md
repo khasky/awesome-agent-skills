@@ -2,7 +2,7 @@
 
 Covers replies on pull requests and issues, code-review comments, and discussion-thread responses. Short-answer weighting: factuality, specificity, templatedness first; density and tone matter less at this length, but a short reply drowning in filler still fails density.
 
-Adapted from the domain rules of [sepia](https://github.com/Nanako0129/sepia) (MIT); the tells are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
+The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
 
 ## Human baseline
 

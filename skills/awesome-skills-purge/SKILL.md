@@ -61,10 +61,7 @@ Two traps worth naming:
 
 Prove the link handling before the destructive run (optional, ten seconds, and the one check that stands between a mistake and a deleted repository):
 
-Make a throwaway directory holding a file, point a symbolic link at it, delete the link, and read the file back: it
-has to still be there. On Windows the same proof uses a junction and the directory-delete call that removes the
-junction itself rather than its contents. Ten seconds, and it is the one check standing between a mistake and a
-deleted repository.
+Make a throwaway directory holding a file, point a symbolic link at it, delete the link, and read the file back: it has to still be there. On Windows the same proof uses a junction and the directory-delete call that removes the junction itself rather than its contents. Ten seconds, and it is the one check standing between a mistake and a deleted repository.
 
 ---
 
@@ -97,8 +94,7 @@ For `--scope project <path>`, search that path instead: `<path>/.claude/skills`,
 
 Classify every entry — this is the part that decides how it gets deleted:
 
-Per root, list every entry including hidden ones and print one line each: whether it is a link or a real directory,
-its full path, and — for a link — what it points at.
+Per root, list every entry including hidden ones and print one line each: whether it is a link or a real directory, its full path, and — for a link — what it points at.
 
 Then, for every real directory and every link target, check whether it sits inside a git work tree:
 
@@ -150,11 +146,7 @@ No explicit confirmation → stop. Everything so far was read-only.
 
 Links first, then real directories. Links first is not cosmetic: it means that at every moment a link either points at live content or is already gone, so nothing ever recurses into a half-deleted store.
 
-Two passes over the same entry list, per root, skipping anything on the keep list. First pass: every entry that is a
-link is removed as a link — the link itself, never its target, which is the whole reason for the proof
-above. Second pass: every remaining entry, now a real directory, is removed with its contents. On Windows the link
-pass uses the delete that removes a junction without recursing into it; the real pass is an ordinary recursive
-remove.
+Two passes over the same entry list, per root, skipping anything on the keep list. First pass: every entry that is a link is removed as a link — the link itself, never its target, which is the whole reason for the proof above. Second pass: every remaining entry, now a real directory, is removed with its contents. On Windows the link pass uses the delete that removes a junction without recursing into it; the real pass is an ordinary recursive remove.
 
 - `rm --` and `Get-ChildItem -Force` handle the two things that break naive loops: an entry whose name starts with `-`, and dot-prefixed entries an unforced listing skips.
 - A real directory inside a git work tree is skipped and reported, never deleted, even when the keep list does not name it.

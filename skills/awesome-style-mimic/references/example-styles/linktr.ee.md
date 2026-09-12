@@ -144,28 +144,21 @@ Composed to demonstrate the register — not text from the site.
 
 1 — Product / marketing (the atomic feature block)
 
-> Schedule smarter
-> Plan once. Post all week.
-> Your queue publishes on autopilot while you make the next thing. Set your times in a few clicks and let it run — no spreadsheets, no reminders. That's hours back every week.
+> Schedule smarter Plan once. Post all week. Your queue publishes on autopilot while you make the next thing. Set your times in a few clicks and let it run — no spreadsheets, no reminders. That's hours back every week.
 
 2 — Blog, SEO long-form (article opening)
 
-> Posting every day sounds simple until you actually run a bakery. Between early ovens, custom orders, and delivery runs, your feed is the first thing to slip. And the longer it sits quiet, the harder it feels to start again.
-> The good news? You don't need a marketing team. A handful of repeatable post ideas — and one page that holds everything you sell — can turn casual scrollers into regular customers.
+> Posting every day sounds simple until you actually run a bakery. Between early ovens, custom orders, and delivery runs, your feed is the first thing to slip. And the longer it sits quiet, the harder it feels to start again. The good news? You don't need a marketing team. A handful of repeatable post ideas — and one page that holds everything you sell — can turn casual scrollers into regular customers.
 
 3 — Blog, data and editorial (the counter-voice)
 
-> Most profile visits last under a minute. The clicks show where that minute goes.
-> Weekends behave differently. Visitors click ~2× more on a Saturday morning than on a weekday afternoon, and they go deeper — past the first link, into the catalog.
-> Attention arrives in bursts. Pages built for the burst convert it. Pages that aren't watch it pass.
+> Most profile visits last under a minute. The clicks show where that minute goes. Weekends behave differently. Visitors click ~2× more on a Saturday morning than on a weekday afternoon, and they go deeper — past the first link, into the catalog. Attention arrives in bursts. Pages built for the burst convert it. Pages that aren't watch it pass.
 
 4 — Help center (task orientation, steps, completion line)
 
 > Add a booking link to your page — whether you run a studio, a salon, or a one-person consultancy. Once it's live, visitors pick a time and you get the details, hands-free.
 >
-> 1. Open the editor and select + Add.
-> 2. Choose your booking tool and connect your calendar.
-> 3. Set your available hours and select Save.
+> 1. Open the editor and select + Add. 2. Choose your booking tool and connect your calendar. 3. Set your available hours and select Save.
 >
 > Your booking link is now live!
 >
@@ -173,14 +166,11 @@ Composed to demonstrate the register — not text from the site.
 
 5 — Policy and legal (rules in the house voice)
 
-> These guidelines exist so your page stays somewhere people can trust. They work alongside our Terms, and by keeping a page here you're agreeing to follow both — so take a few minutes with them.
-> Most of it is common sense. Don't use your page to mislead people, impersonate someone else, or sell what you can't deliver. You may promote your own work; you may not run scams or spam.
-> A few rules have no soft edges. Content that harms children is removed and reported, every time.
+> These guidelines exist so your page stays somewhere people can trust. They work alongside our Terms, and by keeping a page here you're agreeing to follow both — so take a few minutes with them. Most of it is common sense. Don't use your page to mislead people, impersonate someone else, or sell what you can't deliver. You may promote your own work; you may not run scams or spam. A few rules have no soft edges. Content that harms children is removed and reported, every time.
 
 6 — Creator report (the loosest register)
 
-> Nobody started making things because they love feeding an algorithm. The feed wants more, the metrics want whatever they want this week, and you just want to finish the thing you started.
-> So here's the short version. Make what you'd make anyway. Charge what it's worth. Keep it somewhere one link can carry. The rest is noise — and noise doesn't pay rent.
+> Nobody started making things because they love feeding an algorithm. The feed wants more, the metrics want whatever they want this week, and you just want to finish the thing you started. So here's the short version. Make what you'd make anyway. Charge what it's worth. Keep it somewhere one link can carry. The rest is noise — and noise doesn't pay rent.
 
 ## Rewrite instructions
 

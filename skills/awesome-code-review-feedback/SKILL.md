@@ -108,8 +108,7 @@ Read the thread and the maintainers' other replies first and match that register
 When there are several feedback items:
 
 1. Clarify anything unclear first.
-2. Order: Address blocking issues (breaks, security) first, then simple fixes (typos, imports), then larger changes (refactors, logic).
-   For low-priority/nit items, don't silently do or skip them — list them numbered and ask which to address ("1, 3", "all", "none").
+2. Order: Address blocking issues (breaks, security) first, then simple fixes (typos, imports), then larger changes (refactors, logic). For low-priority/nit items, don't silently do or skip them — list them numbered and ask which to address ("1, 3", "all", "none").
 3. Handle related comments — Fixing a high-severity root comment often auto-resolves the lower-severity ones that depend on it. Process in severity order, and before implementing each lower item re-check whether it still applies — don't fix a nit the root fix already made moot.
 4. Test each fix — Run tests after each logical change; avoid one big batch with a single test at the end.
 5. Verify no regressions — Full test suite (and smoke test if applicable) before marking feedback "addressed."

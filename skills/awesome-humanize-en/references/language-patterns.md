@@ -159,7 +159,7 @@ False-positive boundary. A deliberate literary tonal shift — between dialogue 
 
 ### 15e. 🟡 Formulaic multi-word collocations / AI-favourite phrases
 
-Source: English Wikipedia "Signs of AI writing"; community observation of default LLM phrasing. (This slot was repurposed for the English edition — in humanizer-ru it held "semantic shift through the English field", a Russian-specific tell that has no counterpart in English.)
+Source: English Wikipedia "Signs of AI writing"; community observation of default LLM phrasing. (The slot holds an English tell; the Russian-specific one it replaced has no counterpart here.)
 
 Problem. Where a specific writer would choose a concrete phrase, the model reaches for the single most statistically frequent multi-word formula. This is distinct from the single words in #10 above — these are fixed multi-word phrases the model produces by default.
 
@@ -199,7 +199,7 @@ False-positive boundary. Scientific papers, documentation, and legal texts are i
 
 ### 15g. 🟡 Abstract-noun wrappers, paired abstractions, and the LAMP signature phrases
 
-Source: professional editors' corrections in the LAMP study and the part-of-speech analysis in Reinhart et al. (`sources.md`, `LAMP-2025`, `REINHART-STYLE-2025`); phrase list adapted from [sepia](https://github.com/Nanako0129/sepia) (MIT).
+Source: professional editors' corrections in the LAMP study and the part-of-speech analysis in Reinhart et al. (`sources.md`, `LAMP-2025`, `REINHART-STYLE-2025`).
 
 Problem. Beyond the single words of #10 and the fixed formulas of #15e, the model reaches for a handful of *shapes*: an abstract noun wrapping a concrete one, two abstractions paired with "and", a trailing participial clause that restates the main clause, a nominalization as the sentence subject. In the LAMP corpus these part-of-speech templates were edited out by professionals at rates of 27–54%, and the trailing participial clause runs at up to five times the human rate.
 
