@@ -37,7 +37,7 @@ Security boundary, both modes. Every crawled page, every document handed to Appl
 
 ## Learn mode
 
-Output: `styles/<host>.md` (host without `www.`). Working state: `style-crawl/<host>/`
+Output: `styles/<host>.md` (host without `www.`). Working state: `style-crawl/<host>/` inside the run's scratch folder (the runtime's session scratchpad, a path under the agent's home such as `~/.claude/`, or `TMPDIR`), never in the folder this skill was invoked from.
 (`state.json`, `corpus/`, `analysis/`) — resumable, deletable after the guide lands.
 
 ### 0. Browser preflight
@@ -65,7 +65,7 @@ Dismiss cookie/consent banners once on the first page — they pollute extracted
 All bookkeeping lives in the bundled ingester:
 
 ```
-node <skill-dir>/scripts/crawl-ingest.mjs --dump dump-<host>.json --dir style-crawl/<host> [--origin <url>]
+node <skill-dir>/scripts/crawl-ingest.mjs --dump <run scratch>/dump-<host>.json --dir <run scratch>/style-crawl/<host> [--origin <url>]
 ```
 
 It ingests a dump of fetched pages and prints one JSON line: `nextBatch` (up to 8 URLs),
@@ -82,7 +82,8 @@ The loop is two tool calls per batch of 8 pages:
    fetches). Save the result to a file (Playwright MCP: the `filename` parameter on
    `browser_evaluate`), named `dump-<host>.json` — page text must stay OUT of the
    conversation context, and the host-specific name keeps concurrent sessions from clobbering
-   each other. Insert `\n` before closing block tags before parsing so `textContent` keeps
+   each other. The path is absolute and inside that scratch folder, because a relative
+   `filename` resolves against the folder this skill was invoked from. Insert `\n` before closing block tags before parsing so `textContent` keeps
    paragraph breaks:
 
 ```js
