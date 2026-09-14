@@ -136,7 +136,11 @@ The test: delete every sentence that is about the source document rather than th
 
 ## Numbers
 
-A number that is the payoff is written in digits: a size, a speed, a ratio, a price, a score, a count that is itself the claim. Digits are what the eye catches in a feed, and the number is usually the reason the sentence exists; spelling it out smears the one thing that should land. Spelled-out numbers belong to small incidental counts inside a sentence, where no reader is scanning for them. Idioms stay idioms.
+A number that is the payoff is written in digits: a size, a speed, a ratio, a price, a score, a count that is itself the claim. Digits are what the eye catches in a feed, and the number is usually the reason the sentence exists; spelling it out smears the one thing that should land.
+
+Every count of a technical thing is digits too, however incidental the count looks in the sentence: `3 agents` and not `three agents`, `2 folders` and not `two folders`, `4 languages` and not `four languages`. Tools, agents, files, folders, repositories, platforms, services, machines, versions, columns, flags, endpoints, steps and runs are all technical things, and a reader scanning a feed for the shape of a setup finds a digit and skips a word. There is no incidental-count carve-out: the moment the noun after the number is technical, the number is a numeral, and it makes no difference that the count is small or that the sentence is about the author rather than about the product. The gate counts a spelled-out number standing in front of a technical noun.
+
+What stays spelled out is the language people speak when they are not counting equipment: idioms (`one of the few`, `second nature`), an ordinal inside a phrase (`the first thing I would check`), and a quantity that counts nothing technical (`a couple of weeks`, `half an afternoon`, `both halves`). And a count that is vague on purpose stays vague: `several folders` is honest where the author did not count, and inventing `3 folders` for the look of precision is a fabrication, not a fix.
 
 The word for a number is number. "Figure" is report register, and it is the word a run reaches for every time it hands a number back to whoever measured it, so the same clause arrives in post after post. Once in a post is the ceiling and none is usually better: the count, the score, the rate, the reading, the price, or simply what the project measured.
 
