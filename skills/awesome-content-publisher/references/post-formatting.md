@@ -78,6 +78,7 @@ Run all of it, in the composer, before the submit click. Every item is here beca
 5. Attachment count equals what the post file declares.
 6. No `�` anywhere.
 7. Every backticked span in the source is a code element (or, on Patreon, a Quote block; on Tumblr, a Chat block) in the composer, and none of those spans contains an `a[href]`. Stripping the backticks for a plain-text class is right for `x`, `mastodon` or `bluesky`, where nothing renders; it is wrong for a rich editor, where the bare command gets autolinked from the `https://` inside it — Patreon and Tumblr both shipped `pip install -e 'git+https://…[fetch]'` with a dead anchor and the closing quote inside it. Count code spans against the source the way attachments are counted.
+8. Every dotted token the source writes as a word — `CLAUDE.md`, `AGENTS.md`, `culture.md`, anything shaped like `name.tld` — is still that word in the composer. Some platforms autolink it as a hostname AND rewrite what the reader sees: Bastyon published `culture.md` as `http://culture.md`, a live anchor to a host that does not exist, in a sentence the author never wrote. Wrap those tokens in code spans in the post file before the run reaches any composer (item 7 then carries them through the rich editors, and the plain-text strip leaves the word bare and safe), and search the filled composer for `http://` or `https://` prefixes the source does not contain.
 
 A failure here is a fix in the composer, never a publish followed by a repair.
 

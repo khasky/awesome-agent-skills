@@ -150,6 +150,8 @@ Developer community feed. Small platform whose conventions are best read from it
 ### hackernoon
 Long-form article platform with editorial review — a submitted draft is not a published post, and the campaign schedule must treat it as submission time, not publication time. Markdown editor. Frequency: articles per campaign, never per day.
 
+The story description the editor demands before submission is capped at 160 characters and says so only as an overshoot (`269 of 160`). Write it at 160 or under here, in the post file, rather than leaving the publishing stage to cut the author's sentence at a composer it cannot scroll to.
+
 ### devto
 Long-form markdown articles with front-matter tags and canonical-URL support (set it if the article mirrors the user's blog). Community norms favor tutorials and experience reports over announcements; an announcement dressed as neither reads as spam. Frequency: articles per campaign.
 
