@@ -4,19 +4,7 @@ The output contract and the two numbers every platform version is checked agains
 
 ## The canonical platform set
 
-One run produces exactly these 25 platforms, one file each, nothing else. No README and no notes file.
-
-```text
-linkedin        bluesky         bastyon
-facebook-wall   wonderful-dev   devto
-threads         truthsocial     hashnode
-instagram       peerlist        hackernoon
-pinterest       minds           medium
-x               patreon         daily-dev
-tumblr          ko-fi           lemmy
-mastodon        buymeacoffee    substack
-reddit
-```
+The set is the canonical table in `awesome-content-campaign`'s `references/platforms.md`, which is the single source of the platform vocabulary: every row on it, one file each, nothing else, and no README or notes file beside them. A platform joins a run by gaining a row there, never by being listed again here — this file carries only what is countable per platform, so a slug with a band below and no row on that table is a defect in this file rather than a platform the run may write for.
 
 Filenames follow the publisher's contract, which is Phase 6's business and is stated there: a dated prefix, the publication timezone, the title slug, and the platform slug verbatim from the table in `awesome-content-campaign`'s `references/platforms.md`. A sequence number is never part of a filename — the date carries the ordering, and a numbered set cannot be merged with a second run or rescheduled without renaming every file in it.
 
@@ -49,6 +37,9 @@ The band each platform's version is written to. Write inside the range and aim n
 | --- | --- | --- | --- |
 | `linkedin` | 600–1200 | 930 | Authored professional commentary. Hook, mechanism, caveat, takeaway. |
 | `facebook-wall` | 900–1500 | 1205 | Broader and plainer than LinkedIn. Explain the jargon. |
+| `facebook-group` | 700–1300 | 950 | A post in a room somebody else moderates: the value first and the promotion named as such. Publication is not instant where the group queues posts for an admin. |
+| `vk-wall` | 600–1100 | 850 | The register of `facebook-wall` in shorter paragraphs; the feed folds a long post behind a see-more control. |
+| `telegram` | 500–900 | 700 | A channel message read on a phone: one idea, short lines, the link last. A post that carries an image is bound by the caption limit rather than the message limit, so that number is checked live before the file is written. |
 | `threads` | 350–475 | 388 | One strong idea, compact structure, a URL, one topic tag. |
 | `instagram` | 500–720 | 620 | A caption read under the picture, nearer a status than an essay: the point, one mechanism or number, the caveat. Whitespace, and body links are dead here. |
 | `pinterest` | 200–400 | 320 | A saveable reference summary: title, three to five facts, URL. |
@@ -72,6 +63,10 @@ The band each platform's version is written to. Write inside the range and aim n
 | `lemmy` | 800–1600 | 1030 | Community register, ends on a real question. |
 | `substack` | 4000–8000 | 5907 | Newsletter essay with a thesis line. No hashtag footer. |
 | `reddit` | 1100–2200 | 1515 | Least promotional variant, no hashtags, ends on a genuine question. |
+| `quora` | 1200–2600 | 1900 | An explainer for a reader who arrived from a search result: define the term where it first appears, keep the mechanism, close on a real question. No title field, so the first sentence carries the headline and the permalink. |
+| `hackernews` | 500–1200 | 800 | A text submission is a discussion opener, not a post: flat register, no emoji, no tags, no media, and the title doing most of the work. |
+| `write-as` | 1800–4500 | 3000 | A plain blog post whose markdown renders. There is no feed to be found in, so it is written as the piece another post can point at. |
+| `telegraph` | 2500–6000 | 4000 | The same depth as `medium` on a permanent page with no feed, no tags and no comments, editable afterwards only from the browser that published it. |
 
 Depth comes from mechanism, examples, caveats and implications. Padding to reach a band is the same defect as undershooting it: a `buymeacoffee` post of 400 characters and one of 5000 characters of filler both fail.
 
@@ -112,10 +107,10 @@ How technical a version gets is a property of the platform's readers, and it is 
 
 | Level | Carries | Platforms |
 | --- | --- | --- |
-| concept | the mechanism in words, no code | `pinterest`, `instagram`, `facebook-wall`, `truthsocial` |
-| command | one inline command, flag, setting or identifier | `x`, `bluesky`, `threads`, `mastodon`, `peerlist`, `minds`, `bastyon`, `linkedin` |
-| snippet | one short fenced block or configuration excerpt | `tumblr`, `lemmy`, `reddit`, `daily-dev`, `wonderful-dev`, `patreon`, `ko-fi`, `buymeacoffee` |
-| code | full examples, several blocks, the setup around them | `devto`, `hashnode`, `hackernoon`, `medium`, `substack` |
+| concept | the mechanism in words, no code | `pinterest`, `instagram`, `facebook-wall`, `facebook-group`, `truthsocial` |
+| command | one inline command, flag, setting or identifier | `x`, `bluesky`, `threads`, `mastodon`, `peerlist`, `minds`, `bastyon`, `linkedin`, `vk-wall`, `telegram`, `quora` |
+| snippet | one short fenced block or configuration excerpt | `tumblr`, `lemmy`, `reddit`, `daily-dev`, `wonderful-dev`, `patreon`, `ko-fi`, `buymeacoffee`, `hackernews`, `telegraph` |
+| code | full examples, several blocks, the setup around them | `devto`, `hashnode`, `hackernoon`, `medium`, `substack`, `write-as` |
 
 The topic can raise a version one level and never lowers it below the platform's own, and it never goes past what the platform renders. A post whose whole point is an install step carries its one command on a concept platform, as plain text; a post about a security advisory carries the advisory's identifier on every platform; a code-level source still gets a concept-level `instagram` version, because a code block there is a screenshot of nothing. The level decides what kind of material goes in, and the band decides how much of it.
 
@@ -124,7 +119,7 @@ The topic can raise a version one level and never lowers it below the platform's
 The count per platform comes from the hashtag table in `awesome-content-campaign`'s `references/platforms.md`, which is the single source. Three rules bind here:
 
 - `peerlist` carries none. The composer states it in words, and a tag line spends the 480-character budget on text that has to be deleted before submitting.
-- `medium`, `substack`, `hackernoon` and `reddit` carry no hashtag footer. The first three take topics in their own field; Reddit has no tag system at all and a tag block marks the post as imported spam.
+- `medium`, `substack`, `hackernoon`, `reddit` and `quora` carry no hashtag footer. The first three take topics in their own field; Reddit and Quora have no tag system a post can enter at all, and a tag block there marks the post as imported spam.
 - `daily-dev` is never given a forced footer.
 
 ## Code and commands

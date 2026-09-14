@@ -12,6 +12,8 @@ Reader state. A regular of the room, reading with the room's own memory: they ha
 
 Fetch and read the target's own rules (subreddit sidebar and wiki, community sidebar on `lemmy`, the group's pinned rules, the server's `#rules` channel, the site guidelines for `hackernews`), plus the last screen of what natives post there. A community that bans self-promotion, requires a participation ratio, mandates flair, or confines promo to one channel is a hard constraint: report it to the user and offer a different target rather than writing a post moderators will remove. `hackernews` additionally has its own form for a self-authored product (`Show HN:`), with its own expectations — a working thing and the author present in the comments.
 
+Two of the rows that name this file default to the author's own surface rather than a room somebody else moderates: `daily-dev`'s direct post and `quora`'s personal post. There the rules to read are the platform's own guidelines, and the genre still holds, because the reader arrives from a feed or a search result rather than from following the author, and judges a marketing cadence exactly as a community would. Only a named squad or a named Space puts a moderator between the post and the page.
+
 ## AI tells in this genre
 
 | Tell | Fix |

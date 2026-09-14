@@ -17,6 +17,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `linkedin` | linkedin.com | — | optional | `genre-micro-post.md` |
 | `reddit` | reddit.com | subreddit | optional | `genre-community-post.md` |
 | `lemmy` | any Lemmy instance | instance domain + community | optional | `genre-community-post.md` |
+| `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | `genre-community-post.md` |
 | `tumblr` | tumblr.com | — | optional | `genre-micro-post.md` |
 | `mastodon` | any Mastodon instance | instance domain | optional | `genre-micro-post.md` |
 | `bluesky` | bsky.app | — | optional | `genre-micro-post.md` |
@@ -83,6 +84,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `hashnode`, `medium`, `hackernoon`, `substack` | up to 5 | the platform's own tag/topic field | Medium's publish panel states the five-topic cap in the UI. A body tag line is not the mechanism on any of them. |
 | `peerlist` | none — refused | — | The composer says so in words: *"We don't support hashtags (yet)."* A tag line must be dropped before submitting. |
 | `reddit`, `lemmy`, `hackernews` | none | — | No hashtag system at all. Flair (reddit) and the title do this job; a tag block marks the post as imported spam. |
+| `quora` | none | — | Topics attach to questions, not to posts, and the composer offers no tag field. A post is filed by the profile or the Space it went to. |
 | `wonderful-dev`, `daily-dev` | 0–4 | body | Developer feeds where a short tag line is native but optional. |
 | `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
 | `write-as`, `telegraph` | none | — | Plain publishing surfaces with no tag index to feed. |
@@ -111,6 +113,13 @@ Reddit refuses the agent's fetcher outright, on `www.reddit.com` and `old.reddit
 Federated link-and-discussion aggregator, reddit-shaped: title + markdown body or a link submission, per-community rules, no hashtags, votes and moderators. The instance is part of the address — `lemmy.world` is the largest but one among many, and a community name means nothing without it. Target detail required: instance domain and community; read that community's sidebar rules for self-promotion limits before writing, exactly as with a subreddit. Small, technically literate audience that reads marketing register as an intrusion.
 
 The instance and the community are two different questions, and only the second one is usually open. A user with an account has exactly one instance, so once they have named it the run stops offering alternatives; what remains is which community on it. That list is read from the instance itself, never guessed, and Lemmy's own API answers it from a logged-in tab on that domain: `/api/v3/community/list?type_=Local&sort=TopAll&limit=50` for what the instance carries, and `/api/v3/search?q=<topic>&type_=Communities&listing_type=Local` for the ones matching this post's subject. Both return subscriber and post counts, so the options can be offered ranked by fit with the size that makes them choosable — on `lemmy.world` a post about a model release meets `technology` at 87k subscribers, `machinelearning` at 1.2k and `fosai` at 4.8k, and that spread is the actual decision. Offer the topical matches alongside the large general community, because the big one is not always the right room.
+
+### quora
+A post, not an answer. Three things can be written here — a question, an answer under somebody else's question, and a post — and a campaign publishes the third: the home composer's `Post` control opens Create Post, and its audience defaults to `Everyone`, which means the author's own profile rather than a Space. A Space is somebody else's room with its own moderators, and a non-contributor's submission there sits in an approval queue, so a Space is posted to by name and never on the run's initiative.
+
+There is no title field, and that has a consequence the other platforms do not have: the permalink is built from the opening words of the body (`quora.com/profile/<handle>/<the first words of the post>`), so the first sentence is the headline, the URL and the feed preview at once.
+
+The audience arrives from search, reading around a question rather than following the author, which is the same reason `reddit` and `lemmy` take the community register: explain the term where it is first used, and hand the thread back at the end. No hashtags.
 
 ### tumblr
 Casual, personality-forward register. Tags are a separate field, not inline hashtags, and drive discovery. Long or short both native; images and GIFs at home here.

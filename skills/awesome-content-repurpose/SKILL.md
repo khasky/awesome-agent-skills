@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Turns one existing text — a URL, a file, or pasted notes — into platform-native posts for a canonical set of 25 platforms: source notes every claim traces back to and verifies, an interview for platforms, voice and length, an opener catalog and paragraph-shape rules that keep posts from reading as generated, hard character caps and a per-platform depth band each version is written to, a two-stage anti-slop audit, one dated file per platform in the format awesome-content-publisher reads. Use when asked to repurpose an article into posts, adapt a text for named platforms, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), or to build the voice profile (awesome-content-voice)."
+description: "Turns one existing text — a URL, a file, or pasted notes — into platform-native posts for every platform on one canonical table: source notes every claim traces back to and verifies, an interview for platforms, voice and length, an opener catalog and paragraph-shape rules that keep posts from reading as generated, hard character caps and a per-platform depth band each version is written to, a two-stage anti-slop audit, one dated file per platform in the format awesome-content-publisher reads. Use when asked to repurpose an article into posts, adapt a text for named platforms, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), or to build the voice profile (awesome-content-voice)."
 license: MIT
 metadata:
   author: Khasky
@@ -17,7 +17,7 @@ The rule that makes this skill different from writing posts from scratch: the so
 This skill owns the repurposing craft and orchestrates the rest. Two of its own reference files carry what every run is checked against, and both are read before a line is written:
 
 - `references/authored-style.md` — the register, as countable patterns: the seven opening shapes that work, the five that are banned, the rule that the chosen persona is present in the opening of every post rather than in half of them, the three product-as-subject shapes that are banned outright, the literal read a hook has to survive, the headline shapes that fail on sight, the ban on crowning a single favourite, the closing that hands the thread back instead of restating the post, the specifics first person has to be paid for with, the ASCII-only rule for diagrams, and the paragraph-shape rules that keep a post from turning into a stack of one-line fragments.
-- `references/platform-specs.md` — the 25-file output contract, the hard character caps, and the depth band each platform's version is written to.
+- `references/platform-specs.md` — the output contract, the hard character caps, and the depth band each platform's version is written to.
 - `references/fidelity.md` — the source-notes format with its IDs and positions, the claims ledger, the checks made in a fresh context, the shape of a finding, the drift check that proves a wording fix changed nothing, and the rewrite budget.
 - `references/run-memory.md` — what persists between runs: the defaults, the rules learned from the user's corrections, the sources already run, the backlog of unused ideas, and what the user's best posts are allowed to teach.
 
@@ -82,9 +82,9 @@ Then the answers. When `repurpose/defaults.md` exists from an earlier run, the i
 
 The full interview, on a first run or a reset:
 
-1. Platforms — the default is the canonical set of 25 in `references/platform-specs.md`, and the run asks whether the user wants all of them before it asks which ones. The realistic answer is "all", so the first question is a single one — write for the whole set, or trim it — with "all of them" the recommended option and the count stated (`All 25`). Only when the user chooses to trim does the checkbox pass run, split across several questions because the question UI caps options per question, and phrased as removing rather than adding (`Untick anything you do not want`). This ordering exists because the UI has no pre-checked state to give: a bare checkbox list makes the common answer the most laborious one, twenty-six ticks to say "everything", which is the shape that gets abandoned halfway.
+1. Platforms — the default is every row of the canonical table in `awesome-content-campaign`'s `references/platforms.md`, the single source both this skill and the publisher read; `references/platform-specs.md` carries the numbers for each of them and adds none of its own. The run asks whether the user wants all of them before it asks which ones. The realistic answer is "all", so the first question is a single one — write for the whole set, or trim it — with "all of them" the recommended option and the count stated as `All <n>`, with n counted off that table in this run rather than carried in this sentence, where it would go stale the first time a platform is added. Only when the user chooses to trim does the checkbox pass run, split across several questions because the question UI caps options per question, and phrased as removing rather than adding (`Untick anything you do not want`). This ordering exists because the UI has no pre-checked state to give: a bare checkbox list makes the common answer the most laborious one, a tick per platform to say "everything", which is the shape that gets abandoned halfway.
 
-   The remaining slugs on `awesome-content-campaign`'s table (`vk-wall`, `telegram`, `facebook-group`, `hackernews`, `write-as`, `telegraph`) are available on request and never added on the run's initiative. Keep one open option for a platform neither list carries.
+   No slug on that table is held back for a special request: a platform the user can be published to is a platform the interview offers, because a set the run quietly narrows is a set the user cannot choose from. What varies is the target detail each one needs, collected below.
 
    Never offer a shortlist, a bundle, a "recommended set", or a subset inferred from the source, the language, or what looks like a fit — narrowing the list is a decision the user did not delegate, and a platform missing from the question is a platform they cannot choose. Keep one open option for a platform the table does not carry.
 
@@ -367,7 +367,7 @@ It also states the source-notes half of the mechanical pass with its finding cou
 - Rendering a graphic for the one platform that demanded it and shipping every other post text-only. The image was made for the idea, not for `instagram`; it belongs everywhere the platform accepts one.
 - A post built out of one-line paragraphs: a stack of fragments where a paragraph belonged, or a sequence of steps formatted as four separate blocks. Each line reads fine on its own, which is why this survives every other pass.
 - Opening on an abstract category doing something a category cannot do, on a vague event with a vague time, or on a tease that withholds the subject to build suspense.
-- Opening every post in the run on the same phrase. Variety across the seven working shapes is the rule, and it governs the wording, never whether the author is there: `I think` on twenty-six posts is a tell, twenty-six posts with a person in them is the brief.
+- Opening every post in the run on the same phrase. Variety across the seven working shapes is the rule, and it governs the wording, never whether the author is there: `I think` opening every post is a tell; a person in every post is the brief.
 - Answering the persona question with `first person` and then shipping short posts with no author in them, because the cap felt like the more careful choice. The product-as-subject sentence is what that produces, and it is the single defect this skill has shipped most.
 - A capability roll-call, a support matrix or a stack of bare bullets in a feed post. Landing-page furniture, and it carries no judgment about which of those the reader should care about.
 - Crowning one thing as a favourite, the best or the go-to. A ranking the reader cannot check, in place of the description that would have told them something.
@@ -391,7 +391,7 @@ It also states the source-notes half of the mechanical pass with its finding cou
 - Reimplementing any part of publishing, humanizing, or voice-building here instead of handing off.
 - Repurposing into a feed the ledger shows already carries this source, without telling the user.
 - Letting the whole source text into the conversation context instead of reading it from disk.
-- Re-verifying 25 platforms' caps and formats on every run when the tables already hold them and the user was never asked whether they wanted the check.
+- Re-verifying every platform's caps and formats on every run when the tables already hold them and the user was never asked whether they wanted the check.
 - Opening the user's browser to populate a target question they can answer from memory, before they asked to see their options.
 - Asking the full interview on a run whose answers are the same as last time's, when a one-screen "same as before?" would have done.
 - Verifying every claim in the source before the idea is chosen, then shipping a post that uses three of them.
