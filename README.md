@@ -14,6 +14,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Contents](#contents)
   - [Quick start](#quick-start)
   - [Install](#install)
+    - [Copies or symlinks](#copies-or-symlinks)
   - [Skills](#skills)
     - [Code review](#code-review)
     - [Code quality and refactoring](#code-quality-and-refactoring)
@@ -36,7 +37,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
 
 ## Quick start
 
-Clone once, then symlink every skill into your agents — a later `git pull` keeps them all in sync:
+Clone once, then install every skill into your agents with one command:
 
 ```bash
 git clone https://github.com/khasky/awesome-agent-skills.git
@@ -44,23 +45,32 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) symlinks all skills globally into Claude Code, Codex, and Gemini CLI, pointing them at your clone. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to write independent copies instead of symlinks.
+The [skills CLI](https://github.com/vercel-labs/skills) installs all skills globally into Claude Code, Codex, and Gemini CLI. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to force independent copies.
 
-Keep them current:
+Then confirm what you got. The CLI may link an agent's directory into its own store at `~/.agents/skills/` rather than into your clone, so up to two hops sit between the clone and the agent, and any hop can be a copy:
+
+| Shell | Check |
+| --- | --- |
+| POSIX (bash, zsh, fish) | `ls -l ~/.agents/skills` |
+| PowerShell | `Get-ChildItem ~\.agents\skills \| Select-Object Name, LinkType, Target` |
+
+A link names its target — an arrow in `ls -l`, a `Target` in PowerShell. An entry with no target is a copy, and a `git pull` in your clone will not reach it. [Copies or symlinks](#copies-or-symlinks) has what to do about that.
+
+Keep them current. Where the install linked through to your clone, one pull moves every skill:
 
 ```bash
-cd awesome-agent-skills && git pull   # updates every symlinked skill in place
+cd awesome-agent-skills && git pull
 ```
 
-Re-run the `skills add` command to pick up skills added since. Then ask the agent naturally ("review this diff against main") or invoke a skill explicitly (`/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex).
+Where it copied, `npx skills update -g` re-fetches instead. Either way, re-run the `skills add` command to pick up skills added since. Then ask the agent naturally ("review this diff against main") or invoke a skill explicitly (`/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex).
 
 Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs straight from GitHub — but it won't auto-sync with `git pull`.
 
-On Claude Code it also installs as a plugin: `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. That pulls every skill at once and updates with the plugin; the symlink above stays the better choice if you want `git pull` to move them.
+On Claude Code it also installs as a plugin: `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. That pulls every skill at once and updates with the plugin; a clone you have linked through stays the better choice if you want `git pull` to move them.
 
 ## Install
 
-The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, or to install by hand without the CLI, a skill is a folder: copy it into the directory your agent reads. Most agents also read the shared `.agents/skills/` path, so one copy can serve several tools at once. To stay in sync with `git pull`, symlink from your clone instead of copying (`ln -s`).
+The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, or to install by hand without the CLI, a skill is a folder: copy it into the directory your agent reads. Most agents also read the shared `.agents/skills/` path, so one copy can serve several tools at once. To stay in sync with `git pull`, link from your clone instead of copying — [Copies or symlinks](#copies-or-symlinks) has the command and the way to tell the two apart.
 
 | Agent | Project path | Global path | Docs |
 | --- | --- | --- | --- |
@@ -76,9 +86,28 @@ The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, 
 
 - **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
 - **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
-- Restart or reload the agent after copying so it picks up new skills.
+- Restart or reload the agent afterwards so it picks up new skills.
 
-What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version.
+What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version. The store-and-link behavior described below was confirmed on Windows with a local clone as the source — other systems, and installs from a repo URL, may link where that one copied, so run the check and trust its output over this paragraph.
+
+### Copies or symlinks
+
+A copy never breaks and never announces itself stale. It stays the version you installed, and you learn that from a skill behaving like an old one rather than from an error. That is the argument for linking, and it is worth verifying rather than assuming, because several of the paths here yield copies:
+
+- Installing straight from GitHub (`npx skills add khasky/awesome-agent-skills`) and `--copy` both copy by design.
+- A shell may answer a link request with a copy instead. Git Bash on Windows does that for `ln -s`, silently and with exit code 0, unless `MSYS=winsymlinks:nativestrict` is set.
+- With a local path as the source, `skills add` has been seen writing copies into the store even without `--copy`.
+
+Linking a skill by hand, once the copy is out of the way:
+
+| Shell | Command |
+| --- | --- |
+| POSIX | `ln -s <clone>/skills/<skill> ~/.agents/skills/<skill>` |
+| PowerShell | `New-Item -ItemType SymbolicLink -Path ~\.agents\skills\<skill> -Target <clone>\skills\<skill>` |
+
+Some systems restrict who may create a link, and some filesystems have none at all — Windows wants Developer Mode or an elevated prompt, and FAT32 volumes, certain network shares and container mounts will refuse. Where linking is unavailable, `npx skills update -g` refreshes the copies instead: it re-fetches the source, it does not follow your clone.
+
+To clear an install, `npx skills remove -g -s <name>` takes explicit skill names, one per skill (`-s "*"` removes every CLI-installed skill, including ones from other repos). Every skill here is prefixed `awesome-`, so one glob covers them when you delete the folders yourself.
 
 ## Skills
 
