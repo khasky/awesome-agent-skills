@@ -130,6 +130,22 @@ Rules, in order:
 
    When the chooser is parked and you are not ready to answer it, `browser_file_upload` with no `paths` cancels it; the script that opened it has already failed by then, so re-run that step rather than assuming it continued.
 
+7. A composer may raise no chooser at all, because it uses the File System Access API. This is rule 6's harder sibling and `bluesky` has moved to it: `window.showOpenFilePicker` opens a **browser permission prompt** ("wants to access other apps and services on this device"), not a file chooser. `browser_file_upload` refuses with *can only be used when there is related modal state present*, `waitForEvent('filechooser')` times out, and the prompt itself sits over the page blocking every later call the way any native dialog does. The diagnosis takes one probe — no `input[type=file]` anywhere including shadow roots, plus `typeof window.showOpenFilePicker === 'function'` — and the answer is to stop trying to reach a picker and hand the composer a `File` directly through a drop:
+
+   ```js
+   const r = await fetch('http://127.0.0.1:<port>/image.png');   // bytes, see below
+   const file = new File([await r.blob()], 'image.png', { type: 'image/png' });
+   const dt = new DataTransfer(); dt.items.add(file);
+   const ed = document.querySelector('[contenteditable="true"]');
+   const target = ed.closest('form') || ed.parentElement.parentElement;
+   for (const t of ['dragenter', 'dragover', 'drop'])
+     target.dispatchEvent(new DragEvent(t, { bubbles: true, cancelable: true, dataTransfer: dt }));
+   ```
+
+   Getting the bytes into the page is the only awkward part, and two obvious routes are dead ends: the `run_code` sandbox has no filesystem (rule above — `require` is undefined, and a dynamic `import` fails with `ERR_VM_DYNAMIC_IMPORT_CALLBACK_MISSING`), and a `file://` fetch is blocked. Serve the picture over `http://127.0.0.1` from a throwaway local server with `access-control-allow-origin: *` — localhost is a trustworthy origin, so an https page may fetch it — and stop the server in Phase 9. Verify the attachment by the composer's own per-image controls (`Add alt text`, `Remove image`), never by a `blob:` count, and expect none: this route never creates one.
+
+   Two limits worth knowing before reaching for it. A site with a strict `connect-src` blocks the localhost fetch — Meta's properties do, so on `threads` use its real input, which exists — and the same drop against a composer whose uploader *does* have an input is wasted effort. Try the input first; this is for the case where there is provably none.
+
 ## An upload's absence must be proven, never assumed — and retries stack
 
 A missing `blob:` src is not evidence that the upload failed. Truth Social's composer renders an attachment with no `blob:` URL anywhere, and clears `input.files` once the app has taken the file, so the two probes most people reach for — `[...document.querySelectorAll('img')].filter(x => /^blob:/.test(x.src))` and `input.files.length` — both read empty on a composer that is holding the picture perfectly well. A run that trusted them concluded "no image", retried the upload four times, and published a post with four copies of the same picture while reporting the post as text-only. Both halves of that were wrong, and the user had to delete the post.
@@ -179,6 +195,25 @@ So after the first click that changes nothing:
 3. Only then climb the click ladder.
 
 The same applies to a disabled-looking control: check `disabled`, `aria-disabled` and whether a required field elsewhere in the form is empty, before concluding the button is unreachable.
+
+## The submit's label is not unique — pick the control inside the composer
+
+The costliest single mistake of one run, four times over. `threads`, `minds`, `instagram` and `pinterest` each carry two or more elements whose text is exactly the submit's word, and on each the first match in document order is the wrong one: a header caption, a sidebar entry, a nav item, or the same verb rendered on a wrapper that no handler is bound to. Clicking it does not error. On Threads and Minds it **closed the composer and cleared the body**, which is indistinguishable from a successful publish — the composer is gone, the text is gone, and only the read-back tells you nothing was created. Each one then cost a full absence-proof cycle (three surfaces, two waits) plus a complete re-entry of the post before the real button could be found.
+
+So never take the first element whose text matches. Enumerate every candidate with its rect before clicking:
+
+```js
+const cands = await page.evaluate(() => [...document.querySelectorAll('button,[role=button],div,span')]
+  .filter(e => (e.innerText || '').trim() === 'Post')          // the exact submit word
+  .map(e => { const r = e.getBoundingClientRect();
+    return { tag: e.tagName, x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2),
+             w: Math.round(r.width), inDialog: !!e.closest('[role=dialog]') }; })
+  .filter(c => c.w > 0));
+```
+
+Then choose by these tests, in order: the one inside the composer's own dialog subtree (`inDialog`), then a real `BUTTON` over a `DIV`, then — where several remain — the lowest on screen, because a composer's commit sits at the foot of its own panel while the decoy is usually a heading above it. Threads' pair sat at `y≈114` (the dialog's title row) and `y≈931` (the commit); Minds' at `y≈718` (outside the panel) and `y≈799` (the panel's own). Clicking the higher one first is what produced both silent failures.
+
+Two corollaries. A side panel can cover the real control: Pinterest's Publish sits at the top right, and the drafts panel that opens over it swallowed a click computed from a stale rect — hit-test before clicking, as the `elementFromPoint` rule above already requires. And because the wrong control often *looks* like success, the read-back is not optional and its absence is not proof of a platform fault: before re-submitting anything, re-enumerate the candidates and check you clicked the one in the dialog.
 
 ## A tab that keeps vanishing mid-script is closed from outside — stop and ask
 
@@ -304,6 +339,8 @@ Capture the counter before composing: profile post count, album photo count, wal
 - Exactly `+1` also proves no duplicate, which is worth as much as proving the post exists.
 - Grids and feeds are lazy: an empty query result is usually "not rendered yet", not "absent". Wait and re-query, or read a paginated URL, before concluding anything.
 
+Separate a *failed submit* from a *lagging platform* before spending an absence-proof cycle on it, because the two look identical and only one of them is expensive. The cheap discriminator is what the click did: re-enumerate the controls carrying the submit's label and check the one you clicked was inside the composer (the same-label rule above). A click on the wrong control leaves the composer closed or cleared with **no network write at all** — `browser_network_requests` shows no create call — and that is a failed submit you can redo immediately, with no waiting and no duplicate risk. A real submit that has not surfaced yet shows the create request with its `2xx` and its returned id, and then the only correct action is to wait: LinkedIn took several minutes to put a published post on its own activity listing, and a run that read that gap as failure came within one click of a duplicate. Read the page's own network log — never replay the call — and let it decide which of the two you are in before any retry, any wait, or any report of a platform fault.
+
 ## Locale
 
 The user's UI can be in any language — this run met Russian Instagram and Ukrainian Facebook while the campaign was Russian and English. Match on `data-testid`, `aria-label`, and `role` first. When only text will do, use a multi-locale alternation (`/^(Next|Далее|Далі)$/`) and never a bare English literal.
@@ -311,6 +348,7 @@ The user's UI can be in any language — this run met Russian Instagram and Ukra
 ## Modals, dialogs and toggles
 
 - `beforeunload` while a draft exists (X does this): the tool surfaces a modal state. Dismiss with `accept: false` to *keep* the draft; accepting discards work you cannot retype for free.
+- **An unhandled native dialog freezes the page, and every later call inherits the freeze.** This is the single most misleading failure in the whole file, because nothing in the DOM says so. A run navigated away from a composer that still held text, Chrome raised *Leave site? Changes you made may not be saved*, and from then on `browser_evaluate` hung on that tab, `browser_tabs close` hung, and a `page.evaluate` fetch that works perfectly hung too. The run diagnosed a wedged JS thread, opened replacement tabs, and then built an entire theory about Content-Security-Policy and Private Network Access to explain a `fetch` that was never blocked — it was simply queued behind a modal the run had never looked at. Two rules follow. Any `page.goto` away from a composer holding text can raise it, so handle it rather than navigate blind. And when a call hangs on a tab that answered a moment ago, **take a screenshot before any other theory** — `browser_handle_dialog` clears it in one call, where the misdiagnosis cost an hour. A browser-level permission prompt (see the File-System-Access note in the file-inputs section) blocks the page in exactly the same way and looks identical.
 - Several `[role="dialog"]` elements coexist — notifications panels, account menus, empty portals. Never grab `querySelector('[role="dialog"]')` blindly; identify by `aria-label` or distinctive text.
 - Skeleton screens: Facebook's post-settings step renders grey placeholders first. A DOM probe run too early reads the *previous* step and looks like "the button did nothing" — wait and re-probe before concluding a click failed.
 - The commit is often a second control inside what the first click opened. Hashnode's header `Update` opens a *Post settings* dialog carrying its own `Update`; Substack's `Continue` opens a confirm panel carrying `Update now`; ko-fi's Publish runs an inline `onclick="iceConfirmPublish(...)"` that raises a SweetAlert2 confirm (`Publish now?` / `Publish it!`). A run polling only `location.href` and Bootstrap's `.modal` never saw the last one and reported the post as unpublished for hours. After a save or publish click, enumerate `[role=dialog]`, `[role=alertdialog]`, `.swal2-container` and any newly-appeared button carrying the same verb, before concluding anything.

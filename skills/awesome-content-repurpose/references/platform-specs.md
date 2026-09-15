@@ -20,6 +20,7 @@ These are ceilings, not targets, and they are enforced before a post is written 
 | `bluesky` | 300 | the composer |
 | `threads` | 500 | the composer |
 | `mastodon` | 500 | the composer, per instance |
+| `pixelfed` | 500 | the composer, per instance |
 | `peerlist` | 480 | nothing visible — it truncates silently |
 | `wonderful-dev` | 2000 | the server, as `too_big, maximum 2000` |
 
@@ -42,6 +43,7 @@ The band each platform's version is written to. Write inside the range and aim n
 | `telegram` | 500–900 | 700 | A channel message read on a phone: one idea, short lines, the link last. A post that carries an image is bound by the caption limit rather than the message limit, so that number is checked live before the file is written. |
 | `threads` | 350–475 | 388 | One strong idea, compact structure, a URL, one topic tag. |
 | `instagram` | 500–720 | 620 | A caption read under the picture, nearer a status than an essay: the point, one mechanism or number, the caveat. Whitespace, and body links are dead here. |
+| `pixelfed` | 300–450 | 400 | A caption under the picture on a fediverse timeline: the point, one mechanism or number, the tags that carry the whole discovery. Written under the 500 a default Pixelfed install ships, since the cap is an instance setting; unlike `instagram`, a link in the caption is live. |
 | `pinterest` | 200–400 | 320 | A saveable reference summary: title, three to five facts, URL. |
 | `x` | 230–270 | 260 | Sharpest fact or mechanism, URL, one or two hashtags. Cut adjectives before cutting facts. |
 | `tumblr` | 1200–2600 | 1884 | Exploratory mini-essay. The place for technical intuition and history. |
@@ -67,6 +69,7 @@ The band each platform's version is written to. Write inside the range and aim n
 | `hackernews` | 500–1200 | 800 | A text submission is a discussion opener, not a post: flat register, no emoji, no tags, no media, and the title doing most of the work. |
 | `write-as` | 1800–4500 | 3000 | A plain blog post whose markdown renders. There is no feed to be found in, so it is written as the piece another post can point at. |
 | `telegraph` | 2500–6000 | 4000 | The same depth as `medium` on a permanent page with no feed, no tags and no comments, editable afterwards only from the browser that published it. |
+| `teletype` | 2500–6000 | 4000 | An article on the author's own blog, `medium`-deep, with real headings and images and no feed to be found in — the page the shorter posts point at. |
 
 Depth comes from mechanism, examples, caveats and implications. Padding to reach a band is the same defect as undershooting it: a `buymeacoffee` post of 400 characters and one of 5000 characters of filler both fail.
 
@@ -107,9 +110,9 @@ How technical a version gets is a property of the platform's readers, and it is 
 
 | Level | Carries | Platforms |
 | --- | --- | --- |
-| concept | the mechanism in words, no code | `pinterest`, `instagram`, `facebook-wall`, `facebook-group`, `truthsocial` |
+| concept | the mechanism in words, no code | `pinterest`, `instagram`, `pixelfed`, `facebook-wall`, `facebook-group`, `truthsocial` |
 | command | one inline command, flag, setting or identifier | `x`, `bluesky`, `threads`, `mastodon`, `peerlist`, `minds`, `bastyon`, `linkedin`, `vk-wall`, `telegram`, `quora` |
-| snippet | one short fenced block or configuration excerpt | `tumblr`, `lemmy`, `reddit`, `daily-dev`, `wonderful-dev`, `patreon`, `ko-fi`, `buymeacoffee`, `hackernews`, `telegraph` |
+| snippet | one short fenced block or configuration excerpt | `tumblr`, `lemmy`, `reddit`, `daily-dev`, `wonderful-dev`, `patreon`, `ko-fi`, `buymeacoffee`, `hackernews`, `telegraph`, `teletype` |
 | code | full examples, several blocks, the setup around them | `devto`, `hashnode`, `hackernoon`, `medium`, `substack`, `write-as` |
 
 The topic can raise a version one level and never lowers it below the platform's own, and it never goes past what the platform renders. A post whose whole point is an install step carries its one command on a concept platform, as plain text; a post about a security advisory carries the advisory's identifier on every platform; a code-level source still gets a concept-level `instagram` version, because a code block there is a screenshot of nothing. The level decides what kind of material goes in, and the band decides how much of it.
@@ -119,7 +122,7 @@ The topic can raise a version one level and never lowers it below the platform's
 The count per platform comes from the hashtag table in `awesome-content-campaign`'s `references/platforms.md`, which is the single source. Three rules bind here:
 
 - `peerlist` carries none. The composer states it in words, and a tag line spends the 480-character budget on text that has to be deleted before submitting.
-- `medium`, `substack`, `hackernoon`, `reddit` and `quora` carry no hashtag footer. The first three take topics in their own field; Reddit and Quora have no tag system a post can enter at all, and a tag block there marks the post as imported spam.
+- `medium`, `substack`, `hackernoon`, `teletype`, `reddit` and `quora` carry no hashtag footer. The first four take topics in their own field; Reddit and Quora have no tag system a post can enter at all, and a tag block there marks the post as imported spam.
 - `daily-dev` is never given a forced footer.
 
 ## Code and commands
