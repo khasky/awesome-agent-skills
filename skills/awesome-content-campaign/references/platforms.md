@@ -31,6 +31,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `minds` | minds.com | — | optional | `genre-micro-post.md` |
 | `instagram` | instagram.com | — | required | `genre-micro-post.md` |
 | `pinterest` | pinterest.com | board | required | `genre-micro-post.md` |
+| `pixelfed` | pixelfed.social, or another Pixelfed instance | defaults to `pixelfed.social`; ask only when the account lives on another instance | required | `genre-micro-post.md` |
 | `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
 | `ko-fi` | ko-fi.com | — | optional | `genre-micro-post.md` |
 | `buymeacoffee` | buymeacoffee.com | — | optional | `genre-micro-post.md` |
@@ -44,6 +45,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | `genre-long-article.md` |
 | `write-as` | write.as | blog, when the account has more than one | optional | `genre-long-article.md` |
 | `telegraph` | telegra.ph | — | optional | `genre-long-article.md` |
+| `teletype` | teletype.in | blog, when the account has more than one | optional | `genre-long-article.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
@@ -53,7 +55,7 @@ Out of scope, deliberately: a mailing tool whose only output is email (a newslet
 
 ## What to verify live, per selected platform
 
-- Post length cap, and whether it differs by account tier (X: free vs premium) or by instance (mastodon). A cap the composer does not enforce is still a cap: `peerlist` accepted a 495-character body and published it truncated mid-URL, so a platform whose composer shows no counter gets a deliberately short unit, and the published post is compared to the source afterwards, tail first.
+- Post length cap, and whether it differs by account tier (X: free vs premium) or by instance (mastodon, pixelfed — the Pixelfed caption cap is an instance setting). A cap the composer does not enforce is still a cap: `peerlist` accepted a 495-character body and published it truncated mid-URL, so a platform whose composer shows no counter gets a deliberately short unit, and the published post is compared to the source afterwards, tail first.
 - Media: which formats, whether mandatory, count limits per post.
 - Links: clickable? auto-previewed? deprioritized by the feed? caption links dead (instagram)?
 - Hashtag norms: how many read as native, where they are a separate field (tumblr tags), where they do not exist (reddit). The counts below are the starting point; the per-platform section and Phase 3 refine them.
@@ -73,6 +75,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `instagram` | 3–5 (verified 2026-09) | caption | Hard platform cap of five since 19 Dec 2025 — a sixth tag is not rejected, it is silently ignored, so a longer block is wasted text, not a penalty. |
 | `linkedin` | 3–5 (verified 2026-09) | body, after the text | 3–5 measurably beats zero; 6+ adds almost nothing. |
 | `mastodon` | 3–5 (verified 2026-09) | body, own line at the end | Hashtags are the discovery mechanism on the fediverse — there is no algorithmic feed to find the post otherwise. Zero means invisible. |
+| `pixelfed` | 3–5 | caption | Fediverse discovery, the same as Mastodon's: no algorithmic feed, so a tag is how the post is found at all. The composer suggests tags as they are typed, which is convenient and leaves a dropdown sitting over the controls. |
 | `bluesky` | 1–3 (verified 2026-09) | body | Clickable and real; up to eight accepted. Every tag spends part of the 300-character budget, so the budget, not the ceiling, sets the count. |
 | `threads` | exactly 1 (verified 2026-09) | topic-tag field, no `#` | The platform allows one by design, and a tag may contain spaces. The campaign's set collapses to a single choice here. |
 | `pinterest` | 2–5 (verified 2026-09) | description | Hashtags are secondary keyword signals now, not the discovery path — keyword-rich title and description do the work. 10+ reads as spam. |
@@ -88,6 +91,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `wonderful-dev`, `daily-dev` | 0–4 | body | Developer feeds where a short tag line is native but optional. |
 | `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
 | `write-as`, `telegraph` | none | — | Plain publishing surfaces with no tag index to feed. |
+| `teletype` | none in the body | the blog's own topics | Topics are categories the author creates on their blog and assigns in the editor. There is no tag index to feed, so a `#tag` line in the body indexes nothing and reads as an import from somewhere else. |
 
 Two rules bind the whole table. Tags never displace prose: where a cap forces a choice between a sentence and a tag, the tag goes. And a count is met by choosing from the campaign's one set, not by inventing platform-specific tags — the same post on three platforms should show recognisably the same tags, just more or fewer of them.
 
@@ -203,6 +207,11 @@ The composer opens from the sidebar, not from a URL. `instagram.com/create/…` 
 
 A carousel of several images in one post outperformed single images in Buffer's 2026 engagement data; like the LinkedIn figure, that is correlation, so it is offered, never assumed.
 
+### pixelfed
+Image or video required — the composer will not submit without one, exactly like `instagram`. Federated Instagram-shaped platform on ActivityPub: no algorithmic feed, so hashtags, the instance's own discover surface and whoever follows the account are the whole distribution. `pixelfed.social` is the flagship instance and the default target; another instance is a different server with its own caption cap, media limits and moderators, so the target says which one when the account is not there. Media descriptions (the platform's alt text) are per file and set on the upload step.
+
+The caption cap is an instance setting rather than a platform constant — the default build ships 500 characters and instances raise it — so it is read off the composer's own counter in Phase 3 for the instance the account is on, and never carried over from another one. Links in a caption are live here, which is the one thing that separates a Pixelfed caption from an Instagram one: a "link in bio" CTA written for Instagram is a wasted line on this platform.
+
 ### bastyon
 Decentralized platform; account identity is a key pair and login flows differ from mainstream platforms. Crypto/free-speech-adjacent culture. Verify caps and media support live — documentation is thin, the live UI is the source of truth.
 
@@ -266,6 +275,13 @@ Telegram's throwaway publishing surface: title, author and body in one page, no 
 It is a formatted page, not a plain-text one, and an article shipped here without formatting is a defect. The editor is rich text with a floating toolbar, and the page format accepts a fixed tag list: `a`, `aside`, `b`, `blockquote`, `br`, `code`, `em`, `figcaption`, `figure`, `h3`, `h4`, `hr`, `i`, `iframe`, `img`, `li`, `ol`, `p`, `pre`, `s`, `strong`, `u`, `ul`, `video`. So an article gets real headings, and exactly two levels of them — `h3` is the section heading and `h4` the subordinate one, with `h1` and `h2` simply not available. Bold, italic, blockquote, lists, code and horizontal rules are all on the table above.
 
 Markdown syntax is not the input. The body is rich text, so typing `## Where it breaks` publishes the literal hash characters; a heading is made with the editor's own controls, and links are inserted as links rather than written as `[text](url)`.
+
+### teletype
+A blogging platform where an article lives on the author's own blog at `teletype.in/@handle`, with drafts, comments, a share image and a custom domain for accounts that set one up. Several people can write into one blog, so an account can be a personal journal or a shared one — the target says which blog when there is more than one.
+
+Topics are the author's own categories, created on the blog and assigned to the article; they are not hashtags and there is no platform-wide tag index behind them. Discovery is thin the way `telegraph` and `write-as` are thin: a Teletype article is the page other posts point at, not a post that finds its own readers. Unlike `telegraph`, it is tied to an account, so the article stays editable from anywhere the user is signed in.
+
+The editor is a rich one with its own formatting controls. Whether it converts typed markdown is the one thing to check live before a body goes in, because the failure is silent and permanent-looking: a pasted `## Heading` that does not convert publishes as visible hash characters.
 
 ### substack
 Two different surfaces share one slug, and the default is the one that sends no email.

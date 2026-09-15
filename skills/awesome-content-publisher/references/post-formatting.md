@@ -10,7 +10,7 @@ Three classes, and the class decides what reaches the editor:
 
 | Class | Platforms observed | What goes in |
 | --- | --- | --- |
-| Plain text | linkedin, facebook-wall, threads, instagram, x, mastodon, bluesky, truthsocial, peerlist, minds, bastyon, pinterest, tumblr, quora | markdown stripped: fences and inline backticks removed, `#` heading markers removed, `**bold**` unwrapped, `[t](u)` flattened |
+| Plain text | linkedin, facebook-wall, threads, instagram, pixelfed, x, mastodon, bluesky, truthsocial, peerlist, minds, bastyon, pinterest, tumblr, quora | markdown stripped: fences and inline backticks removed, `#` heading markers removed, `**bold**` unwrapped, `[t](u)` flattened |
 | Markdown-native | devto, hashnode (via paste), lemmy | the source verbatim |
 | Rich editor | medium, substack, buymeacoffee, daily-dev, ko-fi | markdown converted to HTML and delivered as a paste event |
 | Toolbar-only | patreon | plain text, then each heading and emphasis applied by selecting the range and picking the style from the floating toolbar |
