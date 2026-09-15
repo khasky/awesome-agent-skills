@@ -42,14 +42,14 @@ The band each platform's version is written to. Write inside the range and aim n
 | `vk-wall` | 600–1100 | 850 | The register of `facebook-wall` in shorter paragraphs; the feed folds a long post behind a see-more control. |
 | `telegram` | 500–900 | 700 | A channel message read on a phone: one idea, short lines, the link last. A post that carries an image is bound by the caption limit rather than the message limit, so that number is checked live before the file is written. |
 | `threads` | 350–475 | 388 | One strong idea, compact structure, a URL, one topic tag. |
-| `instagram` | 500–720 | 620 | A caption read under the picture, nearer a status than an essay: the point, one mechanism or number, the caveat. Whitespace, and body links are dead here. |
+| `instagram` | 250–360 | 310 | A caption read under the picture, and the picture is the post: the point, one number, the caveat. The band was halved after a 1205-character caption shipped and read as an essay nobody taps *more* on — Instagram folds a caption after about two lines, so everything past the fold is written for the few who expanded it. No fenced blocks, no lists, no headings; whitespace and body links are dead here. |
 | `pixelfed` | 300–450 | 400 | A caption under the picture on a fediverse timeline: the point, one mechanism or number, the tags that carry the whole discovery. Written under the 500 a default Pixelfed install ships, since the cap is an instance setting; unlike `instagram`, a link in the caption is live. |
 | `pinterest` | 200–400 | 320 | A saveable reference summary: title, three to five facts, URL. |
 | `x` | 230–270 | 260 | Sharpest fact or mechanism, URL, one or two hashtags. Cut adjectives before cutting facts. |
 | `tumblr` | 1200–2600 | 1884 | Exploratory mini-essay. The place for technical intuition and history. |
 | `mastodon` | 400–475 | 440 | Technical and sober. Hashtags are the only discovery mechanism. |
 | `bluesky` | 250–290 | 286 | Compact and conversational, at most one hashtag. |
-| `wonderful-dev` | 700–950 | 850 | Developer-first article: architecture, usage, limitations, install. Written well under the 2000-character server cap, which the composer never surfaces. |
+| `wonderful-dev` | 700–950 | 850 | A compact developer post, never an article: one idea, its mechanism, the caveat, the link. **No headings at all** — the composer renders them, which is what makes the mistake easy, and a `##` line here turns a feed post into a long-read nobody asked for. Take the shape from the `minds` unit of the same campaign: continuous short paragraphs, at most one fenced block, no section structure. Written well under the 2000-character server cap, which the composer never surfaces. |
 | `truthsocial` | 350–500 | 472 | Direct and concise. |
 | `peerlist` | 380–460 | 429 | Developer audience, no fluff: what it is, the concrete result, why it matters, link. No hashtags, the composer refuses them. |
 | `minds` | 350–700 | 480 | Compact explanatory: one idea, its mechanism, the caveat. |
@@ -60,7 +60,7 @@ The band each platform's version is written to. Write inside the range and aim n
 | `devto` | 3000–6000 | 4720 | Developer article with headings and code. |
 | `hashnode` | 2200–5000 | 3492 | Technical article, implementation detail welcome, not a copy of dev.to. |
 | `hackernoon` | 4500–7000 | 5300 | Long-form article behind editorial review, so submission is not publication. Tags go in the platform's own field. |
-| `medium` | 4500–8000 | 6331 | The deepest general-audience essay. No hashtag footer. |
+| `medium` | 4500–8000 | 6331 | The deepest general-audience essay. No hashtag footer. Paragraphs are paragraphs, not lines: Medium puts a full blank line under every one, so a body written in one- and two-sentence blocks publishes as a column of fragments with more gap than text. One article went out at 66 prose blocks, 86 percent of them one or two sentences, median block 83 characters. Keep prose blocks to three sentences or more and roughly 200 characters and up; a one-line block is reserved for the handful of places the emphasis is the point. |
 | `daily-dev` | 1100–2400 | 1706 | Developer-oriented, tradeoffs and workflow. No forced hashtag footer. |
 | `lemmy` | 800–1600 | 1030 | Community register, ends on a real question. |
 | `substack` | 4000–8000 | 5907 | Newsletter essay with a thesis line. No hashtag footer. |

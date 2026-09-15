@@ -26,6 +26,8 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Agent maintenance](#agent-maintenance)
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
+      - [Running them](#running-them)
+      - [How long a publishing run takes](#how-long-a-publishing-run-takes)
   - [Picking between similar skills](#picking-between-similar-skills)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
@@ -202,6 +204,27 @@ To clear an install, `npx skills remove -g -s <name>` takes explicit skill names
 | [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one existing text (a link, a file, pasted notes) into platform-native posts: source notes every claim traces to, a different idea per platform, per-genre registers and dated limits, a 2-stage audit |
 | [awesome-content-graphics](skills/awesome-content-graphics) | Makes the images a post ships with, offline: a user-sized set (10, 50, 100 or any number) of self-contained HTML/CSS graphics rendered locally across tinted-glyph canvases, display-scale number lockups, readable data figures, list cards and commercially usable stock photographs, built from the supplied facts and the user's own look inputs, with a different headline per render drawn from the source or one line the user types. No image service, no API key |
 | [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): login preflights, a persistent dedup ledger, timezone-aware scheduling, human-paced posting with read-back verification |
+
+#### Running them
+
+These five chain, and the publisher needs a browser bridge set up before its first run. The step-by-step guide covers installing the Playwright MCP extension, reading the per-profile token, the MCP server entry that pairs them, running each skill alone, and running the whole chain:
+
+- **[Content skills guide](docs/content-skills-guide.md)** — English
+- **[Руководство по content-навыкам](docs/content-skills-guide.ru.md)** — Russian
+
+#### How long a publishing run takes
+
+Measured from the publisher's own ledger timestamps on a 25-platform run. The figure is the full cycle per platform: open the composer, fill it, attach the image, submit, read back the permalink, diff it against the source file, write the ledger.
+
+| Composer type | Platforms | Per post |
+| --- | --- | --- |
+| Plain text box | x, bluesky, threads, mastodon, truthsocial, minds, peerlist, lemmy, quora, bastyon | 2–6 min |
+| Markdown field | devto, wonderful-dev, write-as | 2–4 min |
+| Caption with a required image | instagram, pixelfed, pinterest | 4–8 min |
+| Rich editor, short post | tumblr, daily-dev, patreon, ko-fi, buymeacoffee | 3–9 min |
+| Rich editor, long-form | medium, hashnode, substack, hackernoon, teletype | 4–9 min |
+
+15 platforms took 73 minutes of uninterrupted work — about 5 minutes each, which is the number to plan with. The first platform of a session costs more, because the bridge gate, the login preflights and the source scan all land on it: budget 15–20 minutes before the first post goes out. Generating a graphics set is a separate job, not part of that hour. Posts to different platforms follow each other immediately; two posts to the *same* platform stay at least 2 hours apart.
 
 ## Picking between similar skills
 
