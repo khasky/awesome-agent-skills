@@ -31,6 +31,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Picking between similar skills](#picking-between-similar-skills)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
+  - [Contributing](#contributing)
   - [How these were built](#how-these-were-built)
   - [Design principles](#design-principles)
     - [Which layer to install](#which-layer-to-install)
@@ -295,6 +296,17 @@ The collection shares 2 rating vocabularies, so reports never mean different thi
 - **Verdict** — `SHIP / FIX / BLOCK`, for the read-only audits that gate a release, always paired with `NOT ASSESSED` for anything that could not be checked.
 
 `awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those are addressed to an author, not to a release gate.
+
+## Contributing
+
+The repository has one gate, and it is the same one locally and in CI:
+
+```bash
+python3 scripts/lint.py          # run the gates by hand
+python3 scripts/install-hooks.py # once per clone: run them before every commit
+```
+
+The installer writes a pre-commit hook that calls `scripts/lint.py`. Where `core.hooksPath` points outside the repository — a tool that manages git identities, say — it says so: git runs that directory's hooks instead, and the gate fires only if they chain through to the repository's own.
 
 ## How these were built
 
