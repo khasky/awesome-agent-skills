@@ -741,13 +741,6 @@ The image goes in through the `+` control, and the labels are unambiguous. Put t
 
 Medium rate-limits publishing and says so in plain text. The pre-publish panel (`data-action="show-prepublish"` opens it, and its own `Publish` finishes) printed: *"The author of this story has published or scheduled the maximum of two stories in the past 24 hours. Please try to publish or schedule again in 24 hours."* The button stays enabled and the click lands; only the URL not changing and that sentence reveal the refusal. This is a platform refusal, not a UI problem: record `failed` with the `medium.com/p/<id>/edit` draft URL and do not retry inside the window.
 
-## write-as
-Check: `write.as/me` or the pad at `write.as/new` — a signed-in session shows the account's blogs; signed out, the pad still writes but posts anonymously, which is the trap worth checking for. Compose: one editor pane, first line becomes the title, the rest is the body; publish, then assign to the blog the post file names (an account with several blogs makes this a real choice, so the target is not optional).
-
-Markdown is typed literally and renders on publish, so the post file's own markdown goes in as written: `#` headings, `**bold**`, `*italic*`, `-` or `1.` lists, `[text](url)`. Type the title line as `# Title` rather than as a bare line — an unmarked first line becomes the title *and* renders again in the body, printing the same words twice on the published page. Formatting applies to blog posts only; an anonymous post renders plain, which is one more reason a signed-out session is a stop rather than a fallback.
-
-Read-back: the published post URL, opened and confirmed — and confirmed rendered, not just present. A page showing `#` or `**` as literal characters means the markdown did not run (usually an anonymous post), and that is a failure to report, not a cosmetic difference.
-
 ## telegraph
 Check: nothing to check — `telegra.ph` has no account. Compose: `telegra.ph` itself, three fields in one page (title, author, body). Publish gives a permanent URL.
 

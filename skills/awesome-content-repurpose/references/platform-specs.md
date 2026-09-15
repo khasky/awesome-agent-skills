@@ -67,7 +67,6 @@ The band each platform's version is written to. Write inside the range and aim n
 | `reddit` | 1100–2200 | 1515 | Least promotional variant, no hashtags, ends on a genuine question. |
 | `quora` | 1200–2600 | 1900 | An explainer for a reader who arrived from a search result: define the term where it first appears, keep the mechanism, close on a real question. No title field, so the first sentence carries the headline and the permalink. |
 | `hackernews` | 500–1200 | 800 | A text submission is a discussion opener, not a post: flat register, no emoji, no tags, no media, and the title doing most of the work. |
-| `write-as` | 1800–4500 | 3000 | A plain blog post whose markdown renders. There is no feed to be found in, so it is written as the piece another post can point at. |
 | `telegraph` | 2500–6000 | 4000 | The same depth as `medium` on a permanent page with no feed, no tags and no comments, editable afterwards only from the browser that published it. |
 | `teletype` | 2500–6000 | 4000 | An article on the author's own blog, `medium`-deep, with real headings and images and no feed to be found in — the page the shorter posts point at. |
 
@@ -113,7 +112,7 @@ How technical a version gets is a property of the platform's readers, and it is 
 | concept | the mechanism in words, no code | `pinterest`, `instagram`, `pixelfed`, `facebook-wall`, `facebook-group`, `truthsocial` |
 | command | one inline command, flag, setting or identifier | `x`, `bluesky`, `threads`, `mastodon`, `peerlist`, `minds`, `bastyon`, `linkedin`, `vk-wall`, `telegram`, `quora` |
 | snippet | one short fenced block or configuration excerpt | `tumblr`, `lemmy`, `reddit`, `daily-dev`, `wonderful-dev`, `patreon`, `ko-fi`, `buymeacoffee`, `hackernews`, `telegraph`, `teletype` |
-| code | full examples, several blocks, the setup around them | `devto`, `hashnode`, `hackernoon`, `medium`, `substack`, `write-as` |
+| code | full examples, several blocks, the setup around them | `devto`, `hashnode`, `hackernoon`, `medium`, `substack` |
 
 The topic can raise a version one level and never lowers it below the platform's own, and it never goes past what the platform renders. A post whose whole point is an install step carries its one command on a concept platform, as plain text; a post about a security advisory carries the advisory's identifier on every platform; a code-level source still gets a concept-level `instagram` version, because a code block there is a screenshot of nothing. The level decides what kind of material goes in, and the band decides how much of it.
 

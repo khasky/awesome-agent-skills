@@ -43,7 +43,6 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
 | `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
 | `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | `genre-long-article.md` |
-| `write-as` | write.as | blog, when the account has more than one | optional | `genre-long-article.md` |
 | `telegraph` | telegra.ph | — | optional | `genre-long-article.md` |
 | `teletype` | teletype.in | blog, when the account has more than one | optional | `genre-long-article.md` |
 
@@ -90,7 +89,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `quora` | none | — | Topics attach to questions, not to posts, and the composer offers no tag field. A post is filed by the profile or the Space it went to. |
 | `wonderful-dev`, `daily-dev` | 0–4 | body | Developer feeds where a short tag line is native but optional. |
 | `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
-| `write-as`, `telegraph` | none | — | Plain publishing surfaces with no tag index to feed. |
+| `telegraph` | none | — | A plain publishing surface with no tag index to feed. |
 | `teletype` | none in the body | the blog's own topics | Topics are categories the author creates on their blog and assigns in the editor. There is no tag index to feed, so a `#tag` line in the body indexes nothing and reads as an import from somewhere else. |
 
 Two rules bind the whole table. Tags never displace prose: where a cap forces a choice between a sentence and a tag, the tag goes. And a count is met by choosing from the campaign's one set, not by inventing platform-specific tags — the same post on three platforms should show recognisably the same tags, just more or fewer of them.
@@ -262,13 +261,6 @@ Its autocorrect rewrites `--` into an em dash. That silently corrupts any comman
 ### minds
 Open-source social network with a crypto-adjacent, free-speech-forward culture and a small technical audience. A post is a short feed entry with optional media and clickable links; the composer sits at the top of the newsfeed. Accounts carry a token/reward layer that has nothing to do with posting — never touch wallet, boost or monetisation controls, and never enter a paid Boost flow, which sits next to the post button. Verify the current character cap live.
 
-### write-as
-Minimal, distraction-free blogging: a single editor pane where the first line becomes the title and everything below is the body, published to a blog under the account. No tags, no cover image, no editorial review, and posts can be anonymous or attached to a named blog — the target says which blog when the account has more than one. The register is an essay or a note, not a feed post; a three-line post looks lost there.
-
-Markdown is the input and it renders, so an article here carries real formatting: headings `#` through `######`, bold and italic, bulleted and numbered lists, `[text](url)` links (bare URLs auto-link too) and inline code. Write.as documents its own supported subset and only that subset is guaranteed, so stay inside the common elements rather than reaching for tables or footnotes.
-
-Two traps worth carrying into the post file. The title line is written as a heading, not as a bare first line — an unmarked first line is taken as the title *and* still renders in the body, so the same words appear twice; `# Title` on line one avoids it. And formatting only applies to blog posts, not to anonymous ones: a post published while signed out is plain, which is the same trap as the anonymous-publishing one above and another reason the target blog is not optional.
-
 ### telegraph
 Telegram's throwaway publishing surface: title, author and body in one page, no account required and no dashboard. That is the catch worth stating — a `telegra.ph` page is editable only from the browser that created it, through a local token, so a page published from an automation session cannot be edited later from another machine. Nothing is discoverable on the platform itself: a Telegraph page has no feed and no audience, so it exists to be linked from somewhere else.
 
@@ -279,7 +271,7 @@ Markdown syntax is not the input. The body is rich text, so typing `## Where it 
 ### teletype
 A blogging platform where an article lives on the author's own blog at `teletype.in/@handle`, with drafts, comments, a share image and a custom domain for accounts that set one up. Several people can write into one blog, so an account can be a personal journal or a shared one — the target says which blog when there is more than one.
 
-Topics are the author's own categories, created on the blog and assigned to the article; they are not hashtags and there is no platform-wide tag index behind them. Discovery is thin the way `telegraph` and `write-as` are thin: a Teletype article is the page other posts point at, not a post that finds its own readers. Unlike `telegraph`, it is tied to an account, so the article stays editable from anywhere the user is signed in.
+Topics are the author's own categories, created on the blog and assigned to the article; they are not hashtags and there is no platform-wide tag index behind them. Discovery is thin the way `telegraph` is thin: a Teletype article is the page other posts point at, not a post that finds its own readers. Unlike `telegraph`, it is tied to an account, so the article stays editable from anywhere the user is signed in.
 
 The editor is a rich one with its own formatting controls. Whether it converts typed markdown is the one thing to check live before a body goes in, because the failure is silent and permanent-looking: a pasted `## Heading` that does not convert publishes as visible hash characters.
 

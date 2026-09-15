@@ -220,7 +220,7 @@ Measured from the publisher's own ledger timestamps on a 25-platform run. The fi
 | Composer type | Platforms | Per post |
 | --- | --- | --- |
 | Plain text box | x, bluesky, threads, mastodon, truthsocial, minds, peerlist, lemmy, quora, bastyon | 2–6 min |
-| Markdown field | devto, wonderful-dev, write-as | 2–4 min |
+| Markdown field | devto, wonderful-dev | 2–4 min |
 | Caption with a required image | instagram, pixelfed, pinterest | 4–8 min |
 | Rich editor, short post | tumblr, daily-dev, patreon, ko-fi, buymeacoffee | 3–9 min |
 | Rich editor, long-form | medium, hashnode, substack, hackernoon, teletype | 4–9 min |

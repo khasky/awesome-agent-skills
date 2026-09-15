@@ -404,7 +404,7 @@ status: draft
 | Тип композера | Площадки | На пост |
 | --- | --- | --- |
 | Простое текстовое поле | x, bluesky, threads, mastodon, truthsocial, minds, peerlist, lemmy, quora, bastyon | 2–6 мин |
-| Поле с Markdown | devto, wonderful-dev, write-as | 2–4 мин |
+| Поле с Markdown | devto, wonderful-dev | 2–4 мин |
 | Подпись с обязательной картинкой | instagram, pixelfed, pinterest | 4–8 мин |
 | Визуальный редактор, короткий пост | tumblr, daily-dev, patreon, ko-fi, buymeacoffee | 3–9 мин |
 | Визуальный редактор, длинная статья | medium, hashnode, substack, hackernoon, teletype | 4–9 мин |
