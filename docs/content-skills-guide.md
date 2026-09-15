@@ -64,15 +64,22 @@ Every command below is typed into a terminal window.
 
 You type one command, press Enter, and wait for the prompt to come back before typing the next.
 
-### Step 1.2 — Install Node.js
+### Step 1.2 — Install Node.js and Git
 
-Node.js runs both the installer and the browser bridge. Download the **LTS** build from [nodejs.org](https://nodejs.org) and install it with default options, then close the terminal, open it again, and check:
+Two programs, both free, both installed once.
+
+**Node.js** runs the agent, the skills installer and the browser bridge. Download the **LTS** build from [nodejs.org](https://nodejs.org) and install it with default options.
+
+**Git** downloads this repository in Part 2. Get it from [git-scm.com](https://git-scm.com/downloads) — that page covers Windows, macOS and Linux. On macOS the first `git` command may instead offer to install Apple's developer tools; accepting that is enough.
+
+Then close the terminal, open it again, and check both:
 
 ```bash
 node --version
+git --version
 ```
 
-A version number such as `v24.15.0` means it worked. `command not found` or `not recognized` means the terminal was opened before the install finished — close and reopen it.
+Two version numbers, such as `v24.15.0` and `git version 2.54.0`, mean it worked. `command not found` or `not recognized` means the terminal was opened before the install finished — close and reopen it.
 
 ### Step 1.3 — Install Claude Code
 
@@ -101,6 +108,24 @@ claude
 The first run opens a browser window to sign in to your Claude account. After that you get a prompt where you type in plain language.
 
 Two controls worth knowing immediately: **Esc** interrupts whatever the agent is doing, and typing `/exit` (or pressing Ctrl+C twice) closes it. Nothing you have read about in this guide happens without you approving it first.
+
+### Step 1.5 — Pick the model
+
+Two settings decide how the agent behaves: which model, and how much effort it spends per step. Set both when you start it:
+
+```bash
+claude --model opus --effort medium
+```
+
+Inside a running session, `/model` changes the same thing.
+
+**Recommended: Opus 5 at `medium` effort.** It carries the whole pipeline in the ordinary case — writing the posts, filling composers that match their notes, running the per-platform check against the source file — and it is the setting the five-minutes-per-platform figure further down was measured at.
+
+**Switch to `high` when the run is long or the platforms are unfamiliar.** The difference is not writing quality; it is what happens when a page does not behave. At `high` the agent is more patient about working out *why* a submit silently refused, more willing to climb the ladder of click techniques instead of repeating the one that failed, and more careful choosing a repair that does not lose a half-filled draft. It also handles the judgement calls in the writing skills better — which paragraph to drop when a post is over a platform's cap, which claims a picture is allowed to carry. The cost is time: every step takes longer.
+
+A practical split: writing and graphics at `medium`, a publishing run across many platforms at `high`. `low` is not worth it here — these skills are long multi-step procedures with gates, and cheap steps are exactly where a gate gets skipped. `xhigh` and `max` exist for harder reasoning than this work needs.
+
+This is guidance from how the skills behave, not a benchmark.
 
 ## Part 2 — Install the skills
 
@@ -410,6 +435,8 @@ What inflates a run: a composer whose live page has changed since the notes were
 **The token changed.** The status page has a regenerate control. After regenerating, the configuration holding the old token is stale until you update it — `claude mcp remove playwright` then add it again — and restart.
 
 **A platform asks for a login or shows a captcha mid-run.** The run stops there and hands the browser to you. Sign in yourself in that window, then tell the agent to continue. It will never do that part for you.
+
+**The graphics skill reports a missing browser.** It renders the pictures through a headless browser that Playwright keeps in its own cache, and a machine that has never run Playwright has none. `npx playwright install chromium` fetches it — a few hundred megabytes, once. Nothing else in this guide needs it; the publishing bridge drives the browser you already have.
 
 **A post published with wrong formatting.** The publisher diffs every published post against its source file and repairs it — by editing where the platform allows, by delete-and-republish only within 5 minutes and only with no engagement, and by telling you plainly where the platform allows neither. If you find one it missed, say so: it reopens the audit rather than patching the single line you named.
 
