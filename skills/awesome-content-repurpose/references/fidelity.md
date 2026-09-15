@@ -59,6 +59,15 @@ Checked against the run's source notes, the mechanical pass adds these on top of
 
 These are presence checks, and they are deliberately narrow: a number that is present can still have lost its condition, and a claim whose words all appear in the source can still invert it. That is what the judgment passes are for.
 
+## Writing the checker, and editing it
+
+The counting pass is a script the run writes, and two habits decide whether writing it costs ten minutes or an hour.
+
+- **Write it with the file-writing tool, never a shell heredoc.** A heredoc eats the backslashes out of every regular expression it carries, so `\s` arrives as `s` and `\\` as `\`, and it fails outright on anything long. One run lost eight attempts to this before switching, and shipped a post with `C:WindowsSystem32sru` in it because the same collapse happened inside a template literal.
+- **Edit it with the editing tool, not `sed` and not a rewrite script.** An out-of-band edit makes the runtime hand the whole file back into the conversation as changed-on-disk, which on a 300-line checker costs more than the edit did, several times over.
+- **A finding names the post and the check, and carries the value that failed.** `band | 1215 over 1200` is fixable; `band` is a second pass spent measuring.
+- **Two defects in the checker are worth expecting, because both have shipped.** A hashtag is not a claim, so strip the tag line before any grounding sweep or every tag reads as an unsupported identifier; and the closing is the last paragraph that is not a bare tag line, or every post with a tag footer reads as ending on nothing. Fix the checker rather than working around it: a check that reports what is not there hides the ones that are.
+
 ## Checks in a fresh context
 
 Three readings are made by a reader that did not write the posts. Where the runtime has subagents, each is a read-only subagent handed only the files named; otherwise each is done after the drafting context is closed, and the report says the separation was sequential rather than real.

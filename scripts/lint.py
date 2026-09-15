@@ -171,16 +171,36 @@ def no_per_skill_readme() -> list[str]:
 
 
 def skills_ship_markdown_only() -> list[str]:
-    # A skill instructs; it never ships code.
+    # A skill instructs; it never ships code. One exception, argued in AGENTS.md
+    # under "Text only": awesome-content-graphics ships the renderer it would
+    # otherwise generate per run, because generating it again costs a run the
+    # best part of an hour and reintroduces defects already solved. The
+    # allowlist lives here so the exception is a gate rather than a memory, and
+    # it is deliberately tight: one skill, one folder, one extension.
+    code_skill, code_dir, code_ext = "awesome-content-graphics", "tools", ".mjs"
+    allowed_prefix = f"skills/{code_skill}/{code_dir}/"
+
+    def allowed(path: str) -> bool:
+        return (path.startswith(allowed_prefix)
+                and path.endswith(code_ext)
+                and "/" not in path[len(allowed_prefix):])
+
     fail = []
     others = sorted(p for p in tracked()
-                    if p.startswith("skills/") and not p.endswith(".md"))
+                    if p.startswith("skills/") and not p.endswith(".md")
+                    and not allowed(p))
     if others:
         fail.append("a skill may hold only Markdown; remove or convert:")
         fail.extend(others)
+    strays = sorted(p for p in tracked()
+                    if p.startswith(allowed_prefix) and not allowed(p))
+    if strays:
+        fail.append(f"the {code_skill} exception covers flat {code_ext} files only:")
+        fail.extend(strays)
     dirs = sorted({"/".join(p.split("/")[:3]) for p in tracked()
                    if p.startswith("skills/") and p.count("/") >= 3
-                   and p.split("/")[2] != "references"})
+                   and p.split("/")[2] != "references"
+                   and not p.startswith(allowed_prefix)})
     if dirs:
         fail.append("a skill folder holds SKILL.md and references/ only:")
         fail.extend(dirs)

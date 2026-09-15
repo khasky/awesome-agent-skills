@@ -25,6 +25,7 @@ Bundled files (load on demand):
 - `references/style-catalog.md` — read first. The five kinds a set is built from and the share each takes, the five axes underneath them (density, palette and background, typography, subject, atmosphere), the palette rule that gives each variant its own harmonised scheme, the glyph-tinting rule, the typesetting rules, the scale gate and the fill gate that keep a canvas from reading as decoration or as a placeholder, the archetypes that were removed and the shelf that is only built on request, the combination rule that spreads a set, the device library, and what is not renderable offline.
 - `references/palettes.md` — a pool of 43 schemes (27 dark, 16 light) already proved against the colour rule: accent and muted neutral at 3:1 or better on their ground, foreground at 4.5:1, accent and muted separable under protan and tritan simulation. A no-reference set draws its schemes from here and validates nothing per run; a brand colour or a reference palette is proved against the same rule before use, and the rule is stated with the pool.
 - `references/visual-language.md` — the layout catalog every row is built from (glyph canvases, lockups, the nine figure patterns, the list cards, the photo layouts and their quiet zones), the geometry check that measures the hard rules on every page before its screenshot, the craft that keeps a set from looking like one image recoloured, and the rendering mechanics every canvas shares. Read it before writing the first line of markup, not after the first contact sheet comes back grey.
+- `references/render-pipeline.md` — how to run the toolchain in `tools/`, which is the one part of this skill that is code rather than instruction: what each module owns, the two files a run writes, the probe-then-set order that keeps the geometry loop off the full set, what the gate reports so a finding is fixable, the traps the code already answers, and the geometry that passes at 4:5. Read it before the first render, not after the first contact sheet comes back grey.
 
 It also reuses, by reference rather than by restating:
 
@@ -299,7 +300,7 @@ The pages are built from the rows, not improvised one by one. Turn each row into
 
 Rendering is one pass over the whole set, in one browser you launch yourself — never the user's. Load each page, wait for the fonts and the page's own fit to settle, measure the geometry gate on it, and screenshot only what passes. Then sweep the set: the layout-skeleton fingerprint that catches two rows that are the same variant, the kind and icon quotas, a contact sheet and a gallery to look at. Report one line per finding, naming the row and the rule it broke, fix it in the row, and re-render the rows that changed rather than the set. No page is screenshotted by hand and no gate is passed by reading numbers off a page.
 
-Prove the pipeline on six rows covering every kind in the plan before building the hundred, and re-render only the rows a fix touched. Those two habits are the difference between a set that takes minutes and one that takes an hour; `references/visual-language.md` has both, with the mechanical traps that kill a healthy pass.
+The toolchain is not written at all: it ships with this skill under `tools/`, and the run supplies `set.json` and the photo queries. Nothing is composed by hand per page. Prove the plan on a probe of one row per layout it uses, run the whole geometry loop on that probe, render the full set once it is clean, and after that re-render only the rows a fix touched. A probe built per kind rather than per layout is what lets eight rounds of geometry defects reach the hundred-page pass. `references/render-pipeline.md` carries the interface, the probe rule, what the gate reports, and the traps the shipped code already answers.
 
 Assets are fetched once into a cache shared across runs, before the build: the faces the rows name (free-licence families, per weight, the subset the language needs), the drawn icons, and several stock-photograph candidates per query, with a contact sheet of the candidates to look at before any photo is named in a row. Record each asset's licence beside it. A wrong picture — a logo, a recognisable face, on-screen text, a file that stalls the capture — is refused and the next candidate fetched. Anything already in the cache is skipped, so the second set on the machine fetches nothing.
 
@@ -445,9 +446,8 @@ No renderer available at all (no Chromium-family browser on the machine and none
 - A donut with flat sides, a bar cut by its card, a line sliced by its block (R16): an inner container narrower than its content, hidden by `overflow: hidden` until the render. Scale the content, never crop it.
 - The reference's wordmark in the corner (R20) of a canvas about someone else's product.
 - Two renders that differ only in hue (R21), shipped as two options because the plan table said their palettes were different.
-- A set that never uses a drawn icon (R12), because emoji were easier to reach for.
 - A figure that has to be counted (R15): a waffle grid, an icon array, a cell matrix. Printing `60 of 100` beside it admits the problem rather than fixing it.
-- A set built from two devices: emoji and blobs over and over, the face never changing, no icon ever drawn.
+- A set built from two devices: emoji and blobs over and over, the face never changing, no icon ever drawn (R12), because emoji were easier to reach for.
 - A linked web font or a hotlinked icon in an emitted file, or a face used without its licence checked and recorded.
 - Inheriting a reference's palette and inventing everything else (R13): the brand's hexes on the skill's own default backgrounds, its own type treatments and stock emoji. A hundred canvases in the brand's colours that could not have come from the brand is the failure reference mode exists to end.
 - Filling a gap in a reference from the default tables instead of building it out of the reference's own components, or asking.
@@ -475,22 +475,22 @@ No renderer available at all (no Chromium-family browser on the machine and none
 - A canvas carrying more than its kind's budget: a glyph canvas that grew a subhead, a diagram that grew a chip row, two glyphs where the kind allows one.
 - A word on the canvas doing none of the three jobs — a caption restating the headline, a subhead, a footer, a decorative label, an orphan naming something the picture does not show.
 - The captioned diagram: an axis label or a printed value on a composition whose whole premise is that the shape carries it alone.
-- A headline that is a topic (`Generation speed`) or a fragment the picture has to finish.
-- A headline lifted from the body of the post: a step of the mechanism with its subject cut (`Only the routed experts leave the drive, so memory stays small`), a caveat from the tail leading the picture (`Both models ship as previews, with agent work still weak`). Every line is a title the post could ship with, measured against the post's own title.
+- A headline that is a topic (`Generation speed`), a fragment the picture has to finish, or a line lifted from the body of the post: a step of the mechanism with its subject cut (`Only the routed experts leave the drive, so memory stays small`), a caveat from the tail leading the picture (`Both models ship as previews, with agent work still weak`). Every line is a title the post could ship with, measured against the post's own title.
 - One form recoloured at the render stage and called a second variant.
 - A composition drawn to look good while implying a quantity the sources do not carry.
 - A mocked interface showing behaviour the product does not have, or a transcript whose lines nobody wrote.
 - A calendar date, a "checked on" stamp, or a third-party logo the sources do not connect to the subject.
 - Copying a reference's brand, logo or exact palette instead of its technique.
-- Approximating an illustrated scene the renderer cannot produce, instead of naming the limit and offering the kind that is reachable.
 - Adopting a reference image's aspect ratio along with its look. The ratio comes from the caller and does not change per variant.
-- Describing a variant as a typographic style the installed fonts cannot set.
+- Approximating an illustrated scene the renderer cannot produce, or describing a variant as a typographic style the installed fonts cannot set, instead of naming the limit and offering the kind that is reachable.
 - Swapping a brand colour that failed the contrast check for one that passes, without telling the user.
 - Shipping the gallery without reading the contact sheet, so the user's one look at the set is spent on broken renders.
 - Offering a still where the platform requires video.
 - Taking over the user's working browser to screenshot local `file://` pages when a headless renderer is available.
-- Composing twenty-five pages one at a time when twenty-five rows and one composition routine produce them, or measuring the geometry gate by eye on a contact sheet when it is a measurement the page itself can report.
-- Launching a browser per page, screenshotting by hand, and reading the gate's numbers off the page one variant at a time.
+- Composing pages one at a time, launching a browser per page, screenshotting by hand, or reading the gate's numbers off a contact sheet when the page itself reports them.
+- Rewriting the toolchain this skill already ships, or editing `tools/` to fit one run instead of passing the run's own `set.json`.
+- Running the geometry loop on the full set, or re-rendering a hundred pages for a fix that touched three rows. The probe covers every layout in the plan, and the renderer takes a row list for exactly this reason.
+- A gate finding with no coordinates in it, so the next pass is spent guessing where the empty square was.
 - Looking at twenty-five PNGs one by one when the contact sheet is the 25 percent view the scale gate asks for.
 - Fetching a face per variant, or validating a scheme that came from the pool, or extracting a style pack the cache already holds for that host.
 - Three question rounds for the look, the language and the count, when the three answers are independent and fit one screen.
