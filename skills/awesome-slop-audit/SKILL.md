@@ -35,7 +35,7 @@ Categories are numbered so partitioned sub-audits report against the same list.
 1. Narration/tutorial: "check if…", "loop through…", "this function…".
 2. Echo-JSDoc: restates the signature, param lists that add nothing.
 3. Banner rows: `// ====`, `// ----`, `/* ---------- Name ---------- */`.
-4. Typographic glyphs in comment text: `— – … → ⇒ ↔ ≤ ≥ ± ≈ × ≠`, curly quotes, decorative bullets, emoji, non-breaking spaces. A hand-typed comment uses `-`, `->`, `<=`, `~`, `x`.
+4. Typographic glyphs in comment text: `— – … → ⇒ ↔ ≤ ≥ ± ≈ × ≠`, superscript digits and fractions (`² ³ ½`), `°`, primes, curly quotes, decorative bullets, emoji, non-breaking spaces. The test is the keyboard, not the length of this list: a developer reaches only what types in one keystroke — ``!@#$%^&*()_+-=`~|}{[]\":;'>?/.,<``, the letters and the digits — so a hand-typed comment says `-`, `->`, `<=`, `~`, `x`, `^2`, `1/2`, `deg`. Anything needing an alt-code, a compose key or a paste arrived from a generator.
 5. Stale or false claims: drifted counts, version-pinned numbers, removed mechanisms, misplaced doc blocks sitting above the wrong definition.
 6. Change-narration: "now uses", "updated to", "used to be", "extracted from X so that…" — history of the edit instead of purpose of the code. Distinguish from incident provenance ("a standing timer once made this NaN"), which is load-bearing regression context and stays.
 7. Drift-bait precision: "9,315 bytes measured off x.js, 5.4%", "~517 root entries in v17", "~30 modules import this" — measured numbers that silently rot on the next build/bump/refactor. Point at the mechanism or gate that enforces the property instead of the number it produced today.
@@ -61,7 +61,7 @@ Categories are numbered so partitioned sub-audits report against the same list.
 ### Docs, configs, CI (20–25)
 
 20. Em-dash saturation and 2+ dashes per sentence; middot-joined lists (`a · b · c`); `…`/`→`/`✅`/`❌` decoration in plain markdown. The em-dash rate is a release property, not a model-agnostic constant (measured per 1,000 words it runs from 0 to over 10 across 2025–26 releases, with a human mean near 3), so count it relative to the rest of the repo's prose and the house style, never as a blanket rule; a doc with no em-dashes proves nothing either way. The keyboard argument in category 4 is different and stands: a glyph nobody types is a glyph nobody typed.
-21. Negative-parallelism epidemic: "X, not Y" as the default rhetorical shape across docs *and* config comments. One is style; dozens are a fingerprint.
+21. Negative-parallelism epidemic: "X, not Y" as the default rhetorical shape across docs *and* config comments. One is style; dozens are a fingerprint. Code-comment text is stricter: there the frame and its `rather than` twin are a finding on the first occurrence under 26, because a comment arguing against an alternative rots the day that alternative stops being one.
 22. LLM list shape: emoji + bold lead + em dash, ten bullets in identical rhythm; badge walls with "coming soon" placeholders; rule-of-three prose.
 23. Redundant restatement: a diagram restating the bullet list above it, the same rationale in the file header and the section.
 24. Copy-pasted CI blocks: the same setup steps in every job, drifting independently — composite-action / template material.
@@ -70,6 +70,11 @@ Categories are numbered so partitioned sub-audits report against the same list.
 ### Comment and message diction (26)
 
 26. Borrowed diction: a ceremonial verb where the plain one exists, in comment text or in a commit message. The closed list, the plain replacement for each entry, the sweep and the look-alikes are in `awesome-humanize-en`'s [`references/lexicon.md`](references/lexicon.md), under Borrowed diction — the collection's one vocabulary inventory. Read it when that skill is installed and report against its wording, so a fix pass and this audit name the same entries.
+
+### Comment shape (27–28)
+
+27. Label-colon openers: a short phrase, a colon, then the explanation of that phrase — `// Stable across retries either way: the stored key for rows written since enqueue started stamping one, the id+ts derivation for older rows.` The head announces the topic and the tail explains the head, so the fact lands only in the second half; a developer writes one sentence carrying it. Count the pattern across the file — a repo where every third comment opens this way is a stronger finding than any single line. A colon joining a name to its value (`// Firefox: no support before 121`), a list, a URL, a ratio or a clock time is ordinary punctuation and no finding.
+28. English inflection glued to a code identifier: `signInThroughAuthPage's loop`, `the useStates`, `two config.jsons`. The suffix breaks the grep the next reader runs on that name, and the possessive is the register of prose about people. A symbol whose own spelling ends in `s`, and a comment in a codebase whose house style genuinely writes identifiers as nouns, are no finding.
 
 ### The glyph-pocket heuristic
 

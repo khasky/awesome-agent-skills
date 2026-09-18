@@ -224,13 +224,15 @@ Each is a plain *is*.
 
 ## Borrowed diction (comment, commit)
 
-The register of a model describing code; a developer typing the same comment uses the plain verb. Scope matters more here than anywhere else on this page: each of these is ordinary English in a document and ordinary vocabulary in some products, so outside comment text and message prose they are not findings.
+The register of a model describing code; a developer typing the same comment uses the plain verb. Scope matters more here than anywhere else on this page: each of these is ordinary English in a document and ordinary vocabulary in some products, so outside comment text and message prose they are not findings. Prose written about the code carries the same register and the same scope — a spec, a design note, a review reply explaining a mechanism — because the sentence there is a comment that happens to live outside the file.
 
 - `honored` — applied, enforced, respected
 - `honoured` — applied, enforced, respected
 - `mint` — create, generate, issue
 - `verbatim` — unchanged, exactly, character for character
-- `derived rather than` — name what the value is derived from
+- `beat` — name the step, the branch or the mechanism the two sites share
+- `slack` — the tolerance and its number, the margin, the unused room
+- `rather than` — say what the code does and stop; the road not taken is review-thread material, and a comment that argues against an alternative goes stale the day that alternative stops being a candidate. The whole family counts, `derived rather than` and `X rather than Y` alike, together with the mirrored `X, not Y` it becomes when the words are swapped. In comment text the count is zero; in a commit message the same frame is capped at one by the contrast-frame rule of the skill that owns that genre.
 
 ## Shapes that travel with the vocabulary
 
@@ -238,7 +240,7 @@ Named here so a skill can cite one place, defined in full by the pattern files i
 
 ## False positives
 
-The word is not the signal; the mismatch between register and genre is. A humanities text that delves into an archive, a product whose feature genuinely mints tokens, a diff tool whose contract is verbatim output, a quotation, a test title, a locale catalog, product data, an identifier: each keeps its word. `false-positives.md` carries the boundaries in full, and it outranks every entry above — a rewrite that strips a word out of a sentence that earned it is a worse defect than the word.
+The word is not the signal; the mismatch between register and genre is. A humanities text that delves into an archive, a product whose feature genuinely mints tokens, a diff tool whose contract is verbatim output, an integration that posts to Slack, a sequencer counting beats, a quotation, a test title, a locale catalog, product data, an identifier: each keeps its word. `false-positives.md` carries the boundaries in full, and it outranks every entry above — a rewrite that strips a word out of a sentence that earned it is a worse defect than the word.
 
 ## Adding an entry
 
