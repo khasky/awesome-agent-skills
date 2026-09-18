@@ -33,7 +33,7 @@ Four invariants hold throughout:
 ```
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`), a local git repository, or a plain directory of source with no git at all. If it is missing, ask for it before doing anything else and do not guess from the working directory.
-- `--out <file>` — plan file path. Default `<repo-name>-commits.txt` next to the repository.
+- `--out <file>` — plan file path. Default `<repo-name>-commits.txt` next to the repository. A file already at that path is an earlier plan, possibly one the user is halfway through executing: never overwrite it, take the next free name and say which file this run wrote.
 - `--commits N` — target commit count. Otherwise proposed from repository size (Phase 4).
 - `--granularity` — `coarse` (subsystem per commit), `default`, or `fine` (module per commit, sliced files).
 - `--verify` — `full` (default: build and test at every commit), `build` (compile or typecheck only), `off` (no replay; the plan then says so in the report and the word *bisectable* is not used).

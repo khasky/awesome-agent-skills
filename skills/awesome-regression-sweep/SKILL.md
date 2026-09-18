@@ -53,7 +53,7 @@ Nine aspects, one line each, then a verdict. Include the ones that exist:
 | end-to-end audit | the system does not verify end to end |
 | downstream consumer build | a consumer of the contract no longer builds |
 
-Baseline discipline. The first pass writes `baseline.json`; every later pass compares against it and prints a `DELTAS` block, or `no deltas`. "846 passed" is not a result; "846 passed, same as the baseline" is. Only a line the aspect declares as its `tally` is compared — a bare last line carries timings and would report a delta every pass. Re-baseline deliberately with `--update-baseline`, never to make a red pass look green.
+Baseline discipline. The first pass writes `baseline.json` at a path it states in that pass and every later pass reuses, one per repository and per sweep configuration; every later pass compares against it and prints a `DELTAS` block, or `no deltas`. "846 passed" is not a result; "846 passed, same as the baseline" is. Only a line the aspect declares as its `tally` is compared — a bare last line carries timings and would report a delta every pass. Re-baseline deliberately with `--update-baseline`, never to make a red pass look green.
 
 Four config options that decide whether the sweep can be trusted:
 

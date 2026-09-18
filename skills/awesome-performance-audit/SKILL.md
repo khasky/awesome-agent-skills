@@ -25,7 +25,7 @@ Six audit tracks, run the ones in scope:
 ## Scope and method
 
 1. Establish scope — one endpoint, one job class, or the whole service. Name the workload; perf is meaningless without "under what load".
-2. Gather evidence — CPU profile for hot paths, heap snapshots for growth, GC traces for pressure, request/job correlation to connect symptoms to workloads. Read code paths and config (timeouts, body limits, pool sizes). Persist raw pulls (`raw/<target>/<date>/...`) before synthesizing so a re-audit can diff.
+2. Gather evidence — CPU profile for hot paths, heap snapshots for growth, GC traces for pressure, request/job correlation to connect symptoms to workloads. Read code paths and config (timeouts, body limits, pool sizes). Persist raw pulls (`raw/<target>/<date>/...`) before synthesizing so a re-audit can diff; a second run on one day takes `<date>T<HHMM>` rather than writing over the pull the next diff needs.
 3. Measure the tail, not the average — p95/p99/max, not mean. Averages hide the requests that actually hurt.
 4. Score, gate, report — see Output.
 

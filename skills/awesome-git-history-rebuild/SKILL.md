@@ -364,7 +364,7 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
 
 ## Phase 1 — Backup (mandatory, verified)
 
-The mirror clone is the only rollback path. Make it before anything else.
+The mirror clone is the only rollback path. Make it before anything else. A path of that name already there is an earlier backup of the same tip. It is kept and never written into, cleared or reused: take the next free name, say which one this run made, and tell the user the older backup is still on disk. A backup is the one artifact that is never put in a temporary folder, because the folder that gets cleaned is the one holding the only copy.
 
 ```
 git clone --mirror <repository-url> <repo>-backup-<shortsha>.git

@@ -78,7 +78,7 @@ Where the decision splits into several briefs, publish them in dependency order 
 
 ## Output Format
 
-Full design doc: Title → Problem & requirements (with numbers) → Proposed design (contract first, then internals) → Alternatives & trade-offs → Recommendation → Non-goals → Risks & mitigations → Rollout & rollback → Open questions (marked, not hidden). Deliver as a Markdown file in the repo's docs convention (`docs/adr/`, `docs/design/`, or where existing docs live — discover, don't invent).
+Full design doc: Title → Problem & requirements (with numbers) → Proposed design (contract first, then internals) → Alternatives & trade-offs → Recommendation → Non-goals → Risks & mitigations → Rollout & rollback → Open questions (marked, not hidden). Deliver as a Markdown file in the repo's docs convention (`docs/adr/`, `docs/design/`, or where existing docs live — discover, don't invent). The filename follows the convention of the folder it joins, so a numbered set takes the next free number rather than a number already on disk, and an existing document is never overwritten by a new one: a design doc that replaces another says so in its own text and leaves the old file where reviewers linked it.
 
 ## Self-check before delivering
 

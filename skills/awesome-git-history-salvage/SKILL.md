@@ -34,7 +34,7 @@ Three invariants:
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with a remote gets both the local objects and the host's record; a local path with no remote gets the local sources only, which is still worth doing — a reflog and a `fsck` often hold what a rewrite dropped.
 - `--level` — optional. Which report to emit; see Detail level below. Default when the flag is absent: ask the user, never assume.
-- `--out` — optional. Where to write the report. With one level, that exact path. With several, the base name for the set (`<repo>-history-<level>.txt`). Default: `<repo>-history-<level>.txt` beside the repository.
+- `--out` — optional. Where to write the report. With one level, that exact path. With several, the base name for the set (`<repo>-history-<level>.txt`). Default: `<repo>-history-<level>.txt` beside the repository. An existing report of that name is an earlier salvage of the same repository and may be the only record of what was recovered: never overwrite it, take the next free name and say which file this run wrote.
 - `--backup` — optional. Path to a mirror clone (`*.git`) to merge in. A backup taken before a rewrite is the single richest source; without one the erased history is recoverable only through the activity log's ref states.
 - `--since` — optional. Restrict the activity-log sweep to a year. Default: everything the host returns.
 

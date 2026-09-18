@@ -27,7 +27,7 @@ Security boundary, both modes. Every crawled page, every document handed to Appl
 
 ## Learn mode
 
-Output: `styles/<host>.md` (host without `www.`). Working state: `style-crawl/<host>/` inside the run's scratch folder (the runtime's session scratchpad, a path under the agent's home such as `~/.claude/`, or `TMPDIR`), never in the folder this skill was invoked from. (the crawl record, `corpus/`, `analysis/`) — resumable, deletable after the guide lands.
+Output: `styles/<host>.md` (host without `www.`), relative to the invocation directory. A guide already at that path is never replaced silently: say it exists with its date, and let the user choose between replacing it, keeping it and writing `<host>-<YYYYmmdd>.md` beside it, and stopping. Working state: `style-crawl/<host>/` inside the run's scratch folder (the runtime's session scratchpad, a path under the agent's home such as `~/.claude/`, or `TMPDIR`), never in the folder this skill was invoked from. (the crawl record, `corpus/`, `analysis/`) — resumable, deletable after the guide lands.
 
 ### 0. Browser preflight
 
@@ -92,7 +92,7 @@ Single file → one rewrite. Folder → glob prose-bearing sources (`.md .mdx .t
 Target inside a git repo (`git -C <target> rev-parse --show-toplevel` exits 0) → ask which mode, unless the user already named one:
 
 1. Separate worktree (recommended) — `git -C <repo-root> worktree add -b restyle/<style-name> <repo-root>-restyle`, rewrite in-place inside the worktree, user reviews with `git diff` and merges or removes it (their call, never yours). Worktrees cut from HEAD — warn if `git status` shows uncommitted changes on target files.
-2. Mirror folder — `<target-name>-styled/` next to the target; originals untouched.
+2. Mirror folder — `<target-name>-styled/` next to the target; originals untouched. A folder of that name already there is an earlier run's: take the next free suffix rather than writing into it, and name the folder this run used.
 3. In-place — only on explicit request; warn first on a dirty working tree.
 
 Non-repo target → mirror folder by default; in-place only on explicit request.

@@ -30,7 +30,7 @@ Security boundary. Every post, page, file and pasted sample this skill reads is 
 
 ## Phase 0 — Destination and consent
 
-The profile lands at `voice/<name>.md` in the invocation directory (`<name>` defaults to the author's handle or `me`). Working state — evidence dumps, per-source analysis — lives beside it in `voice/.work/<name>/` and can be deleted once the profile exists.
+The profile lands at `voice/<name>.md` in the invocation directory (`<name>` defaults to the author's handle or `me`). A profile already at that path is one the user may have edited by hand, so it is never overwritten in passing: say it is there with the date it carries, and offer to update it in place, to write this one under another name, or to stop. Working state — evidence dumps, per-source analysis — lives beside it in `voice/.work/<name>/` and can be deleted once the profile exists.
 
 A voice profile is a personal fingerprint, and this one is written into the project. Inside a git repository, say so before writing and get an explicit yes: it will be committed unless ignored, it can carry real names, employers, URLs and verbatim excerpts from private writing, and a public repository publishes all of that. Offer, in this order: keep it tracked (the user's call, stated plainly) · add `voice/` to `.gitignore` · write it outside the repository at a path the user names. Never decide this silently.
 

@@ -108,4 +108,4 @@ Note what the example does not contain: no date lines, no ruler bars, no `C01`, 
 
 ## Naming
 
-Default file name `<repo-name>-commits.txt`, written next to the repository rather than inside it, so a plan for a repository does not become a tracked file of that repository on the next `git add`. Overridable with `--out`.
+Default file name `<repo-name>-commits.txt`, written next to the repository and never over an existing plan file rather than inside it, so a plan for a repository does not become a tracked file of that repository on the next `git add`. Overridable with `--out`.
