@@ -24,16 +24,18 @@ Check: `facebook.com` — own avatar and the "What's on your mind" composer. Com
 
 One run failed here outright, and the symptom is worth recognising. The inline composer took the click and the dialog with `aria-label="Create post"` appeared — but no editable node ever mounted inside it: no `[contenteditable]`, no textarea, keystrokes going nowhere. That is the dialog failing to initialise, not UI drift to re-derive selector by selector. Snapshot the dialog's subtree before typing so the failure is evidence rather than a guess, and after a second occurrence record `failed` and move on rather than spending the run on it; the standalone composer route, or handing the browser to the user for that one post, are the two ways out.
 
-Observed on a Page (UI in Ukrainian): the inline composer field reads "Що у вас на думці?"; clicking it opens a dialog with `aria-label="Create post"` (English attribute even on a localized UI) — several other `[role="dialog"]` nodes coexist (notifications, empty portals), so identify by that label. The composer has exactly one file input inside its subtree; scope to it. Posting is two steps: Next ("Далі") → a Post settings screen → Publish ("Опублікувати"). The settings screen renders grey skeletons for several seconds — a DOM probe run too early still reports the *previous* step's buttons and looks like the click failed; wait and re-probe rather than clicking Next again. On that screen confirm audience, and that *Share to groups*, *Share to story* and *Promote* are not engaged — "Просувати допис" warns it opens a paid flow after Post; never enter it. The photo-edit panel that carries alt text frequently will not open (two attempts, both dead) — Facebook then generates its own OCR description. Read-back: the Page feed shows "Щойно"/"Just now" with `Published by <admin>`; capture the `/posts/pfbid…` permalink and open it to confirm text and media, since the feed truncates behind "See more".
-
 On the profile, "Share a thought…" is the Note composer, not the wall composer. It opens a dialog titled New note — a 24-hour ephemeral Messenger/Facebook note, `aria-labelledby` and no `aria-label`, so a search for `[aria-label="Create post"]` finds nothing and the run reads it as a failed click. The wall composer is the `div[role="button"]` whose text is exactly `What's on your mind?`, further down the page, and clicking that one does produce `[role="dialog"][aria-label="Create post"]`. Escaping the note raises a `Discard note?` confirmation whose `Discard` button must be clicked to leave; nothing is created either way, but a run that walks away leaves the dialog open over everything else on the page.
 
 The wall is not evidence of absence, and reading it that way created a duplicate. A JS `Post` click published fine; the profile wall then rendered no new post on two loads five and forty-five minutes apart, the run recorded the attempt as failed, and the ten-minute retry put a second copy on the wall. The proof that a post landed is the Photos grid on the profile: take the set of `fbid` values from `a[href*="fbid="]` before composing, take it again after the submit, and a new `fbid` whose `/photo/?fbid=<id>` page carries the post text and `Shared with Your friends` is the post. No new `fbid` after a photo post, checked on a fresh load with cache bypass, is the only reading that permits a retry.
 
 Two more details of the personal-timeline flow, which is simpler than the Page flow above: the audience button reads `Friends`, there is no Next/settings step (the dialog's own `Post` publishes directly), and the composer's per-attachment controls are `aria-label` `Edit media preview` and `Remove media` — one of each means exactly one attachment.
 
-## facebook-group
-Check: the group URL from frontmatter — member view with a composer visible (no composer = not a member or posting restricted → report, skip). Compose: composer inside the group page. Read-back: group feed; many groups queue posts for admin approval — a "pending approval" notice = ledger status `pending-approval`, not `posted` and not a failure.
+## facebook-page
+Check: the Page URL from frontmatter, opened while signed in as an admin, with the Page's own composer visible. No composer, or no admin role, means this account cannot post there: report and skip, never fall back to the personal timeline, which is a different audience.
+
+Observed on a Page (UI in Ukrainian): the inline composer field reads "Що у вас на думці?"; clicking it opens a dialog with `aria-label="Create post"` (English attribute even on a localized UI) — several other `[role="dialog"]` nodes coexist (notifications, empty portals), so identify by that label. The composer has exactly one file input inside its subtree; scope to it. Posting is two steps: Next ("Далі") → a Post settings screen → Publish ("Опублікувати"). The settings screen renders grey skeletons for several seconds — a DOM probe run too early still reports the *previous* step's buttons and looks like the click failed; wait and re-probe rather than clicking Next again. On that screen confirm audience, and that *Share to groups*, *Share to story* and *Promote* are not engaged — "Просувати допис" warns it opens a paid flow after Post; never enter it. The photo-edit panel that carries alt text frequently will not open (two attempts, both dead) — Facebook then generates its own OCR description. Read-back: the Page feed shows "Щойно"/"Just now" with `Published by <admin>`; capture the `/posts/pfbid…` permalink and open it to confirm text and media, since the feed truncates behind "See more".
+
+A group is not this slug any more. A post into a group goes out as `facebook-wall` with the group URL as its target, because the composer, the register and the moderation queue are the group's, not a Page's.
 
 ## linkedin
 Check: `linkedin.com/feed/` — the member name renders in the rail. Compose: "Start a post" → the share dialog → the editor → "Post". Read-back: own profile → recent activity/posts.
@@ -823,3 +825,98 @@ The sidebar's `.file-sidebar-item-hidden-file-input` is the *Thumbnail* uploader
 
 Editing an already-published post: `Continue`, not `Update`. The header carries `Saved` / `Preview` / `Continue`; `Continue` raises a confirm panel whose buttons are `Cancel` and `Update now`, with no email-resend option and no "Publish without buttons" modal. It lands on `/publish/posts/detail/<id>/share-center?alreadyPublished=true` reading *Your post is live!*. Reaching the editor of a published post: `/publish/posts` → the row link `/publish/posts/detail/<id>` gives the id → the editor is `/publish/post/<id>`.
 
+## blogger
+Check: `blogger.com` signed in redirects to `/blog/posts/<blogId>`, with the blog selector (`listbox "Blog Selection"`) and the `New Post` button in the drawer; signed out lands on the Google sign-in page. The blog's public address is in the page as `<name>.blogspot.com` and is the read-back base.
+
+Compose: `New Post` opens `/blog/post/edit/<blogId>/<postId>` and creates the draft immediately (the page says `Creating new post...`), so an abandoned editor is a draft in the Posts list under the `Draft` filter: finish or delete it before retrying, or the blog ends with two of the same article. `textbox "Title"` is the title. The body is the Compose view, a contenteditable inside an iframe, with the `Toggle view` listbox switching to `HTML view`. Typed markdown stays literal in Compose view, so a formatted article goes in through HTML view as HTML, headings and links included; the toolbar's `Insert or Edit Link`, `Insert image` and `Insert video` controls cover the Compose route when needed. The image goes in through `Insert image` at the top of the body.
+
+Post settings sidebar: `Labels` (comma-separated, with suggestions from the blog's existing labels), `Published on` (a future date schedules), `Permalink` (custom slug), `Location`, `Options`. `Publish` is the top-right button; `Preview` beside it opens a new tab. The labels come from the post's `hashtags` list, mapped to existing labels where they match.
+
+Read-back: `<name>.blogspot.com`, newest post at `/<yyyy>/<mm>/<slug>.html`; confirm the title, the headings rendered as headings and the image.
+
+## flipboard
+Check: `flipboard.com` signed in shows `Create a Flip` in the top navigation; signed out shows sign-in prompts. The profile is `flipboard.com/@<handle>` and each magazine is `flipboard.com/@<handle>/<magazine-slug>`.
+
+Compose: `Create a Flip` opens `region "flip-compose"` on `Pick a Magazine`: `My Magazines` lists the account's magazines with `New Magazine` first; select the target magazine (the post file's `target`) and press `Next`. The second screen is a Draft.js editor (`.public-DraftEditor-content`, placeholder `Start a conversation in this Magazine…`) with three icon buttons that all announce as `link` to the accessibility tree; in order they are mention (`@`), URL (`Enter a URL to add to your new Flip`, confirmed with `Okay`) and image upload. `Add` enables once text is in. Text goes in with focus plus `insertText`, like every Draft.js field. A flip with a link: type the comment, then the URL icon, the URL, `Okay`, then `Add`. The dialog has no counter; keep the comment short and read it back.
+
+Read-back: the magazine page, newest card; confirm the comment and the link card.
+
+## livejournal
+Check: `livejournal.com/post/` (the old `update.bml` redirects there) renders the editor with the journal name in the header; signed out shows the login page. The journal is `<journal>.livejournal.com`.
+
+Compose: `textbox "Title"` with a live `0/100` counter, a hard 100-character cap. The body is a block editor (contenteditable, placeholder `Start typing, add images or just press "/"`); `/` opens the block menu and `Choose File` beside it takes an image. Tags go in the tags textbox (`Start writing tags, separated by commas`), from the post file's `hashtags`. `Visible to all` is the security control and stays on its default. `Tune in and publish` opens the publish settings and posts. Drafts live at `/post/list/`; an interrupted run leaves one there.
+
+Read-back: `<journal>.livejournal.com/<id>.html`, newest entry from the journal's front page.
+
+## dreamwidth
+Check: `dreamwidth.org/update` renders `Post an Entry` with `Post as: <user>`; signed out redirects to login. The journal is `<journal>.dreamwidth.org`.
+
+Compose: a classic HTML form. `Post to:` selects the journal or a community (the post file's `target`). `Subject:` is the title. The body textarea has a `Rich Text` / `HTML` toggle above it and opens in HTML mode: paste HTML there with `Disable Auto-Formatting` checked, or plain paragraphs with it unchecked, because auto-formatting turns every line break into a break tag and doubles the spacing of pasted HTML. `Insert Image` and `Embed Media` sit on the same toolbar. `Tags:` takes a comma-separated list. `Show this entry to:` stays on `Everyone (Public)`. Submit is the `Post to: <journal>` button at the bottom (`Preview` beside it opens a preview page).
+
+Read-back: `<journal>.dreamwidth.org/<id>.html`, newest entry from the journal's front page.
+
+## mewe
+Check: `mewe.com/myworld` signed in shows the feed with the composer placeholder `How is your day going?` (`.c-mw-postbox-placeholder`); signed out shows the landing page. The profile is `mewe.com/<handle>`.
+
+Compose: click the placeholder; the dialog shows the author name, an audience button (`Anyone`, left alone), a Quill editor (`.ql-editor`, the placeholder in `data-placeholder`) and a row of unlabelled icon buttons (photo, gif, emoji and the rest) under it, then `Lock Content` with a tip value (a paid-unlock toggle: never touch it) and `Disable Commenting`. `Post` enables once text is in. Text goes in with `el.focus()` and `insertText`; a URL pasted as text stays clickable. The dialog shows no counter, so the cap is verified live.
+
+Read-back: `mewe.com/<handle>/posts`, newest entry.
+
+## youtube
+Check: `youtube.com/channel/<channelId>/posts` signed in as the channel owner shows the inline composer at the top of the Posts tab; `studio.youtube.com` links to it as `Create post`. The composer also opens from `youtube.com/my_community`.
+
+Compose: the composer opener is the button `Share a sneak peek of your next video`; it expands into `#contenteditable-textarea` (a `yt-formatted-string` contenteditable, `maxlength` 10000, a live `n/10000` counter under it). Below the text: `Add an image`, `Add an image poll`, `Add a text poll`, `Add a quiz`, `Add an existing YouTube video`; only one attachment type per post. `Post` publishes now; the `Action menu` beside it schedules. The visibility line above the composer reads `Public` and stays so. Text goes in with focus plus `insertText`. The Posts tab has `Published`, `Scheduled` and `Archived` tabs.
+
+Read-back: the `Published` tab, newest card; its permalink is `youtube.com/post/<id>`.
+
+## tiktok
+Check: `tiktok.com/tiktokstudio/upload?tab=photo` signed in shows `Select photos to upload`; signed out shows the login wall.
+
+Compose: the `Photos` tab (`tab "Photos"`) takes up to 35 photos per post, 50 MB each, JPG, JPEG, PNG or WebP, through `Select photos` (an OS file chooser, answered with `browser_file_upload`) or drag and drop. The caption field, its counter, the hashtag suggestions, the cover picker and `Who can view this post` render only after the photos are in, so the first run reads them from the live form and records the caption cap in the platform cache. The caption carries the body and the tag line. `Post` submits; the studio's `Posts` list is the read-back.
+
+Read-back: `tiktok.com/@<handle>`, newest photo post; confirm the caption and the photo count.
+
+## imgur
+Check: `imgur.com/upload` signed in shows `Drop images here` with `Choose Photo/Video`, `Paste image or URL` and `My Uploads`; the header links to `/user/<handle>/posts`.
+
+Compose: the file input accepts `.jpg .jpeg .png .gif .apng .tiff .tif .bmp .xcf .webp` and the common video formats, multiple. After the upload the post editor takes a title, a description per image (plain text, links stay clickable) and tags, and the post is hidden by default. `Post to Community` (or the equivalent control on the finished post) is the outward-facing step and the one the run confirms before taking; a hidden post is reachable by link only. The image is the post: the description is the caption.
+
+Read-back: `imgur.com/user/<handle>/posts`, newest post; confirm the title and that the post shows as public when it was meant to.
+
+## flickr
+Check: `flickr.com/photos/upload/` signed in shows `Drag & drop photos and videos here` and the sidebar with `Add tags`, `Add people`, `Add albums`, `Add groups`, `Owner settings`; it also states the remaining quota (`You can upload N more photos and videos`), which a free account has a lifetime total of. Signed out redirects to login.
+
+Compose: `Choose File` takes photos and videos (multiple). Each uploaded item gets a title and a description in the uploader; tags go in through `Add tags`, albums through `Add albums`, groups through `Add groups`, privacy through `Owner settings` (left on the account's default). The `Upload` button at the top finishes the batch and publishes. The photo is the post; the description is the caption and links in it stay clickable.
+
+Read-back: `flickr.com/photos/<user-id>/`, newest photo; the permalink is `/photos/<user-id>/<photo-id>/`.
+
+## mataroa
+Check: `<blog>.mataroa.blog` signed in shows a top navigation with `View blog | Dashboard | New post`; `mataroa.blog/blog/` redirects to the account's blog.
+
+Compose: `New post` opens `mataroa.blog/new/post/`, a plain form: `textbox "Title"`; `Publication date` in `YYYY-MM-DD` (pre-filled with today, an empty value keeps a draft, a future date schedules, and `set as draft` clears it); `Content (supports markdown)` textarea, images by dragging into it; `Save`. Markdown is the input here, so the post file's body goes in as written. Read the slug off the published page; it derives from the title and is editable afterwards.
+
+Read-back: `<blog>.mataroa.blog/blog/<slug>/`; confirm the headings rendered and the links are live.
+
+## deviantart
+Check: `deviantart.com/studio/journals` signed in shows `Post a journal` with `Start a Draft`, and the Studio navigation with `Drafts`, `Published` and `Scheduled`; the profile is `deviantart.com/<handle>`.
+
+Compose: `Start a Draft` opens the `Submit a journal` dialog: `Who can see it?` (left on its default), `Add Cover Image`, the title textbox (`Add your title here`, with a read-time estimate beside it), the rich body (`Start typing your main text here, or begin by adding an image or video.`) with a formatting toolbar and block menu, a `Featured Post` toggle, then `Save to Studio` (draft) and `Submit`. Tags are a control inside the same dialog and come from the post file's `hashtags`. Classify the editor before typing: check whether a `## ` line converts, and use the toolbar for headings and links when it does not. An interrupted run leaves a draft under `Drafts`.
+
+Read-back: `deviantart.com/<handle>/journal`, newest entry; confirm the title, the cover and the headings.
+
+## github-gists
+Check: `gist.github.com` signed in renders the create form (`form` labelled `Create gist`) with the account avatar in the header; signed out shows the sign-in page. The account's own gists are at `gist.github.com/<handle>`.
+
+Compose, three fields, all plain inputs with no length cap of their own:
+
+- `input[name="gist[description]"]` (placeholder `Gist description…`) takes the post's frontmatter `title`. It is what a reader sees in a gist listing and in a search result.
+- `input[name="gist[contents][][name]"]` (placeholder `Filename including extension…`) takes `<kebab-case-title>.md`. The extension is what makes the page render as Markdown, so a missing or wrong one publishes the document as plain text.
+- `textarea[name="gist[contents][][value]"]` (`.js-blob-contents`, a CodeMirror-backed editor) takes the body. Type through the editor rather than setting the textarea's value, the way every CodeMirror surface here is handled. The form has an `Edit new file` / `Preview` tab pair, and Preview is the cheap confirmation that the Markdown parsed before anything is created.
+
+**Public is not the default, and this is the one trap on this platform.** The form's primary button reads `Create secret gist`. A public gist needs the adjacent `Select a type of Gist` button opened first and the `Create public gist` item chosen (`menuitemradio`, the other being `Create secret gist Secret gists are hidden by search engines but visible to anyone you give the URL to.`), which relabels the primary button. Read that label back before clicking it: a run that clicks the default ships an unlisted page nobody will find, and the post will look published in every ledger.
+
+A gist is a git repository, so there is no edit-by-retry: a second attempt creates a second gist. Before composing, load `gist.github.com/<handle>` and check whether this post is already there. The composer also shows the commit email the gist will carry.
+
+The composer takes text only. An image is referenced by absolute URL inside the Markdown; there is no attachment control, so a post file declaring an attachment for this platform is a defect to report rather than a file to upload.
+
+Read-back: the new gist's URL, `gist.github.com/<handle>/<id>`, which the browser lands on after creation. Confirm the description, the filename with its extension, that the body rendered as Markdown (headings are headings, fenced blocks are blocks) and that the page does not say `Secret`.

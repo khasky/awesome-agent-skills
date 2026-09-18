@@ -88,7 +88,7 @@ Scan the source and validate every post file:
 
 Output of this phase: the platform set, post count per platform, date range — the input to the next two phases.
 
-Reconcile any platform list the user named against that set before planning anything. `--platforms`, or a list given in conversation, is a *request*, not a fact about the folder. A user naming six platforms may be naming ones the campaign never wrote for, or one surface when the files target another. Report the difference explicitly and in the user's terms — "threads and telegram have zero posts in this campaign"; "the 28 facebook posts are `facebook-wall` targeting the Page, there are no `facebook-group` posts" — then plan only what exists. Never silently substitute a neighbouring slug, and never let a named-but-absent platform vanish from the report. If the gap means the user wants content that does not exist yet, say so: writing it is `awesome-content-campaign`'s job, not this skill's.
+Reconcile any platform list the user named against that set before planning anything. `--platforms`, or a list given in conversation, is a *request*, not a fact about the folder. A user naming six platforms may be naming ones the campaign never wrote for, or one surface when the files target another. Report the difference explicitly and in the user's terms — "threads and telegram have zero posts in this campaign"; "the 28 facebook posts are `facebook-wall` targeting the Page, there are no `facebook-page` posts" — then plan only what exists. Never silently substitute a neighbouring slug, and never let a named-but-absent platform vanish from the report. If the gap means the user wants content that does not exist yet, say so: writing it is `awesome-content-campaign`'s job, not this skill's.
 
 ## Phase 3 — Preflight C: login per platform
 
@@ -218,7 +218,7 @@ Between due times, idle using whatever long-wait mechanism the agent runtime has
 ```text
 Source:      <folder>   (<N> posts, <M> platforms, <date range>)
 Posted:      <n> — each with platform, time, and the read-back URL
-Pending:     <n> approval queues (facebook-group, hackernoon, …)
+Pending:     <n> approval queues (a moderated group target, hackernoon, ...)
 Skipped:     <n> (<platforms and why — not logged in, user choice>)
 Failed:      <n> (<file: last error>)
 Unverified:  <n> (submitted, not found on read-back — resolve before any retry)
