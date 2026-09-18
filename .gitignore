@@ -5,3 +5,4 @@
 .mcp/
 rtk/
 *.code-profile
+__pycache__
