@@ -1,95 +1,92 @@
-# Fidelity — the notes format, the claims ledger, and proving a fix changed nothing
+# Fidelity - the evidence model and the checks that keep the source central
 
-The source is the boundary, and this file is how the boundary is checked rather than asserted. Three rules sit underneath everything here, each taken from measured failures rather than taste:
+Every check here compares against `source/`, the notes, or a count, never against the writer's memory of what the source said. Findings name a rule and quote a span; nothing is scored.
 
-- A check needs an anchor outside the writer. A model asked to review its own text without the source or a script in front of it finds factual inconsistencies at close to chance, and an instruction to "be accurate" measurably increases overgeneralization instead of reducing it. So every fidelity step below compares against `source/`, the notes, or a count, never against the writer's memory of what the source said.
-- Separation beats a joint reading. Verification questions answered without the draft in view catch errors a reading of the draft next to the source misses.
-- Findings, never scores. A judge's number drifts with length, position and its own style; a finding names the rule it breaks and quotes the text that breaks it, so a second reader can check it.
+## 1. Evidence notes
 
-## The source-notes format
-
-`source-notes.md` is written in Phase 1 and every later phase is checked against it. Each fact-bearing line carries an ID in square brackets, and every line that comes from a place in the source carries that place as `(at pN)`, the paragraph number in the extracted text under `source/`. The gate reads both, so the format is exact:
-
-- `Source paragraphs: N` on a line of its own at the top, counted on the extracted text (blank-line separated blocks). The coverage check and the anchor check measure against it.
-- The point — one sentence, no ID.
-- Candidate ideas — three, each one sentence naming a mechanism or consequence, followed by the IDs of the lines it rests on. The interview shows them; the chosen one is recorded in `campaign.md`, and the other two go to its backlog section (Phase 6) with their IDs, so the next run can start there.
-- Supporting claims — `[C1]`, `[C2]`, one line each in the source's own terms, each with `(at pN)`.
-- Numbers — `[N1]`, verbatim, with the condition the source attached, each with `(at pN)`. A number without its condition is not repurposable.
-- Derivations — `[D1]`: the author's own arithmetic or reading, written in Phase 4 under "The author's own angle" (`references/authored-style.md`), each line naming the IDs it was computed from and showing the computation, and marked as the author's when it is a reading rather than a sum. A `[D]` line is the one addition to the notes allowed after Phase 1, because it introduces no fact the source lacks, only a combination of facts it has; the gate grounds a post's derived numbers against it. A `[D]` line never carries a measurement, a benchmark or an outcome.
-- Scope and hedges — `[S1]`: who or what a finding covers (a population, a platform, a hardware tier), preview or beta status, the source's own `may`, `can`, `in our tests`, a result reported in the past tense, a sample size. Compression turns a narrow finding into a general one more often than it does anything else; this section is what a post's sentence is narrowed back to.
-- Quotable lines — `[Q1]`, verbatim, in quotation marks, with `(at pN)`.
-- Named things — `[E1]`, spelled the way the source spells them.
-- What surprised the reader — the counterintuitive part, which a source usually buries in the middle rather than leading with, pointing at the IDs that carry it. It feeds the candidate ideas and the opener; it is never a claim of its own.
-- The honest exception — the one limit a reader would hit first, pointing at its IDs. The post's caveat comes from here. Where the source names no limit, this line says so, and the caveat is taken from the Phase 4 verification or narrowed from Scope and hedges; it is never invented to fill the slot.
-- Provenance, and What the source does NOT say, as described in `SKILL.md` Phase 1.
-- Not transferable to text — only for a spoken source (Phase 1): the demos, the references to something on screen, the audience moments and the live-only asides, each with `(at pN)`, so no post points at a thing the reader cannot see.
-
-## The unit, saved
-
-The unit is written once, whole, and saved as `unit.md` beside the notes after the Phase 4 humanity pass and before any platform version exists. It is the baseline two checks need: the echo check counts a phrase that turns up in more than three posts without being in the unit as boilerplate the adaptation stamped on, and the fidelity pass compares every version's point against the unit's.
-
-## The claims ledger
-
-Pass 1 of Phase 5 writes `claims.md` beside the notes: one table row per atomic claim per post, the claim in subject-and-action form so an entity doing the wrong thing shows as a wrong row, and the IDs that support it.
+`source-notes.md` opens with `Source paragraphs: N`, `Source type`, `Primary subject`, `Source promise`, then evidence lines, each with its position `(at pN)` where it comes from the source:
 
 ```text
-| post | claim | ref |
-| --- | --- | --- |
-| linkedin | <subject> <action> <object, with its condition> | C2, N1 |
-| x | <subject> <action> | S1 |
+[C1] <claim in the source's own terms> (at pN)
+[N1] <number + the exact condition the source attaches> (at pN)
+[S1] <scope, hedge, preview status, population, platform> (at pN)
+[Q1] "<verbatim quotation>" (at pN)
+[E1] <exact product, model or tool spelling>
+[V1] <verified current fact>  source: <official URL>  checked: <date>  propagation: core | local | long-only | omit-short
+[X1] source said: <stale statement>  current: <verified correction>  source: <URL>  checked: <date>  propagation: ...
+[D1] <derived value>  inputs: N1, V2  calculation: <explicit arithmetic>
 ```
 
-- `post` is the platform slug (or the whole filename; the gate keeps the last field).
-- `ref` is one or more IDs from the notes, or `UNSUPPORTED`. An unsupported claim is a finding whatever it says; the fix is to remove the claim or find the note line that carries it, never to add a note line after the fact.
-- A post with no rows is a finding: a post that asserts nothing checkable is either empty or unaudited.
-- Framing is not a claim. Having read it, tried it or preferred it is the author's frame (`SKILL.md` Phase 4) and gets no row; a result inside that frame does, and it needs an ID like any other.
+A number without its condition is not reusable. A `[D]` line combines grounded numbers and never invents a measurement. `local` is the default propagation; `core` is reserved for a fact that changes the reader's main decision; exact windows, alias and deprecation history, policy and jurisdiction wording are `long-only` or `omit-short`.
 
-The gate checks the ledger mechanically: every row's IDs exist in the notes, no `UNSUPPORTED` survives, every post has rows, and a long-form post drawing on a source of 30 paragraphs or more cites something from its middle third, because summaries are measurably less faithful to the middle of a long text and a long read that only uses the introduction and the conclusion has usually skipped the part that carried the argument.
+## 2. The module map
 
-Every post file also carries `source_anchor: pN` or `pN-pM`, the paragraphs its idea draws on, so the fidelity pass reads one region of the source against it instead of the whole text.
+```text
+[M1] <module name>
+role: primary-path | secondary-path | decision-axis | caveat | troubleshooting | auxiliary-detail
+portable takeaway: <one sentence that survives a hard cap>
+medium details: <supporting specifics for feeds>
+deep details: <raw rates, exact windows, policy wording, alias history, long config>
+representation: prose | list | steps | code/config | table | mixed
+evidence: C#, N#, S#, Q#, E#
+```
 
-## The mechanical checks against the source
+At most 2 `primary-path` modules. The map is structural evidence: a post can be accurate in every sentence and still be unfaithful when it drops most modules for one derived theme. For a guide, module coverage is a first-class check; for the other source types the modules follow the blueprints in `platform-specs.md` section 5.
 
-Checked against the run's source notes, the mechanical pass adds these on top of the checks that need nothing but the posts:
+## 3. Ledgers
 
-- grounding — every number, every product or version identifier (a token with a digit or an inner capital) and every quotation of four words or more in a post appears in the notes or in `source/`; quotations match verbatim. An added entity or a changed number is the commonest error compression makes, and it is the one a reader cannot see.
-- absolute — `always`, `never`, `guarantees`, `proves`, `eliminates`, `completely`, `entirely`, `perfectly`, `flawless`, `without exception` and `100%` in a post when the source never used the word. The author's own habits in the first person are exempt; a claim about the thing is not.
-- anchor, ledger, coverage — as above.
-- echo (run level) — a phrase in more than three posts that the unit never had.
+`claims.md`, one row per atomic factual claim per post: `| post | claim | evidence |`. Every factual claim has evidence; framing and opinion need no row; no `UNSUPPORTED` survives; quotations stay verbatim; a volatile claim cannot rest on old source text alone when verification was required.
 
-These are presence checks, and they are deliberately narrow: a number that is present can still have lost its condition, and a claim whose words all appear in the source can still invert it. That is what the judgment passes are for.
+`coverage.md`, one row per post: `| post | modules present | modules grouped or omitted, with the platform reason |`. A long-form version that omits core modules without a platform reason fails.
 
-## Writing the checker, and editing it
+## 4. Verification is correction and support, not expansion
 
-The counting pass is a script the run writes, and two habits decide whether writing it costs ten minutes or an hour.
+Research may validate a claim, update a stale value, name or command, supply the current value a source-requested comparison needs, or settle a caveat that changes usability. It may not discover a new theme and make it the article, add a detailed policy regime to a source that gives a generic warning, add unrelated benchmarks, or build a framework from adjacent documentation. Long-form balance: source-origin facts at least twice the externally added ones, corrections of stale claims exempt.
 
-- **Write it with the file-writing tool, never a shell heredoc.** A heredoc eats the backslashes out of every regular expression it carries, so `\s` arrives as `s` and `\\` as `\`, and it fails outright on anything long. One run lost eight attempts to this before switching, and shipped a post with `C:WindowsSystem32sru` in it because the same collapse happened inside a template literal.
-- **Edit it with the editing tool, not `sed` and not a rewrite script.** An out-of-band edit makes the runtime hand the whole file back into the conversation as changed-on-disk, which on a 300-line checker costs more than the edit did, several times over.
-- **A finding names the post and the check, and carries the value that failed.** `band | 1215 over 1200` is fixable; `band` is a second pass spent measuring.
-- **Two defects in the checker are worth expecting, because both have shipped.** A hashtag is not a claim, so strip the tag line before any grounding sweep or every tag reads as an unsupported identifier; and the closing is the last paragraph that is not a bare tag line, or every post with a tag footer reads as ending on nothing. Fix the checker rather than working around it: a check that reports what is not there hides the ones that are.
+## 5. Comparison peers
 
-## Checks in a fresh context
+Resolve once, before any draft, and lock for the run:
 
-Three readings are made by a reader that did not write the posts. Where the runtime has subagents, each is a read-only subagent handed only the files named; otherwise each is done after the drafting context is closed, and the report says the separation was sequential rather than real.
+1. the exact model the source or user names;
+2. else the exact family or tier named;
+3. else, when only a provider or product brand is named, rung 2 of that provider's current flagship family, counting rungs from the top of its own pricing page (rung 1 premium, rung 2 standard, rung 3 and below small); rung 1 only when the family has two rungs; a tier the source names by name fixes the rung for every family; both peers sit at the same rung; record the page, the ladder and the rung;
+4. else omit the peer.
 
-1. Claim verification — given the ledger rows and `source/`, never the posts, it answers for each row whether the cited lines support it, with the condition intact. A row that fails is a fidelity finding on every post that carries it.
-2. Cold read of the point — given one post and nothing else, it writes the post's point in one sentence. When that sentence does not match The point in the notes, the post has inverted or drifted the source even if every claim in it is true, which is the error a claim-by-claim check cannot see.
-3. Register — pass 4 of Phase 5, given the posts and `references/authored-style.md` but not the drafting history. It quotes the one sentence in each post most likely to read as machine-written, and that quote counts only when it maps to a named rule; a hunch with no rule behind it is noise from the judge, not a finding.
+Never the peer: a client's current default model, a premium top rung, a preview, a reasoning-only or specialist model, a product-bound model, or any model chosen because its page was easier to find. When a routine tier and a premium tier are both named, the routine tier is the headline peer and each family's premium rung is an optional extra line in `proof-full`. Up to two provider families. Every ratio: verified API against verified API, like units, input and output distinguished, peak and off-peak distinguished, recorded as `[D]`, one range per peer, rounded to a readable range. A same-provider tier table is supporting detail, never the proof. Changing a peer on one platform is drift.
 
-## The shape of a finding
+## 6. Correction locality
 
-Every judgment finding, in every pass, has three parts, and one without them is not reported:
+A `[X]` correction repairs the stale statement where it occurs. The current correct name goes into every block silently. The sentence explaining the change appears once, in the relevant setup section, on the two deepest surfaces at most, unless the correction is `core` (it changes the reader's decision), in which case one sentence travels to every surface that carries that decision and may carry an `as of <date>` qualifier. A correction repeated across sections, or promoted to its own section without being a source module, is drift.
 
-- the quoted span, verbatim from the post;
-- the rule it breaks, named: a gate check, a section of `references/authored-style.md`, or a rule of `SKILL.md` Phase 4;
-- a verdict: `SHIP` (noted, no change), `FIX` (a wording change in place), or `REWRITE` (back to the notes).
+The same budget binds source-derived deep details: exact clock windows, jurisdiction and storage wording, retired names, long diagnostic sequences appear on at most 2 files, inside their module, on the deepest surfaces; a workload cost example on at most 3.
 
-The Phase 5 gate row a post lands on follows from its verdicts.
+## 7. Commands
 
-## A wording fix is proved harmless
+Publish a command only if it appears in the source and remains valid, or was corrected or confirmed by current official documentation. Never infer a variable name or flag from a similar tool, and never add a launch line, a variable or a step to a block because it seems implied: a setup block is the source's lines and nothing else. A remote script URL may appear in a code block when the official source documents it; it is never a frontmatter link. The minimal setup block per primary path is identical on every surface that shows it.
 
-A fix in place is allowed to change wording and nothing else, and the edits most likely to flip a claim are exactly the small ones: removing a contrast frame, cutting a hedge, tightening a sentence. So before any in-place fix, the post is copied to `repurpose/<slug>/before/` under the same filename, and after the fix the gate runs with `--before repurpose/<slug>/before`. It compares the two versions' numbers, identifiers and count of negations (`not`, `no`, `never`, `without`, `none`, `nothing`, `cannot`, `n't`); any difference is a drift finding and the post goes back to pass 1. The copy is deleted when the run's files are final.
+## 8. Personal framing
 
-## The rewrite budget
+Voice is not evidence. Allowed without a ledger row: `I would use`, `I like the separation between`, `for me the useful part is`, `I have been looking at X as Y`. Not allowed without source or user evidence: `I tested`, `we deployed`, `it saved us`, `it caught`. A personal frame that carries a measurable outcome needs a row.
 
-A post gets at most two rewrites. A rewrite replaces the version before it only when it adds no fidelity finding and carries no more findings in total; otherwise the earlier version stays and the next rewrite starts from it. A post still failing after the second rewrite stays `status: draft`, its open findings go into `campaign.md` with their quoted spans, and the report names it. An endless loop that ends in a post better than the last one only by luck is the failure this prevents.
+## 9. Title drift
+
+A title fails when it no longer names the primary subject or turns a practical guide into a generic essay. Cold test: could this title be reused unchanged for ten unrelated tools? Then it is too abstract.
+
+## 10. Clean run
+
+By default ignore runtime memory, previous posts and previous briefs; derive type, modules and anchors from the supplied source; verify normally; ask the four interview questions. Stability across reruns comes from the classification, the module map, the anchors and the blueprints, never from replaying prior prose.
+
+## 11. Drift after editing
+
+After any wording fix re-check numbers, model and tool names, negations, peers, commands, module coverage and the caveat against the copy taken before the fix. A shorter version may omit detail; it may not change a claim.
+
+## 12. Finding format
+
+```text
+post:
+span:
+rule:
+verdict: FIX | REWRITE
+```
+
+`REWRITE` for source-promise drift, major module loss on a long surface, an unsupported current claim, wrong voice, or the wrong source type's structure. `FIX` for local wording or format. An anchor defect is fixed in `anchors.md` and every carrier is rebuilt.

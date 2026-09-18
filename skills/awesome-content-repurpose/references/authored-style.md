@@ -1,251 +1,223 @@
-# Authored style — how these posts sound
+# Authored style - anchors, frames, and how the posts sound
 
-The register this skill writes in, stated as rules rather than as adjectives, with every rule countable where it can be. Adjectives like "natural" and "authentic" cannot be checked; the shapes below can.
+This file governs how the bodies read. It does not choose the voice, the idea or the emoji count; `SKILL.md` Phase 1 does that every run. It carries no model sentences from any real run: every example below is a shape with placeholders, and each run finds its own words for it.
 
-This file carries no model sentences, on purpose. A sentence quoted in a style guide becomes a template: the next run lifts it, and one phrase repeated across two dozen posts is the uniformity tell this file exists to prevent. Every rule is stated as what a sentence does and what it must not do, and each post finds its own words for it.
+## 1. Two layers: anchors repeat, frames do not
 
-Read this before writing a line of the unit. It governs the unit, so every platform version inherits it; a platform adaptation may cut and reshape, it may not reintroduce a shape this file bans.
+A post family has two kinds of text.
 
-## The opener
+**Anchors** are written once in `anchors.md`, verified once, and reused word for word on every surface that carries them. They are the facts and judgments that must be identical everywhere: a reader who follows the author on three platforms meets the same proof, the same task split and the same caveat three times, and that sameness is what makes the family one family. An anchor is never paraphrased to look fresh: a reworded proof drifts a number, a reworded caveat drops a condition, and a pack of thirty paraphrases of one sentence reads as a machine straining for variety. The check is verbatim or absent.
 
-The first line decides whether the rest is read, and it is the line that most reliably gives a machine away. A working opener does three things at once: it names a concrete subject, it carries a person's stance toward that subject, and it promises the specific thing the post will deliver.
+**Frames** are everything around the anchors: the opener, the sentence that introduces a block, the section order, the transition into the economics, the closing, the question put to a room. Frames are written per platform and never copied between files. The echo check in section 11 counts them.
 
-### The shapes that work
+The anchor set a guide with a cost decision axis needs, with the wording rule for each:
 
-Seven shapes, described by what they do. Vary them across a run; no single shape covers the whole set.
+| Anchor | Shape | Where |
+| --- | --- | --- |
+| `proof-micro` | One full sentence with a verb: `<subject tier> is ~<range>x cheaper than <peer A> and ~<range>x cheaper than <peer B> at current <basis>.` Tilde ranges, no bold, never a colon-led fragment (`<id>: ~Nx ...`). | hard caps |
+| `proof-compact` | One sentence that opens on the reason (`The reason to do this is <axis>:`), names the basis, gives each peer its own range in bold, and ends on the conditions the range depends on. | feeds, community, `daily-dev` |
+| `proof-full` | Three fenced text blocks (the subject's rates by condition; the peers' rates, each family's premium rung allowed as an extra entry; the resulting per-peer ranges), then the conditions sentence naming the conditions without clock times, the `scope` sentence, the cheap-path task list, the escalation list introduced under the selected voice, one sentence refusing to call either side universally weaker, and the decision-changing correction when there is one. The caption line before the first block belongs to the anchor. About 1,100-1,400 characters. | mini-blogs, deep articles |
+| `split` | Two sentences under the selected voice with different openings: `That makes it a strong default for <5-8 named task types>.` then `For <4-6 named cases>, I would still escalate to a frontier <family> model.` As two bullet lists inside `proof-full` and on community surfaces that render lists. | everywhere above hard caps |
+| `split-micro` | One voiced sentence in two halves, each with its own verb: `I'd use it for routine or high-volume <2-3 named tasks> and escalate hard or critical work to a frontier <family> model.` The target is the frontier family, never the subject's premium tier. Never compressed by dropping `and escalate`, which turns the second half into a list fragment and the sentence into a riddle. | hard caps |
+| `scope` | The like-for-like sentence: the comparison is API against API, and a fixed subscription is not directly comparable. | feeds, community, long forms |
+| `caveat` | One practical sentence opening on the imperative: `Do not casually send <3-5 concrete named things> to a cloud model. For confidential <material>, prefer local inference or a provider whose retention policy matches your requirements.` Policy wording, jurisdiction and storage language never enter this anchor. | every surface above hard caps |
+| `caveat-micro` | One short sentence about what the reader or author does with sensitive code (`For sensitive code, I'd stay local.` / `For private code, use local inference.`). Never a noun list (`No keys, no .env, no dumps.`), which reads as a claim about the system. | hard caps |
+| `setup-<path>` | The minimal verified block per primary path: the two or three settings that make it run and the launch line, with a blank line before the launch line. Only the block is the anchor; the sentence that mentions the fuller published block, the scope of the variables or the advice to read a script is frame prose, worded per platform. | every surface that renders code |
+| `paths` | The inventory of every path the source covers, as a fenced text block of one name per line for long forms and mini-blogs, and as one sentence with the subject as its actor for feeds and name-all hard caps: `<Subject> also works behind <A>, <B>, <C> and local <D>.` The other paths are places the subject runs, so the sentence says that it runs there. Never the label form (`Also covered: <A>, <B>, <C>.`), which has no verb and announces what the post covers instead of what works where. Never `the same guide also covers`, never a count. | every surface |
+| `model` | A fenced text diagram of the mental model: what stays equal to what, what changes, who bills. Three to five lines, ASCII, `=` and `->` only. | mini-blogs, long forms, half of the feeds |
+| `gotcha` | The troubleshooting kernel: the symptom sentence (the interface says A, the traffic goes to B) and the cause sentence (the catalog changed, the provider did not) in one paragraph, then the config block on code surfaces, then the restart line. Never three one-line paragraphs in a row. | feeds as one sentence; community as two; mini-blogs and long forms with the block |
 
-| Shape | What the sentence does |
+Anchors carry the correct current names silently. The sentence explaining a retired name or an alias is not an anchor and lives on the two deepest surfaces at most.
+
+What is not an anchor, and is counted as a frame: the sentence introducing a block, the sentence after it, a secondary path's description, the read-the-script advice, the scope-of-the-variables sentence, the one-line lesson, the closing stance. A frame that turns up in 3 files is a defect even when every word of it is true.
+
+The post is the guide, and behind the link there is usually only vendor documentation. The words `guide`, `write-up`, `note` and `the source` never appear in a body: no `this guide`, `the same guide`, `the guide shows`, `the guide covers`, no guide that repeats, walks, lays out, takes one idea, is good at something or is liked; no count of its paths in prose. On community surfaces the inventory is the neutral sentence `<Subject> also works behind <A>, <B>, <C>, <D> and local <E>.`
+
+## 2. Voice
+
+**First person** is editorial stance: `I would use`, `I would still escalate`, `I like this guide because`, `for me the useful part is`, `the routing strategy I like is`. It never invents hands-on experience: no `I tested`, `I ran it for a week`, `it saved me`, `it caught`. A frame with no number is welcome and often the best opener a post has: what the author has kept, replaced, expected or been looking at (`I have been looking at <subject> as a <role>, rather than as a <role>`). A result inside that frame needs evidence.
+
+Presence is checked, not forced into the first line: every body carries at least one stance, long forms a second one at the recommendation, and `variation-plan.md` decides where the author enters. About 10-25% of a full pack opens on the author; the rest establish the subject or the promise first and reach the author by the middle of the body.
+
+**First person plural** uses `we/our/us` consistently and never implies a team tested something. **Neutral third person** carries no persona and stays decisive through selection rather than hedging. A **profile** or **style guide** controls tics; fidelity, caps and blueprints still win.
+
+## 3. Openers
+
+An opener names the promise in the reader's terms. For a guide that is: what they keep, what changes, and why they would bother, with the subject and at least one client named in the first sentence (`<Subject> can sit behind <Client A>.`, `You can keep <Client A> or <Client B> and put <subject> behind them as the model provider.`, `The guide shows how to keep <Client A> and change the model provider underneath it.`). A first sentence that only has category nouns in it (`a cheaper model`, `the client you already have running`, `a terminal agent`, `the tool and the model`) is rewritten around the names. The wire mechanism (`<provider> exposes a <protocol>-compatible endpoint`) is the second or third sentence and it is written once per post, never as the first line on more than 2 platforms in a pack.
+
+**Three tests every opener passes, on every surface and at every length.** A sentence failing one of them is not an opener, however true it reads.
+
+- **What stays is named**: the client, the interface, the editor, the terminal. The thing the reader keeps has to be a thing in the sentence.
+- **What changes is named**: the provider, the setting, the model answering. `Nothing about <A> or <B> has to change for <subject> to start answering them` names neither half as a thing and asks the reader to assemble the claim, so the post opens on a shrug where the plain version (`You can keep <A> or <B> and put <subject> behind them as the model provider.`) opens on the point.
+- **The modality is possibility, not report.** The post describes something the reader can do: `You can keep`, `can sit behind`, `can take over`, `do not have to leave`, `I would put`. A bare present indicative (`<Subject> sits behind <A> or <B>.`) says it is already installed, which is a different claim and a false one.
+
+A negative opener (`You do not have to leave <A> or <B> to try <subject>`) ships only where a positive sentence naming what changes follows it in the same breath. Where one sentence is all the surface allows, the opener is positive.
+
+**A stance opener carries its reason or its scope in the same sentence.** `I would put <subject> behind <A> or <B>.` is a preference with nothing behind it; `I would run <subject> under <A> or <B> for the cheap half of the work.` is the same move plus the thing the reader came for. On a hard cap that clause is the difference between a post and a shrug, and it is never the words dropped to fit.
+
+Two-sentence openers on long forms take one of three second moves: the assumption denied (`Most people assume trying <subject> means installing another client.` then what is actually true), the consequence drawn (`... so the setting is the only thing you touch.`), or the second reassurance (`... and you do not need a new editor either.`). All three keep the two halves of the contract in the first sentence; the second sentence adds, never repeats.
+
+The moves, each described by what the first sentence does:
+
+| Move | What the sentence does |
 | --- | --- |
-| Discovery | The author names one specific thing they found and the specific problem it solved for them. |
-| Stance | The author commits to a claim about the subject that a reader could disagree with. |
-| Experience | The author reports something they actually did, concretely enough that it could be checked. |
-| Observation | The author names a pattern the reader has lived through without having named it. |
-| Received wisdom, contradicted | The author states the common assumption and signals that it is wrong. |
-| News with a named actor | A company, a project or a person is the grammatical subject, doing one specific thing. |
-| Shared moment | The author names a situation the whole audience recognises, in concrete terms. |
+| keep-and-change | Tells the reader they can keep the tool they use and put the subject behind it. |
+| author stance | The author says what they would do with the subject and for what reason. Rationed to 10-25% of the pack. |
+| keep-and-change, canonical | `You can keep <Client A> or <Client B> and put <subject> behind them as the model provider.` The plainest opener in the catalog and the default for visual feeds. |
+| neutral role stance | `I see <subject> behind <Client A>/<Client B> mainly as a <role>.` The author's reading without praise of anything. |
+| neutral inventory | `<Subject> also works behind <A>, <B>, <C>, <D> and local <E>.` Flat, no count, no adjective, no `guide`. `lemmy` and `facebook-wall` only: `hackernews` opens on what stays and what changes like the hard caps, and carries the inventory later or not at all. |
+| community question | Asks the room whether anyone has done the thing, in concrete terms. |
+| no-need-to | Tells the reader what they do not have to give up to get the result. |
+| subject-can | The subject can sit behind or inside the named tools without changing the workflow. |
+| easiest-way | One of the easiest ways to test the subject is the workflow the reader already has. |
+| common assumption, contradicted | States what most people assume, plainly (`Most people assume trying <subject> means installing a new client.`), with the subject and a client named, and denies it in the next short sentence. Never the words `received wisdom`, `conventional wisdom` or `the prevailing view`. At most 2 posts. |
+| direct answer | `Yes.` followed by one line that names what the guide shows for the named clients (`Yes. The guide shows direct integration paths for both.`), under a question title. Not a mechanism sentence. |
+| bold lead line | A single bold sentence stating the setup as an equation, on surfaces whose natives write that way. |
 
-What they have in common is a subject you can point at: a tool, a repository, a company, an evening, a workflow, an hour. Never a category.
+At least 5 moves in a 12+ pack, no move on more than 25% of it, exact openers unique. Banned: a vague event with a vague time; an abstract category as the actor; a mystery tease; a generic scene about what developers usually do that the source does not support; a first line that could describe ten unrelated products; a first line that restates the headline; a first line about how the topic is usually argued (`framed as picking a side`, `treats this as choosing a camp`, `the question people ask`); a first line that admires or describes the guide (`I like this guide because`, `That is the whole shape of this guide`, `The guide takes one idea and repeats it`); a contrast whose halves are not both things the subject could be (`a provider, not a client to learn`); a telegraphic label with no verb (`<A>/<B>, add <subject>`), which names two things and asserts nothing about either; a verdict announced before the content (`The setup I would actually keep is the boring one:`, `the version I would really run is`), which asks the reader to take the conclusion on trust and then explains it; a self-positioning contrast on the author's own reading (`I have been looking at <subject> as X, rather than as Y`, `I read <subject> as X rather than Y`, `I would rather change X than learn Y`), which is one shape however many ways it is worded, and which says what the author is not doing instead of what the reader gets; the same shape with the contrast dropped (`I read <subject> as a low-cost provider behind <client>`), since reporting how the author reads the subject is still a sentence about the author's framing.
 
-A unit gets three openers, not one: three different shapes from this table, drafted against the same notes, each put through the five checks in Read the opener literally. The one that survives best leads. The other two are recorded in `campaign.md` with their shapes and shown in the report, so the user can swap the hook without asking for a rewrite. Where `references/run-memory.md` has the opener shapes of the user's own best posts on a platform, they break a tie between two survivors; they never overrule a check.
+On the community and professional surfaces the opener stays concrete: `reddit` opens on the author's personal frame with the subject and both clients named, stated forward (`I have been running <subject> behind <A> and <B> for the routine half of the work`) and never as the banned `rather than` contrast; `lemmy` on the neutral inventory, the clients listed by name and uncounted; `quora` on the direct answer; `linkedin` on the easiest-way move with both clients named and a second sentence saying what the reader does not need (`no new editor, no separate chat workflow`); `peerlist` on the neutral role stance; `instagram` on the canonical keep-and-change sentence. These surfaces never open on a reframing. `hackernews` has no opener at all: a title line, then what the reader keeps and what answers, then `Why:`.
 
-### The shapes that are banned
+## 4. Central parts
 
-Banned by shape, not by wording, so a fresh sentence built the same way is the same defect.
+- **Setup blocks** are minimal: what makes the path run, and the launch line. The extended published block is described in one sentence (`The published block also maps the default slots to <subject>`) and linked. The same block is identical on every surface that shows it. A block is introduced by the client's name and what the block buys (`For Claude Code:`), never by a caption restating what the block visibly is (`Three variables and the launch line:`), and never by `That is the entire idea:`.
+- **Secondary paths** get one to three sentences, or one short block of at most six lines that is either the command or a fenced text list of what the path buys the reader (`one local endpoint / provider fallback / budget controls / spend tracking`). They never get the primary path's depth.
+- **Path lists** stay skimmable: a fenced text block of names on long forms, a bullet list or one sentence on feeds. A path list from a multi-path guide is navigation, not a capability roll-call.
+- **Text diagrams** carry the mental model (`interface + tools = A / model provider = B / billing = C`), the routing split (`<cheap path> -> tasks / <stronger path> -> cases`), a before-and-after (`UI says A / traffic goes to B`), and a question reframed (`Which model? -> How do I route?`). Fenced `text`, ASCII, three to eight lines, one label per line. On surfaces that render fences they are the default representation for these four things; on surfaces that do not, the sentence stays and the block goes.
+- **Headings** on long forms are literal: one per source path in source order, then a question heading for the economics that names the peers (`Why use <subject> instead of a frontier <peer family> model?`), a one-word caveat heading, a troubleshooting heading that names the failure. Mini-blogs use the same headings; `tumblr` uses bold leads.
+- **Bold** marks the numbers inside `proof-compact`, a bold lead where the blueprint says so, and the one-line lesson closing a long form. A bold word elsewhere is a defect.
+- **Paragraphs** on feeds are one or two complete sentences each; on long forms two to four. Never three fragment-only lines in a row. A one-line caption before a block is a caption, not a fragment.
 
-| Banned shape | What the sentence does | Why it fails |
+## 5. Closings
+
+| Shape | What it does | Where |
 | --- | --- | --- |
-| Vague event plus vague time | Announces that something happened, at some point, without saying what or who. | It names nothing. Any post about anything could open on it, which is how it reads. |
-| Abstract category as the subject | A field, an industry or a technology, named in the abstract, does something only an actor can do: crosses, moves, enters, arrives, matures, becomes. | A category cannot act; a company shipped a model. The sentence has no actor, so it has no author either. |
-| Category plus a trend verb | A category is said to be starting to resemble something, or moving from one state to another. | The trend-report voice. Nobody talks this way about something they used yesterday. |
-| The mystery tease | Withholds the subject to manufacture suspense, then makes the reader wade through a setup before any content. | The reader leaves before the payoff. Lead with the finding. |
-| A stretch of time as the actor | A week, a month or a year is the grammatical subject, handing the author a preview, a lesson or a surprise. | A period of time gives nobody anything. It hides who shipped what, and it is the vague-event opener with a friendlier verb. |
+| caveat then link | The `caveat` anchor, the bare body link on its own line, the tag line where used. | feeds |
+| gotcha then link | One or two sentences of the `gotcha`, then the link. | feeds, `pixelfed`, `minds` |
+| room question | Built one of exactly two ways: the post's own opening statement turned into a question (`The easiest way to try <subject> is the coding CLI you already run` becomes `Is the coding CLI you already run the easiest way to try <subject>?`), or the shape `Has anyone used <subject> behind <A> or <B> mainly for <one reason>?`. Every noun in it already appears in the body, which is what keeps a duration, a workload or a measurement the post never carries (`a week`, `ordinary repository work`, `what it actually cost you`) out of the sentence: those are what make a question unanswerable. A question about the reader's result with the subject (`Has anyone compared <subject tier> with the default <client> models on a real repository, same task and tool permissions?`), never about the mechanics of the setup or which client handled it. One clause, one thing asked, and no protocol invented for the occasion: a duration, a workload, a setup and a comparison stacked into one sentence describes a study nobody ran and can be answered by nobody. One per post: where the visible title or the opening line already asks, the post does not ask again at the end. | optional on `devto`, `hashnode`, `daily-dev`; `reddit`, `quora`, `facebook-wall` and `lemmy` carry theirs at the top instead |
+| routing block | The split as a fenced text routing diagram, then one sentence of stance. | mini-blogs, `quora`, `medium` |
+| one-line lesson | The troubleshooting section ends on one bold sentence stating what the failure teaches (the layers that are separate). Worded fresh per post, on at most 4 long forms. | deep articles, mini-blogs |
+| reference links | A short labelled list: the pages that settled the numbers, the official docs, the primary paths' pages. | deep articles |
+| split then link | The one-line split and the link. | hard caps |
+
+At least 4 shapes per pack, none on more than 40% of it, the author's recommendation sentence as the very last line on at most 6 posts of a full pack, no non-anchor closing sentence in more than 2 posts. Never a summary of the body, never `What do you think?`, never a maturity-curve line, never a slogan triplet or fragment rhythm (`Cheap by default, expensive on demand, local when ...`). A long form closes on one plain sentence of judgment (`That is a more useful way to think about <domain> than trying to pick one permanent "best <thing>."`), and a hard cap on `caveat-micro` or `split-micro` then the link.
+
+## 6. Titles
+
+Composed from the `Title spine`; each string unique. The moves:
+
+```text
+Use <subject> inside <Client A> or <Client B>
+Run <Subject> Inside <Client A> or <Client B> Without Replacing Your Workflow   (deep articles, Title Case)
+Run <Subject> Behind the Coding CLI You Already Use                            (deep articles, Title Case)
+<Subject> Behind Your Coding CLI                                               (deep article or pin)
+Put <subject> behind the coding CLI you already use          (the exact phrase; at most 4 titles)
+Keep your coding CLI, put <subject> behind it
+<Subject> as a <role> behind coding CLIs                     (replaceable model layer, low-cost provider, cost-routing layer)
+<Subject> behind <Client A>, <Client B>, and other coding CLIs
+Use <subject> behind <Client A> or <Client B> without changing the coding UI   (lemmy)
+<Subject> behind <Client A>/<Client B>: <2-3 plain nouns>    (hackernews, x, bluesky, telegram, facebook-page, wonderful-dev)
+<Subject> behind <Client A>/<Client B>: <the practical reason>   (hard caps, the compact form that keeps both clients)
+<Subject> behind <Client A>: the <reason>-routing setup       (instagram)
+<Subject> behind <Client A> or <Client B> for <reason>        (truthsocial, pinterest)
+<Subject> behind <A>, <B>, and other coding CLIs            (three or more paths, never a count of the rest)
+Can you use <subject> inside <Client A> or <Client B>?      (reddit, quora, facebook-wall)
+Has anyone used <subject> behind <Client A>/<Client B> mainly for <reason>?   (reddit)
+Why I would put <subject> behind <Client A> or <Client B>   (first person, at most 2)
+A practical <subject> setup for <Client A> and <Client B>   (the clients, never an audience)
+```
 
-Every banned shape rewrites into a working one without losing a fact: the facts stay, a real actor becomes the subject, and the author's stance goes in front of them.
+Deep articles (`devto`, `hashnode`, `hackernoon`, `medium`, `substack`) take the Title Case forms and never the colon-contents form. The clients in a title are the primary paths only; a secondary tool beside the subject (`<subject> inside <Client A> or <secondary tool>`) misreads the guide. The question form appears only where the blueprint names it.
 
-Two bans follow from the same principle:
+The colon form carries plain nouns naming the post's contents (`API setup, cost routing, and local fallback`), never a thesis (`the routing, not the switch`), a label (`the short version`) or a slogan (`what it costs`).
 
-- No opener whose subject is a field, an industry or a technology in the abstract doing something a field cannot do. Give the sentence an actor, whether a company, a project, a paper, a person, or the author.
-- No opener that restates the headline. Where the platform publishes a title, the first body line says something the title did not.
+The title and the body name the same clients, and both primary paths reach both: a title carries both clients (`<A>/<B>` on a hard cap) or one collective noun (`your coding CLI`, `coding CLIs`), and the body names both at least once even where only one gets its setup block. The platform templates below keep their own shapes; the clients are what goes into them, so a template written for one name takes both (`Keep <A> or <B>, put <subject> behind them`, `<Subject> as a replaceable model layer behind coding CLIs`). A title is never shortened by deleting a client. A title names at most two clients. A third and a fourth become the collective (`<A>, <B>, and other coding CLIs`), and a named client plus a count of the rest (`<A>, and 4 other coding CLIs`) is never written: it is the roll-call and the abstraction in one line. The subject and at least one client's product name are in every title (the exact phrase `the coding CLI you already use`, `your coding CLI` or `coding CLIs` stands in for the client on at most 6); the relation word is `inside`, `behind` or `as a <role> behind`; at most 80 characters; at least 5 moves in a 12+ pack; the same first 4 words on at most 3 titles; a roll-call of more than two clients in at most one title. Banned: a mechanism noun as the centre (the variable, the endpoint, the swap), an abstraction (`dial`, `identity`, `era`, `the whole story`, `default coding model`), a count-led inventory (`Six ways to`) unless the count is the claim, a label about the post itself, a thesis with a colon, announcement voice (`<vendor> documents`, `officially`), `replace <peer>` or `instead of <peer>` as the title's verb, an audience or occasion in place of a client (`for everyday coding work`, `for solo developers`), and any title that could sit on ten unrelated products.
 
-### How much first person
+## 7. Lexicon
 
-The persona the interview chose is in every post, without exception. A run written under `first-person` means every post has the author in it: they found the thing, tried it, formed an opinion, would or would not keep it. A post whose subject is the product doing things, with no author anywhere in it, has not been written to the answer the user gave, however accurate it is.
+The register is a competent person explaining a guide they found useful. Verbs stay plain: keep, swap, put X behind Y, sit behind, route through, escalate, cut, cost, cover, show, save. Prose names products and models by their display name (`<Vendor> <Tier>`, `<Family> <Version> <Tier>`); the lowercase identifier form belongs in code, config and inline code only, so a proof sentence reads as a person talking rather than as a config line. Comparison language is fixed: `roughly <range>x cheaper than`, `at current <basis> rates`, `depending on <condition> and <condition>`; not `under`, not `below`, not `lands`.
 
-Presence is not the same as an opening word, and that is where the variety lives. The author can arrive through what they found, what they think, what they spent time on, what they would check first, what kept happening to them, or what they are keeping; and a post that opens on the reader's problem and reaches the author in its second sentence carries the same persona. What varies across a run is the wording and the opening shape; what does not vary is whether anybody is home.
+The source is referred to as what it is (`the guide`, `the write-up`, `the note`) as a grammatical subject that covers, shows, includes or recommends, at most once per 1,000 characters, never on a hard cap, and never as the object of the author's effort (`I read the guide`, `I went through the README` are out; the effort lands on the subject).
 
-So there is no cap on the pronoun. An earlier version of this file limited first-person openers to about half a run, and it produced exactly the defect this skill exists to prevent: sentences with the product as their subject, written to satisfy a quota, which read as vendor copy on a personal feed. The uniformity worth policing is the repeated phrase, not the repeated pronoun.
+Banned across the pack:
 
-Two things do get counted, because they are what the tell actually looks like. No single verb after the pronoun carries more than about a third of a run's openings; the language has many ways to report finding, trying, noticing, stopping, preferring and being surprised, and a run uses a spread of them instead of returning to the first one that worked. And the pronoun does not have to be the first word: at least a few posts in every run start somewhere else and reach the author within that sentence or the next.
+- coined taglines the source never used: a contrast pair (`X, not Y`), a numbers slogan (`two X, two Y`), a two-word aside lifted from the source and stamped on every post as a closer;
+- abstractions standing in where the anchor names the product: `a stronger model` for the named peer, `the model layer`, `a variable`, `identity`, `configuration rather than migration`;
+- literary and report words: `duller`, `thus`, `hence`, `myriad`, `albeit`, `salient`, `deliberately`, `figure` for a number;
+- hype: `game changer`, `this changes everything`, `the future is here`, `a new era`;
+- filler: `it is important to note`, `it is worth mentioning`, `in conclusion`, `overall`, `moreover`, `furthermore`;
+- an invented idiom: a phrase shaped like a saying that is not one;
+- meta-framing about the debate rather than the guide: `picking a side`, `a camp`, `a winner`, `a routing decision rather than`, `separate purchases`, `the thing you are loyal to`, `the question is`, `smaller than the decision`, `a routing table rather than a winner`;
+- the guide as a character or an object of admiration: `this guide`, `the same guide`, `I like this guide`, `what this guide is good at`, `the guide repeats`, `the guide takes one idea`, `the whole shape of this guide`, `the useful pattern in this guide is simple`, and any count of its paths (`six clients`, `five more`, `four other`);
+- captions of the obvious and slogans: `That is the entire idea:`, `Three variables and the launch line:`, a lead line inventorying the steps (`Three variables for <A>, one script for <B>`), an italic deck line under the H1, a closing triplet of fragments;
+- a demonstrative pointing at the post's own furniture: `that table`, `this block`, `the list above`, `the diagram below`. Name what it holds (`that split`, `the routing I would run`) or say it in words;
+- a count of what follows, or a verdict on it before it is read: `Four lines of state, and the last one is the part I keep coming back to`, `three settings, the second is the one that matters`, `everything above the second line stays where it is`;
+- self-benefit framing, which puts the author's relationship to the thing where a judgment about the thing belongs: `the useful part for me`, `what I like about it is`, `the part I keep coming back to`, `what this buys me`. A judgment about the subject is welcome (`a more useful way to think about <domain> than picking one permanent best <thing>`), and first person stays on what the author would do;
+- an idiom outside ordinary spoken US English (`stay put`, `in front of your day`), and any sentence built on an abstraction doing something to the reader's life or handing them a list of abstractions to keep;
+- an aphorism about the setup that carries no instruction: a sentence stating where something lives or what it is not, with nothing for the reader to do. On a hard cap every sentence is the promise, the proof, the split, the caveat or the link;
+- bookish phrases nobody says aloud: `received wisdom`, `conventional wisdom`, `the prevailing view`, `it bears noting`.
 
-Two carve-outs, both narrow. A `third-person-neutral` answer means the author has no standing to claim they used the thing, and then no post carries first person. And a platform whose natives write flat still carries the author's judgment, just without the emoji: an opinion in plain register is still an opinion.
+Numbers that are the payoff are digits; every count of a technical thing is a digit (`3 variables`, `6 paths`); a count of the source's own items is not written unless breadth is the claim.
 
-## No single favourite
+## 8. Emoji
 
-A post never crowns one thing. A declared favourite, a best, a number one, a go-to, an only-tool-that are rankings a reader cannot check, and they make the sentence about the author's taste instead of the thing in front of them. They also age badly: the favourite changes, the post does not.
+**What may be used is a rule, not a shortlist.** The limit is rendering: the platforms these posts land on draw newer code points and variation-selector glyphs as an empty box, and an empty box in a published post is worse than no emoji at all. Everything that clears the gate below is available, and the palette is wide on purpose, because an emoji is chosen for the words beside it and a narrow list forces the wrong one.
 
-Two moves, in order. First, drop the ranking entirely and describe what the thing does; the description almost always says more than the crown did. Second, where the enthusiasm genuinely belongs in the sentence, claim membership rather than a crown: the thing is one of several the author keeps, never the single one.
+The gate, in three lines:
 
-This is not a ban on opinion. A judgment about the author's own use, what they would reach for or what they kept, is exactly what a feed post is for. What goes is the league table.
+- Only single code points from Miscellaneous Symbols and Pictographs (U+1F300 to U+1F5FF), Emoticons (U+1F600 to U+1F64F), Transport and Map (U+1F680 to U+1F6FF) and Supplemental Symbols and Pictographs (U+1F900 to U+1F9FF), plus the older symbols that already render as pictures with no help: `⚡ ✅ ❌ ⛔ ❓ ❗ ⭐ ✨ ⏳`.
+- Nothing at U+1FA70 and above, the Symbols and Pictographs Extended-A block, which is where the empty boxes start: the window, the mouse trap, the wand, the screwdriver, the coin.
+- Nothing that needs U+FE0F to show as a picture (the mantelpiece clock, the desktop computer, the gear, the warning triangle, the shield, the keyboard), nothing built with a zero-width joiner (professions, families, flags), and no skin-tone modifier.
 
-## The headline
+The palette, grouped by what a group means, because the group is how one gets chosen:
 
-A title is read alone: in a feed row, in a search result, in a browser tab, with none of the post around it. It names the subject and states the point, and then it stops.
+| Meaning | Emoji |
+| --- | --- |
+| money, price, billing | `💸 💰 💵 💳 🧾` |
+| numbers that moved | `📉 📈 📊 🔢 ⏳` |
+| speed, load, heat | `⚡ 🚀 🔥 💨 🐢` |
+| tools, repair, building | `🔧 🔨 🔩 🧰 🧱` |
+| looking, finding, watching | `🔍 🔎 👀 📌 🎯 🚩 🚨` |
+| thinking, ideas, puzzles | `💡 🧠 🤔 🧩 💭` |
+| keys, locks, privacy | `🔒 🔐 🔑 🙈` |
+| routing, switching, direction | `🔁 🔀 🔄 🧭 🚦` |
+| verdicts and states | `✅ ❌ ⛔ ❓ ❗` |
+| files, docs, packages | `📄 📁 📦 📋 📝 📚` |
+| machines and networks | `💻 🌐 📡 🔌 🧮` |
+| testing, safety, containment | `🧪 🔬 🧫 🧯 🧊` |
+| the author's own reaction | `🙂 😅 😬 🙃 🤷 🤯 😴 🎉 👍 👏` |
+| odds and ends | `✨ ⭐ 🧵 🧹` |
 
-The rules, all countable:
+An emoji outside the gate is a defect whether or not this table names it, and the table is a map rather than a fence: a code point that clears all three lines and means what the sentence means is allowed, and a new one is recorded in the group it belongs to.
 
-- One clause. Aim for 50 to 60 characters, hard cap 70, at most 12 words, no terminal period.
-- It states the point. It does not explain why the thing is good, and it does not open on the word that asks why.
-- It is not an announcement. A headline in which "we" or "you" were given, shown or finally handed something is the press-release voice.
-- One sentence. A headline that needs a second sentence is a headline plus the first line of the post, and the second half belongs in the body.
-- No qualifier bolted on after the point has landed. Once the subject and the point are there, a trailing clause about what the thing does without, instead of, or while still is the body leaking into the title.
-- No roll-call. The products, platforms or services the thing works with do not belong in a headline, and neither does a list that trails off.
-- No collision. Where a product's name is also a quantity or a common phrase, a headline that uses both reads two ways, and the reader parses it twice. One of them gives way.
+**It is chosen by the words next to it.** Name the word in the sentence the emoji stands for before writing it: the cost sentence takes one from the money row, the restart that fixed nothing takes one from tools, the retention clause takes a lock. No such word, no emoji. The second test is a swap: replace it with one from a different group, and if the sentence reads the same, it was decoration and comes out. A group is where to look, never a permission, so a privacy sentence does not take the rocket because the rocket was free.
 
-A question put to a room, on `reddit` or `lemmy`, is that room's native form and gets more air: 110 characters and 18 words. The shape rules still apply.
+The interview sets the count: under `1-5` each post draws its own number from 1 to 5 at random and the draw is recorded in `variation-plan.md`; a typed number is the count for every post; `0` removes them everywhere. Two exceptions hold whatever the answer: `hackernews` carries none, and a hard-cap post draws from 1 to 2 under `1-5` because a third emoji in 280 characters displaces a fact.
 
-## The closing
+Placement is meaning, not decoration: the emoji lands at the end of a frame sentence whose meaning it underlines (the restart line, the cause line and the caveat are anchors, so they never carry one), one emoji per sentence and never two side by side (the number nobody expected, the part that went wrong, the thing that just works, the author's own reaction) or opens the post on the promise. Never inside an anchor, which travels verbatim and bare. The same emoji on the same sentence in more than 2 posts is an echo, so the pack spreads its palette: in one post the reaction sits on the setup, in another on the author's stance. Spread them: never two in one paragraph, never a pair a line apart, never as a bullet marker, never one per line, never a row of three, never in place of a word the sentence needs. On a piece with headings, either the prose carries them or every heading does; never a subset of the headings.
 
-Two jobs, and they pull in the same direction: the last thing the reader sees either hands them something to do, or it says something the body earned. It never summarises what they just read.
+## 9. Comparison language
 
-Hand the thread back where the surface is a room. On `reddit` and `lemmy` this is already the genre; on `devto`, `hashnode` and `daily-dev` a real question at the end is what turns a post into a thread. It is a question the author actually wants answered and one only this post could ask: specific to the subject, answerable from the reader's own experience, never a generic request for opinions, which is a call to action wearing a question mark. No two posts in a run end on the same question. Where the platform's natives do not do this, or the post has nothing open to ask about, it ends on the content instead.
+When price is the decision axis: verified API-to-API rates, one locked peer set, one range per peer, the `scope` sentence beside the compact proof, and token cost distinguished from completed-task cost in one clause on long forms. The compact proof is the anchor; the workload example (`10M input and 2M output on <tier> costs about $N`) is supporting detail on at most 3 surfaces. Never `X is simply weaker than Y`: the split says where each side is worth its price.
 
-The feeds join the rooms only when the interview said so. Replies are what the `x` ranker predicts and what `bluesky`, `threads` and `linkedin` reward, so a user who will actually answer them can choose closing questions on those four too; the same rules hold, specific to the post and different on every platform. The default stays rooms only, because a question left unanswered under a feed post reads as a prompt the author abandoned.
+## 10. Punctuation and shape
 
-Never close on the obvious. Three shapes carry nothing and are banned:
+ASCII only: `'`, `"`, `-`, `->`. No em or en dash, no Unicode arrow, outside exact code or a quotation. No `#show`. Semicolons: none, at any length, whatever the post's size. Two thoughts are two sentences, a qualifier joins with a comma, and where a pause genuinely needs marking a hyphen pair or a full stop does it. No calendar date in prose except an `as of` qualifier on a `core` correction of a temporary state.
 
-- The scale restatement: one sentence says the thing is small, the next says the effect is large. Anyone who read the post derived it already.
-- The maturity-curve label: the subject is placed on a timeline, early, at the beginning, at some named stage, and often followed by a remark that the stage is interesting. It fits every new thing ever written about and commits the author to nothing. If the roughness matters, say what specifically is rough and what it stops the reader doing.
-- Vague against vague: one unquantified judgment set against another, a hedge about the current state against a claim that something is bigger or matters more. It lands nowhere. Name what the idea points at instead.
+## 11. Echo rules
 
-The repair is the same in every case: replace the abstraction with the concrete thing the post proved or pointed at. A closing may be short, wry or flat; it may not be a placeholder for a thought the author did not finish. What a closing can carry: the thing the author would do next, the limit they would watch, or the reframe the body earned, landed in concrete, rhythmic lines that restate no fact from the body.
+After excluding anchors, code blocks, URLs, quotations, tag lines and bare identifiers:
 
-## First person is paid for with specifics
+- no prose sentence in 3 or more posts;
+- no opener sentence twice, no 6-word opener prefix in 3 or more posts;
+- no closing sentence in 3 or more posts;
+- no non-technical 8-word span in 4 or more posts;
+- no coined phrase of 3 or more words the source never used in 3 or more posts;
+- no source aside lifted into a slogan on more than 3 platforms;
+- no paraphrase of an anchor anywhere: the anchor verbatim or nothing.
 
-The frame is invented; the detail is not, and the detail is what makes the frame credible. A post that reports finding something useful and carries no number, no command, no version, no file name and no quotation is an opinion with nothing under it, and it reads as one.
+An echo is fixed by rewriting the frame for that platform, never by removing the fact.
 
-So every first-person post carries at least a couple of checkable specifics, taken from the source and the Phase 4 verification: the number with its condition, the exact command, the flag that has to be set, the line the documentation actually uses, the limit that bites, the thing that is on the roadmap rather than shipped. Depth comes from the same place: what the mechanism is, what it costs, where it breaks, what surprised the author when they looked.
+## 12. Read it aloud
 
-This is the difference between a repurposed paraphrase and a post worth reading. The paraphrase says the release is interesting. The analysis names which line in the release changes the work, quotes it, and says what it costs. Both are first person; only one proves the author opened the thing.
-
-The boundary from `SKILL.md` still holds: specifics come from the source or from verification, never from invention. An invented benchmark is not evidence, it is a fabrication with a decimal point.
-
-The opposite of a specific is an intensified comparative: an adverb of scale in front of faster, better, smaller or cheaper, or a heap of something, with nothing measured under it. It sounds like a result and carries none. Where the source has the number, the number replaces it with its condition; where it does not, the sentence says it was one run on one machine, or goes. The gate counts the shape.
-
-## Diagrams
-
-A picture drawn in text earns its place when the shape is the point: a pipeline, a before and after, a fan-out, a loop with an exit. One per post at most, and only where a sentence would need three clauses to say the same thing.
-
-It is ASCII, and that is not a style preference. Box-drawing characters, arrows and block glyphs render as tofu, misaligned columns or plain squares depending on the reader's font and platform, and a broken diagram is worse than no diagram. The palette is hyphens, pipes, plus signs, angle brackets, slashes, equals signs and spaces, inside a fenced block on platforms that have one.
-
-Keep it under about six lines and label every part, the same rule the figures follow: an unlabelled shape is decoration. Where a platform strips code blocks or reflows whitespace, the diagram goes and the sentence stays.
-
-## The post stands on its own
-
-The text the run started from is scaffolding, and a finished post shows none of it. A reader meets the models, the release, the tool; they never meet the list, the thread, the channel post or the article the author happened to be holding.
-
-The rules:
-
-- The source's language never appears. Nothing in a post says what language the material was written in, translated from, or found in.
-- The source's inventory never appears. How many items the list, roundup or compilation held describes the container, not anything in it.
-- The source's layout never appears. How it was sorted, grouped, tiered or formatted, and who assembled it, are facts about a document the reader will never see.
-- The source is never a character. It does not say, suggest, file, list, recommend, open or close on anything. Claims are stated as what they are, with their conditions, and attributed to the primary source (the vendor, the model card, the paper, the documentation) where attribution matters.
-- Where the pasted text is the only support for a claim, the condition carries the honesty, never the intermediary's name: the claim keeps the qualifier that makes it true and drops the courier.
-- One light mention of how the author came across the topic is allowed, once, early, and only as the author's own encounter rather than a description of the document. It is worded fresh in each post like every other sentence. After it, the source is gone.
-
-The test: delete every sentence that is about the source document rather than the subject. If the post still makes its point, the deleted sentences were padding. If it no longer does, the post was a review of a document, and it gets rewritten around the subject.
-
-## Numbers
-
-A number that is the payoff is written in digits: a size, a speed, a ratio, a price, a score, a count that is itself the claim. Digits are what the eye catches in a feed, and the number is usually the reason the sentence exists; spelling it out smears the one thing that should land.
-
-Every count of a technical thing is digits too, however incidental the count looks in the sentence: `3 agents` and not `three agents`, `2 folders` and not `two folders`, `4 languages` and not `four languages`. Tools, agents, files, folders, repositories, platforms, services, machines, versions, columns, flags, endpoints, steps and runs are all technical things, and a reader scanning a feed for the shape of a setup finds a digit and skips a word. There is no incidental-count carve-out: the moment the noun after the number is technical, the number is a numeral, and it makes no difference that the count is small or that the sentence is about the author rather than about the product. The gate counts a spelled-out number standing in front of a technical noun.
-
-What stays spelled out is the language people speak when they are not counting equipment: idioms (`one of the few`, `second nature`), an ordinal inside a phrase (`the first thing I would check`), and a quantity that counts nothing technical (`a couple of weeks`, `half an afternoon`, `both halves`). And a count that is vague on purpose stays vague: `several folders` is honest where the author did not count, and inventing `3 folders` for the look of precision is a fabrication, not a fix.
-
-The word for a number is number. "Figure" is report register, and it is the word a run reaches for every time it hands a number back to whoever measured it, so the same clause arrives in post after post. Once in a post is the ceiling and none is usually better: the count, the score, the rate, the reading, the price, or simply what the project measured.
-
-A number that is only inventory is not written at all. The count of items in a list, a roundup, a comparison or a collection describes the container, and the reader can do nothing with it, so the sentence keeps the thing and drops the count. A count survives only where it is the claim itself: the size of a catalog when that size is what the product offers, the number of providers when breadth is the argument.
-
-## The product is not the subject
-
-A post is about what the author found, not about what the product offers. The grammar gives it away: when the product is the subject of every clause and the verbs are its capabilities, a reader recognises an ad before they finish the line. The same facts with the author in front of them, starting from the problem the author actually had, read as a person reporting.
-
-Three shapes are banned outright, on every platform including the shortest:
-
-| Banned | What it looks like | Why it fails |
-| --- | --- | --- |
-| The capability roll-call | A sentence that strings the product's features together as a comma chain. | A feature list is what a landing page is for. It answers nobody's question and carries no judgment about which feature matters. |
-| The support matrix | A chain or a bulleted list of the operating systems or platforms the thing runs on. | The reader is on one platform; naming all of them tells them nothing they needed, and it is the loudest press-release tic a feed post can carry. Where a platform genuinely decides whether they can use the thing, one clause names their case. |
-| The bare bullet stack | Four or more short bullets, each a fragment, standing where sentences belonged. | A list earns its place when the items are genuinely a list, and even then one of them gets a sentence saying which one the author cares about. |
-
-The test is the swap: if the product's name could be replaced by a competitor's and the post would still be true, the post has no author in it. Rewrite it around what changed for the person writing.
-
-## Access boilerplate
-
-A public repository is free to read, asks for no account and carries a permissive licence. Saying any of it tells the reader what they assumed before they clicked, and because it is the cheapest clause in the post to write, it ends up on every version in the run: the same three words in front of the same link, two dozen times.
-
-So a post never says the thing is free, never names the licence it ships under, and never lists what it does not require: no account, no key, no sign-up, no registration, no credit card, no limits. The link goes in bare, or behind a clause that says what is on the other side of it.
-
-The exception is a post where price, licence or signup is the news: a project that relicensed, a free tier that is ending, source that closed, a tool that now wants an account. There it is the subject, the headline says so, and it is written once, as the claim it is.
-
-## Read the opener literally
-
-Every hook is read once, at speed, by someone who knows nothing about the source. So it has to survive being taken at face value, and the failure to catch is a sentence that is defensible only after three more paragraphs of context: a hook that praises a property which, read cold, is a defect.
-
-Five checks before a hook ships, and they are cheap:
-
-- Read it with no charity. Does the sentence, alone, assert something the author does not believe? A word that carries a negative meaning outside this context (`slow`, `smaller`, `less accurate`, `more expensive`) needs its reason attached in the same sentence, or a different word.
-- Read it cold. Can a reader who has never heard of the subject tell what is being talked about? A hook that only parses for someone who already read the announcement is a subhead, not a hook.
-- Read it for the promise. Does the rest of the post deliver the specific thing the first line implied? A hook about one thing that opens a post about another is a bait line even when both facts are true.
-- Read the first three words alone. They carry the subject, the author, or the move the sentence makes. Three words spent on a preamble, a greeting to the reader, a scene-setting clause or a stock connective are three words a scrolling reader used to decide to leave.
-- Read the first line as if it were the whole post. It should still say something a reader could repeat. On a platform with a fold (`platform-specs.md`), the first line is most of what most readers ever see, and the author and the subject both have to be in it.
-
-## Stance
-
-The voice is a technically literate person who actually examined the thing, so the post carries a position rather than a verdict handed down from nowhere: the author owns the claim, says what they found or think, and says which part matters to them. Those phrasings are worded fresh in each post, never lifted as a stock opening.
-
-Empty hype is banned outright, in any language and any casing: `this changes everything`, `game changer`, `absolutely revolutionary`, `the future is here`, `a new era`, `takes it to the next level`. Each asserts importance instead of showing it, and a reader has learned to skip the sentence around it. Where the thing genuinely is a big deal, the mechanism says so: what it now does that it could not do before, and what that costs.
-
-The source's emotional direction is preserved, not neutralised. Enthusiasm stays enthusiasm, skepticism stays skepticism, criticism stays criticism, and a joke stays a joke. A repurposed post that sands an argumentative source into balanced neutrality has changed what the source said as surely as one that changed a number. What is corrected is the wording that would not survive scrutiny, never the stance behind it.
-
-## What a scrub leaves behind
-
-Removing a tell is not the same as writing well, and a rewrite aimed at the lists produces tells of its own. They are the shapes a sentence takes when the cliche is cut and its rhythm is kept:
-
-- A one-word question standing in for a reveal: a noun and a question mark, then the answer in the next sentence. It is the drum roll moved into the middle of the post.
-- Negations in a row that land on a single word of relief: a run of short denials and then the one thing that is left. The cadence is the tell, whatever the words are.
-- An empty announcement of honesty or clarity. Saying the next sentence will be honest implies the others were not; an honest sentence names what it is honest about, or simply is.
-- A hedge the author never had. Qualifiers added to sound careful, on a claim the source makes plainly, turn a finding into mush and change what the source said as surely as an added claim does.
-- A staccato run where one sentence was cut into pieces to sound punchy. The paragraph-shape rules below count it.
-
-The gate counts the first three, and it also counts clusters: three or more of its over-used words in one paragraph fail however ordinary each is alone, because a reader clocks the texture before any single word. One such word is not a finding. The fix is the one for every tell here: put back the plain sentence the scrub was avoiding.
-
-## Paragraph shape
-
-The most damaging defect this skill produces, and the hardest to see while writing: a post assembled out of one-line paragraphs, each a fragment, with a blank line after every clause. It reads as a machine breathing between fragments, and at length it stops reading as writing at all. The typical failure is a mechanism, a sequence of steps and a punchline each given its own paragraph, when together they were one paragraph.
-
-The rules, all countable:
-
-- Never three consecutive one-line paragraphs. Two is the ceiling, and two is already a deliberate beat that should be spent on something worth the emphasis. This is the sharp rule and it fails a post outright.
-- In any post over 1500 characters, aim for one-line paragraphs under 30% of the total and treat 45% as the failure line. Well-written long-form sits between 12 and 26%; the failure mode runs 78 to 92%.
-- A paragraph is normally two to five sentences developing one point. The default is a paragraph; a single line is what you drop to when a line earns it.
-- Fixing a run means restoring the clauses that were cut out of it, joining the fragments back into the sentences they came from, never shortening the neighbours to match.
-- A sequence of steps is a list or one sentence with commas, never a stack of paragraphs.
-- The same ban covers the closing drum roll: three short declarative lines in a row manufacturing drama at the end. One short closing line is fine; three is a drum roll.
-- A short line ending in a colon that introduces a code block, a command or a list is that block's caption, not a fragment.
-
-Short platforms are exempt from the density rule and bound by the run rule: a post under 300 characters may be three lines, but a run of five fragments is the same defect at any length.
-
-## Sentence variety
-
-Uniform sentence length is the other half of the same tell. Mix deliberately: a long sentence carrying a mechanism, then a short one that lands it, then a middling one that qualifies it. A post whose sentences all run eight to fourteen words was generated; a post where every sentence is engineered to land was scrubbed. One ordinary, unremarkable sentence per section is what makes the rest read as written.
-
-### Semicolons
-
-A semicolon is a written-register joint that nobody speaks, and a post that leans on it reads as an essay pasted into a composer. Where two clauses each carry a thought, they are two sentences. Where the second only qualifies the first and the grammar takes it, a comma joins them. The gate counts: none on a post under 1500 characters, and past that one per 1500 characters at most. A semicolon inside a command, a code block or a quotation is not counted.
-
-## The project, not the file
-
-The author's effort lands on the thing, never on one of its documents. A post whose author spent the evening with the README, opened the docs, or saved a table from the model card has reviewed a file, and the reader came for the project. The same goes for closing a post on what a file does or does not settle.
-
-So the verbs of experience (read, opened, spent, went through, saved, dug into) take the project, the repository, the release or the model as their object, and a document is named only to attribute a specific number or quotation, the way a citation names its page: once, where the number lands, and then it leaves. The gate fails a post where an effort verb takes a document as its object, and a post that names a document more often than once per 1200 characters. The exception is a post whose subject genuinely is the document, a changelog read or a documentation review, and the title says so.
-
-## The author's own angle
-
-A first-person post that only restates what the project published, with a pronoun in front of each fact, is a summary wearing a persona. The author is expected to have done something with the material, and the post carries the result of that work: this is the step that separates a repurposed post from a rewrite, and it runs on the unit before any platform version exists (SKILL.md Phase 4, "The author's own angle").
-
-What counts as the author's own work, in the order it is usually available:
-
-- Arithmetic the source did not do. Numbers the source states can be combined: a total against an active count, a checkpoint size against a peak memory reading, a price against a rate. The derivation is shown in the sentence, its inputs are the source's numbers, and it lands in the notes as a `[D]` line (`references/fidelity.md`) so the gate can ground the result.
-- A reading of what a published metric does and does not count, stated as the author's reading, with the wording of the source beside it.
-- A comparison against a public fact the run verified in Phase 4: another project's documented approach, a platform's stated limit, a price list. Never against a recalled figure.
-- The question the source leaves open, and the author's reasoning about it, marked as reasoning.
-- A check the author can actually run inside the material at hand: a line in the repository, a footnote in the card, a mismatch between two of the project's own pages.
-
-What does not count, and is a fidelity finding: a measurement the author did not make, a benchmark the author did not run, an outcome on a machine the author does not have. The frame may be invented; the result never is.
-
-The frame is the other half. A sentence of the author's own history with the subject (what they have bought, kept, replaced, expected, given up on) is allowed and often the best opener a post has, provided it carries no number, no measurement and no claim about the thing itself. It says who is speaking and why they looked; it is not evidence, and it never stands where a specific should.
-
-## The one-line verdict
-
-Long reads earn one more closing shape, on top of the two above: a single sentence, set apart as its own paragraph, that states the story in the frame the body earned. It is not a restatement of one fact and never a summary of the sections; it joins two things the body established into one claim a reader could repeat, the way a headline would if it were written after the post rather than before. It may be introduced by a short clause naming it as the author's reading, and on a platform that renders it the line may be set in bold, once. At most a few posts in a run take this shape, on the long-form platforms only, and no two of them carry the same line.
+The post should sound like someone explaining a useful guide to a colleague and saying what they would do with it: plain verbs, real product names, one reaction where the emoji lands, one stance, one caveat. Not an essay contest, not a machine breathing between fragments, not vendor copy under a personal name.
