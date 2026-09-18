@@ -8,43 +8,55 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 
 ## The canonical table
 
-`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and never a dot — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` says what the platform does with an attachment: required means it cannot post without one, optional means it takes one and the run's image belongs there too, and a row saying none is supported takes no attachment at all. Optional is not a synonym for "skip it" — when the campaign has an image, every optional row that the post targets gets it. `Genre` names the register file Phase 5 writes against.
+`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and never a dot — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` says what the platform does with an attachment: required means it cannot post without one, optional means it takes one and the run's image belongs there too, and a row saying none is supported takes no attachment at all. Optional is not a synonym for "skip it" — when the campaign has an image, every optional row that the post targets gets it. `Image` is the frame shape the platform shows an attachment in, which is a structural fact about the surface rather than a volatile limit: `awesome-content-image-adapter` reads this column and its own `references/geometry.md` turns each shape into a pixel target. A row reading `none` takes no image file at all. `Genre` names the register file Phase 5 writes against.
 
-| Slug | Site | Target the interview must collect | Media | Genre file |
-| --- | --- | --- | --- | --- |
-| `facebook-wall` | facebook.com | defaults to the personal timeline (`facebook.com/<handle>`); ask only when the account also manages Pages | optional | `genre-micro-post.md` |
-| `facebook-group` | facebook.com/groups | group URL | optional | `genre-community-post.md` |
-| `linkedin` | linkedin.com | — | optional | `genre-micro-post.md` |
-| `reddit` | reddit.com | subreddit | optional | `genre-community-post.md` |
-| `lemmy` | any Lemmy instance | instance domain + community | optional | `genre-community-post.md` |
-| `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | `genre-community-post.md` |
-| `tumblr` | tumblr.com | — | optional | `genre-micro-post.md` |
-| `mastodon` | any Mastodon instance | instance domain | optional | `genre-micro-post.md` |
-| `bluesky` | bsky.app | — | optional | `genre-micro-post.md` |
-| `x` | x.com | — | optional | `genre-micro-post.md` |
-| `threads` | threads.com | — | optional | `genre-micro-post.md` |
-| `truthsocial` | truthsocial.com | — | optional | `genre-micro-post.md` |
-| `bastyon` | bastyon.com | — | optional | `genre-micro-post.md` |
-| `vk-wall` | vk.com | own wall or a community the user may post to | optional | `genre-micro-post.md` |
-| `telegram` | t.me | channel or group | optional | `genre-micro-post.md` |
-| `peerlist` | peerlist.io | — | optional | `genre-micro-post.md` |
-| `minds` | minds.com | — | optional | `genre-micro-post.md` |
-| `instagram` | instagram.com | — | required | `genre-micro-post.md` |
-| `pinterest` | pinterest.com | board | required | `genre-micro-post.md` |
-| `pixelfed` | pixelfed.social, or another Pixelfed instance | defaults to `pixelfed.social`; ask only when the account lives on another instance | required | `genre-micro-post.md` |
-| `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | `genre-micro-post.md` |
-| `ko-fi` | ko-fi.com | — | optional | `genre-micro-post.md` |
-| `buymeacoffee` | buymeacoffee.com | — | optional | `genre-micro-post.md` |
-| `hackernews` | news.ycombinator.com | — | none supported | `genre-community-post.md` |
-| `daily-dev` | daily.dev | defaults to a direct post from the personal profile (`New Post`, audience everyone); ask only when the user names a squad | optional | `genre-community-post.md` |
-| `wonderful-dev` | wonderful.dev | — | optional | `genre-community-post.md` |
-| `devto` | dev.to | — | optional | `genre-long-article.md` |
-| `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | `genre-long-article.md` |
-| `hackernoon` | hackernoon.com | — | optional | `genre-long-article.md` |
-| `medium` | medium.com | publication, when posting into one | optional | `genre-long-article.md` |
-| `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | `genre-long-article.md` |
-| `telegraph` | telegra.ph | — | optional | `genre-long-article.md` |
-| `teletype` | teletype.in | blog, when the account has more than one | optional | `genre-long-article.md` |
+| Slug | Site | Target the interview must collect | Media | Image | Genre file |
+| --- | --- | --- | --- | --- | --- |
+| `facebook-wall` | facebook.com | defaults to the personal timeline (`facebook.com/<handle>`); a group URL when the user names a group to post into | optional | 4:5 | `genre-community-post.md` |
+| `facebook-page` | facebook.com/<page> | the Page, asked only when the account manages more than one | optional | 4:5 | `genre-micro-post.md` |
+| `linkedin` | linkedin.com | — | optional | 1.91:1 | `genre-micro-post.md` |
+| `reddit` | reddit.com | subreddit | optional | 16:9 | `genre-community-post.md` |
+| `lemmy` | any Lemmy instance | instance domain + community | optional | 16:9 | `genre-community-post.md` |
+| `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | 4:3 | `genre-community-post.md` |
+| `tumblr` | tumblr.com | — | optional | 4:5 | `genre-micro-post.md` |
+| `mastodon` | any Mastodon instance | instance domain | optional | 16:9 | `genre-micro-post.md` |
+| `bluesky` | bsky.app | — | optional | 16:9 | `genre-micro-post.md` |
+| `x` | x.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `threads` | threads.com | — | optional | 4:5 | `genre-micro-post.md` |
+| `truthsocial` | truthsocial.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `bastyon` | bastyon.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `vk-wall` | vk.com | own wall or a community the user may post to | optional | 16:9 | `genre-micro-post.md` |
+| `telegram` | t.me | channel or group | optional | 16:9 | `genre-micro-post.md` |
+| `peerlist` | peerlist.io | — | optional | 16:9 | `genre-micro-post.md` |
+| `minds` | minds.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `instagram` | instagram.com | — | required | 4:5 | `genre-micro-post.md` |
+| `pinterest` | pinterest.com | board | required | 2:3 | `genre-micro-post.md` |
+| `pixelfed` | pixelfed.social, or another Pixelfed instance | defaults to `pixelfed.social`; ask only when the account lives on another instance | required | 1:1 | `genre-micro-post.md` |
+| `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | 16:9 | `genre-micro-post.md` |
+| `ko-fi` | ko-fi.com | — | optional | 1:1 | `genre-micro-post.md` |
+| `buymeacoffee` | buymeacoffee.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `hackernews` | news.ycombinator.com | — | none supported | none | `genre-community-post.md` |
+| `daily-dev` | daily.dev | defaults to a direct post from the personal profile (`New Post`, audience everyone); ask only when the user names a squad | optional | 16:9 | `genre-community-post.md` |
+| `wonderful-dev` | wonderful.dev | — | optional | 16:9 | `genre-community-post.md` |
+| `devto` | dev.to | — | optional | 16:9 | `genre-long-article.md` |
+| `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | 16:9 | `genre-long-article.md` |
+| `hackernoon` | hackernoon.com | — | optional | 16:9 | `genre-long-article.md` |
+| `medium` | medium.com | publication, when posting into one | optional | 16:9 | `genre-long-article.md` |
+| `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | 16:9 | `genre-long-article.md` |
+| `telegraph` | telegra.ph | — | optional | 16:9 | `genre-long-article.md` |
+| `teletype` | teletype.in | blog, when the account has more than one | optional | 16:9 | `genre-long-article.md` |
+| `blogger` | blogger.com | blog, when the account has more than one | optional | 16:9 | `genre-long-article.md` |
+| `flipboard` | flipboard.com | magazine | optional | 4:3 | `genre-micro-post.md` |
+| `livejournal` | livejournal.com | defaults to the personal journal; ask only when the user names a community | optional | 16:9 | `genre-long-article.md` |
+| `dreamwidth` | dreamwidth.org | defaults to the personal journal (`Post to:`); ask only when the user names a community | optional | 16:9 | `genre-long-article.md` |
+| `mewe` | mewe.com | defaults to the personal feed; ask only when the user names a group | optional | 16:9 | `genre-micro-post.md` |
+| `youtube` | youtube.com | channel, when the account manages more than one | optional | 1:1 | `genre-micro-post.md` |
+| `tiktok` | tiktok.com | — | required (photos) | 9:16 | `genre-micro-post.md` |
+| `imgur` | imgur.com | — | required | 16:9 | `genre-micro-post.md` |
+| `flickr` | flickr.com | — | required | 16:9 | `genre-micro-post.md` |
+| `mataroa` | mataroa.blog | — | optional | 16:9 | `genre-long-article.md` |
+| `github-gists` | gist.github.com | — | none supported (images by URL only) | 16:9 | `genre-long-article.md` |
+| `deviantart` | deviantart.com | — | optional | 16:9 | `genre-long-article.md` |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 
@@ -78,7 +90,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `bluesky` | 1–3 (verified 2026-09) | body | Clickable and real; up to eight accepted. Every tag spends part of the 300-character budget, so the budget, not the ceiling, sets the count. |
 | `threads` | exactly 1 (verified 2026-09) | topic-tag field, no `#` | The platform allows one by design, and a tag may contain spaces. The campaign's set collapses to a single choice here. |
 | `pinterest` | 2–5 (verified 2026-09) | description | Hashtags are secondary keyword signals now, not the discovery path — keyword-rich title and description do the work. 10+ reads as spam. |
-| `facebook-wall`, `facebook-group` | 0–3 (verified 2026-09) | body | The platform where tags matter least; more than three actively costs engagement. |
+| `facebook-wall`, `facebook-page` | 0–3 (verified 2026-09) | body | The platform where tags matter least; more than three actively costs engagement. |
 | `tumblr` | 5–20 | tag field, never the body | Up to 30 accepted, only the first ~20 index, and the earliest carry the search weight. Tags in the body are a style error here. |
 | `truthsocial`, `minds`, `bastyon` | 3–5 | body | Mastodon-style discovery by tag. On `bastyon` the body's tags are also auto-extracted into the category chips that its Post button requires — see the posting note. |
 | `vk-wall`, `telegram` | verify live | body | Tag culture varies by community and channel; check what the account's own audience does. |
@@ -91,16 +103,31 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
 | `telegraph` | none | — | A plain publishing surface with no tag index to feed. |
 | `teletype` | none in the body | the blog's own topics | Topics are categories the author creates on their blog and assigns in the editor. There is no tag index to feed, so a `#tag` line in the body indexes nothing and reads as an import from somewhere else. |
+| `blogger` | none in the body | the post's Labels field | Labels are the blog's own categories, typed comma-separated in the Post settings sidebar; a `#tag` line in the body indexes nothing. |
+| `flipboard` | none | — | A flip is a short comment on a link, an image or a thought inside a magazine, and the magazine is the topic; the platform carries no hashtag index. |
+| `livejournal`, `dreamwidth` | none in the body | the entry's Tags field | Comma-separated tags with their own field and a journal-wide tag index; a body hashtag line reads as an import. |
+| `mewe` | 3–5 | body | Hashtags are clickable and searched across the network, Mastodon-style; a post without them is found by contacts only. |
+| `youtube` | 0–3 | body | Clickable inside a community post, but a channel post is read under the channel's name and more than three reads as spam there. Verify live. |
+| `tiktok` | 3–5 | caption | Hashtags are the discovery path for a photo post and they spend the caption budget. Verify the caption cap live. |
+| `imgur` | a few, in the post's tag field | the post's tag control | Tags are a separate control on the finished post; the description stays prose. Verify the ceiling live. |
+| `flickr` | a few, in the Add tags panel | the uploader's Add tags panel | Tags live in the uploader's own panel and drive search; the description stays prose. Verify the ceiling live. |
+| `mataroa` | none | — | A plain markdown blog with no tag index. |
+| `github-gists` | none | — | A gist has no tag system, and a `#word` line renders as a Markdown heading rather than a tag. Discovery is the link, the author's gist list and search engines. |
+| `deviantart` | a few, in the journal's tag field | the Submit dialog's tag control | Tags are a separate control in the Submit dialog; a body tag line reads as an import. Verify the ceiling live. |
 
 Two rules bind the whole table. Tags never displace prose: where a cap forces a choice between a sentence and a tag, the tag goes. And a count is met by choosing from the campaign's one set, not by inventing platform-specific tags — the same post on three platforms should show recognisably the same tags, just more or fewer of them.
 
 ## Profiles
 
 ### facebook-wall
-The personal timeline is the default surface — `facebook.com/<handle>`, the wall the user posts to themselves. A Page is the exception, not the question to open with: only when the account manages Pages does the interview ask which surface, and a user who names their own profile URL has already answered. Short-to-medium conversational prose; links auto-preview; hashtags carry little weight. Media optional. Page and personal timeline differ in tone expectations, so a post written for one is not simply moved to the other.
+The personal timeline is the default surface, `facebook.com/<handle>`, and a group the user names is the same shape on somebody else's ground. Both are conversations among people who already know the author, which is why the post opens on the question and stays short of a pitch: the register is `genre-community-post.md`, not an announcement. Links auto-preview and hashtags carry little weight. Media optional.
 
-### facebook-group
-A post into a community someone else moderates. Group rules gate promo harder than platform policy does; many groups queue posts for admin approval — publication is not instant and the campaign should not assume it. Target detail required: group URL. Value-first register; blunt ads get declined.
+A group adds what a timeline does not have: rules that gate promotion harder than platform policy does, and a moderation queue in many of them, so publication is not instant and the campaign does not assume it. The target is the group URL, collected in the interview; without one the post goes to the timeline.
+
+### facebook-page
+A brand surface: the post is published by the Page rather than by the person, it stands on its own, and it asks the reader nothing. Register is `genre-micro-post.md`. Only an account that manages a Page has this surface at all, and where it manages several the interview asks which; a user who named their own profile URL has answered a different question and gets `facebook-wall`.
+
+The composer is a different flow from the timeline's, with an extra settings step before publishing and a promote control sitting next to it that opens a paid flow. `awesome-content-publisher` carries the observed detail; what matters here is that a Page post is a publication, so its copy carries the campaign's link and its own claim, where a wall post carries a question.
 
 ### linkedin
 Professional register. The feed shows only the first lines before a "…see more" fold — the hook must land above it. Hashtags used in moderation; document links in the post body as the user prefers (folk practice varies; do not assert unverified algorithm claims). Media optional, images common.
@@ -274,6 +301,48 @@ A blogging platform where an article lives on the author's own blog at `teletype
 Topics are the author's own categories, created on the blog and assigned to the article; they are not hashtags and there is no platform-wide tag index behind them. Discovery is thin the way `telegraph` is thin: a Teletype article is the page other posts point at, not a post that finds its own readers. Unlike `telegraph`, it is tied to an account, so the article stays editable from anywhere the user is signed in.
 
 The editor is a rich one with its own formatting controls. Whether it converts typed markdown is the one thing to check live before a body goes in, because the failure is silent and permanent-looking: a pasted `## Heading` that does not convert publishes as visible hash characters.
+
+### blogger
+Google's blog host: the editor at `blogger.com` writes to a blog published at `<name>.blogspot.com` (or a custom domain), and an account can own several blogs, which is the only target question. Opening `New Post` creates a draft on the spot, so an interrupted run leaves one in the Posts list under `Draft`, to be finished or deleted before a retry. The editor has two views, a rich Compose view and an `HTML view`, and a formatted article goes in through the HTML view rather than through typed markdown, which the Compose view treats as literal text. Labels are the blog's categories and live in the sidebar, not in the body; the sidebar also carries the publish date (a future date schedules), the permalink and a per-post options panel.
+
+### flipboard
+A social magazine: a `flip` is a card inside one of the account's magazines, carrying a short comment plus a link, an image or the text alone, and every flip is filed into a magazine chosen first. Target detail required: the magazine, because the compose dialog opens on `Pick a Magazine` and will not go further without one. The card is what readers see in the feed, so a flip is a caption, not an article: a sentence or two of the author's reading and the URL that carries the piece. No hashtags exist here; the magazine is the topic.
+
+### livejournal
+The classic journal platform: an entry lives at `<journal>.livejournal.com/<id>.html`, with a title, a block editor for the body, comma-separated tags in their own field, a security level and a mood. The title field is capped at 100 characters and says so with a live counter. Communities are journals other people moderate, with their own rules and a queue where moderation is on; a post goes to the personal journal unless the user names a community. Long-form is native here, and an entry the length of a short article is normal, not conspicuous.
+
+### dreamwidth
+LiveJournal's open-source sibling, with the same shape: a personal journal at `<journal>.dreamwidth.org`, entries with a subject, tags, a security level (`Everyone (Public)`, `Access List`, `Private`) and communities that need to be named to be posted to. The update form is a plain HTML form with a `Rich Text` / `HTML` toggle on the body, and the HTML mode accepts a fixed set of tags with an auto-formatting rule that turns line breaks into paragraphs unless it is switched off. Small, literate, fandom-heavy audience that reads marketing register as an intrusion; the community register from `reddit` and `lemmy` is the right one.
+
+### mewe
+A Facebook-shaped network with no advertising feed: a post goes to the personal feed (`My World`) from the composer that opens on `How is your day going?`, or into a group the user names. The audience control sits on the composer (`Anyone` by default) and is left alone. Hashtags are clickable and searched across the network, so a post carries a few. The composer also offers a tip-jar `Lock Content` toggle beside the post controls, and that is a monetisation setting the run never touches. Verify the character cap live; the composer shows no counter.
+
+### youtube
+Channel posts, the text-and-image cards that appear on a channel's `Posts` tab and in subscribers' feeds. A post is up to 10,000 characters, which the composer enforces with a counter, but the native length is a short paragraph or two: a card, not an article. It takes one image, an image poll, a text poll, a quiz, or an existing video from the channel, and it can be scheduled from the action menu next to `Post`. Which channel is the only target question, and only for accounts that manage more than one. Hashtags are clickable inside a post and a handful is the norm. Media supported: still images and the channel's own videos; a video upload is a different product and not this slug.
+
+### tiktok
+Photo posts through TikTok Studio, the web uploader at `tiktok.com/tiktokstudio/upload` on its `Photos` tab: up to 35 photos per post, 50 MB each, JPG, JPEG, PNG or WebP, with 16:9, 4:3 and 3:4 as the recommended ratios. Media is required and the post is the pictures; the caption carries the point and the hashtags, and hashtags are how a photo post is found. The caption field, its cap and the audience control render only after the photos are in, so they are verified live on the first run and recorded in the platform cache. A video is a different upload and not this slug.
+
+### imgur
+An image host with a community feed: a post is one or more images with a title, a per-image description and tags, and it is either hidden (the default, reachable by link) or posted to the community, which is the explicit and outward-facing step. Media is required and the uploader accepts stills, GIFs and short video. The community reads as a meme feed with a technical minority, so a post that lands there is the picture plus a two-line caption, never an article; the description supports plain text and links.
+
+### flickr
+A photo platform first and a social one second: the uploader at `flickr.com/photos/upload/` takes photos and videos, gives each a title and a description, and files them with tags, albums and groups from a sidebar before one `Upload` control finishes the batch. Media is required. A free account carries a lifetime quota that the uploader states on its own page (`You can upload N more photos and videos`), and that number is the thing to watch before a run. Groups are other people's rooms with their own rules; a post goes to the photostream unless the user names a group.
+
+### mataroa
+A minimal paid blogging host: a blog at `<blog>.mataroa.blog`, posts written in markdown in a plain form with a title, a publication date and a body, images added by dragging into the body. An empty date keeps the post as a draft and a future date schedules it, which is the whole scheduling mechanism. No tags, no feed, no comments unless enabled; the post exists to be linked from elsewhere, the way `telegraph` and `teletype` do, but it stays editable from any signed-in session.
+
+### github-gists
+A public gist as a standalone page: one `.md` file in a git repository with a web view that renders Markdown, at `gist.github.com/<handle>/<id>`. It is the surface a developer audience reads a technical note on, and the most code-friendly one in the table: full fenced blocks with their language, tables, headings and inline links all render, and nothing is trimmed for a feed because there is no feed.
+
+Three fields make the post. The **description** is the title a reader meets in a gist listing and in a search result. The **filename including extension** decides how the file renders, so a post is `<kebab-case-title>.md` and never anything else, since a missing or wrong extension publishes the Markdown as plain text. The **content** is the document itself, opening with its own `#` heading, the way the author's own gists are written.
+
+Public is a choice, not the default, and it is the one thing to get right here: the composer's primary button reads `Create secret gist`, and a public gist needs the type selector opened and `Create public gist` chosen first. A secret gist is not private, it is unlisted, so publishing one by accident does not leak the post; it simply never reaches anyone.
+
+No tags, no attachments through the web composer (an image is referenced by absolute URL), no comments feed to seed, and no edit-by-URL: a gist is a git repository, so a second attempt creates a second gist rather than replacing the first. The post is committed under the account's commit email, which the composer shows.
+
+### deviantart
+An art community whose journals are long-form posts under the account's name: `studio/journals` opens `Start a Draft`, and the `Submit a journal` dialog takes a visibility setting, an optional cover image, a title with a read-time estimate, a rich body and tags. `Save to Studio` keeps a draft and `Submit` publishes; the Studio lists drafts and a `Scheduled` tab. The audience is artists and fans, so a technical post reads as a guest here unless it is about the art or tooling they use; say so when the user selects it for a product with no fit. Status updates and literature are different submission types and not this slug.
 
 ### substack
 Two different surfaces share one slug, and the default is the one that sends no email.

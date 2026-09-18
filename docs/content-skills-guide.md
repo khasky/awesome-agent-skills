@@ -9,7 +9,7 @@ Russian version: [content-skills-guide.ru.md](content-skills-guide.ru.md).
 ## Contents
 
 - [What you are setting up](#what-you-are-setting-up)
-- [The five skills](#the-five-skills)
+- [The six skills](#the-six-skills)
 - [Part 1 — Install the agent](#part-1--install-the-agent)
 - [Part 2 — Install the skills](#part-2--install-the-skills)
 - [Part 3 — Connect your browser](#part-3--connect-your-browser)
@@ -28,7 +28,7 @@ Russian version: [content-skills-guide.ru.md](content-skills-guide.ru.md).
 Four words are used throughout, and none of them mean what they sound like on first reading.
 
 - **Agent** — a program you talk to in a terminal window. You type a request in plain language; it reads files, runs commands and edits things on your machine. Claude Code and OpenAI Codex are agents. This guide uses Claude Code for every concrete command.
-- **Skill** — a folder of written instructions the agent loads when your request matches it. A skill adds no software: it is a document that tells the agent how to do one job properly. The five in this repository cover writing posts and publishing them.
+- **Skill** — a folder of written instructions the agent loads when your request matches it. A skill adds no software: it is a document that tells the agent how to do one job properly. The six in this repository cover writing posts, making their pictures and publishing them.
 - **MCP server** — a small helper program the agent starts in the background to reach something outside itself. Here it reaches your browser.
 - **The bridge** — the MCP server plus a browser extension, together. It lets the agent act inside the browser window you already use, in the sessions where you are already signed in. Nothing about your passwords passes through it, because no password is ever typed.
 
@@ -36,19 +36,20 @@ The shape of the whole thing: you talk to the agent → the agent reads a skill 
 
 Two things you need before any of it: an account with an AI provider that the agent bills against (Claude Code needs a Claude subscription or API billing — set that up at the provider first, the agent will not run without it), and accounts on the platforms you want to post to, signed in already.
 
-## The five skills
+## The six skills
 
 | Skill | Input | Output |
 | --- | --- | --- |
 | [awesome-content-voice](../skills/awesome-content-voice) | Your existing posts, files, or an interview | One reusable voice profile file |
-| [awesome-content-campaign](../skills/awesome-content-campaign) | A repo, a site, files — a product you want to talk about | A folder of dated post files, one per platform slot, plus a manifest |
+| [awesome-content-campaign](../skills/awesome-content-campaign) | A repo, a site, files — a product you want to talk about, plus the topic, the start date and how long it runs | Dated folders of post files, one per platform slot, plus a manifest |
 | [awesome-content-repurpose](../skills/awesome-content-repurpose) | One existing text: a link, a file, pasted notes | The same folder format, no schedule |
-| [awesome-content-graphics](../skills/awesome-content-graphics) | The facts a picture may claim | A set of rendered PNGs, made locally from HTML and CSS |
+| [awesome-content-graphics](../skills/awesome-content-graphics) | A reference: text, images, a URL — whatever the picture should be about | A set of drawn images of the size you name, and the one you picked |
+| [awesome-content-image-adapter](../skills/awesome-content-image-adapter) | One finished picture, and the posts it belongs to | The same picture in each platform's own frame, one PNG per platform |
 | [awesome-content-publisher](../skills/awesome-content-publisher) | A folder of post files | Published posts on your own accounts, plus a ledger |
 
 `campaign` and `repurpose` both write the file format `publisher` reads. Pick `campaign` when you have product sources and want a schedule; pick `repurpose` when you have one article and want it in every platform's own register.
 
-`voice` and `graphics` are optional inputs to the other three: the voice profile shapes how the posts sound, the graphics give them a picture.
+`voice` and `graphics` are optional inputs to the other three: the voice profile shapes how the posts sound, the graphics give them a picture. `image-adapter` is the step after the picture — it puts that one picture into every platform's own frame, and it runs on its own just as happily on any image you already have.
 
 ## Part 1 — Install the agent
 
@@ -302,10 +303,26 @@ Same output format, no schedule. This is the one to use when the source is a sin
 ### Making the picture
 
 ```text
-Use awesome-content-graphics for this campaign: vertical 1080x1350, 100 renders
+Use awesome-content-graphics for this campaign: vertical 1080x1350, 100 images
 ```
 
-You will be asked for the look, the set size, the headline policy and the ratio. Everything renders locally from HTML and CSS — no image service, no API key, nothing uploaded. You then pick one render by its number.
+You hand over a reference — the article, a few pictures, a link, or all three. The run tells you in one sentence what it thinks the picture is about, so you can correct it before a hundred pictures are made of the wrong thing. Then it asks how many you want: 10, 20, 50 or 100.
+
+The agent draws the set itself — there is no image service to sign up for, no key to set and nothing to install. It composes each picture, saves them into one folder and opens it. You answer with a number. If nothing fits, ask for another round: it rebuilds the set from different ideas, not the same ones recoloured. The earlier rounds stay on disk.
+
+The picture you pick is copied into a folder of its own, which opens separately — so you are never hunting for the chosen file among the ninety-nine it beat.
+
+What this gives you is flat, graphic work: shape, type, colour, diagrams, patterns. It does not give photographs. Where you want a photograph, supply your own and go straight to fitting it per platform.
+
+### Fitting the picture to each platform
+
+```text
+Use awesome-content-image-adapter on ./poster.png
+```
+
+Every platform shows a picture in its own frame: wide on an article site, tall in a phone feed, square on a profile. This takes the one picture you approved and writes it out in each of those frames, one file per platform, named after the platform. Run on its own it puts them in a temporary folder and opens it. Run as part of a chain it puts them next to the posts, so `linkedin.md` and `linkedin.png` sit side by side and the publisher finds the picture without being told where it is.
+
+Nothing is redrawn. A frame wider than your picture is a minimal centred crop; a frame taller than it keeps the whole picture and fills the space above and below with a blurred, darkened continuation of the same image.
 
 ### Publishing
 
@@ -323,9 +340,10 @@ The usual order, and what to hand over at each step:
 
 1. **`awesome-content-voice`** once, ever. Keep the profile file.
 2. **`awesome-content-campaign`** or **`awesome-content-repurpose`** — point it at the source and the voice profile. Read the drafts. This is the moment to fix wording; every later stage treats these files as the author's words and will not rewrite them.
-3. **`awesome-content-graphics`** — it takes the campaign's facts and gives back a set. Pick one render.
-4. Add the picked image to the post files (the writing skill does this when it runs after graphics; otherwise name it in the frontmatter).
-5. **`awesome-content-publisher`** — point it at the folder. Approve the run plan. Let it work.
+3. **`awesome-content-graphics`** — it reads the campaign's material, asks how many images you want and gives back a set. Pick one by number, or ask for another round. Supplying your own picture instead is the same step, answered differently.
+4. **`awesome-content-image-adapter`** — it runs straight after the pick, without being asked, and writes the picture in every platform's frame beside the posts.
+5. Nothing to do by hand: the post files name the picture that sits next to them.
+6. **`awesome-content-publisher`** — point it at the folder. Approve the run plan. Let it work.
 
 A single sentence that runs the whole chain also works, and the agent will stop at each gate that needs your answer:
 
@@ -354,6 +372,7 @@ Nothing is hidden, and nothing leaves your machine except the posts themselves.
 ```text
 my-campaign-folder/
 ├── 2026-09-01_10-00_Europe-Kyiv_post-title_mastodon.md   one file per post
+├── mastodon.png                                           the same picture in that platform's frame
 ├── campaign.md                                            the manifest, when a campaign wrote them
 ├── image.png                                              the picture the posts share
 └── publish-state/
@@ -362,7 +381,7 @@ my-campaign-folder/
 
 The ledger is the important one: it is how a stopped run resumes without posting anything twice, and it holds each post's URL and the evidence the audit collected. Keep it with the campaign.
 
-Graphics land in their own folder, which the run prints as an absolute path — renders, the HTML they were built from, a contact sheet and a gallery page.
+Graphics land in their own folder, which the run prints as an absolute path — renders, the HTML they were built from, a contact sheet and a gallery page. The per-platform pictures do not: they sit beside the posts, one named after each platform, because that is where a post and its picture are read together.
 
 ## Writing a post file by hand
 
@@ -436,7 +455,7 @@ What inflates a run: a composer whose live page has changed since the notes were
 
 **A platform asks for a login or shows a captcha mid-run.** The run stops there and hands the browser to you. Sign in yourself in that window, then tell the agent to continue. It will never do that part for you.
 
-**The graphics skill reports a missing browser.** It renders the pictures through a headless browser that Playwright keeps in its own cache, and a machine that has never run Playwright has none. `npx playwright install chromium` fetches it — a few hundred megabytes, once. Nothing else in this guide needs it; the publishing bridge drives the browser you already have.
+**The graphics skill goes looking for an image service.** It should not: the agent draws the pictures itself, and there is nothing to connect. A run that stops to hunt for a generator has misread the skill — say so and ask it to draw the set. The one thing it does need is something that turns its drawings into PNG files; without that it still hands over the drawings and says they were not converted.
 
 **A post published with wrong formatting.** The publisher diffs every published post against its source file and repairs it — by editing where the platform allows, by delete-and-republish only within 5 minutes and only with no engagement, and by telling you plainly where the platform allows neither. If you find one it missed, say so: it reopens the audit rather than patching the single line you named.
 
