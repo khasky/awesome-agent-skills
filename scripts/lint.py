@@ -170,21 +170,30 @@ def no_per_skill_readme() -> list[str]:
     return []
 
 
+EVAL_FILES = ("eval_queries.json", "evals.json")
+
+
 def skills_ship_markdown_only() -> list[str]:
     # A skill instructs; it never ships code, and no skill is exempt. An
     # allowlist stood here for one that shipped a renderer, and went when that
-    # skill stopped shipping one.
+    # skill stopped shipping one. The evals/ pair below is data the maintainer
+    # measures a description with, never a file that runs.
+    def is_eval_set(path: str) -> bool:
+        parts = path.split("/")
+        return len(parts) == 4 and parts[2] == "evals" and parts[3] in EVAL_FILES
+
     fail = []
     others = sorted(p for p in tracked()
-                    if p.startswith("skills/") and not p.endswith(".md"))
+                    if p.startswith("skills/") and not p.endswith(".md")
+                    and not is_eval_set(p))
     if others:
-        fail.append("a skill may hold only Markdown; remove or convert:")
+        fail.append("a skill may hold only Markdown, plus an evals/ set; remove or convert:")
         fail.extend(others)
     dirs = sorted({"/".join(p.split("/")[:3]) for p in tracked()
                    if p.startswith("skills/") and p.count("/") >= 3
-                   and p.split("/")[2] != "references"})
+                   and p.split("/")[2] not in ("references", "evals")})
     if dirs:
-        fail.append("a skill folder holds SKILL.md and references/ only:")
+        fail.append("a skill folder holds SKILL.md, references/ and evals/ only:")
         fail.extend(dirs)
     return fail
 
@@ -259,6 +268,71 @@ def skill_line_budget() -> list[str]:
     return fail + stale
 
 
+def eval_sets_are_well_formed() -> list[str]:
+    # Eval sets sit where the published convention puts them, in the skill's
+    # own evals/ folder. The shape is checkable here; whether a set was ever
+    # run against a model is a claim only the run itself can settle.
+    fail = []
+    names = {folder.name for folder in skill_dirs()}
+    for path in sorted(p for p in tracked()
+                       if p.startswith("skills/") and "/evals/" in p):
+        parts = path.split("/")
+        skill, filename = parts[1], parts[-1]
+        if len(parts) != 4 or filename not in EVAL_FILES:
+            fail.append(f"{path}: an evals folder holds {' and '.join(EVAL_FILES)}, nothing else")
+            continue
+        try:
+            data = json.loads(read(ROOT / path))
+        except json.JSONDecodeError as exc:
+            fail.append(f"{path}: invalid JSON - {exc}")
+            continue
+
+        if filename == "eval_queries.json":
+            if not isinstance(data, list) or not data:
+                fail.append(f"{path}: expected a non-empty list of queries")
+                continue
+            seen: set[str] = set()
+            for index, case in enumerate(data):
+                query = case.get("query") if isinstance(case, dict) else None
+                if not isinstance(query, str) or not query.strip():
+                    fail.append(f"{path}: case {index} has no query")
+                    continue
+                if query in seen:
+                    fail.append(f"{path}: duplicate query {query[:40]!r}")
+                seen.add(query)
+                if not isinstance(case.get("should_trigger"), bool):
+                    fail.append(f"{path}: case {index} has no should_trigger boolean")
+                sibling = case.get("belongs_to")
+                if sibling is not None and sibling not in names:
+                    fail.append(f"{path}: case {index} sends belongs_to to a missing skill: {sibling}")
+                if sibling == skill:
+                    fail.append(f"{path}: case {index} hands a negative back to the skill under test")
+                split = case.get("split")
+                if split not in (None, "train", "validation"):
+                    fail.append(f"{path}: case {index} has split {split!r}, expected train or validation")
+            verdicts = {case.get("should_trigger") for case in data if isinstance(case, dict)}
+            if not {True, False} <= verdicts:
+                fail.append(f"{path}: every case points the same way - a set needs both "
+                            f"should-trigger and should-not-trigger queries")
+            continue
+
+        if data.get("skill_name") != skill:
+            fail.append(f"{path}: skill_name is {data.get('skill_name')!r}, expected {skill!r}")
+        cases = data.get("evals")
+        if not isinstance(cases, list) or not cases:
+            fail.append(f"{path}: no eval cases")
+            continue
+        for index, case in enumerate(cases):
+            prompt = case.get("prompt") if isinstance(case, dict) else None
+            if not isinstance(prompt, str) or not prompt.strip():
+                fail.append(f"{path}: case {index} has no prompt")
+                continue
+            assertions = case.get("assertions")
+            if assertions is not None and (not isinstance(assertions, list) or not assertions):
+                fail.append(f"{path}: case {index} has an empty assertions list")
+    return fail
+
+
 def plugin_manifests_agree() -> list[str]:
     # The two plugin manifests are the Claude Code install path. They carry the
     # repo's own name and are easy to leave behind on a rename.
@@ -291,6 +365,7 @@ CHECKS = [
     ("referenced asset files exist", referenced_assets_exist),
     ("single-language skills carry a per-language mapping", single_language_skills_map_across),
     ("SKILL.md stays inside the line budget", skill_line_budget),
+    ("eval sets are well formed", eval_sets_are_well_formed),
     ("plugin manifests parse and agree", plugin_manifests_agree),
 ]
 

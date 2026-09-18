@@ -1,6 +1,6 @@
 # Platform specs - the file set, the caps, the bands, the blueprints
 
-The output contract per platform and the numbers every version is checked against. The platform vocabulary is the canonical table in `awesome-content-campaign`'s `references/platforms.md`; the filenames below mirror its slugs, and a slug present here without a row there is a defect in this file. Frontmatter does not count toward any limit.
+The output contract per platform and the numbers every version is checked against. The platform vocabulary is the canonical table in `awesome-content-campaign/references/platforms.md`; the filenames below mirror its slugs, and a slug present here without a row there is a defect in this file. Frontmatter does not count toward any limit.
 
 ## 1. Canonical filenames
 
@@ -244,7 +244,7 @@ A visible H1 on `buymeacoffee`, `daily-dev`, `devto`, `hackernoon`, `hashnode`, 
 
 ## 9. Body hashtags
 
-The norms are the hashtag table in `awesome-content-campaign`'s `references/platforms.md`. Tag lines come from the run's `Hashtag pool`, in pool order, every tag with `#`, CamelCase for multi-word tags, as the last line of the body:
+The norms are the hashtag table in `awesome-content-campaign/references/platforms.md`. Tag lines come from the run's `Hashtag pool`, in pool order, every tag with `#`, CamelCase for multi-word tags, as the last line of the body:
 
 ```text
 x 2              bluesky 2-3        mastodon 3-5       pixelfed 3-5

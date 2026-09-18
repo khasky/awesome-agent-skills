@@ -69,7 +69,7 @@ Follow-up        — open items, what to watch
 
 ## How the write-up reads
 
-A postmortem is read by people who were not there and by the next on-call a year later. The document has absolute timestamps with a timezone, exact failure mechanics, honest dead ends, and action items someone owns. A team's incident template is a fine container; the tell is filler inside it. Rules for the prose (the venue file `references/domain-postmortems.md` in `awesome-humanize-en` carries the full tell table):
+A postmortem is read by people who were not there and by the next on-call a year later. The document has absolute timestamps with a timezone, exact failure mechanics, honest dead ends, and action items someone owns. A team's incident template is a fine container; the tell is filler inside it. Rules for the prose (`awesome-humanize-en/references/domain-postmortems.md` carries the full tell table; without that skill the rules below are the whole bar):
 
 - Blameless is not agentless. "Mistakes were made", "the change was deployed" with no actor anywhere is fog. Name systems and roles: "the deploy pipeline promoted the config before validation ran".
 - The timeline keeps the wrong turns. The 40 minutes spent on the bad hypothesis is the most instructive part of the document, and the part write-ups most often drop. Absolute times, timezone stated once.

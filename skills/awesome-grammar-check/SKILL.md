@@ -48,7 +48,7 @@ Missing or jarring transitions, choppy runs of same-length sentences, overuse of
 
 - Intentional sentence fragments and a punchy register in marketing/creative copy — ask before "correcting" style.
 - Rhetorical devices (deliberate repetition, a one-word sentence for emphasis).
-- Regional-variant spellings that are internally consistent (colour vs color) — flag only a *mix* within one document. Where the document mixes, say which variant it is mostly in and normalise to that; where neither leads, American spelling is the default unless the author named one. `awesome-humanize-en`'s `references/spelling-variants.md` has the families, the `-ize` trap and the exclusions.
+- Regional-variant spellings that are internally consistent (colour vs color) — flag only a *mix* within one document. Where the document mixes, say which variant it is mostly in and normalise to that; where neither leads, American spelling is the default unless the author named one. `awesome-humanize-en/references/spelling-variants.md` has the families, the `-ize` trap and the exclusions; without that skill the mix itself is the finding and the majority variant is the target.
 - Informal register in a message or a personal note — grammar rules bend by genre.
 - Code, commands, identifiers, quotations, and foreign-language spans — out of scope; leave them.
 - Under ~40 words: give grammar/logic notes if any, but skip a readability verdict — the sample is too short.

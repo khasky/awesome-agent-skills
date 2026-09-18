@@ -18,7 +18,7 @@ Two phases, separate on purpose: report everything first, fix second. A fix appl
 
 Reference files (load the one you need, don't inline both):
 - [`references/claim-source-map.md`](references/claim-source-map.md) — the map from each class of claim to the one file that settles it: how to build it, the template, and the resolution traps that cost the most time. Read it before tracing the first claim to its source.
-- [`references/checker-recipes.md`](references/checker-recipes.md) — the four mechanical check kinds, the config schema the scripts read, and the mutation discipline that proves a check can fail. Read it when you are about to write or repair a mechanical check, not while collecting claims.
+- [`references/checker-recipes.md`](references/checker-recipes.md) — the six mechanical check kinds, two recipes worth copying, the mutation discipline that proves a check can fail, and how a copy fix out of a shared file gets committed. Read it when you are about to write or repair a mechanical check, not while collecting claims.
 
 
 - Other runtimes — the runner is Node because that is what most public-facing repos already have. The four check kinds are ~40 lines in Python, Ruby, or Go; what matters is the discipline (fail loud when a parse stops matching, one line per check, a mutation that proves the check fires), not the language. If the project has no Node toolchain, port the config to its own test runner and say so in the report.

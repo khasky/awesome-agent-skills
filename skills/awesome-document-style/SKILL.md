@@ -53,7 +53,7 @@ Search for and remove or flag these classes of artifacts:
   - “Would you like me to”
   - “Here’s a polished version”
 
-The markers above are enough to run this pass standalone. If the `awesome-humanize-en` skill is installed alongside this one, its `references/chatbot-artifacts.md` carries the full catalog — every marker with its regex, its source, and its false-positive boundary — and is worth opening for an unfamiliar marker or an ambiguous match.
+The markers above are enough to run this pass standalone. Where that skill is installed alongside this one, `awesome-humanize-en/references/chatbot-artifacts.md` carries the full catalog — every marker with its regex, its source, and its false-positive boundary — and is worth opening for an unfamiliar marker or an ambiguous match.
 
 ## Pass 2: Markdown structure cleanup
 
@@ -91,7 +91,7 @@ Prefer:
 
 Watch for and rewrite:
 
-- Every word and phrase of the shared inventory: `awesome-humanize-en`'s `references/lexicon.md` — the three vocabulary tiers with the plain word each entry displaces, filler adverbs, transition crutches, era openers, inflation, bureaucratese, unsourced attribution, and the intent stamp (“deliberately”, “intentionally”) that replaces the reason instead of giving it.
+- Every word and phrase of the shared inventory: `awesome-humanize-en/references/lexicon.md` — the three vocabulary tiers with the plain word each entry displaces, filler adverbs, transition crutches, era openers, inflation, bureaucratese, unsourced attribution, and the intent stamp (“deliberately”, “intentionally”) that replaces the reason instead of giving it.
 - “not only X but also Y”
 - “from X to Y” ranges used for drama rather than meaning
 - forced groups of three
@@ -100,11 +100,11 @@ Watch for and rewrite:
 - summary-stamp openers as a move (any label announcing a summary before delivering it: “In conclusion”, “Here’s the TL;DR:”), and redundant plain-language restatement (“in other words…”, “put simply…”) that repeats an already-made point
 - circular/tautological definitions (“the system enables users to use the functionality”) and noun stacking (“production-ready deployment system infrastructure”)
 
-One variant of English per document. American spelling is the default; the exceptions are all explicit — the user named a variant, a style guide or voice profile fixes one, or the document is an extension of existing text in another. A mix is a defect wherever it appears, headings and captions included, and `awesome-humanize-en`'s `references/spelling-variants.md` carries the families to check, the `-ize` trap, and what never counts (quotations, proper nouns, identifiers).
+One variant of English per document. American spelling is the default; the exceptions are all explicit — the user named a variant, a style guide or voice profile fixes one, or the document is an extension of existing text in another. A mix is a defect wherever it appears, headings and captions included, and `awesome-humanize-en/references/spelling-variants.md` carries the families to check, the `-ize` trap, and what never counts (quotations, proper nouns, identifiers); without that skill, the default named here is the whole rule.
 
 Density fails in both directions. A paragraph trimmed until it lost the caveat, the next step or the one number the reader came for is a defect, the same as a padded one; cut filler, not content. And a rewrite must not come out more promotional, more upbeat or more confident than its source: hedges of genuine doubt, disagreement and refusals are the author's stance, and stance is not the editor's to move.
 
-That list is the working bar for this pass, and the vocabulary half of it now lives once, in `awesome-humanize-en`'s `references/lexicon.md`: with that skill installed the words come from there, and without it this pass runs on the shapes above and says so in the report. The same skill's `references/language-patterns.md` carries the pattern numbers and the before-and-after shape behind each entry, `references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and its `references/domain-*.md` files carry per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. Those three are optional; the lexicon is where the word list went.
+That list is the working bar for this pass, and the vocabulary half of it now lives once, in `awesome-humanize-en/references/lexicon.md`: with that skill installed the words come from there, and without it this pass runs on the shapes above and says so in the report. `awesome-humanize-en/references/language-patterns.md` carries the pattern numbers and the before-and-after shape behind each entry, `awesome-humanize-en/references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and `awesome-humanize-en/references/domain-*.md` files carry per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. Those three are optional; the lexicon is where the word list went.
 
 ## Pass 4: Specificity and source discipline
 

@@ -69,7 +69,7 @@ Categories are numbered so partitioned sub-audits report against the same list.
 
 ### Comment and message diction (26)
 
-26. Borrowed diction: a ceremonial verb where the plain one exists, in comment text or in a commit message. The closed list, the plain replacement for each entry, the sweep and the look-alikes are in `awesome-humanize-en`'s [`references/lexicon.md`](references/lexicon.md), under Borrowed diction — the collection's one vocabulary inventory. Read it when that skill is installed and report against its wording, so a fix pass and this audit name the same entries.
+26. Borrowed diction: a ceremonial verb where the plain one exists, in comment text or in a commit message. The closed list, the plain replacement for each entry, the sweep and the look-alikes are in `awesome-humanize-en/references/lexicon.md`, under Borrowed diction — the collection's one vocabulary inventory. Read it when that skill is installed and report against its wording, so a fix pass and this audit name the same entries.
 
 ### Comment shape (27–28)
 
@@ -78,7 +78,7 @@ Categories are numbered so partitioned sub-audits report against the same list.
 
 ### Spelling variant (29)
 
-29. Mixed variants of English in one repository's prose: `colour` beside `color`, `behaviour` beside `behavior`, `centre` beside `center`. Sections generated at different moments drift apart with nothing holding them together, so the mix is a generation tell rather than a style preference. Report the variant the prose is mostly in, the count of departures and the words; where neither variant leads, American is the default. Never count a quotation, a proper noun, an identifier or a package name, and never decide the variant on `-ise`/`-ize` alone, which splits inside British house styles. `awesome-humanize-en`'s `references/spelling-variants.md` carries the families and the exclusions.
+29. Mixed variants of English in one repository's prose: `colour` beside `color`, `behaviour` beside `behavior`, `centre` beside `center`. Sections generated at different moments drift apart with nothing holding them together, so the mix is a generation tell rather than a style preference. Report the variant the prose is mostly in, the count of departures and the words; where neither variant leads, American is the default. Never count a quotation, a proper noun, an identifier or a package name, and never decide the variant on `-ise`/`-ize` alone, which splits inside British house styles. `awesome-humanize-en/references/spelling-variants.md` carries the families and the exclusions; without that skill, the counting rule named here is the whole check.
 
 ### The glyph-pocket heuristic
 

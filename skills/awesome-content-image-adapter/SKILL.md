@@ -1,6 +1,6 @@
 ---
 name: awesome-content-image-adapter
-description: "Adapts one finished image into the frame every platform shows it in, one file per platform slug, named so a post and its picture sit side by side. The platform list and each surface's frame shape come from awesome-content-campaign's references/platforms.md, so no file here restates them. Runs alone — a source image in, a folder of platform-ready PNGs out, opened on the machine — or as the third step of a content run, straight after the picture the user picked is handed over. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make cross-platform post images, 'адаптируй картинку под платформы', or whenever a post set needs its pictures in each platform's own frame. Do not use to design or generate artwork (awesome-content-graphics), to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
+description: "Adapts one finished image into the frame every platform shows it in, one file per platform slug, named so a post and its picture sit side by side. The platform list and each surface's frame shape come from awesome-content-campaign/references/platforms.md, so no file here restates them. Runs alone — a source image in, a folder of platform-ready PNGs out, opened on the machine — or as the third step of a content run, straight after the picture the user picked is handed over. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make cross-platform post images, 'адаптируй картинку под платформы', or whenever a post set needs its pictures in each platform's own frame. Do not use to design or generate artwork (awesome-content-graphics), to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
 license: MIT
 compatibility: "Requires a local way to write RGB PNG files at exact pixel sizes. Nothing is uploaded and no image service is called."
 metadata:
@@ -13,7 +13,7 @@ metadata:
 
 One picture, every platform's frame. The artwork does not change: no regeneration, no redraw, no restyle, no image service. What changes is the shape around it, and how the picture meets the edges of that shape.
 
-The platform list is not here. It is the canonical table in `awesome-content-campaign/references/platforms.md`, which is the single source of the vocabulary, and its `Image` column gives each surface's frame shape. This skill reads both and adds nothing to them; a platform that appears here and not there is a platform that does not exist.
+The platform list is not here. It is the canonical table in `awesome-content-campaign/references/platforms.md`, which is the single source of the vocabulary, and its `Image` column gives each surface's frame shape. This skill reads both and adds nothing to them; a platform that appears here and not there is a platform that does not exist. With that skill absent, the list and the frames are asked of the user rather than guessed.
 
 Bundled file (load on demand):
 

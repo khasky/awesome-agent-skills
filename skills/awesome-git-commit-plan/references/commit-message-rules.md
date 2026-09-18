@@ -236,11 +236,11 @@ Words and shapes that carry no information and always come out:
 
 | Class | Examples |
 | --- | --- |
-| filler adverbs, inflation, hedged openers, summary stamps | the shared inventory: the filler-adverb, inflation, transition-crutch and summary-stamp sections of awesome-humanize-en's references/lexicon.md |
+| filler adverbs, inflation, hedged openers, summary stamps | the shared inventory: the filler-adverb, inflation, transition-crutch and summary-stamp sections of awesome-humanize-en/references/lexicon.md |
 | the rule of three | three parallel clauses where one carries the fact — two examples earn their place, a third is rhythm |
 | noun stacks | production-ready deployment system infrastructure |
 | circular claims | the helper enables the caller to use the helper |
-| borrowed diction | the ceremonial verb where the plain one exists — entries and replacements in awesome-humanize-en's references/lexicon.md; the checklist below greps for them |
+| borrowed diction | the ceremonial verb where the plain one exists — entries and replacements in awesome-humanize-en/references/lexicon.md; the checklist below greps for them |
 
 Prefer the active voice and one precise verb over stacked modifiers. Passive is correct when the actor is genuinely irrelevant ("the region is appended at the end of the file"), not as a default.
 
@@ -313,7 +313,7 @@ grep -nE '\b(two|three|four|six|ten|twelve) [a-z]+'   # 3.8, each must be a
                                      # constant the code enforces
 grep -nE 'C[0-9]{2}|as above'        # 3.9, must be empty
 # 3.10, borrowed diction and filler: search the message for the entries of the
-# comment-and-commit sections of awesome-humanize-en's references/lexicon.md.
+# comment-and-commit sections of awesome-humanize-en/references/lexicon.md.
 # Must be empty.
 ```
 
