@@ -80,7 +80,7 @@ Shell. Detect the platform before running anything (`uname -s`, or `$IsWindows` 
 
 Read both, in this order, before a single message is drafted:
 
-1. `references/commit-message-rules.md` — the subject and body ruleset this skill writes to. It is not advisory: every message in the plan file is checked against its section 9 checklist in Phase 6.
+1. `references/commit-message-rules.md` — the subject and body ruleset this skill writes to. Read it before drafting the first subject line. It is not advisory: every message in the plan file is checked against its section 9 checklist in Phase 6.
 2. The repository's own rules, which override it on any conflict:
    ```bash
    ls commitlint.config.* .commitlintrc* .husky/ .pre-commit-config.yaml lefthook.yml .gitmessage 2>/dev/null
@@ -247,7 +247,7 @@ A message that fails the repository's hook is a defect found now, in a text file
 
 ## Phase 7 — Write the plan file
 
-Exact format, the template and a worked example: `references/plan-file-format.md`. In short:
+Exact format, the template and a worked example: `references/plan-file-format.md` — read it before writing the plan file, once the split itself is settled. In short:
 
 - The file starts with commit `#1`. No title, no summary, no how-to-execute section, no legend.
 - Commits are numbered `#1` to `#N`, plain, no prefix letter.

@@ -2,6 +2,7 @@
 name: awesome-content-publisher
 description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP bridge): bridge and format preflights, per-platform login checks that never automate a login, a persistent ledger that prevents duplicate posts across restarts, timezone-mapped scheduling that can idle for days, sequential human-paced posting with read-back verification and a confirmation gate before anything goes public, plus an opt-in engagement harvest. Use when asked to publish a campaign, post prepared files to accounts, post on schedule, or 'опубликуй посты'. Do not use to write the posts (awesome-content-campaign, awesome-content-repurpose) or to learn a site's style (awesome-style-mimic)."
 license: MIT
+compatibility: "Requires the Playwright MCP --extension bridge attached to the user's own logged-in Chrome or Edge. No headless browser, and no credential is ever typed or stored by the skill."
 metadata:
   author: Khasky
   tags: ["marketing", "publishing", "social-media", "browser-automation", "playwright", "scheduling", "safety"]
@@ -28,8 +29,9 @@ Bundled files (load on demand):
 
 - `references/browser-interaction.md` — how to click, type, attach media and confirm submission on UIs that defeat ordinary Playwright actions: the click ladder, file-input scoping, submit polling, read-back baselines. Read this before the first composer of a run, not after the third timeout.
 - `references/post-formatting.md` — getting the source's markdown into a composer that is not markdown: the plain-text / markdown-native / rich-editor classes, the HTML-paste route into TipTap, why bare URLs stay dead, paragraph shape, and the pre-submit format gate. Read this before the first composer too — the source files are markdown and most composers render none of it.
-- `references/platform-posting.md` — per-platform posting notes: login-state signal, composer location, flow outline, read-back verification, quirks — plus the generic flow for when the live UI has drifted from the notes.
-- `references/platforms.md` — not in this skill's folder: it ships with `awesome-content-campaign` and holds the canonical slug table with each platform's required target detail and media requirement. Phase 2 validates against it; the fallback when that skill is absent is the platform sections of `platform-posting.md`.
+- `references/platform-posting.md` — the shared posting rules (login signal, fill, read-back, what is never touched) and the index of which platforms have notes. Read it once, before the first platform of a run.
+- `references/posting-<slug>.md` — one file per platform: login-state signal, composer location, flow outline, read-back verification, quirks. Read the file for the platform you are about to post to, when you get to it; a run never reads the set.
+- `references/platforms.md` — not in this skill's folder: it ships with `awesome-content-campaign` and holds the canonical slug table with each platform's required target detail and media requirement. Phase 2 validates against it; the fallback when that skill is absent is the set of `posting-<slug>.md` files listed in `platform-posting.md`.
 
 ## Invocation
 
@@ -71,7 +73,7 @@ Make the run's artifact folder before the first browser call and keep its absolu
 
 Scan the source and validate every post file:
 
-- Filename parses as `YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.<ext>` — exactly 5 `_`-separated fields, platform one of the canonical slugs. The slug table lives in `references/platforms.md`, shipped with `awesome-content-campaign`, and that one file is also where each platform's required target detail and media requirement are recorded; read it and validate against it. When that skill is not installed, fall back to the platform sections of this skill's own `references/platform-posting.md` — a slug with no section there is a slug this skill cannot post, which is a defect to report rather than a platform to improvise.
+- Filename parses as `YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<platform>.<ext>` — exactly 5 `_`-separated fields, platform one of the canonical slugs. The slug table lives in `references/platforms.md`, shipped with `awesome-content-campaign`, and that one file is also where each platform's required target detail and media requirement are recorded; read it and validate against it. When that skill is not installed, fall back to the slugs indexed in this skill's own `references/platform-posting.md` — a slug with no `posting-<slug>.md` file is a slug this skill cannot post, which is a defect to report rather than a platform to improvise.
 - Readable format: `.md` with frontmatter (preferred), `.txt`/`.html` with a metadata header block, `.csv` (header + row). `.pdf` is not machine-readable here — stop and point to the `.md` sources the campaign keeps alongside.
 - Frontmatter agrees with the filename (platform, date, time, timezone); frontmatter is authoritative, but a mismatch is a defect, not a tiebreak.
 - Required target detail present where the Target column of the slug table names one. A `facebook-wall` post with no target does not say which surface it is for, and guessing between a Page, a personal timeline and a group is not allowed.
@@ -92,7 +94,7 @@ Reconcile any platform list the user named against that set before planning anyt
 
 ## Phase 3 — Preflight C: login per platform
 
-For each platform in the set, navigate to it and read the logged-in state (signal per platform in `references/platform-posting.md`; read-only — no clicks into account settings). Classify: logged in · logged out · unknown (say why).
+For each platform in the set, navigate to it and read the logged-in state (signal per platform in that platform's `references/posting-<slug>.md`; read-only — no clicks into account settings). Classify: logged in · logged out · unknown (say why).
 
 Any platform not logged in → present the list and offer the two honest options: wait (the user logs in manually in their browser — never in this skill's tool calls — then re-check) or skip those platforms and continue with the rest. Record the choice; skipped platforms appear in the final report as skipped, not silently absent.
 
@@ -132,8 +134,8 @@ Strictly one post at a time, one platform at a time — never parallel tabs, nev
 
 1. Consult the ledger (Phase 5 rules).
 2. Re-verify login on the platform (sessions expire mid-campaign); logged out → pause, offer wait-or-skip for this post.
-3. Capture the read-back baseline *before* composing: the profile post count, wall post count, or whatever counter Phase 6 of `references/platform-posting.md` names for that platform. Without a number taken beforehand, step 7 is guesswork.
-4. Open the composer per `references/platform-posting.md`; when the live UI does not match the notes, re-derive from an accessibility snapshot — the notes are hints, the live DOM is the source of truth. Mechanics for clicks that time out are in `references/browser-interaction.md`; climb its ladder instead of repeating a failing click.
+3. Capture the read-back baseline *before* composing: the profile post count, wall post count, or whatever counter that platform's `references/posting-<slug>.md` names. Without a number taken beforehand, step 7 is guesswork.
+4. Open the composer per that platform's `references/posting-<slug>.md`; when the live UI does not match the notes, re-derive from an accessibility snapshot — the notes are hints, the live DOM is the source of truth. Mechanics for clicks that time out are in `references/browser-interaction.md`; climb its ladder instead of repeating a failing click.
 5. Fill like a person works: type with natural cadence (the type tool's delay, not instant value injection), pauses of 2–8 seconds between distinct actions, scroll to elements rather than teleporting.
    - **Media goes through the composer's OWN file input, scoped to the composer's dialog subtree — never a page-wide `input[type=file]` lookup.** Pages carry album, avatar and cover uploaders too; the first match is routinely the wrong one, and uploading into an album is a public act you cannot take back by pretending. Verify the preview appears *inside* the composer and that the URL did not change before going on. A navigation right after the upload means you hit the wrong input: stop, establish what was created, and report it before anything else.
    - Wait for the platform's upload/processing state to finish — a submit racing an unfinished upload posts the text without its image.

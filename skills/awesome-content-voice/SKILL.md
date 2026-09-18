@@ -16,7 +16,7 @@ The rule that outranks the rest: never hand someone else's voice back as theirs.
 
 Bundled files (load on demand):
 
-- `references/archetypes.md` — eight voice archetypes for the cold-start path: register, opener and closer habits, rhythm, formatting, and what each never does. Scaffolding to be tuned against the interview, never shipped verbatim.
+- `references/archetypes.md` — eight voice archetypes for the cold-start path: register, opener and closer habits, rhythm, formatting, and what each never does. Scaffolding to be tuned against the interview, never shipped verbatim. Read it only on the cold-start path, when the evidence is too thin to build a profile from samples.
 
 ## Invocation
 

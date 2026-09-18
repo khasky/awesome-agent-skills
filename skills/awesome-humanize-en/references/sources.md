@@ -47,7 +47,7 @@ Recorded so the search is not repeated and so circulating figures are not re-imp
 | GPTZero "perplexity and burstiness" help page | Burstiness defined in prose only, no formula; the vendor retired it in 2023. The coefficient-of-variation threshold this skill once carried had no source and was replaced by the runs check in `SKILL.md` |
 | Vendor false-positive rates on the order of 1 in 10,000 | Self-reported; no independent human sample is large enough to verify a rate that small |
 | "86% of adversarial texts judged human" (Indicator, 2026, on Pangram) | Read only through secondary summaries |
-| RuATD (Russian Artificial Text Detection, Dialogue 2022) | A human-vs-generated Russian corpus exists, but no per-feature stylometric numbers were read; `languages/ru.md` therefore carries editorial heuristics only and names this as the corpus to measure against |
+| RuATD (Russian Artificial Text Detection, Dialogue 2022) | A human-vs-generated Russian corpus exists, but no per-feature stylometric numbers were read; `language-ru.md` therefore carries editorial heuristics only and names this as the corpus to measure against |
 
 ## Evidence boundary
 

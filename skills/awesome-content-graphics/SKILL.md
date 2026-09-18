@@ -2,6 +2,7 @@
 name: awesome-content-graphics
 description: "Draws the image a post ships with and picks one with the user. The agent itself composes every picture — no image service, no MCP generator, no key, nothing uploaded, and no template either. A reference goes in: text, images, a URL, or several of them, read for what the picture is actually about before anything is drawn. The user names the count: 10, 20, 50 or 100. The set opens as a folder and the user answers with a number or a name; another round rebuilds the set from different ideas rather than shaking the same one. The pick is saved into a folder of its own and that folder is opened. Use when asked to make an image or graphic for a post or campaign, 'сделай картинку для поста', or whenever awesome-content-campaign or awesome-content-repurpose reach a platform that needs media. Do not use to fit a finished picture to each platform's frame (awesome-content-image-adapter), or to write the posts themselves."
 license: MIT
+compatibility: "Requires a local way to rasterize markup to PNG and to read the text back off the rendered file. No image service, no API key, no upload."
 metadata:
   author: Khasky
   tags: ["content", "graphics", "social-media", "image-generation", "design"]
@@ -20,7 +21,7 @@ Nothing is fetched, nothing is uploaded, no key is needed and none is looked for
 
 Bundled file (load on demand):
 
-- `references/generation.md` — turning a reference into ideas that differ, composing a hundred that stay different, what a second round has to change, and what to check in what was drawn.
+- `references/generation.md` — turning a reference into ideas that differ, composing a hundred that stay different, what a second round has to change, and what to check in what was drawn. Read it before the ideas are fixed, and again before a second round is built.
 
 ## The five steps
 

@@ -15,8 +15,8 @@ One question — *did anything break* — answered in layers, because the layers
 Everything here is read-only. No deploy, no database write, no mutating admin call, no destructive suite against production. When a check would need one, say so and stop rather than doing it.
 
 Reference files (load the one the run needs):
-- [`references/live-contract-checks.md`](references/live-contract-checks.md) — the black-box checklist for a public read surface, the invariants of append-only and derived data, and the golden-vector method for cross-implementation parity.
-- [`references/deployment-and-infrastructure.md`](references/deployment-and-infrastructure.md) — proving the deployed code is the tested code, and the infrastructure layer that fails with no code change at all.
+- [`references/live-contract-checks.md`](references/live-contract-checks.md) — the black-box checklist for a public read surface, the invariants of append-only and derived data, and the golden-vector method for cross-implementation parity. Read it when the sweep reaches a live read surface, durable data, or a format two implementations serialize.
+- [`references/deployment-and-infrastructure.md`](references/deployment-and-infrastructure.md) — proving the deployed code is the tested code, and the infrastructure layer that fails with no code change at all. Read it for the deployed-versus-committed angle, and whenever the target has a deployed environment at all.
 
 Running the sweep is yours to arrange: the aspect table below is the contract, and whatever you drive it with — a shell loop, a small program you write for this repository, or the commands one at a time — is an implementation detail that never leaves your side of the boundary. What the run has to produce is fixed: one line per aspect, its delta against the stored baseline, and a verdict.
 

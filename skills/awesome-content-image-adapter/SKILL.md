@@ -2,6 +2,7 @@
 name: awesome-content-image-adapter
 description: "Adapts one finished image into the frame every platform shows it in, one file per platform slug, named so a post and its picture sit side by side. The platform list and each surface's frame shape come from awesome-content-campaign's references/platforms.md, so no file here restates them. Runs alone — a source image in, a folder of platform-ready PNGs out, opened on the machine — or as the third step of a content run, straight after the picture the user picked is handed over. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make cross-platform post images, 'адаптируй картинку под платформы', or whenever a post set needs its pictures in each platform's own frame. Do not use to design or generate artwork (awesome-content-graphics), to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
 license: MIT
+compatibility: "Requires a local way to write RGB PNG files at exact pixel sizes. Nothing is uploaded and no image service is called."
 metadata:
   author: Khasky
   tags: ["content", "images", "social-media", "resize", "platforms"]
@@ -16,7 +17,7 @@ The platform list is not here. It is the canonical table in `awesome-content-cam
 
 Bundled file (load on demand):
 
-- `references/geometry.md` — each frame shape's pixel target, how a picture is fitted into it, and what the result has to satisfy before it ships.
+- `references/geometry.md` — each frame shape's pixel target, how a picture is fitted into it, and what the result has to satisfy before it ships. Read it before fitting the first picture, once the target frames are known.
 
 ## Two modes, and the mode is not asked
 

@@ -1,6 +1,6 @@
 # Domain — tickets and work orders
 
-Covers issue tickets, tasks, work orders, and bug reports you file (replies to them are `dev-replies.md`). Short-answer weighting.
+Covers issue tickets, tasks, work orders, and bug reports you file (replies to them are `domain-dev-replies.md`). Short-answer weighting.
 
 The tells here are editorial heuristics, not measured findings, except where `sources.md` says otherwise.
 

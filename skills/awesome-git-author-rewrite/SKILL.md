@@ -2,6 +2,7 @@
 name: awesome-git-author-rewrite
 description: "Rewrites the author and committer identity on a commit — or on every commit carrying a wrong identity — and force-pushes it safely: ownership and write-access checks, a verified mirror backup, a counted hash blast radius, and a confirmation gate before anything irreversible. Takes a commit URL plus the replacement identity. Use when the wrong name or email is on a commit, when commits are not linked to the user's account, or 'переписать автора коммита'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to change only a commit message (git commit --amend)."
 license: MIT
+compatibility: "Requires git, git-filter-repo, and the GitHub CLI (gh) authenticated with push access to the target repository."
 metadata:
   author: Khasky
   tags: ["git", "history-rewrite", "commit-author", "force-push", "repository-ops", "safety"]

@@ -15,11 +15,11 @@ Audit a public client codebase that talks to a private backend. Goal: the public
 This skill produces three things: a findings list (leaks + client-side security holes, each with `file:line` and severity), a set of applied fixes, and a report with residual recommendations.
 
 Reference files (load on demand — read the one you need, don't inline all of them):
-- [`references/leak-taxonomy.md`](references/leak-taxonomy.md) — the categories of disclosure to hunt, why each matters, and starter search patterns.
-- [`references/rewrite-rules.md`](references/rewrite-rules.md) — the comment/string rewrite rule with before/after examples; how to decide keep-vs-cut.
-- [`references/client-hardening.md`](references/client-hardening.md) — runtime-independent client-side security checklist (capabilities, cross-context entry points, tokens, network, build config, supply chain).
+- [`references/leak-taxonomy.md`](references/leak-taxonomy.md) — the categories of disclosure to hunt, why each matters, and starter search patterns. Read it before the first sweep of the repository.
+- [`references/rewrite-rules.md`](references/rewrite-rules.md) — the comment/string rewrite rule with before/after examples; how to decide keep-vs-cut. Read it when a finding is about to be rewritten, not while hunting.
+- [`references/client-hardening.md`](references/client-hardening.md) — runtime-independent client-side security checklist (capabilities, cross-context entry points, tokens, network, build config, supply chain). Read it at the hardening phase, whatever the client type.
 - [`references/browser-client.md`](references/browser-client.md) — the browser half of that checklist (extension permissions, storage tiers, DOM/CSS sinks, bundler config, npm lifecycle scripts). Load it *with* `client-hardening.md` for an extension, SPA, or web SDK; skip it for a native, desktop, or CLI client.
-- [`references/report-template.md`](references/report-template.md) — the output report structure.
+- [`references/report-template.md`](references/report-template.md) — the output report structure. Read it when the findings are settled and the report is being written.
 
 ## The core mental model
 

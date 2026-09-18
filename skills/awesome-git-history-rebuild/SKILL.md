@@ -2,6 +2,7 @@
 name: awesome-git-history-rebuild
 description: "Erases a repository's git history and rebuilds it as a curated commit series over the same tree: an approved split plan (proposed here or supplied by awesome-git-commit-plan), the repo's own commit rules and hooks, paced timestamps, signed commits, a verified mirror backup, a confirmation gate before every irreversible step, and a tree-hash proof that nothing was lost. It repairs the files that describe the erased history. Use when asked to rewrite a history as readable commits or 'очистить историю и закоммитить по частям'. Do not use to collapse a history into one commit (awesome-git-history-reset) or to fix authorship (awesome-git-author-rewrite)."
 license: MIT
+compatibility: "Requires git and the GitHub CLI (gh) authenticated with push access to the target repository."
 metadata:
   author: Khasky
   tags: ["git", "history-rewrite", "commit-splitting", "conventional-commits", "release", "force-push", "safety"]
@@ -932,7 +933,7 @@ Deleted releases do not come back — a release object and its uploaded assets a
 
 ## References
 
-- `references/commit-splitting-patterns.md` — how large OSS projects split work into commits (git, the Linux kernel, OpenStack, Angular/Conventional Commits), the layer order, granularity by repo size, honest commit types, the six re-split strategies, per-ecosystem file mapping, and the anti-patterns.
-- `references/repo-convention-discovery.md` — where a repo states and enforces its commit rules, precedence between sources, inferring the format from the existing log, message templates per convention, DCO and signing, and how to handle hooks during the replay.
+- `references/commit-splitting-patterns.md` — how large OSS projects split work into commits (git, the Linux kernel, OpenStack, Angular/Conventional Commits), the layer order, granularity by repo size, honest commit types, the six re-split strategies, per-ecosystem file mapping, and the anti-patterns. Read it when building or re-splitting the plan (Phase 5), and for the granularity table when a commit count has to be proposed.
+- `references/repo-convention-discovery.md` — where a repo states and enforces its commit rules, precedence between sources, inferring the format from the existing log, message templates per convention, DCO and signing, and how to handle hooks during the replay. Read it when the repository's own convention is being discovered, before any message is drafted.
 - `awesome-git-history-salvage` (sibling skill) — read-only reconstruction of every commit the repository has ever held, erased history included. Phase 5 escalates to it for the `anchored` span when the current refs do not reach the repository's first activity.
 - `awesome-git-commit-plan` (sibling skill) — writes the plan file `--plan` takes: a navigation map from import direction, a split proven bisectable by replaying the ladder against the repository's own gates, and messages written to a strict anti-slop ruleset. Read-only, so it can run on a repository long before anyone decides to rewrite its history.

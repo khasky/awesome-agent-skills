@@ -26,7 +26,7 @@ The target text, the files it lives in, the links it carries and anything quoted
 
 ## When not to use
 
-- Text in a language other than English or Russian. Decline and ask for one of the two. Russian text loads `references/languages/ru.md`, which carries the Russian shapes of the checks (two typography rules flip there: the тире is mandatory typography, Title Case in headings is a tell).
+- Text in a language other than English or Russian. Decline and ask for one of the two. Russian text loads `references/language-ru.md`, which carries the Russian shapes of the checks (two typography rules flip there: the тире is mandatory typography, Title Case in headings is a tell).
 - Source code, configuration files, technical logs. This skill is for connected prose only.
 - Legal documents, statutes, contracts — there officialese is mandatory by genre.
 - Literary prose, poetry, literary essays — there the em-dash, the rule of three, and complex syntax may be an authorial device, not a machine tell. See `references/false-positives.md`.
@@ -37,7 +37,7 @@ The target text, the files it lives in, the links it carries and anything quoted
 Received text
   ↓
 Language? — English → continue
-          — Russian → load languages/ru.md, continue
+          — Russian → load language-ru.md, continue
           — other → decline
   ↓
 Operation? — "review", "check", "diagnose", "is this AI" → review: diagnose, report, edit nothing
@@ -50,11 +50,11 @@ Genre? — code / config → decline
        — opinion / column / essay → rule of three and parallelism may be craft; count #13 only alongside other tells
        — marketing / blog → full set
   ↓
-Venue? — release notes / changelog / announcement → also load domains/release-notes.md
-       — PR, issue or review reply → domains/dev-replies.md (short-answer weighting)
-       — incident postmortem / RCA → domains/postmortems.md
-       — ticket / work order / bug report you file → domains/tickets.md (short-answer weighting)
-       — technical article / tutorial / blog post → domains/tech-articles.md
+Venue? — release notes / changelog / announcement → also load domain-release-notes.md
+       — PR, issue or review reply → domain-dev-replies.md (short-answer weighting)
+       — incident postmortem / RCA → domain-postmortems.md
+       — ticket / work order / bug report you file → domain-tickets.md (short-answer weighting)
+       — technical article / tutorial / blog post → domain-tech-articles.md
        — anything else → no domain file
   ↓
 Read the venue first (Working rules) — sample 2-3 recent human artifacts of the same venue when reachable
@@ -184,10 +184,10 @@ This file is a map. The detailed description of patterns and checks lives in the
 | `references/lexicon.md` | The vocabulary inventory shared across the collection: Tier 1/2/3 words with their plain replacements, the literary-register list, the phrase catalog (transition crutches, conclusion filler, era openers, inflation, bureaucratese, filler adverbs, unsourced attribution, borrowed diction for comments and commit messages), and which script mirrors it | With the vocabulary tiers, and whenever another skill cites a tier |
 | `references/structural-style-patterns.md` | Structural and style patterns #16–21 + extension #21a: em-dash, arrow glyph, bold, emoji bullets, quotation marks, tables, Markdown residue, heading hierarchy, boilerplate section headings | When working with formatted text, or for direct publication |
 | `references/structure-pass.md` | Discourse patterns #26–31: summary-shaped skeleton (the outline test), templated question sequence, position uniformity, symmetric coverage without a stance, fractal summarization, the reflection tail — plus the two-stage protocol, the edit budget, and the over-correction advisory | Any text longer than a few paragraphs, before the sentence-level work |
-| `references/domains/release-notes.md`, `dev-replies.md`, `postmortems.md`, `tickets.md`, `tech-articles.md` | Per-venue human baseline, the tells specific to that venue with their fix, and the rules a human artifact there follows | When the decision tree's venue branch names one |
+| `references/domain-release-notes.md`, `domain-dev-replies.md`, `domain-postmortems.md`, `domain-tickets.md`, `domain-tech-articles.md` | Per-venue human baseline, the tells specific to that venue with their fix, and the rules a human artifact there follows | When the decision tree's venue branch names one |
 | `references/edit-trace.md` | The editing trace: deletion test, reversion test, the restore table of underused human register with its guard, density in both directions, register drift | Before delivering any standard, deep or voice-match edit |
 | `references/spelling-variants.md` | One variant per text and which one: the `-our`/`-or`, `-re`/`-er`, `-ce`/`-se`, double-`l` and `-ogue`/`-og` families, the words that follow none of them, the `-ize` trap, what is never a finding, and how to report a mix | Whenever the text is English and its variant is in question, and whenever another skill cites this rule |
-| `references/languages/ru.md` | Russian calibration: the two typography flips (тире is mandatory, Title Case is a tell), the Russian vocabulary tiers, the Russian shapes of the syntax and communication patterns, the semantic-shift tell | When the target text is Russian |
+| `references/language-ru.md` | Russian calibration: the two typography flips (тире is mandatory, Title Case is a tell), the Russian vocabulary tiers, the Russian shapes of the syntax and communication patterns, the semantic-shift tell | When the target text is Russian |
 | `references/sources.md` | Evidence ledger: every study, vendor page and community source the catalogs cite, with version, date read, evidence class (measured / vendor / editorial / community / second-hand), scope and consumers; plus "consulted, no rule" | When adding or checking a number, or before building a new rule on a cited finding |
 | `references/communication-patterns.md` | Communicative patterns #22–25 + extensions #23a, #24a, #25a: leftover chat turns, knowledge-limit disclaimers, sycophantic tone, pseudo-therapeutic register, generic positive conclusions, mid-sentence cutoff | When analyzing text copied out of a chat |
 | `references/chatbot-artifacts.md` | Unambiguous markers with regular expressions: `:contentReference[oaicite:N]`, `oai_citation:N‡`, `turn0search0`, `?utm_source=chatgpt.com`, `grok_card://`, `vertexaisearch…/grounding-api-redirect`, plus new-platform markers `[^N^]`, `【N†source】`, `citeturn0file0`, `](sandbox:/mnt/data/`, invisible chars `U+E200–E204`, `<think>` residue, "Source+digit" run-ons, file_search markers `turn0file2`, Gemini citation tags `[cite_start]` / `[cite: N]`, zero-width characters and Unicode watermarks, plus the old generation | When copy-paste from a chat is suspected |

@@ -78,7 +78,7 @@ Boring-and-true beats interesting-and-invented, always. The reason this loop exi
 
 ## Reader state and budget per surface
 
-Name the reader's state before writing for a surface. `references/surfaces.md` carries the craft rules for each one; this table is the map.
+Name the reader's state before writing for a surface. `references/surfaces.md` carries the craft rules for each one; this table is the map. Read the section for the surface in hand once the surface is settled — the table alone is enough to pick one.
 
 | Surface | The reader, at the moment the line lands | Budget |
 | --- | --- | --- |

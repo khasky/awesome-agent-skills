@@ -2,6 +2,7 @@
 name: awesome-style-mimic
 description: "Learns a website's writing style by deep-crawling it in a live browser, distills a reusable style guide (voice, tone rules, lexicon, rhythm, structure, golden samples), then rewrites documents or page sources in that voice with a cross-document consistency pass. Use when asked to learn the style of a site, build a style guide from a website, rewrite text in a site's voice, or 'изучи стиль сайта', 'перепиши в стиле'. Learn mode needs browser automation; apply mode needs only the guide. Do not use for an author's own voice (awesome-content-voice), stripping AI voice (awesome-humanize-en), or translation (awesome-translate-ru-en)."
 license: MIT
+compatibility: "Learn mode requires browser automation against the live site (the Playwright MCP --extension bridge, or an equivalent the agent already has). Apply mode needs none."
 metadata:
   author: Khasky
   tags: ["writing", "style", "brand-voice", "crawling", "rewriting"]
@@ -14,8 +15,8 @@ Two modes sharing one artifact: Learn deep-crawls a website and produces a self-
 
 Bundled files (load on demand):
 
-- `references/rewriter-contract.md` — the per-document rewriter instructions Apply mode gives each subagent verbatim.
-- `references/example-styles/` — complete style guides produced by Learn mode (buffer.com, hubspot.com, zapier.com, ahrefs.com, semrush.com, hootsuite.com, clickup.com, linktr.ee). The format reference, and directly usable with Apply mode. Their samples are SYNTHETIC — composed to demonstrate each register, not quoted from the sites (the publishable policy below).
+- `references/rewriter-contract.md` — the per-document rewriter instructions Apply mode gives each subagent verbatim. Read it when Apply mode is about to spawn its rewriters.
+- `references/example-style-<host>.md` — complete style guides produced by Learn mode, one file per host: `buffer.com`, `hubspot.com`, `zapier.com`, `ahrefs.com`, `semrush.com`, `hootsuite.com`, `clickup.com`, `linktr.ee`. The format reference, and directly usable with Apply mode. Read one when a guide's format is in question, or when the user picks that site as the target. Their samples are SYNTHETIC — composed to demonstrate each register, not quoted from the sites (the publishable policy below).
 
 ## Mode dispatch
 
@@ -72,7 +73,7 @@ Split `corpus/*.md` into batches of ~15 files; spawn one subagent per batch, all
 
 ### 4. Synthesis
 
-One agent (or the main context) reads all `analysis/batch-*.md`, reconciles (majority wins; genre differences become sub-profiles, not contradictions), and writes `styles/<host>.md` with exactly these sections: Voice profile · Tone rules (Do/Don't) · Lexicon · Spelling variant · Rhythm & syntax · Structure (with the site's invariant CTA strings quoted verbatim) · Formatting habits · Genre notes · Samples · Rewrite instructions. `awesome-content-voice` writes the same section set for an author's own voice, so either file can be handed to Apply mode or to `awesome-content-campaign` — keep the names exactly as listed rather than improving them. The guide must be self-contained — Apply sessions see only this file. See `references/example-styles/buffer.com.md` for the target shape and depth.
+One agent (or the main context) reads all `analysis/batch-*.md`, reconciles (majority wins; genre differences become sub-profiles, not contradictions), and writes `styles/<host>.md` with exactly these sections: Voice profile · Tone rules (Do/Don't) · Lexicon · Spelling variant · Rhythm & syntax · Structure (with the site's invariant CTA strings quoted verbatim) · Formatting habits · Genre notes · Samples · Rewrite instructions. `awesome-content-voice` writes the same section set for an author's own voice, so either file can be handed to Apply mode or to `awesome-content-campaign` — keep the names exactly as listed rather than improving them. The guide must be self-contained — Apply sessions see only this file. See `references/example-style-buffer.com.md` for the target shape and depth.
 
 Two sample policies — pick by the guide's destination, ask when unclear:
 

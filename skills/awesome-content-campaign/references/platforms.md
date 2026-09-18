@@ -1,6 +1,6 @@
 # Platforms — the canonical vocabulary, structural notes, and the live-verify checklist
 
-This file is the single source of the platform vocabulary. The slugs below are what the interview offers, what filenames carry, and what `awesome-content-publisher` parses; adding a platform means adding a row here and a posting note in that skill's `references/platform-posting.md`, in the same change. No other file restates the list.
+This file is the single source of the platform vocabulary. The slugs below are what the interview offers, what filenames carry, and what `awesome-content-publisher` parses; adding a platform means adding a row here and a `references/posting-<slug>.md` in that skill, listed in its `platform-posting.md` index, in the same change. No other file restates the list.
 
 Structural facts here are stable (what a platform *is*); everything volatile — character caps, media size limits, per-tier differences, algorithm behavior — is deliberately absent and MUST be verified live in Phase 3, recorded in the manifest with a checked-on date.
 
