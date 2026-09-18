@@ -81,7 +81,7 @@ A file count that does not match its own list — the post files in a chain, the
 - Regenerating, redrawing, upscaling with a model, or "improving" the source. The picture the user approved is the picture that ships.
 - Writing a file for a platform that takes no attachment.
 - Producing one size and letting the platform crop. That is the crop this skill exists to make deliberate.
-- A portrait surface served by a centre-cropped landscape, so the subject loses its head and its feet.
+- A portrait surface served by a center-cropped landscape, so the subject loses its head and its feet.
 - Leaving a manifest, a master copy or a zip beside the platform files.
 - Asking the user which mode to run in when the caller already said, or asking again for a picture the previous step just approved.
 - Writing forty-four files beside a post set of nine. The folder is the list in a chain.

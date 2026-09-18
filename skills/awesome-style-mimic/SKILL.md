@@ -72,7 +72,7 @@ Split `corpus/*.md` into batches of ~15 files; spawn one subagent per batch, all
 
 ### 4. Synthesis
 
-One agent (or the main context) reads all `analysis/batch-*.md`, reconciles (majority wins; genre differences become sub-profiles, not contradictions), and writes `styles/<host>.md` with exactly these sections: Voice profile · Tone rules (Do/Don't) · Lexicon · Rhythm & syntax · Structure (with the site's invariant CTA strings quoted verbatim) · Formatting habits · Genre notes · Samples · Rewrite instructions. `awesome-content-voice` writes the same section set for an author's own voice, so either file can be handed to Apply mode or to `awesome-content-campaign` — keep the names exactly as listed rather than improving them. The guide must be self-contained — Apply sessions see only this file. See `references/example-styles/buffer.com.md` for the target shape and depth.
+One agent (or the main context) reads all `analysis/batch-*.md`, reconciles (majority wins; genre differences become sub-profiles, not contradictions), and writes `styles/<host>.md` with exactly these sections: Voice profile · Tone rules (Do/Don't) · Lexicon · Spelling variant · Rhythm & syntax · Structure (with the site's invariant CTA strings quoted verbatim) · Formatting habits · Genre notes · Samples · Rewrite instructions. `awesome-content-voice` writes the same section set for an author's own voice, so either file can be handed to Apply mode or to `awesome-content-campaign` — keep the names exactly as listed rather than improving them. The guide must be self-contained — Apply sessions see only this file. See `references/example-styles/buffer.com.md` for the target shape and depth.
 
 Two sample policies — pick by the guide's destination, ask when unclear:
 
@@ -96,6 +96,8 @@ Target inside a git repo (`git -C <target> rev-parse --show-toplevel` exits 0) �
 3. In-place — only on explicit request; warn first on a dirty working tree.
 
 Non-repo target → mirror folder by default; in-place only on explicit request.
+
+The guide's `Spelling variant` governs the rewrite. A site that writes `colour` is mimicked in British spelling and the American default does not apply: the variant is part of the voice being copied, counted off the corpus rather than assumed, and it holds across every rewritten file. Where the corpus itself mixes, the guide records `mixed-and-uncorrected` and the rewrite picks the variant the corpus leads with, saying so. `awesome-humanize-en`'s `references/spelling-variants.md` carries the families to count and what never counts toward them.
 
 ### Fan-out and the one-author guarantee
 

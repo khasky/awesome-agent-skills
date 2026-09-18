@@ -12,9 +12,9 @@ metadata:
 
 One picture for a post, chosen out of a set the user looked at.
 
-**The agent running this skill is what draws them.** Not a service, not an MCP server, not a generator installed on the machine: the model reads the material, decides what each picture is, and composes it itself — one at a time, from nothing, in whatever markup it can emit. A rasteriser turns that markup into a PNG; a rasteriser is not a generator and it invents nothing.
+**The agent running this skill is what draws them.** Not a service, not an MCP server, not a generator installed on the machine: the model reads the material, decides what each picture is, and composes it itself — one at a time, from nothing, in whatever markup it can emit. A rasterizer turns that markup into a PNG; a rasterizer is not a generator and it invents nothing.
 
-Nothing here is a template either. There is no layout catalogue, no palette pool and no geometry gate — the previous version had all three, and a set built from them was the catalogue looked at a hundred times. Every picture in a round is composed for that round.
+Nothing here is a template either. There is no layout catalog, no palette pool and no geometry gate — the previous version had all three, and a set built from them was the catalog looked at a hundred times. Every picture in a round is composed for that round.
 
 Nothing is fetched, nothing is uploaded, no key is needed and none is looked for.
 
@@ -42,7 +42,7 @@ Then, before anything is drawn, say what the picture is *about* — in one sente
 
 What the reading produces:
 
-- **The subject.** The thing a viewer should recognise. Concrete beats abstract: a subject nobody can picture produces a hundred pictures of nothing.
+- **The subject.** The thing a viewer should recognize. Concrete beats abstract: a subject nobody can picture produces a hundred pictures of nothing.
 - **The register.** What the material sounds like — plain, technical, editorial, playful — because that is what decides whether the set is photographic, illustrated, graphic or something else.
 - **What the picture may not claim.** Numbers, logos, named products and real people that the material does not support. It is easy to draw a convincing chart out of nothing; the boundary is written down here so no picture in the set carries one.
 - **The ideas.** Several genuinely different ways to picture the subject, not several wordings of one. `references/generation.md` has the method and the test for whether two ideas are actually two.
@@ -63,9 +63,9 @@ The aspect ratio rides in the same screen where the caller has not already fixed
 
 ## Step 3 — Generate, then open the folder
 
-Compose each picture and save it. One per idea, the ideas coming from `references/generation.md`, written out as markup and rasterised to PNG at the ratio agreed in step 2. Every image of the round lands in one folder under the session's temporary area, numbered so the user can answer with a number, and the folder is opened on the machine. The absolute path goes in the message too, because a window that did not open leaves the user with nothing to look at.
+Compose each picture and save it. One per idea, the ideas coming from `references/generation.md`, written out as markup and rasterized to PNG at the ratio agreed in step 2. Every image of the round lands in one folder under the session's temporary area, numbered so the user can answer with a number, and the folder is opened on the machine. The absolute path goes in the message too, because a window that did not open leaves the user with nothing to look at.
 
-**There is nothing to look for before starting.** No generator to discover, no MCP server to query, no key to find, no port to probe. A run that goes hunting for an external image service has misread this skill, and it stops the work for a dependency the skill does not have. The one thing worth checking is a rasteriser — something on the machine that turns markup into a PNG — and where there is none, the markup files still ship and the run says the pictures were not rasterised.
+**There is nothing to look for before starting.** No generator to discover, no MCP server to query, no key to find, no port to probe. A run that goes hunting for an external image service has misread this skill, and it stops the work for a dependency the skill does not have. The one thing worth checking is a rasterizer — something on the machine that turns markup into a PNG — and where there is none, the markup files still ship and the run says the pictures were not rasterized.
 
 **Never read a credentials file while working out what is available.** No `~/.*/settings.json`, no `.env`, no keyring, no shell profile, no `printenv`. Their contents reach the session transcript and the model provider, and a probe that leaks a token has done more harm than a missing feature ever could. A capability this skill needs is one it can see without opening a secret.
 
@@ -79,7 +79,7 @@ One question: **which number or name, or another round?**
 - Another round → the same count again, built from **different ideas**, and what comes back is a different set rather than the same one shaken. Nothing random is available to lean on here: a second round is different because it is composed differently, and `references/generation.md` says which axes have to move. Each round goes in its own folder and the earlier rounds stay on disk, because a user who liked something in round one may want it back.
 - Nothing liked twice running → stop guessing and ask for a reference: a picture, a site, a style whose feeling they want, and read the next round off that rather than trying again blind.
 
-The run never picks on the user's behalf, and never proposes a favourite while the question is open.
+The run never picks on the user's behalf, and never proposes a favorite while the question is open.
 
 ## Step 5 — Save the pick, and stop
 
@@ -93,18 +93,18 @@ The run does not carry on into the caller's own work.
 
 Never into the folder it was invoked from. A hundred images appearing in the user's project is a change nobody asked for, and in a repository it lands in `git status` as work they now have to clean up.
 
-With no output path given, make fresh folders of the run's own under the session's scratch or temporary area — one per round, one for the pick — and print the absolute path the first time something is written to each. An output path the caller named is honoured as given.
+With no output path given, make fresh folders of the run's own under the session's scratch or temporary area — one per round, one for the pick — and print the absolute path the first time something is written to each. An output path the caller named is honored as given.
 
 ## Hard rules
 
 | # | Rule |
 | --- | --- |
 | 1 | The set is the count the user named. Short is reported with the number, never quietly delivered |
-| 2 | Every image of a round is a different picture. Two that differ only in a colour are one picture delivered twice, and the round says so rather than counting both |
+| 2 | Every image of a round is a different picture. Two that differ only in a color are one picture delivered twice, and the round says so rather than counting both |
 | 3 | A second round is a second set. The same ideas drawn again is the first round with different noise, and the user asked for something else |
 | 4 | No number, logo, product name or real person the material does not support reaches a picture |
 | 5 | Text inside a picture is checked by reading it back off the rendered file, not off the markup that was meant to produce it |
-| 6 | The user picks. The run never chooses, never proposes a favourite, and never treats silence as an answer |
+| 6 | The user picks. The run never chooses, never proposes a favorite, and never treats silence as an answer |
 | 7 | No credentials file is opened, and no key, token or environment secret is read or printed, for any reason |
 | 8 | The pick lives in its own folder, apart from the rounds |
 

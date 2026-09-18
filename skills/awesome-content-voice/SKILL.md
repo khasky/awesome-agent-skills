@@ -117,6 +117,7 @@ Cold start — evidence too thin or absent. Do not fake observation. Instead: pi
 ## Voice profile        <2–3 sentences, plain language, no adjective piles>
 ## Tone rules (Do / Don't)
 ## Lexicon              <the author's own words, spelled their way; plus what is absent, counted>
+## Spelling variant     <American, British, or mixed-and-uncorrected; the evidence counted, not guessed>
 ## Rhythm & syntax      <length distribution, paragraph shape, contraction rate>
 ## Structure            <how pieces open, develop, close; invariant strings quoted verbatim>
 ## Formatting habits    <lists, bold, headings, emoji, hashtags, links>

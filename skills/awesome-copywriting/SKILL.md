@@ -101,6 +101,7 @@ Copy requests get options, not essays.
 2. Lead with your pick, and justify it by the reader's state, never by craft. "She has been burned by this exact promise before, and #3 is the only one that sounds like it was written by someone who was there" — not "this one is punchier."
 3. At most one line of commentary per variant. The options are the deliverable.
 4. Name what was assumed. Any variant resting on a fact the user did not supply is marked, or it does not ship.
+5. One variant of English across the whole set. American spelling is the default; it yields to a variant the user named, to a voice profile or brand guide that fixes one, and to the product's own existing copy, which is an instruction rather than a coincidence. Options that disagree with each other about `colour` and `color` read as drafts from two writers, and the user is choosing between lines, not between dialects.
 
 ## The audit, before delivering
 

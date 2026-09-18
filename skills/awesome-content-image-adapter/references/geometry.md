@@ -20,9 +20,9 @@ One render per shape serves every platform that names it. The files are still wr
 
 Two treatments, and which one applies is decided by the shape against the source, never by preference.
 
-**The shape is as wide as the source or wider** — the landscape targets against a landscape source. Cover the frame and crop what falls outside, centred. The crop is minimal by construction: the source is scaled until the frame is covered and no further, so the picture loses the least it can.
+**The shape is as wide as the source or wider** — the landscape targets against a landscape source. Cover the frame and crop what falls outside, centered. The crop is minimal by construction: the source is scaled until the frame is covered and no further, so the picture loses the least it can.
 
-**The shape is taller than the source** — the square, portrait and vertical targets against a landscape source. The whole source is kept, placed at its natural width, and the space above and below is filled by a continuation of the same picture: the source scaled to cover the frame, blurred heavily and darkened, with the sharp original sitting on top of it. Nothing is invented, nothing is stretched, and the frame is never padded with a flat block of colour.
+**The shape is taller than the source** — the square, portrait and vertical targets against a landscape source. The whole source is kept, placed at its natural width, and the space above and below is filled by a continuation of the same picture: the source scaled to cover the frame, blurred heavily and darkened, with the sharp original sitting on top of it. Nothing is invented, nothing is stretched, and the frame is never padded with a flat block of color.
 
 A separation between the two layers keeps the sharp copy from looking pasted on: a soft shadow under it, and the cool edge light the source already carries where it carries one. It is one treatment applied the same way every time, not a per-platform decision.
 

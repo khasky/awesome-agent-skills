@@ -55,6 +55,12 @@ Never translate, alter, or paraphrase:
 
 UI labels and menu paths: keep them exactly as they appear in the source. If the Russian source already uses an English label or term verbatim (e.g. `Settings`, `OK`, `README`), keep it as-is — don't "re-localize" or paraphrase. Only translate UI text when the source itself wrote it in Russian.
 
+### 3a. One variant of English, and it is American by default
+
+The translation is written in one variant throughout — body, headings, captions, UI strings, alt text. American spelling is the default, and it holds unless the user named a variant, supplied a glossary or style guide fixing one, or the translation joins existing English text in another: a file being extended, a product whose interface already reads one way, a repository whose docs are consistent. Then that variant wins everywhere in the output.
+
+A Russian source carries no variant of its own, so there is nothing to preserve and nothing to infer from it. `awesome-humanize-en`'s `references/spelling-variants.md` carries the families worth checking, why `-ise`/`-ize` decides nothing on its own, and what keeps its own spelling regardless: quotations, proper nouns, identifiers and anything inside code.
+
 ### 4. Forbidden English AI-marker phrases
 
 Avoid these — they make text sound machine-generated.
