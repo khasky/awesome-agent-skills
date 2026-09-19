@@ -110,7 +110,7 @@ When a draft exceeds its ceiling, cut in this order: auxiliary verification deta
 
 ## 4. Guide/tutorial blueprints
 
-Default shapes when `Source type: guide/tutorial`. Legend: **H1 yes** = the body starts with a visible `#` title; **coverage all** = every core module; **major** = every major path named, one or two detailed; **primary** = the primary one or two paths only; **name-all** = every path named compactly, the primary one or two detailed; **code full** = several verified blocks; **short** = one or two compact blocks; **none** = no fenced block.
+Default shapes when `Source type: guide/tutorial`, and the word default is load-bearing: this table is what a run writes at creativity 0, and `references/creativity.md` section 6 says which moves may reorder or re-enter a shape at higher levels. What the table fixes at every level is the class's coverage mode, its code allowance, its cap and its link count; what the moves may change is the order of its sections, where the body enters them, and how its headings are written. Legend: **H1 yes** = the body starts with a visible `#` title; **coverage all** = every core module; **major** = every major path named, one or two detailed; **primary** = the primary one or two paths only; **name-all** = every path named compactly, the primary one or two detailed; **code full** = several verified blocks; **short** = one or two compact blocks; **none** = no fenced block.
 
 | Platform | H1 | Coverage | Code | Body shape |
 | --- | --- | --- | --- | --- |
@@ -254,7 +254,7 @@ telegram 3-4     wonderful-dev 3-4  daily-dev 3-4      ko-fi, buymeacoffee, patr
 mewe 3-5         youtube 3          tiktok 3-5 (in the caption)
 ```
 
-These are targets, not floors: the canonical ranges are already resolved here, so a platform ships the number on this line and drops below it only when the cap forces the cut. `x` ships 2 and falls to 1 only inside 280 characters, because one tag leaves the platform's cheapest reach unclaimed while three cost reach; `bluesky` ships 2 or 3 inside its 300. Where this table still gives a range, the post takes any number in it. The run reports every platform that shipped under its target, with the reason.
+These are targets, not floors: the canonical ranges are already resolved here, so a platform ships the number on this line and drops below it only when the cap forces the cut. At creativity 1 and above a platform may take any number inside its own range rather than the same number on every run, and where a range has one value that value stands; the fediverse rows keep their floor whatever the level, because tags are how a post is found there at all. `x` ships 2 and falls to 1 only inside 280 characters, because one tag leaves the platform's cheapest reach unclaimed while three cost reach; `bluesky` ships 2 or 3 inside its 300. Where this table still gives a range, the post takes any number in it. The run reports every platform that shipped under its target, with the reason.
 
 Tags live in the platform's own field, so the body carries no tag line and the frontmatter list carries the norm count, on `devto`, `hashnode`, `medium`, `hackernoon`, `substack` (up to 5), `tumblr` (5-20 in the field), `threads` (exactly 1 topic tag, no `#`), `teletype`, `blogger` (labels), `livejournal`, `dreamwidth`, `imgur`, `flickr`, `deviantart`. The reason is mechanical on the markdown article platforms: a line of `#deepseek #claudecode` starts with a hash, so `devto` and `hashnode` render it as a heading rather than as tags, and the tags belong in the composer's own field where they are clickable. Because that reads as a missing tag line to anyone comparing files, the run's report names these platforms and says the tags are in the frontmatter for the composer's field. No tags anywhere on `reddit`, `lemmy`, `hackernews`, `quora`, `peerlist`, `telegraph`, `flipboard`, `mataroa`, `github-gists` (a gist has no tag system at all, and a `#word` line at the start of a line renders as a heading); their frontmatter `hashtags` is `[]`.
 
@@ -280,7 +280,7 @@ The `never` list is the platforms whose own guidance treats a promotional block 
 
 ## 10. Emoji per platform
 
-The interview count applies everywhere except `hackernews` (always 0). Hard-cap surfaces draw from 1 to 2 under `1-5`. The natives of `instagram`, `pixelfed`, `threads`, `telegram`, `vk-wall`, `mewe`, `youtube` and `tiktok` carry emoji on the promise line; `linkedin`, `reddit`, `lemmy`, `quora` and the article platforms, `blogger`, `livejournal`, `dreamwidth`, `mataroa` and `deviantart` among them, carry them inside the prose where a sentence earns one.
+The interview count applies everywhere except `hackernews` (always 0), and the subject family in `references/registers.md` caps it: the technical families sit at none to one whatever the interview says, which is what keeps a debugging post from wearing four emoji on a surface whose natives use none. Hard-cap surfaces draw from 1 to 2 under `1-5`. The natives of `instagram`, `pixelfed`, `threads`, `telegram`, `vk-wall`, `mewe`, `youtube` and `tiktok` carry emoji on the promise line; `linkedin`, `reddit`, `lemmy`, `quora` and the article platforms, `blogger`, `livejournal`, `dreamwidth`, `mataroa` and `deviantart` among them, carry them inside the prose where a sentence earns one.
 
 ## 11. Frontmatter
 
@@ -311,8 +311,10 @@ the same 1-3 link set on every file
 hard caps with margin, bands and Aim, ceilings enforced
 blueprint shape per platform: H1, coverage, code, order
 layout targets and representation retention
-every anchor present verbatim in the classes that carry it, proof on every platform
-no anchor paraphrase, no frame echo (authored-style.md section 11)
+every anchor present in the classes that carry it at the level's standard, proof on every platform
+no anchor paraphrase, no frame echo at the level's threshold (authored-style.md section 11)
+rhythm floor per file, clustering ban, structure moves per file and per class (creativity.md sections 5 and 6)
+subject family register: rhythm band, lexicon, question habit, emoji baseline (registers.md)
 opener, closing, title and first-person distributions
 correction locality and deep-detail budget (one third of the pack at most)
 emoji count equals the drawn count, placement rules, hackernews at zero
