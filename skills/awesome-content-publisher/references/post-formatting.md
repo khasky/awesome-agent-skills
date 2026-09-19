@@ -99,3 +99,17 @@ Three platforms in one run turned a piece of the source into something of their 
 - Peerlist refuses hashtags outright and says so in the composer. A trailing hashtag line belongs elsewhere on that platform, not in the body.
 
 The rule underneath: when a platform transforms the source, check that nothing was lost (a paragraph, the link, the tail) and record what it did. Restoring the author's exact bytes against the platform's own rendering is not the goal.
+
+## Try the HTML paste on every rich editor, including the ones this skill says cannot take one
+
+A run that ended with forty-odd published posts used the same first move everywhere and it worked on every rich editor it met: focus the body node, dispatch a `paste` `ClipboardEvent` carrying `text/html`, read the result. That includes editors whose own notes here said otherwise — Patreon's Remirror, documented as having "no HTML paste that survives", converted a whole campaign unit in one call with headings, lists, bold and anchors intact. Classify by measuring, not by reputation: paste, then count `h1..h4`, `pre`, `li`, `a[href]`, `pre a` and the joined text against the source. Only where that count shows real loss does the per-construct toolbar walk earn its cost, and the note for that platform should record which of the two ran.
+
+What the paste loses is narrower and more predictable than "the editor cannot take HTML":
+
+- **No `codeBlock` in the schema** — every `<pre>` flattens to a paragraph *and its newlines become single spaces*, so a four-line command publishes as one run-on line. Seen on DeviantArt, Patreon and ko-fi.
+- **Whitespace runs collapse** wherever the container is not `pre`, taking column alignment and YAML indentation with them.
+- **Markdown-ish paste rules fire on the flattened text.** A `~ … ~` pair became strikethrough on Remirror; the same class of rule is what autolinks a URL that used to be inside a fence.
+
+One recipe answers all three, and it is worth reaching for before any toolbar: emit **one `<p>` per source line** instead of one `<pre>` per block, and convert every run of two or more spaces to that many non-breaking spaces (U+00A0). Line breaks survive because each line is its own block; alignment and indentation survive because the spaces are no longer collapsible; and the tilde pair is split across two blocks where no rule can match it. Where the schema has a `blockquote` — most do — wrap each run of those paragraphs in one and the commands read as commands rather than as body prose. On ko-fi, which strips `<br>` inside a `<pre>` server-side, `<blockquote><p><code>…</code></p>…</blockquote>` published exactly right after the same post had already shipped with run-on commands.
+
+Then check what the paste autolinked. With the code container gone, the editor's Link extension sees plain URLs inside commands and marks them: on a ProseMirror-based editor whose instance is reachable (DeviantArt exposes it as `editorNode.editor`), walk `state.doc.descendants`, collect the text nodes whose `link` mark href is not one of the post's real reference links, and `removeMark` them in one transaction. Where no instance is exposed, the gate is the anchor list itself — it must hold the reference URLs and nothing from a command — and an unreachable link popover is a `degraded` line, not a reason to spend the draft.

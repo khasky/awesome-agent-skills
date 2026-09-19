@@ -386,3 +386,23 @@ Arguments must be passed, not closed over. `page.evaluate(fn, arg)` serialises `
 Two `browser_run_code_unsafe`-adjacent Bash calls timed out on an infinite loop in a local helper and were reported as "still running". Left alone, those Python processes grew to 4 GB and 41 GB of working set — the machine had 0.2 GB of its 64 GB free by the time anyone looked, and every later browser call was competing with them. A timed-out call is not a call that stopped.
 
 After any tool call that times out or is moved to the background, check for the process it started and kill it if the work is abandoned (`tasklist` / `Get-CimInstance Win32_Process` on Windows, `ps` elsewhere), and use `TaskStop` on the harness task as well — stopping the task does not always reap the child. A runaway helper is also a plausible cause when browser calls that worked a minute ago start timing out.
+
+## The run_code sandbox is not a browser and not a full Node
+
+The function body handed to `browser_run_code_unsafe` executes in the MCP server's own scope, and that scope has `page` and very little else. `setTimeout`, `setInterval` and `clearTimeout` are not defined there, and a reference to one throws `setTimeout is not defined` at the moment the expression is evaluated. This bites in exactly one place: the timeout-race wrapper, `Promise.race([slowThing(), new Promise((_, rej) => setTimeout(rej, N))])`. Array elements evaluate left to right, so `slowThing()` is *already running* when the second element throws — the call fires, the race dies, and the `catch` reports a failure for an operation that went on to succeed. One run read `setTimeout is not defined` for both file inputs, concluded the upload had failed, re-opened the picker and found the cover image already attached.
+
+Wait with `page.waitForTimeout(ms)`, which is Playwright's and does exist, and give a slow call its own `{timeout: ms}` option instead of racing it. Where a genuine deadline is needed, poll: a loop of `page.waitForTimeout` plus a cheap `page.evaluate` check, breaking when the condition holds. And when a wrapper does throw, re-read the page before believing the failure — an exception raised beside a call says nothing about the call.
+
+(`page.evaluate` runs in the page, where `setTimeout` is normal. The restriction is the outer function body only.)
+
+## A submit that "does nothing" is usually a dialog nobody read
+
+Three platforms in one run presented the same symptom — the submit is enabled, the click hit-tests true, nothing happens, the URL does not change — and in all three the page had already answered: it had opened a confirmation, and the run's probe had looked for the wrong words.
+
+- HackerNoon raises `div.modal` reading *"Do you have the rights to publish this content and have you disclosed all vested interests to businesses mentioned?"* with `Yes. I'm ready to submit.` / `No. I'll continue editing.` It is 1147x400 in the middle of the screen and contains the word `Confirm` nowhere, so a probe searching for a `Confirm?` dialog reported no dialog across three sessions and the skill's own notes recorded the button as dead. It is not.
+- ko-fi raises a SweetAlert2 (`.swal2-container`, `Publish it!`) that lives outside every `[role=dialog]` and every Bootstrap `.modal`.
+- Substack raises *"Do you want to send this post via email?"* with `Publish on web only` / `Also send via email`, and nothing publishes until it is answered.
+
+So after any submit that appears to do nothing, before climbing the click ladder: enumerate every `[role=dialog]`, `.modal`, `[class*="modal"]`, `[class*="popup"]`, `[class*="overlay"]` **and** `.swal2-container` that has a non-zero rect, and print the first 60 characters of each one's text. One call, no guessing at vocabulary. Read what is on screen and answer it.
+
+The same discipline applies to the checklists platforms put beside a submit. HackerNoon renders `n/7 ready` over seven labelled rows, each satisfied row carrying a tick `svg`; the counter alone says only that something is missing, while the rows say which. Read the rows. And read the row's own text rather than inferring from it — one run spent four attempts chasing a phrase in a row's subtext (`Debut, goals, or blogging set`) that named nothing configurable, when the real gap was an empty URL field two sections away.

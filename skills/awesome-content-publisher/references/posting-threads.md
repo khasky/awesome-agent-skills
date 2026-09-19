@@ -8,3 +8,11 @@ Check: the Threads web app — the user's avatar and the composer entry on the h
 
 
 A post file with `attachment_text:` names a file whose text goes into the composer's text-attachment control, beside a post of up to 500 characters. That control has not been driven on a live account yet: find it from a snapshot, paste the file's text, and read back the permalink with the attachment expanded, comparing its tail against the file. When the control is not there, stop and report; never fold the attachment into the post.
+
+The handle is whatever the composer's own header shows, not the one another platform uses. A run took `@khaskyitsme` from an older ledger, got *"Not all who wander are lost, but this page is"* on the profile, and only then read `khaskydev` off the composer. Read the handle from the open composer and read back on that profile.
+
+The intent route's emoji corruption is not rare — it hit `🔀` on the first post of a run, arriving as `�`. Recovery that works: click into the editor, `Control+a`, `Delete`, verify length 1, then insert the body **paragraph by paragraph** with two `Enter` presses between, which restores both the emoji and the paragraph breaks the single insert would collapse.
+
+The topic tag is an `input[type=search]` with placeholder `Community or topic`, reached by clicking the `[aria-label="Community or topic"]` element beside the author name. Typing opens a suggestion list; click the entry whose text matches the tag exactly, and the header then reads `<handle> > <Topic>`, which is the confirmation. Typing without picking a suggestion leaves the search text uncommitted.
+
+The permalink redirects to the home feed when opened directly, so the audit reads the post from the feed render instead. Read `/@<handle>` for the occurrence count — exactly one — and take the permalink from the profile's `/post/<code>` link.
