@@ -325,7 +325,7 @@ Two rules bind every row. A platform whose answer is `no` never receives a typed
 
 ```text
 exact requested file count, canonical filenames
-frontmatter key order exact, forbidden keys absent, voice equals the interview answer
+frontmatter key order exact, forbidden keys absent, voice and creativity equal the interview answers
 the same 1-3 link set on every file
 hard caps with margin, bands and Aim, ceilings enforced
 blueprint shape per platform: H1, coverage, code, order
