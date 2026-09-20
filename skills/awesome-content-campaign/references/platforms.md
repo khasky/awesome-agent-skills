@@ -92,15 +92,16 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `pinterest` | 2–5 (verified 2026-09) | description | Hashtags are secondary keyword signals now, not the discovery path — keyword-rich title and description do the work. 10+ reads as spam. |
 | `facebook-wall`, `facebook-page` | 0–3 (verified 2026-09) | body | The platform where tags matter least; more than three actively costs engagement. |
 | `tumblr` | 5–20 | tag field, never the body | Up to 30 accepted, only the first ~20 index, and the earliest carry the search weight. Tags in the body are a style error here. |
-| `truthsocial`, `minds`, `bastyon` | 3–5 | body | Mastodon-style discovery by tag. On `bastyon` the body's tags are also auto-extracted into the category chips that its Post button requires — see the posting note. |
+| `truthsocial`, `minds` | 3–5 | body | Mastodon-style discovery by tag. |
+| `bastyon` | 3–5 | the composer's `Categories and tags` control | Tags are a field here, not body text. A trailing hashtag line does get auto-extracted into the category chips the Post button requires, but it also ships a line of hash-prefixed words the reader sees; fill the control instead and leave the body clean. |
 | `vk-wall`, `telegram` | verify live | body | Tag culture varies by community and channel; check what the account's own audience does. |
 | `devto` | up to 4 | front-matter `tags:` | A trailing `#tag` line in the body renders as an `<h1>` instead — it must move to the field. |
 | `hashnode`, `medium`, `hackernoon`, `substack` | up to 5 | the platform's own tag/topic field | Medium's publish panel states the five-topic cap in the UI. A body tag line is not the mechanism on any of them. |
 | `peerlist` | none — refused | — | The composer says so in words: *"We don't support hashtags (yet)."* A tag line must be dropped before submitting. |
 | `reddit`, `lemmy`, `hackernews` | none | — | No hashtag system at all. Flair (reddit) and the title do this job; a tag block marks the post as imported spam. |
 | `quora` | none | — | Topics attach to questions, not to posts, and the composer offers no tag field. A post is filed by the profile or the Space it went to. |
-| `wonderful-dev`, `daily-dev` | 0–4 | body | Developer feeds where a short tag line is native but optional. |
-| `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | body | Audience is existing supporters, not search; tags are decoration here. |
+| `wonderful-dev`, `daily-dev` | none | — | Measured on published posts: body hashtags render as plain text with zero anchors on either platform, so a tag line indexes nothing and reads as an import. |
+| `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | the platform's own field | Each has one and the body has no tag line: ko-fi a comma-separated `Tags` row in the blog editor's sidebar, buymeacoffee a `Categories` block in the right rail, patreon `Add tags` beside the editor. Audience is existing supporters rather than search, so the count stays low. |
 | `telegraph` | none | — | A plain publishing surface with no tag index to feed. |
 | `teletype` | none in the body | the blog's own topics | Topics are categories the author creates on their blog and assigns in the editor. There is no tag index to feed, so a `#tag` line in the body indexes nothing and reads as an import from somewhere else. |
 | `blogger` | none in the body | the post's Labels field | Labels are the blog's own categories, typed comma-separated in the Post settings sidebar; a `#tag` line in the body indexes nothing. |

@@ -29,3 +29,10 @@ Topics are the blog's own categories rather than hashtags, and they are assigned
 An interrupted run leaves a draft here rather than nothing. Before restarting a post, open the Drafts list and finish or discard the existing one — a retry that ignores it is how the blog ends up with two of the same article.
 
 Read-back: open the published article's URL and confirm the title, the body, the image and that the headings rendered as headings.
+
+Four steps above are optional-looking and none of them is. One run published an article that had the body and nothing else: no image, the permalink still the random draft id, no category, and every reference URL plain text. Each was described here already; what was missing was a gate. Before `Publish Now`, all four are checked:
+
+1. **Image.** The block toolbar's `+` on the left of an empty block — `.icon[data-icon="add"]` — opens the entry list; `Image` opens the OS file chooser. Assert a `figure` with an `img2.teletype.in` src, and assert it sits above the first paragraph.
+2. **URL-friendly Link.** In the publish panel, the field is pre-filled with the draft id and that id ships as the permalink if nothing replaces it. Write a short kebab-case slug from the title — `use-deepseek-inside-claude-and-codex` — and read the field back before committing.
+3. **Categories.** Pick the blog's existing category that fits, and where none does, create the one the post belongs in. (This supersedes the line above that forbade creating categories: a blog with no category matching the post needs one, and adding it is part of publishing there.) Assert at least one category is selected.
+4. **Links.** The paste strips every `href` and leaves a `span.link` behind, so every URL in the body is plain text until the link control has been driven over it. Count the URLs the source carries and apply the control once per URL; assert the same count of `a[href]` on the **published** page, never in the editor.

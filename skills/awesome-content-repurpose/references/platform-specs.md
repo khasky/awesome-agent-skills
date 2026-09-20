@@ -40,7 +40,7 @@ Editorial ranges for a substantial source (4+ modules, 2+ executable or config s
 
 | Platform | Band | Aim |
 | --- | ---: | ---: |
-| `bastyon` | 1500-2100 | 1850 |
+| `bastyon` | 350-480 | 430 |
 | `bluesky` | 240-290 | 280 |
 | `buymeacoffee` | 3800-4800 | 4200 |
 | `daily-dev` | 1800-2300 | 2050 |
@@ -127,7 +127,7 @@ Default shapes when `Source type: guide/tutorial`, and the word default is load-
 | `peerlist` | no | name-all | none | stance -> proof-micro -> split line -> "also" line naming the other paths -> link |
 | `truthsocial` | no | primary | none | stance -> proof-micro -> split-micro -> caveat-micro -> link -> 1-2 tags |
 | `minds` | no | major | short | subject-can opener -> primary block -> secondary block -> the separation in one sentence -> proof, split, scope -> gotcha sentence -> caveat -> link -> tags |
-| `bastyon` | no | major | short | the canonical keep-and-change opener naming what stays and what changes, never a negative construction -> primary block -> secondary block -> paths sentence -> model diagram -> proof, split, scope -> caveat -> link -> tags |
+| `bastyon` | no | primary | none | the short shape `truthsocial` and `threads` take: the canonical keep-and-change opener naming what stays and what changes, never a negative construction -> proof-micro -> split-micro -> link. No code, no diagram, no tag line: the composer renders none of the first two and the tags live in its own `Categories and tags` control |
 | `tumblr` | no | all | short | the useful idea -> primary block -> model diagram -> secondary block -> the other paths, each in one line with a text block for the gateway and the local path -> proof, split, scope -> a reframed question block -> gotcha sentences -> link |
 | `patreon` | yes | all | full | first-person intro -> one heading per path (secondary paths may pair) -> gateway diagram -> proof-full -> caveat heading -> gotcha heading with block -> one-line lesson -> links |
 | `ko-fi` | yes | all | full | the `buymeacoffee` shape at this band: H1 -> an intro that states the promise in prose, never a bare block under the heading -> keep-and-change block -> one heading per path -> proof-full -> caveat -> gotcha with block -> links |
@@ -178,7 +178,7 @@ Apply when the source has 4+ modules and 2+ executable or config snippets; scale
 | `facebook-wall` | 8-15 | 0 | 1 task list | exactly 1 |
 | `telegram`, `vk-wall` | 8-14 | 1-2 text | 1-2 short lists | exactly 1 |
 | `linkedin` | 10-18 | 1-2 | 1 path list | exactly 1 |
-| `facebook-page`, `bastyon`, `minds` | 12-22 | 2-4 | optional | exactly 1 |
+| `facebook-page`, `minds` | 12-22 | 2-4 | optional | exactly 1 |
 | `instagram` | 7-12 | 1 | none | exactly 1 |
 | `wonderful-dev` | 8-14 | 1 | none | exactly 1 |
 | `reddit`, `lemmy` | 12-20 | 1-3 | 1 task list on `reddit` | 1-3 |
@@ -210,7 +210,7 @@ Representation retention: with `N` distinct executable or config blocks in the s
 | Class | Platforms | Proof rendering | Opener tendency |
 | --- | --- | --- | --- |
 | hard-cap | `x`, `bluesky`, `threads`, `mastodon`, `peerlist`, `truthsocial`, `pinterest`, `pixelfed`, `flipboard`, `tiktok`, `imgur`, `flickr` | `proof-micro` | stance, subject-can, keep-and-change |
-| professional feed | `linkedin`, `facebook-page`, `minds`, `bastyon`, `wonderful-dev` | `proof-compact` | keep-and-change, easiest-way, no-need-to, subject-can |
+| professional feed | `linkedin`, `facebook-page`, `minds`, `wonderful-dev` | `proof-compact` | keep-and-change, easiest-way, no-need-to, subject-can |
 | visual and channel feed | `instagram`, `vk-wall`, `mewe`, `youtube` | `proof-compact` or a proof text block | keep-and-change, bold lead, subject-can |
 | channel post on `reddit`'s register | `telegram` | a proof text block | personal frame, keep-and-change, subject-can. No bold lead: the blueprint takes `reddit`'s order, and a bold equation on top of it is the announcement that order exists to avoid |
 | community | `facebook-wall`, `reddit`, `lemmy`, `hackernews`, `quora` | `proof-compact` or a proof text block | community question, direct answer, source-shows |
@@ -249,14 +249,13 @@ The norms are the hashtag table in `awesome-content-campaign/references/platform
 ```text
 x 2              bluesky 2-3        mastodon 3-5       pixelfed 3-5
 instagram 3-5    linkedin 3-5       truthsocial 3-5    minds 3-5
-bastyon 3-5      facebook-page 3    facebook-wall 3    vk-wall 3-4
-telegram 3-4     wonderful-dev 3-4  daily-dev 3-4      ko-fi, buymeacoffee, patreon 3
+facebook-page 3  facebook-wall 3    vk-wall 3-4        telegram 3-4
 mewe 3-5         youtube 3          tiktok 3-5 (in the caption)
 ```
 
 These are targets, not floors: the canonical ranges are already resolved here, so a platform ships the number on this line and drops below it only when the cap forces the cut. At creativity 1 and above a platform may take any number inside its own range rather than the same number on every run, and where a range has one value that value stands; the fediverse rows keep their floor whatever the level, because tags are how a post is found there at all. `x` ships 2 and falls to 1 only inside 280 characters, because one tag leaves the platform's cheapest reach unclaimed while three cost reach; `bluesky` ships 2 or 3 inside its 300. Where this table still gives a range, the post takes any number in it. The run reports every platform that shipped under its target, with the reason.
 
-Tags live in the platform's own field, so the body carries no tag line and the frontmatter list carries the norm count, on `devto`, `hashnode`, `medium`, `hackernoon`, `substack` (up to 5), `tumblr` (5-20 in the field), `threads` (exactly 1 topic tag, no `#`), `teletype`, `blogger` (labels), `livejournal`, `dreamwidth`, `imgur`, `flickr`, `deviantart`. The reason is mechanical on the markdown article platforms: a line of `#deepseek #claudecode` starts with a hash, so `devto` and `hashnode` render it as a heading rather than as tags, and the tags belong in the composer's own field where they are clickable. Because that reads as a missing tag line to anyone comparing files, the run's report names these platforms and says the tags are in the frontmatter for the composer's field. No tags anywhere on `reddit`, `lemmy`, `hackernews`, `quora`, `peerlist`, `telegraph`, `flipboard`, `mataroa`, `github-gists` (a gist has no tag system at all, and a `#word` line at the start of a line renders as a heading); their frontmatter `hashtags` is `[]`.
+Tags live in the platform's own field, so the body carries no tag line and the frontmatter list carries the norm count, on `devto`, `hashnode`, `medium`, `hackernoon`, `substack` (up to 5), `tumblr` (5-20 in the field), `threads` (exactly 1 topic tag, no `#`), `teletype`, `blogger` (labels), `livejournal`, `dreamwidth`, `imgur`, `flickr`, `deviantart`, `bastyon` (the composer's `Categories and tags` control), `ko-fi` (a comma-separated `Tags` row), `buymeacoffee` (a `Categories` block) and `patreon` (`Add tags`). The reason is mechanical on the markdown article platforms: a line of `#deepseek #claudecode` starts with a hash, so `devto` and `hashnode` render it as a heading rather than as tags, and the tags belong in the composer's own field where they are clickable. Because that reads as a missing tag line to anyone comparing files, the run's report names these platforms and says the tags are in the frontmatter for the composer's field. No tags anywhere on `reddit`, `lemmy`, `hackernews`, `quora`, `peerlist`, `telegraph`, `flipboard`, `mataroa`, `github-gists` (a gist has no tag system at all, and a `#word` line at the start of a line renders as a heading), `wonderful-dev` and `daily-dev` (measured on published posts: the tags render as plain text with zero anchors, so the line indexes nothing); their frontmatter `hashtags` is `[]`.
 
 Where the body carries a tag line, the frontmatter list is the same tags in the same order and count. A tag line is never cut to fit a cap: the prose is shortened first, and a tag is dropped whole from the end only when the norm allows fewer.
 
@@ -267,12 +266,12 @@ When the interview supplied a footer, it goes after the link and before the tag 
 ```text
 ships      blogger, mataroa, telegraph, teletype, substack, medium, hashnode, github-gists,
            devto, hackernoon, livejournal, dreamwidth, tumblr, deviantart,
-           linkedin, facebook-page, facebook-wall, vk-wall, minds, bastyon, mewe, youtube,
+           linkedin, facebook-page, facebook-wall, vk-wall, minds, mewe, youtube,
            flipboard, instagram, wonderful-dev, daily-dev, telegram,
            patreon, ko-fi, buymeacoffee, flickr
 never      reddit, lemmy, hackernews, quora, imgur,
            and any post whose target names a room somebody else moderates
-skipped    x, bluesky, threads, mastodon, truthsocial, peerlist, pinterest,
+skipped    x, bluesky, threads, mastodon, truthsocial, bastyon, peerlist, pinterest,
            pixelfed, tiktok
 ```
 

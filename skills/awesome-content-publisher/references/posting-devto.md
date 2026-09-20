@@ -53,3 +53,5 @@ await page.evaluate(async (url) => await new Promise(res => {
   im.src = url;
 }), url);
 ```
+
+A `cover_image` and a picture at the top of the body are two copies of the same image. dev.to renders the frontmatter's `cover_image` above the title, so a body that also opens on the campaign image publishes it twice, one above the other. Where the front matter carries `cover_image`, the body starts on its first paragraph; where it does not, the image belongs at the top of the body. Check which of the two is in play before filling, and confirm on the published article that the image appears exactly once.
