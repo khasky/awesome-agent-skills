@@ -113,3 +113,13 @@ What the paste loses is narrower and more predictable than "the editor cannot ta
 One recipe answers all three, and it is worth reaching for before any toolbar: emit **one `<p>` per source line** instead of one `<pre>` per block, and convert every run of two or more spaces to that many non-breaking spaces (U+00A0). Line breaks survive because each line is its own block; alignment and indentation survive because the spaces are no longer collapsible; and the tilde pair is split across two blocks where no rule can match it. Where the schema has a `blockquote` — most do — wrap each run of those paragraphs in one and the commands read as commands rather than as body prose. On ko-fi, which strips `<br>` inside a `<pre>` server-side, `<blockquote><p><code>…</code></p>…</blockquote>` published exactly right after the same post had already shipped with run-on commands.
 
 Then check what the paste autolinked. With the code container gone, the editor's Link extension sees plain URLs inside commands and marks them: on a ProseMirror-based editor whose instance is reachable (DeviantArt exposes it as `editorNode.editor`), walk `state.doc.descendants`, collect the text nodes whose `link` mark href is not one of the post's real reference links, and `removeMark` them in one transaction. Where no instance is exposed, the gate is the anchor list itself — it must hold the reference URLs and nothing from a command — and an unreachable link popover is a `degraded` line, not a reason to spend the draft.
+
+## Section separators travel or they are dropped, never typed
+
+A post file may carry `---` on its own line as a section separator. It is markup, not text, and it needs the same treatment as a heading:
+
+- On a **markdown-native** surface it goes through as written and renders as a rule.
+- On a **rich editor** it is converted with the rest of the body: `<hr>` inside the HTML paste where the schema has a `horizontalRule` node (Substack, DeviantArt, HackerNoon, Medium and Teletype all do), or the editor's own divider control where the paste drops it — HackerNoon's toolbar `Divider` (`ctrl _`), Teletype's block-menu `Divider`, Medium's `---` typed on an empty line, which converts as the third dash lands.
+- On a **plain-text** surface, and on a rich editor whose schema has no rule node, the separator is **removed**. Three dashes in a composer that renders nothing are three dashes the reader sees. Tumblr's block menu and Quora's formatting menu both lack one; check the platform's own note before assuming.
+
+The pre-submit gate counts rules in the composer against separators in the source, the same way it counts code spans: equal on a platform that supports them, zero on a platform that does not, and never a literal `---` in the published text.

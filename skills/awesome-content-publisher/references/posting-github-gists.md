@@ -12,7 +12,7 @@ Compose, three fields, all plain inputs with no length cap of their own:
 
 A gist is a git repository, so there is no edit-by-retry: a second attempt creates a second gist. Before composing, load `gist.github.com/<handle>` and check whether this post is already there. The composer also shows the commit email the gist will carry.
 
-The composer takes text only. An image is referenced by absolute URL inside the Markdown; there is no attachment control, so a post file declaring an attachment for this platform is a defect to report rather than a file to upload.
+The composer takes text only. An image is referenced by absolute URL inside the Markdown; there is no attachment control. A post file that declares an attachment here is not a defect and not a question for the user: drop the attachment, publish the post text-only, and record `degraded` naming the file. The platform hosts code files and Markdown documents and shows a picture nowhere, so there is nothing to decide - a gate asking whether to publish without the image spends the user's attention on a fact the platform table already states.
 
 Read-back: the new gist's URL, `gist.github.com/<handle>/<id>`, which the browser lands on after creation. Confirm the description, the filename with its extension, that the body rendered as Markdown (headings are headings, fenced blocks are blocks) and that the page does not say `Secret`.
 

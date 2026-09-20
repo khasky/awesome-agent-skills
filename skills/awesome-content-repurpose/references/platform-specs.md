@@ -301,6 +301,26 @@ nothing                      hackernews, and any row that supports no attachment
 
 A media-required platform (`instagram`, `pinterest`, `pixelfed`, `tiktok`, `imgur`, `flickr`) is never dropped for want of media. Its text is written and its file ships like every other, because whether a post without a picture can go out is a publication decision and `awesome-content-publisher` is where that decision lives. The run says which files carry no attachment and why.
 
+## 11a. Section separators
+
+Where a platform renders a horizontal rule, the run may mark a boundary between top-level parts with one. Which platforms do, and how the separator is written, measured in the live editors rather than assumed:
+
+| Platform | Separator | How it goes in |
+| --- | --- | --- |
+| `devto`, `hashnode`, `mataroa`, `github-gists`, `lemmy`, `reddit` | yes | `---` on its own line, standard Markdown, rendered as `<hr>` |
+| `medium` | yes | `---` typed on an empty line converts the moment the third dash lands, into `hr.section-divider` - the three-dot divider |
+| `hackernoon` | yes | the editor toolbar's `Divider` control, shortcut `ctrl _` |
+| `substack` | yes | `horizontalRule` is in the editor's schema; the Markdown input rule applies |
+| `deviantart` | yes | `horizontalRule` in the schema, `Horizontal Rule` on the toolbar |
+| `teletype` | yes | the block menu's `Divider` entry |
+| `blogger`, `dreamwidth` | yes | `<hr>` in HTML mode |
+| `tumblr` | no | the block menu is Text, Photo, Quote, Link, Chat, Audio, Video - nothing else |
+| `quora` | no | the `Aa` menu is Bold, Italic, Quote, Format code, Bullets, Numbers, Link |
+| `ko-fi`, `buymeacoffee`, `patreon`, `livejournal`, `telegraph`, `wonderful-dev`, `daily-dev` | check on the first run | enumerate the toolbar, or read the editor instance's schema for a `horizontalRule` node, and record the answer in the platform note |
+| hard caps and plain-text feeds | no | no formatting of any kind; a row of dashes publishes as characters |
+
+Two rules bind every row. A platform whose answer is `no` never receives a typed separator - `---` in a plain-text composer is three dashes a reader sees. And a separator is placed only by the analysis in `revision.md` section 3: it marks a part boundary, at most three in a long read, never one per heading.
+
 ## 12. Validation list
 
 ```text

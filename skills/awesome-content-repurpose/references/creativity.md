@@ -106,7 +106,7 @@ Hard caps are exempt from the band percentage and the short-sentence rate, and k
 
 ## 6. Structure alternates
 
-The blueprint table in `references/platform-specs.md` is the level-0 default, not the only legal shape. These are the moves a run may apply to a file, chosen by fingerprint, subject to the per-level count in the table above. Each move keeps the class's caps, its coverage mode and its link count.
+The blueprint table in `references/platform-specs.md` is the default shape, not the only legal one. These are the moves a run may apply to a file, chosen by fingerprint, subject to the per-level count in the table above. Each move keeps the class's caps, its coverage mode and its link count.
 
 | Move | What changes | Where it is safe |
 | --- | --- | --- |
