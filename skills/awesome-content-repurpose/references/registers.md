@@ -2,7 +2,7 @@
 
 A source type says how the material is organised (`guide/tutorial`, `benchmark/report`, `essay/opinion` and the rest, in `SKILL.md` Phase 0). A subject family says how people who write about that subject actually sound. The two are independent: a tutorial about a deployment pipeline and a tutorial about a morning routine share a structure and share almost nothing else.
 
-Read this file at Phase 0, right after the source type is decided. What the family decides depends on the creativity level (`references/creativity.md` section 4): at level 0 it steers lexicon only, at level 1 it also sets the emoji baseline, the question habit and the heading style, and at levels 2 and 3 it leads the structure.
+Read this file at Phase 0, right after the source type is decided. What the family decides depends on the creativity level (`references/creativity.md` section 4): at level 1 it sets the lexicon, the emoji baseline, the question habit and the heading style, and at levels 2 and 3 it leads the structure as well.
 
 ## 1. Deciding the family
 

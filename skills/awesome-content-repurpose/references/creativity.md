@@ -1,6 +1,6 @@
 # Creativity - what the dial moves, and what it never moves
 
-The interview asks for a level 0 to 3 (`SKILL.md` Phase 1). This file says what each level permits, what it requires, and what stays fixed at every level. Read it at Phase 1, before the brief, because the level changes what Phase 6 plans and what Phase 9 counts.
+The interview asks for a level 1 to 3 (`SKILL.md` Phase 1). This file says what each level permits, what it requires, and what stays fixed at every level. Read it at Phase 1, before the brief, because the level changes what Phase 6 plans and what Phase 9 counts.
 
 ## 1. The problem the dial exists to solve
 
@@ -12,7 +12,7 @@ A second finding binds the whole file: the fix for uniform rhythm is not a presc
 
 ## 2. The floor no level lifts
 
-The dial governs shape and phrasing. It never governs truth, and it never buys license to invent. At level 3 exactly as at level 0:
+The dial governs shape and phrasing. It never governs truth, and it never buys license to invent. At level 3 exactly as at level 1:
 
 - every number keeps the condition it was verified under, every peer stays the one Phase 3 locked, every command stays line-for-line what the source or the official page shows;
 - no fabricated first-person experience, no manufactured stakes, no invented specifics, no performed candor, no contrarian stance the source does not support. A higher level asks for a more human voice, not for material the run does not have;
@@ -42,23 +42,24 @@ Where a catalog has `k` entries, the run starts at `fingerprint mod k` and walks
 
 | Level | Name | In one sentence |
 | --- | --- | --- |
-| 0 | Default | Every rule as written, with the fingerprint choosing between documented variants so two sources do not land on one shape. |
-| 1 | Normal | The rhythm opens, the frames speak like a person, and a third of the pack may take a documented alternate shape. |
+| 1 | Normal | The rhythm opens, the frames speak like a person, and part of the pack takes a documented alternate shape chosen by the fingerprint. |
 | 2 | Medium | The register leads the structure, anchors carry registered variants, and openers may be invented rather than picked. |
 | 3 | High | The pack is composed as a writer would compose it, from the module map rather than from the blueprint, with the floor intact and the repetition checks tightened. |
 
+Level 1 is the floor of the dial and the default answer. There is no level below it: a setting that only reproduced the blueprint produced packs that were uniform without being safer, and safety lives in section 2, which every level carries in full.
+
 ### What each axis does per level
 
-| Axis | 0 | 1 | 2 | 3 |
-| --- | --- | --- | --- | --- |
-| **Structure** | blueprint default per class; the fingerprint picks 1 documented alternate for the pack and 1 section-order variant for the long forms | up to a third of the files take an alternate from section 6 | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
-| **Anchors** | verbatim everywhere | verbatim; the frame prose around them rewritten more freely | 2 to 3 registered variants per anchor, each verified once, assigned per class, never per post | re-voiced per post, with numbers, conditions, peers and named cases frozen; the audit compares facts, not strings |
-| **Rhythm** | spread floor A (section 5) | spread floor B, fragments allowed above the hard caps | spread floor C, fragments common, one self-correction and one hedge per long form | spread floor C with no ceiling, one-word sentences allowed anywhere above the hard caps |
-| **Openers, titles, closings** | catalogs only, distributions as Phase 6 states them | catalogs plus register-native moves | invented moves allowed when they pass the opener tests in `references/authored-style.md` | free, with the three opener tests and the title spine the only survivors |
-| **Register authority** | advisory: lexicon only | decides emoji baseline, question habit and heading style | decides structure, length target inside the band, and which platforms get the long treatment | decides everything the floor does not |
-| **Frame liberty** | as today | contractions, direct address, one aside per long form | idiom, hedges, visible self-correction, opinion stated plainly | humor, running voice, asides anywhere, the author's own vocabulary |
-| **Surface norms** | tag counts and emoji exactly as `references/platform-specs.md` states | tag counts anywhere inside the platform's range | the register may take a surface to its floor where the platform's own natives sit there | the register decides, with the platform's discovery floor the only limit |
-| **Echo and specificity** | as today | as today | tightened: no prose sentence in 2 files, every claim carries a named referent | tightest: no 6-word span in 2 files, and every post carries at least one detail no other post in the pack carries |
+| Axis | 1 | 2 | 3 |
+| --- | --- | --- | --- |
+| **Structure** | blueprint default per class, with up to a third of the files taking an alternate from section 6 and the long forms taking one section-order variant, both by fingerprint | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
+| **Anchors** | verbatim, with the frame prose around them written per platform | 2 to 3 registered variants per anchor, each verified once, assigned per class, never per post | re-voiced per post, with numbers, conditions, peers and named cases frozen; the audit compares facts, not strings |
+| **Rhythm** | spread floor B (section 5), fragments allowed above the hard caps | spread floor C, fragments common, one self-correction and one hedge per long form | spread floor C with no ceiling, one-word sentences allowed anywhere above the hard caps |
+| **Openers, titles, closings** | catalogs plus register-native moves, distributions as Phase 6 states them | invented moves allowed when they pass the opener tests in `references/authored-style.md` | free, with the three opener tests and the title spine the only survivors |
+| **Register authority** | sets lexicon, emoji baseline, question habit and heading style | decides structure, length target inside the band, and which platforms get the long treatment | decides everything the floor does not |
+| **Frame liberty** | contractions, direct address, one aside per long form | idiom, hedges, visible self-correction, opinion stated plainly | humor, running voice, asides anywhere, the author's own vocabulary |
+| **Surface norms** | tag counts anywhere inside the platform's range, emoji as `references/platform-specs.md` states them under the family cap | the register may take a surface to its floor where the platform's own natives sit there | the register decides, with the platform's discovery floor the only limit |
+| **Echo and specificity** | the thresholds in `references/authored-style.md` section 11 | tightened: no prose sentence in 2 files, every claim carries a named referent | tightest: no 6-word span in 2 files, and every post carries at least one detail no other post in the pack carries |
 
 The last row is the inversion that makes the dial safe. As format constraints loosen, sameness constraints tighten, because repetition is the tell that survives every other change.
 
@@ -85,10 +86,6 @@ Two things follow, and the second one corrected an earlier draft of this file. H
 The floors, per level, measured on the prose of one file after the frontmatter, excluding code, lists, the tag line and the footer:
 
 ```text
-floor A (level 0)   longest sentence at least 18 words longer than the shortest
-                    at most 70% of sentences inside the 10-to-20-word band
-                    at most 5 consecutive sentences within 3 words of each other
-
 floor B (level 1)   longest at least 25 words longer than the shortest
                     at most 60% inside the band
                     at least 1 sentence under 7 words per 300 words of body
@@ -133,9 +130,9 @@ Two rules bind the moves at every level: no file changes more than two moves at 
 
 The anchor layer is what makes the pack one family, and it is also the loudest source of sameness. The compromise is registered variation rather than free paraphrase.
 
-- **Levels 0 and 1.** One string per anchor, verbatim, as today.
+- **Level 1.** One string per anchor, verbatim, with the frame prose around it written per platform.
 - **Level 2.** Each anchor may carry 2 or 3 variants. Every variant is written in `anchors.md`, verified once against the same evidence line, and assigned to whole presentation classes rather than to individual posts. A reader who follows the author on three feeds meets one wording; a reader who also reads the long form meets a second. Numbers, units, conditions, peer names and the named cases of the split are identical across variants, and the audit compares those, not the prose.
-- **Level 3.** The anchor is a fact set rather than a string: the proof carries the subject tier, each peer with its own range, and the basis; the split carries its named cheap-path tasks and its named escalation cases and its escalation target; the caveat carries the things not to send and the alternative. Each post writes them in its own words, and the audit checks that every element of the fact set is present and unchanged in meaning. A post that drops a peer, merges two ranges, or softens the caveat into advice fails, exactly as at level 0.
+- **Level 3.** The anchor is a fact set rather than a string: the proof carries the subject tier, each peer with its own range, and the basis; the split carries its named cheap-path tasks and its named escalation cases and its escalation target; the caveat carries the things not to send and the alternative. Each post writes them in its own words, and the audit checks that every element of the fact set is present and unchanged in meaning. A post that drops a peer, merges two ranges, or softens the caveat into advice fails, exactly as it would at level 1.
 
 Whatever the level, a number never varies, a peer never swaps, and the `setup-` blocks never change at all: code is not prose and re-voicing a command is a defect at every level.
 
@@ -171,7 +168,7 @@ Count them. A number that was not counted is not reported: an asserted rhythm sc
 - Treating a higher level as permission to invent a detail, a result, a stake or an opinion the source does not carry. That is the one thing no level allows.
 - Prescribed alternation: writing long-short-long to satisfy a spread floor.
 - Applying one alternate to a whole class, which is how a new template is born.
-- Paraphrasing an anchor at level 0 or 1 because the post felt repetitive. The frame around it is what varies there.
+- Paraphrasing an anchor at level 1 because the post felt repetitive. The frame around it is what varies there.
 - Re-voicing a `setup-` block, a config block or a command at any level.
 - Letting a register loosen the caveat, the privacy sentence or a safety-bearing line.
 - Reporting rhythm numbers that were never counted, or a fingerprint that was never computed.

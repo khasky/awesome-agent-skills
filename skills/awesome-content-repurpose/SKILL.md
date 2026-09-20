@@ -31,12 +31,12 @@ Reference files, read when their phase is reached rather than up front:
 ## Invocation
 
 ```text
-/awesome-content-repurpose <url | file | pasted text> [--platforms <slug,slug>] [--language <lang>] [--idea <text>] [--voice <mode>] [--emoji <n|0|1-5>] [--creativity <0-3>] [--footer <text|none>] [--media images|video|none|<path or url>] [--use-memory]
+/awesome-content-repurpose <url | file | pasted text> [--platforms <slug,slug>] [--language <lang>] [--idea <text>] [--voice <mode>] [--emoji <n|0|1-5>] [--creativity <1-3>] [--footer <text|none>] [--media images|video|none|<path or url>] [--use-memory]
 ```
 
 Defaults: every platform on the canonical table; language, idea, voice, emoji, creativity and footer asked every run; one folder of `.md` files and nothing else. A value supplied in the invocation is the user's answer to that question and it is not asked again. No source given: ask for one before anything else.
 
-**The run folder is `repurpose/<slug>-<YYYYmmdd-HHMMSS>/` under the agent's scratch area.** The slug is the source kebab-cased to at most six words - its title, its filename without the extension, or its first heading when it was pasted - and the stamp is the moment this run started. Working state (`source/`, notes, brief, anchors, plans, ledgers) goes there, and so does the finished posts folder (Phase 10).
+**The run folder is `repurpose/<slug>-<YYYYmmdd-HHMMSS>/` under the agent's scratch area.** The slug is the source kebab-cased to at most six words - its title, its filename without the extension, or its first heading when it was pasted - and the stamp is the moment this run started. Working state (`source/`, `run-settings.md`, notes, brief, anchors, plans, ledgers) goes there, and so does the finished posts folder (Phase 10).
 
 The stamp is what makes a second run on the same source a second run. Two invocations of one article produce the same slug, and a slug alone puts them on one path, so the second run overwrites a set the user may still be reading or publishing from. An existing run folder is therefore never written into and never cleared to make room: take the next free stamp and name the folder this run used. The memory files of `references/run-memory.md` stay in the `repurpose/` root, outside every run folder, because they are what one run leaves for the next.
 
@@ -70,14 +70,13 @@ Six questions, one screen where the UI allows several structured questions (four
 2. **Editorial idea** - the 3 ideas from Phase 0, the first marked `Recommended`, plus `Other - describe it`. A custom idea the source cannot support is said so before drafting, with a narrower supported reading offered.
 3. **Voice** - `First person` (Recommended for a personal feed) · `First person plural` · `Neutral third person` · `Voice profile from awesome-content-voice (path)` · `Style guide from awesome-style-mimic (path)`. A profile or guide is read before drafting. First person is editorial stance, never invented hands-on experience.
 4. **Emoji** - `1-5` (Recommended) · `0` · `type a number`. Under `1-5` each post draws its own count at random from 1 to 5 and places them where an emoji underlines the meaning of the sentence it lands on; a typed number is the count per post; `0` turns them off everywhere. Placement rules and the two platform exceptions are in `references/authored-style.md`.
-5. **Creativity** - `1 - Normal` (Recommended) · `0 - Default` · `2 - Medium` · `3 - High`. The dial decides how much of the pack's shape and phrasing the run chooses for itself, and `references/creativity.md` is where each level is defined. In the question itself the levels read as what the user will see:
+5. **Creativity** - `1 - Normal` (Recommended) · `2 - Medium` · `3 - High`. The dial decides how much of the pack's shape and phrasing the run chooses for itself, and `references/creativity.md` is where each level is defined. In the question itself the levels read as what the user will see:
 
-   - `0 - Default`: every rule as written. The run still varies, because the structure it picks comes from this source rather than from habit, so two subjects do not land on one shape.
    - `1 - Normal`: sentences and paragraphs move the way a person's do, the prose around the anchors speaks plainly, and part of the pack takes a different shape from the default.
    - `2 - Medium`: the subject family leads the structure, the repeated sentences carry two or three registered wordings instead of one, and openers may be written rather than chosen.
-   - `3 - High`: the pack is composed the way a writer composes, from the material rather than from the template, with the facts, the numbers, the caps and the caveats exactly as strict as at 0.
+   - `3 - High`: the pack is composed the way a writer composes, from the material rather than from the template, with the facts, the numbers, the caps and the caveats exactly as strict as at 1.
 
-   Whatever the answer, the floor in `references/creativity.md` section 2 holds: no invented experience, no fabricated specifics, no softened caveat, no changed number, no re-voiced command. A higher level buys a freer shape, never a freer fact.
+   Level 1 is the floor of the dial: there is no setting that only replays the blueprint, because a pack written that way came out uniform without coming out safer. Whatever the answer, the floor in `references/creativity.md` section 2 holds: no invented experience, no fabricated specifics, no softened caveat, no changed number, no re-voiced command. A higher level buys a freer shape, never a freer fact.
 
 6. **Footer** - `Yes, add a footer to every post` · `No` (Recommended when the user has not asked for one). On `Yes` a follow-up collects the footer text verbatim, several lines allowed, typically a follow-me line with handles. The text is appended byte for byte after the link line and before the tag line, separated from each by one blank line, on the platforms that take it. Verbatim means verbatim: the ASCII sweep, the dash rule and the punctuation cleanup all read it and none of them rewrites it, so a hyphen the user typed stays a hyphen and the run never turns it into a dash. Its own lines stay contiguous, which is what makes it one block rather than three paragraphs; it is exempt from the echo and emoji checks and never carries a frontmatter key.
 
@@ -90,6 +89,26 @@ Six questions, one screen where the UI allows several structured questions (four
    The report names every platform that shipped without it and why. The user can override a `never` only by saying so for that platform by name, and the run states that the platform's own rules read it as promotion.
 
 The six answers are recorded as `Output language`, `Selected idea`, `Voice`, `Emoji`, `Creativity`, `Footer` and bind every file in the run. With the level known, compute the run fingerprint from the source as `references/creativity.md` section 3 defines it, record it beside the level, and use it for every choice among documented shapes from Phase 6 onward.
+
+**Then write `run-settings.md` in the run folder, before anything is drafted.** It is the run's own record of what the user chose, so a pack can be reproduced, or re-run with one setting changed, without reading the posts to guess what was asked. One file, these lines, in this order:
+
+```text
+Run folder      <absolute path>
+Started         <YYYY-mm-dd HH:MM:SS>
+Source          <the path, URL or "pasted text" as the user gave it> -> source/<saved filename>
+Platforms       all 45 canonical | the requested subset, listed
+Output language <answer>
+Editorial idea  <the selected idea, in full, plus the two that were offered and not chosen>
+Voice           <answer, with the profile or style-guide path where one was given>
+Emoji           <answer as given: 1-5, a typed number, or 0>
+Creativity      <1, 2 or 3, with the level's name>
+Footer          <no, or the footer text verbatim, indented so its own line breaks survive>
+Supplied        <the answers that arrived as invocation flags rather than being asked>
+Source type     <type>   Source family <family>   Fingerprint <n>
+Media           <written at Phase 11: the answer, the files, and what each platform got>
+```
+
+The footer block is copied byte for byte, the same way a post carries it. Nothing here is invented to fill a line: an answer the user never gave reads `not asked`, and an answer taken from a flag says so, because the value of this file is that it reports the run rather than describing it.
 
 ## Phase 2 - Evidence notes and the source-module map
 
@@ -184,7 +203,7 @@ The variation plan is bound by the catalogs in `references/authored-style.md`, w
 - at least 4 closing shapes, none on more than 40% of the pack, the recommendation-stance closing on at most 6 of a full pack, no non-anchor closing sentence in more than 2 posts;
 - titles composed from the spine: unique strings, at least 4 title moves, no 4-word prefix on more than 25% of the pack, the subject in every title, no mechanism noun or abstraction as the title's centre.
 
-Per level, on top of those bounds: at 0 the pack takes one structure alternate and one section-order variant, both by fingerprint; at 1 up to a third of the files take an alternate; at 2 every class is planned from the register with no two files in a class sharing a section order; at 3 the plan is built from the module map and records the blueprint only as the fallback it departed from. At every level no file takes more than two moves and no two files take the same combination.
+Per level, on top of those bounds: at 1 up to a third of the files take an alternate and the long forms take one section-order variant, both by fingerprint; at 2 every class is planned from the register with no two files in a class sharing a section order; at 3 the plan is built from the module map and records the blueprint only as the fallback it departed from. At every level no file takes more than two moves and no two files take the same combination.
 
 ## Phase 7 - Write
 
@@ -200,8 +219,8 @@ Rules that hold on every surface:
 
 - **Sentence length is a spread, never a pattern.** Each file meets the rhythm floor its level names in `references/creativity.md` section 5, including that level's limit on consecutive sentences of near-equal length. Writing long-short-long to satisfy the floor is the defect the floor was built to catch: vary because the thought varies, then measure the result.
 - **Nothing is invented to make a post livelier.** No experience the author did not have, no stake the source does not carry, no specific invented to satisfy a specificity rule, no opinion manufactured for contrast. This holds at every creativity level and is the first thing the audit checks when a post suddenly reads well.
-- Fragments are a level decision: none at 0, allowed above the hard caps at 1, ordinary at 2 and 3. Where a fragment lands, it lands because the sentence before it earned the pause.
-- **The subject family sets the register** (`references/registers.md`): its rhythm, its lexicon, whether a question to the reader is native at all, and what its writers never say. At level 0 it steers word choice, at level 1 it also sets the emoji baseline and the heading style, and at 2 and 3 it leads. It never changes a fact, a cap, a module's presence or the interview's voice.
+- Fragments are a level decision: allowed above the hard caps at 1, ordinary at 2 and 3. Where a fragment lands, it lands because the sentence before it earned the pause.
+- **The subject family sets the register** (`references/registers.md`): its rhythm, its lexicon, whether a question to the reader is native at all, and what its writers never say. At level 1 it sets the lexicon, the emoji baseline, the question habit and the heading style, and at 2 and 3 it leads the structure too. It never changes a fact, a cap, a module's presence or the interview's voice.
 - The opener names the promise in the reader's terms (what they keep, what changes, why), and its first sentence carries the subject's name and at least one client's product name. A first sentence built from category nouns alone (`a cheaper model`, `the client you already have running`, `a terminal agent`, `the provider`) fails, however elegant. The wire mechanism is a supporting sentence, at most one per post.
 - No meta-framing anywhere in the pack: no sentence about how the topic is usually framed, argued or decided (`picking a side`, `a camp`, `a routing decision rather than`, `separate purchases`, `the question is`, `the decision is smaller than`, `a winner`). The posts explain the guide and say what the author would do with it; they do not comment on the debate around it.
 - Path sections keep the source's order on every surface that has them; the primary path the source explains first comes first, whatever the title emphasises. Titles and openers name the primary paths only: a secondary tool never stands in a title beside the subject.
@@ -261,7 +280,7 @@ Counted:
 
 - **Files and frontmatter** - exactly the requested set, canonical names, the 5 keys in order plus `attachments` where Phase 11 wrote one, no forbidden key, `voice` equal to the interview answer, the same 1-3 link set everywhere, hashtags an ordered subset of the pool.
 - **Length** - every body measured in characters after the frontmatter and listed against its band in the report; hard caps with margin; a post over its band ceiling re-enters the compression ladder in `references/platform-specs.md` and is not shipped until it is under. The section budgets in that file are the first thing to check on an overrun.
-- **Anchors** - every anchor present in the classes that carry it; `proof-*` on every platform; no anchor deep detail on a surface its label forbids. What "present" means is the level's: at 0 and 1 verbatim, and a reworded proof, split, scope or caveat is a `FIX` back to the anchor; at 2 one of the registered variants verbatim, with the whole class on the same variant and no fourth wording anywhere; at 3 the fact set complete and unchanged in meaning, checked element by element, with every number, unit, condition, peer name and named case identical to `anchors.md`. Setup, config and command blocks are verbatim at every level.
+- **Anchors** - every anchor present in the classes that carry it; `proof-*` on every platform; no anchor deep detail on a surface its label forbids. What "present" means is the level's: at 1 verbatim, and a reworded proof, split, scope or caveat is a `FIX` back to the anchor; at 2 one of the registered variants verbatim, with the whole class on the same variant and no fourth wording anywhere; at 3 the fact set complete and unchanged in meaning, checked element by element, with every number, unit, condition, peer name and named case identical to `anchors.md`. Setup, config and command blocks are verbatim at every level.
 - **Rhythm** - per file, on prose only: sentence count, mean, longest, shortest, the share inside the 10-to-20-word band, the longest run of sentences within 3 words of each other, and the paragraph-length span. Each is checked against the level's floor in `references/creativity.md` section 5, and a file that meets the floor by alternating long and short on a schedule is a `REWRITE`, not a pass.
 - **Structure variety** - the moves each file took, read against the plan: no file over two moves, no two files in one class sharing a combination, the level's minimum met, and no move applied to a whole class. A pack whose files all carry the blueprint default at level 1 or above has not planned, it has defaulted.
 - **Register** - the family's rhythm band, lexicon, question habit and emoji baseline against what shipped, plus the family's own avoid-list. A post that reads as written by someone who does not publish in that family is a `REWRITE` of that post.
@@ -329,6 +348,8 @@ attachments: [{ file: <slug>.png, alt: "<what it shows and what it means>" }]
 ```
 
 Paths are relative to the posts folder, so the publisher resolves them there. A post whose picture came from the image adapter names the file that sits beside it and shares its name; a still or a video derived in this phase names its file under `media/` the same way. Alt text is written in the run's output language, says what the picture shows and what it means, and carries no date. The key is absent on a post with no media, several entries in order carry a sequence, and `scheduled`, `timezone`, `status` and `target` stay forbidden here as before.
+
+**Then close `run-settings.md`**: fill its `Media` line with the answer as the user gave it, the files that came out of it, and which platforms carry none. That line is the last thing written to the run folder, and it is what makes the file a record of the whole run rather than of its first half.
 
 **Then open the folder on the user's machine and say that it was opened**, adding in the same breath that it sits in the session's working area and is copied somewhere permanent by the user if they want to keep it, with the absolute path in the same sentence so it survives a failed open: `explorer` on Windows, `open` on macOS, `xdg-open` on Linux, checked to exist before it is called, skipped in a headless or scheduled run, and a failure is one line naming the path rather than an error that stops the run. Another skill called this one -> hand the path back and open nothing, since the caller decides what the user sees and when.
 
