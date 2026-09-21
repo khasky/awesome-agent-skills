@@ -148,7 +148,7 @@ Two rules bind the moves at every level: no file changes more than two moves at 
 
 The anchor layer is what makes the pack one family, and it is also the loudest source of sameness. The compromise is registered variation rather than free paraphrase.
 
-- **Level 1.** One string per anchor, verbatim, with the frame prose around it written per platform.
+- **Level 1.** One string per anchor, verbatim on at most a third of the files that carry it and written from the anchor's fact set on the rest, with the frame prose around it written per platform. The stance, the closing and the what-I-do-now ladder are frames here as at every level (`references/authored-style.md` section 1): a level-1 pack that ships one closing sentence to half the platforms has not used the floor of the dial, it has skipped the frame layer.
 - **Level 2.** Each anchor may carry 2 or 3 variants. Every variant is written in `anchors.md`, verified once against the same evidence line, and assigned to whole presentation classes rather than to individual posts. A reader who follows the author on three feeds meets one wording; a reader who also reads the long form meets a second. Numbers, units, conditions, peer names and the named cases of the split are identical across variants, and the audit compares those, not the prose.
 - **Level 3.** The anchor is a fact set rather than a string: the proof carries the subject tier, each peer with its own range, and the basis; the split carries its named cheap-path tasks and its named escalation cases and its escalation target; the caveat carries the things not to send and the alternative. Each post writes them in its own words, and the audit checks that every element of the fact set is present and unchanged in meaning. A post that drops a peer, merges two ranges, or softens the caveat into advice fails, exactly as it would at level 1.
 
@@ -163,7 +163,7 @@ A banned-word list produces prose that dodges the list. Count instead, per 200 w
 - a stock intensifier (`crucial`, `pivotal`, `robust`, `seamless`, `powerful`), an abstraction standing where a named thing belongs;
 - a sentence whose subject is the post itself.
 
-The count is reported per file at levels 2 and 3, where the looser frames make these easier to slip in. Technical terms that are the only precise word for the thing are not tells and are not counted, and a construction quoted from the source keeps its quotation marks and is exempt.
+The count is reported per file at every level. The looser frames at 2 and 3 make these easier to slip in, but the construction the count catches most often is the abstraction standing where a named thing belongs, and that one arrives at level 1 too: a pack that wrote `an attention-layer intervention` into 22 files had a named method and a number available in its own evidence notes. Technical terms that are the only precise word for the thing are not tells and are not counted, and a construction quoted from the source keeps its quotation marks and is exempt.
 
 ## 9. What the level does to the audit
 

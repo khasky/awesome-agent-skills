@@ -12,6 +12,10 @@ This file describes the pack at level 1, the floor of the dial. At levels 2 and 
 
 **Frames** are everything around the anchors: the opener, the sentence that introduces a block, the section order, the transition into the economics, the closing, the question put to a room. Frames are written per platform and never copied between files. The echo check in section 11 counts them.
 
+**Three things are frames however factual they feel**, and putting any of them in `anchors.md` is what turns a pack into one post published thirty times: the **stance**, the **closing line**, and the **what-I-do-now ladder** the piece ends on. Their content is fixed and their wording is not: the ladder carries its rungs in the source's order with the escalation target unchanged, and each file says them in its own words. A run measured on three packs of the same source shipped the ladder's two sentences into 27 of 45 files and its verdict sentence into 28 when they were registered as anchors, and the same source at a freer level, where they were frames, repeated no prose sentence into more than 7.
+
+**A prose anchor travels verbatim to at most a third of the files that carry it.** Past that the post writes the same fact set in its own words - every number, peer, condition and named case unchanged - and the audit compares the facts rather than the strings. Code blocks, config blocks, commands and quoted material are exempt in the other direction: they are copied exactly, everywhere, and re-voicing one is a defect at every level.
+
 The anchor set a guide with a cost decision axis needs, with the wording rule for each:
 
 | Anchor | Shape | Where |
@@ -46,6 +50,8 @@ Presence is checked, not forced into the first line: every body carries at least
 ## 3. Openers
 
 An opener names the promise in the reader's terms. For a guide that is: what they keep, what changes, and why they would bother, with the subject and at least one client named in the first sentence (`<Subject> can sit behind <Client A>.`, `You can keep <Client A> or <Client B> and put <subject> behind them as the model provider.`, `The guide shows how to keep <Client A> and change the model provider underneath it.`). A first sentence that only has category nouns in it (`a cheaper model`, `the client you already have running`, `a terminal agent`, `the tool and the model`) is rewritten around the names. The wire mechanism (`<provider> exposes a <protocol>-compatible endpoint`) is the second or third sentence and it is written once per post, never as the first line on more than 2 platforms in a pack.
+
+**An opener is short and it is two beats, not one.** The first sentence runs to at most 20 words on a short post and at most 25 anywhere else, and the turn that sent the author looking is its own sentence after it. Three or more subordinate clauses in an opening sentence is a defect whatever its length: the reader meets the situation, then the turn, and a clause pile-up hands them both at once and neither clearly. Measured across three packs of one source, the pack whose openers were rejected ran a mean first sentence of 19.6 words with 14 of 45 files over 25 and its short posts opening at 30 to 34; the packs that were kept ran medians of 14 and 15.
 
 **Three tests every opener passes, on every surface and at every length.** A sentence failing one of them is not an opener, however true it reads.
 
@@ -261,7 +267,8 @@ After excluding anchors, code blocks, URLs, quotations, tag lines and bare ident
 - no non-technical 8-word span in 4 or more posts;
 - no coined phrase of 3 or more words the source never used in 3 or more posts;
 - no source aside lifted into a slogan on more than 3 platforms;
-- no paraphrase of an anchor anywhere: the anchor verbatim or nothing.
+- no half-paraphrase of an anchor: a prose anchor is carried verbatim inside its one-third cap (section 1) or written from its fact set with every number, peer and named case intact, and what is never allowed is the version that keeps the anchor's shape and moves a word or two;
+- these counts include anchor text. An anchor is exempt from being *rewritten*, never from being *counted*: the check that a pack fails invisibly is the one that excludes the sentences it repeats most.
 
 Inside one file, none of that is enough, because a repeat a reader meets twice in four lines is louder than one spread across the pack: the post's key number appears exactly once, no content phrase of two or more words appears in two of its sentences, and the clause that qualifies a number travels with the number rather than arriving again later. A short post is where this shows: `I counted 635 bold spans` followed two lines down by `635 bold spans, one every three lines` is one sentence written twice.
 
