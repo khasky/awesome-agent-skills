@@ -283,7 +283,7 @@ The interview count applies everywhere except `hackernews` (always 0), and the s
 
 ## 11. Frontmatter
 
-Exactly `platform`, `title`, `voice`, `creativity`, `links`, `hashtags`, in that order, plus `attachments` where the media stage (`SKILL.md` Phase 11) wrote one. Forbidden: `scheduled`, `timezone`, `media`, `alt_text` as a key of its own (the alt text rides inside the attachment entry), `status`, `target`, `queue`, `cadence`. The publishing skill adds those later.
+Exactly `platform`, `title`, `voice`, `creativity`, `model`, `links`, `hashtags`, in that order, plus `attachments` where the media stage (`SKILL.md` Phase 11) wrote one. Forbidden: `scheduled`, `timezone`, `media`, `alt_text` as a key of its own (the alt text rides inside the attachment entry), `status`, `target`, `queue`, `cadence`. The publishing skill adds those later.
 
 What each platform takes, once media exists:
 
@@ -325,7 +325,8 @@ Two rules bind every row. A platform whose answer is `no` never receives a typed
 
 ```text
 exact requested file count, canonical filenames
-frontmatter key order exact, forbidden keys absent, voice and creativity equal the interview answers
+frontmatter key order exact, forbidden keys absent, voice and creativity equal the
+interview answers, model equals the identifier the runtime reports
 the same 1-3 link set on every file
 hard caps with margin, bands and Aim, ceilings enforced
 blueprint shape per platform: H1, coverage, code, order
