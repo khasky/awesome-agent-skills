@@ -6,7 +6,7 @@ This file governs how the bodies read. It does not choose the voice, the idea or
 
 A post family has two kinds of text.
 
-This file describes the pack at creativity 1, the floor of the dial. At 2 and 3 the anchor layer, the catalogs, the rhythm and the emoji baseline move under `references/creativity.md` and `references/registers.md`, and where those two disagree with a sentence here, they win for that level and this file still governs everything they do not name.
+This file describes the pack at level 1, the floor of the dial. At levels 2 and 3 the anchor layer, the catalogs, the rhythm and the emoji baseline move under `references/creativity.md` and `references/registers.md`, and where those two disagree with a sentence here, they win for that level and this file still governs everything they do not name.
 
 **Anchors** are written once in `anchors.md`, verified once, and reused word for word on every surface that carries them. They are the facts and judgments that must be identical everywhere: a reader who follows the author on three platforms meets the same proof, the same task split and the same caveat three times, and that sameness is what makes the family one family. An anchor is never paraphrased to look fresh: a reworded proof drifts a number, a reworded caveat drops a condition, and a pack of thirty paraphrases of one sentence reads as a machine straining for variety. The check is verbatim or absent at creativity 1. At 2 it is one of the run's registered variants, verbatim, the same variant across a whole presentation class. At 3 it is the fact set, complete and unchanged in meaning, with every number, unit, condition, peer and named case identical to `anchors.md`. Free paraphrase is a defect at every level: what changes is how many verified wordings exist, never whether a wording was verified.
 
@@ -194,7 +194,13 @@ An emoji outside the gate is a defect whether or not this table names it, and th
 
 **It is chosen by the words next to it.** Name the word in the sentence the emoji stands for before writing it: the cost sentence takes one from the money row, the restart that fixed nothing takes one from tools, the retention clause takes a lock. No such word, no emoji. The second test is a swap: replace it with one from a different group, and if the sentence reads the same, it was decoration and comes out. A group is where to look, never a permission, so a privacy sentence does not take the rocket because the rocket was free.
 
-The interview sets the count and the subject family caps it: a family that `references/registers.md` marks at `none` takes at most one per post however high the number, and a family marked `none to one` never takes two. Under `1-5` each post draws its own number from 1 to 5 at random, the draw is recorded in `variation-plan.md`, and the cap is applied after the draw; a typed number is the count for every post; `0` removes them everywhere. Two exceptions hold whatever the answer: `hackernews` carries none, and a hard-cap post draws from 1 to 2 under `1-5` because a third emoji in 280 characters displaces a fact.
+The interview sets the count, the length class sets the draw, and the subject family caps it.
+
+Under `1-5` the draw is per post and per class, because the same number is a different density in 280 characters and in 1500 words: **deep articles and mini-blogs draw from 2 to 5, every other class from 1 to 2.** The draw is recorded in `variation-plan.md`; a typed number is the count for every post; `0` removes them everywhere.
+
+The family cap is applied after the draw: a family that `references/registers.md` marks at `none` takes at most one per post however high the number, and a family marked `none to one` never takes two. **On a deep article or a mini-blog that cap rises by exactly one**, so a technical family carries two across a long piece rather than one - one emoji in fifteen hundred words is not restraint, it is an accident the reader notices. The raise is one, not a free hand, and it applies to nothing shorter.
+
+Two exceptions hold whatever the answer: `hackernews` carries none, and a hard-cap post is inside the 1-to-2 draw already because a third emoji in 280 characters displaces a fact. One density rule holds on the long forms: at most one emoji per 400 characters of body, counted after the frontmatter, so the extra one spreads rather than clusters.
 
 Placement is meaning, not decoration: the emoji lands at the end of a frame sentence whose meaning it underlines (the restart line, the cause line and the caveat are anchors, so they never carry one), one emoji per sentence and never two side by side (the number nobody expected, the part that went wrong, the thing that just works, the author's own reaction) or opens the post on the promise. Never inside an anchor, which travels verbatim and bare. The same emoji on the same sentence in more than 2 posts is an echo, so the pack spreads its palette: in one post the reaction sits on the setup, in another on the author's stance. Spread them: never two in one paragraph, never a pair a line apart, never as a bullet marker, never one per line, never a row of three, never in place of a word the sentence needs. On a piece with headings, either the prose carries them or every heading does; never a subset of the headings.
 
@@ -202,9 +208,48 @@ Placement is meaning, not decoration: the emoji lands at the end of a frame sent
 
 When price is the decision axis: verified API-to-API rates, one locked peer set, one range per peer, the `scope` sentence beside the compact proof, and token cost distinguished from completed-task cost in one clause on long forms. The compact proof is the anchor; the workload example (`10M input and 2M output on <tier> costs about $N`) is supporting detail on at most 3 surfaces. Never `X is simply weaker than Y`: the split says where each side is worth its price.
 
-## 10. Punctuation and shape
+## 10. Punctuation, shape and emphasis
 
 ASCII only: `'`, `"`, `-`, `->`. No em or en dash, no Unicode arrow, outside exact code or a quotation. No `#show`. Semicolons: none, at any length, whatever the post's size. Two thoughts are two sentences, a qualifier joins with a comma, and where a pause genuinely needs marking a hyphen pair or a full stop does it. No calendar date in prose except an `as of` qualifier on a `core` correction of a temporary state.
+
+Numbers carry the precision they were measured with and no decoration zeros: `1.00%` is written `1%`, `2.50x` is `2.5x`, and a whole number never carries a decimal point. Dropping a trailing zero is rendering, not rounding - `1.04%` keeps both figures - and a value the source itself states loosely is carried at the source's precision (`about 1%`), never at a computed one.
+
+### Emphasis: earned first, typographic last
+
+A post with nothing emphasized reads flat, and a post that emphasizes freely reads like an ad. The resolution the craft settled on long ago: the sentence carries the stress, and typography is what is reached for when the sentence alone cannot. So the devices below are ordered, and a run takes the cheapest one that works.
+
+**Free devices. No budget, use them first.** They are prose, not formatting, and none of them counts against anything:
+
+- the one-line paragraph - the sentence that matters standing alone between two blank lines, which is the strongest emphasis a feed has;
+- the short sentence after a long one, and the fragment where the level allows it;
+- the number placed at the head of its sentence instead of buried in the middle;
+- the colon that sets up a short payoff;
+- one word repeated deliberately across two adjacent sentences;
+- quotation marks around a phrase the post is holding at arm's length, once per post.
+
+**Marked devices. Budgeted, and each one has to be earned.** The budget is per post and it is a ceiling, never a quota: a post with no candidate that passes the earn test carries none, and that is the normal outcome.
+
+| Class | Marked spans per post |
+| --- | --- |
+| deep articles, mini-blogs | at most 2, of which at most 1 is capitals |
+| feeds, community surfaces | at most 1 |
+| hard caps | at most 1, and only where the span is 2 words or shorter |
+
+What may be marked, and how:
+
+- **Capitals.** Two or three words at most, never a whole sentence, never a heading, never a title, never an anchor. A long string of capitals reads as shouting on every surface these posts land on and drops readability outright, so the span is a word or two inside an ordinary sentence and nothing larger.
+- **Bold and italic**, on the surfaces that render them, stay inside what sections 4 and 5 already allow: the proof numbers, a bold lead, the one-line lesson, and one italicised word where a word is being used as a word. On a plain-text surface neither exists, which is why capitals are the device there.
+- **Never two devices on one span**: no bold capitals, no capitals with an exclamation mark, no italics inside bold. Combining them is what makes a post look like it is trying.
+- **Never Unicode pseudo-bold** - the mathematical bold and italic letter blocks that plain-text surfaces are full of. Screen readers spell them out character by character or skip them, they defeat search and copy, and they fail the rendering gate in section 8 for the same reason a box-glyph emoji does.
+
+**The earn test.** A span is earned only when the source carries something that is genuinely out of line with the rest of the post and the span is the word that carries it: a number that breaks the pattern, a prohibition the caveat states absolutely, a single word on which the post turns. Write the reason beside the span in `variation-plan.md` before writing the span. A product name is not an outlier. A section label is not an outlier. An anchor is never marked at all, because it travels verbatim and the mark would travel with it.
+
+**Exclamation and question marks.**
+
+- The **exclamation mark** is at most one per post, on a frame sentence, and only in a family whose `Ask` column in `references/registers.md` reads `sometimes` or `often`. The technical families take none: a `!` in a debugging write-up reads as someone who does not publish there. Never on an anchor, a caveat, a number, a command line or a title, and never as the second mark on a span that is already emphasized.
+- The **question mark** is a register property rather than a budget. `no` takes none; `rare` takes one, and only where the blueprint already puts a question; `sometimes` takes one in the body plus the closing question where the class has one; `often` takes up to two plus the closing. Every question is one the post then answers or one the reader can answer from their own setup - a question nobody could answer is filler, and it is the first thing to cut.
+
+**Across the pack.** At most half the files carry a marked span, and no two files in one presentation class mark the same word: a device applied everywhere is a template, which is the failure section 11 exists to catch. The budget does not grow with the creativity dial - a higher number moves shape, not decoration.
 
 ## 11. Echo rules
 
@@ -218,11 +263,13 @@ After excluding anchors, code blocks, URLs, quotations, tag lines and bare ident
 - no source aside lifted into a slogan on more than 3 platforms;
 - no paraphrase of an anchor anywhere: the anchor verbatim or nothing.
 
+Inside one file, none of that is enough, because a repeat a reader meets twice in four lines is louder than one spread across the pack: the post's key number appears exactly once, no content phrase of two or more words appears in two of its sentences, and the clause that qualifies a number travels with the number rather than arriving again later. A short post is where this shows: `I counted 635 bold spans` followed two lines down by `635 bold spans, one every three lines` is one sentence written twice.
+
 An echo is fixed by rewriting the frame for that platform, never by removing the fact.
 
 One check reaches outside the pack. The placeholder stems printed in this file describe what an anchor has to carry; they are not the anchor's text. A run that ships one of them verbatim has copied the reference instead of writing the sentence, and two runs on unrelated subjects then open the same sentence with the same four words, which is exactly the resemblance the dial exists to remove. Before the anchors are frozen, read the first four words of each one and confirm they were chosen for this subject.
 
-These are the thresholds at creativity 1. At 2 no prose sentence may appear in 2 or more posts and every claim carries a named referent; at 3 no non-technical 6-word span may appear in 2 or more posts and every post carries one concrete detail no other post in the pack carries. The rule is deliberate: the freer the shapes, the less repetition the pack can afford, because repetition is the one tell that survives a change of shape.
+These are the thresholds at level 1. At level 2 no prose sentence may appear in 2 or more posts and every claim carries a named referent; at level 3 no non-technical 6-word span may appear in 2 or more posts and every post carries one concrete detail no other post in the pack carries. The rule is deliberate: the freer the shapes, the less repetition the pack can afford, because repetition is the one tell that survives a change of shape.
 
 ## 12. Read it aloud
 

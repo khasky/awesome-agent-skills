@@ -110,7 +110,7 @@ When a draft exceeds its ceiling, cut in this order: auxiliary verification deta
 
 ## 4. Guide/tutorial blueprints
 
-Default shapes when `Source type: guide/tutorial`, and the word default is load-bearing: this table is the shape a file keeps unless the run's plan moves it, and `references/creativity.md` section 6 says which moves may reorder or re-enter it. What the table fixes at every level is the class's coverage mode, its code allowance, its cap and its link count; what the moves may change is the order of its sections, where the body enters them, and how its headings are written. Legend: **H1 yes** = the body starts with a visible `#` title; **coverage all** = every core module; **major** = every major path named, one or two detailed; **primary** = the primary one or two paths only; **name-all** = every path named compactly, the primary one or two detailed; **code full** = several verified blocks; **short** = one or two compact blocks; **none** = no fenced block.
+Default shapes when `Source type: guide/tutorial`, and the word default is load-bearing: this table is the shape a file keeps unless the run's plan moves it, and `references/creativity.md` section 6 says which moves may reorder or re-enter it. On a short post - a hard cap, or any row whose band aim is under 600 characters - the `Body shape` column names the parts the post carries and the short-post arc in `SKILL.md` Phase 7 orders them: the author enters first, the number that bears the finding out arrives late, and an arrow in this column is not a licence to publish four unconnected lines. What the table fixes at every level is the class's coverage mode, its code allowance, its cap and its link count; what the moves may change is the order of its sections, where the body enters them, and how its headings are written. Legend: **H1 yes** = the body starts with a visible `#` title; **coverage all** = every core module; **major** = every major path named, one or two detailed; **primary** = the primary one or two paths only; **name-all** = every path named compactly, the primary one or two detailed; **code full** = several verified blocks; **short** = one or two compact blocks; **none** = no fenced block.
 
 | Platform | H1 | Coverage | Code | Body shape |
 | --- | --- | --- | --- | --- |
@@ -279,11 +279,11 @@ The `never` list is the platforms whose own guidance treats a promotional block 
 
 ## 10. Emoji per platform
 
-The interview count applies everywhere except `hackernews` (always 0), and the subject family in `references/registers.md` caps it: the technical families sit at none to one whatever the interview says, which is what keeps a debugging post from wearing four emoji on a surface whose natives use none. Hard-cap surfaces draw from 1 to 2 under `1-5`. The natives of `instagram`, `pixelfed`, `threads`, `telegram`, `vk-wall`, `mewe`, `youtube` and `tiktok` carry emoji on the promise line; `linkedin`, `reddit`, `lemmy`, `quora` and the article platforms, `blogger`, `livejournal`, `dreamwidth`, `mataroa` and `deviantart` among them, carry them inside the prose where a sentence earns one.
+The interview count applies everywhere except `hackernews` (always 0), and the subject family in `references/registers.md` caps it: the technical families sit at none to one whatever the interview says, which is what keeps a debugging post from wearing four emoji on a surface whose natives use none. The draw is per length class under `1-5`: deep articles and mini-blogs take 2 to 5, every other class 1 to 2, and on the long forms the family cap rises by one with a density limit of one emoji per 400 characters of body (`references/authored-style.md` section 8). The natives of `instagram`, `pixelfed`, `threads`, `telegram`, `vk-wall`, `mewe`, `youtube` and `tiktok` carry emoji on the promise line; `linkedin`, `reddit`, `lemmy`, `quora` and the article platforms, `blogger`, `livejournal`, `dreamwidth`, `mataroa` and `deviantart` among them, carry them inside the prose where a sentence earns one.
 
 ## 11. Frontmatter
 
-Exactly `platform`, `title`, `voice`, `links`, `hashtags`, in that order, plus `attachments` where the media stage (`SKILL.md` Phase 11) wrote one. Forbidden: `scheduled`, `timezone`, `media`, `alt_text` as a key of its own (the alt text rides inside the attachment entry), `status`, `target`, `queue`, `cadence`. The publishing skill adds those later.
+Exactly `platform`, `title`, `voice`, `creativity`, `links`, `hashtags`, in that order, plus `attachments` where the media stage (`SKILL.md` Phase 11) wrote one. Forbidden: `scheduled`, `timezone`, `media`, `alt_text` as a key of its own (the alt text rides inside the attachment entry), `status`, `target`, `queue`, `cadence`. The publishing skill adds those later.
 
 What each platform takes, once media exists:
 
@@ -336,7 +336,14 @@ rhythm floor per file, clustering ban, structure moves per file and per class (c
 subject family register: rhythm band, lexicon, question habit, emoji baseline (registers.md)
 opener, closing, title and first-person distributions
 correction locality and deep-detail budget (one third of the pack at most)
-emoji count equals the drawn count, placement rules, hackernews at zero
+short-post arc on hard caps and on every band aim under 600: order, the author's
+own line, payoff last, no movable line
+no repeat inside a file: the key number once, no 2-word phrase in two sentences
+numbers without decoration zeros
+emoji count equals the drawn count for the length class, density on long forms
+emphasis: marked spans per class, capitals span, reasons recorded, exclamation
+and question marks against the family's Ask value
+emoji placement rules, hackernews at zero
 tag lines from the pool in pool order
 ASCII punctuation, semicolon allowance, bold allowance, no #show, no date outside the allowed qualifier
 no README, no manifest, no archive

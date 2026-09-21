@@ -25,7 +25,7 @@ An unlisted subject takes the family it most nearly behaves like and the report 
 
 ## 2. The families
 
-Rhythm columns are word counts per sentence on prose, matching the floors in `references/creativity.md` section 5. `Ask` is whether a question to the reader is native. `Emoji` is the baseline before the interview count is applied, and the interview answer never raises a family that sits at zero above one per post.
+Rhythm columns are word counts per sentence on prose, matching the floors in `references/creativity.md` section 5. `Ask` is whether a question to the reader is native, and it governs the exclamation mark too: only `sometimes` and `often` families may carry one at all (`references/authored-style.md` section 10). `Emoji` is the baseline before the interview count is applied, and the interview answer never raises a family that sits at zero above one per post - except on a deep article or a mini-blog, where the baseline rises by exactly one because the same count is a different density across fifteen hundred words.
 
 | Family | Rhythm | Structure habits | Opener habits | Closing habits | Ask | Emoji |
 | --- | --- | --- | --- | --- | --- | --- |

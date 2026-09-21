@@ -38,7 +38,25 @@ Two different sources give different fingerprints, so two packs differ structura
 
 Where a catalog has `k` entries, the run starts at `fingerprint mod k` and walks forward, which is what keeps the first choice from being the first row of every table on every run.
 
-## 4. The levels
+## 4. The scale and the levels
+
+The interview offers one ten-step dial, 1 the plainest and 10 the freest. Three of the ten carry names, and the name is that number rather than a second numbering: **Normal is 1, Medium is 5, High is 8**, and the interview may also be given any other number on the same scale. Every number resolves to one of three levels, and everything else in this file is written per level:
+
+| Number | Level | The named point in it |
+| --- | --- | --- |
+| 1, 2, 3, 4 | 1 - Normal | 1 |
+| 5, 6, 7 | 2 - Medium | 5 |
+| 8, 9, 10 | 3 - High | 8 |
+
+The level decides the rules. Where a number sits inside its level decides one thing only, and it is countable so the audit can read it back:
+
+| Level | What the position moves |
+| --- | --- |
+| 1 | the share of the pack that takes a structure alternate from section 6: `n` tenths of the files, rounded to the nearest whole file, so 1 alternates a tenth of the pack and 4 two fifths of it |
+| 2 | registered variants per prose anchor (section 7): 2 at 5, 3 at 6 and 7; and the share of files whose opener is invented rather than drawn from the catalogs, again `n` tenths |
+| 3 | how far the blueprint recedes: at 8 it still informs every class, at 9 the long forms are composed from the module map alone, at 10 every class is and one class carries two different takes on the same source |
+
+Nothing else interpolates. The floor in section 2, the rhythm floors in section 5, the anchor policy in section 7, the echo thresholds and the tell counts belong to the level and are identical at every number inside it - 1 carries every requirement 4 carries, and 8 every requirement 10 carries. A number is never a reason to write less carefully; it is a reason to write more of the pack differently.
 
 | Level | Name | In one sentence |
 | --- | --- | --- |
@@ -46,13 +64,13 @@ Where a catalog has `k` entries, the run starts at `fingerprint mod k` and walks
 | 2 | Medium | The register leads the structure, anchors carry registered variants, and openers may be invented rather than picked. |
 | 3 | High | The pack is composed as a writer would compose it, from the module map rather than from the blueprint, with the floor intact and the repetition checks tightened. |
 
-Level 1 is the floor of the dial and the default answer. There is no level below it: a setting that only reproduced the blueprint produced packs that were uniform without being safer, and safety lives in section 2, which every level carries in full.
+Level 1 is the floor of the dial and `1 - Normal`, the number 1, is the default answer. There is no level below it and no number below 1: a setting that only reproduced the blueprint produced packs that were uniform without being safer, and safety lives in section 2, which every level carries in full.
 
 ### What each axis does per level
 
 | Axis | 1 | 2 | 3 |
 | --- | --- | --- | --- |
-| **Structure** | blueprint default per class, with up to a third of the files taking an alternate from section 6 and the long forms taking one section-order variant, both by fingerprint | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
+| **Structure** | blueprint default per class, with the share of files taking an alternate from section 6 set by the dial position above (a tenth of the pack at 1, two fifths at 4) and the long forms taking one section-order variant, both by fingerprint | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
 | **Anchors** | verbatim, with the frame prose around them written per platform | 2 to 3 registered variants per anchor, each verified once, assigned per class, never per post | re-voiced per post, with numbers, conditions, peers and named cases frozen; the audit compares facts, not strings |
 | **Rhythm** | spread floor B (section 5), fragments allowed above the hard caps | spread floor C, fragments common, one self-correction and one hedge per long form | spread floor C with no ceiling, one-word sentences allowed anywhere above the hard caps |
 | **Openers, titles, closings** | catalogs plus register-native moves, distributions as Phase 6 states them | invented moves allowed when they pass the opener tests in `references/authored-style.md` | free, with the three opener tests and the title spine the only survivors |
@@ -159,7 +177,7 @@ P1  the level's own requirement missed: rhythm floor, structure-alternate count,
 P2  polish inside the level's allowance. Reported, fixed where cheap, never blocking.
 ```
 
-Numbers the report carries, per level and per file where the check is per file: the fingerprint, the level, sentence count, mean and spread, shortest and longest, the share inside the 10-to-20-word band, the longest run of near-equal sentences, fragments used, structure moves applied, anchor variants in play, tells per 200 words at levels 2 and 3, and the echo counts at the level's threshold.
+Numbers the report carries, per level and per file where the check is per file: the fingerprint, the dial number with the level it resolves to and the position check that level names in section 4, sentence count, mean and spread, shortest and longest, the share inside the 10-to-20-word band, the longest run of near-equal sentences, fragments used, structure moves applied, anchor variants in play, tells per 200 words at levels 2 and 3, and the echo counts at the level's threshold.
 
 Count them. A number that was not counted is not reported: an asserted rhythm score is the same fabrication this skill refuses everywhere else.
 
@@ -173,3 +191,4 @@ Count them. A number that was not counted is not reported: an asserted rhythm sc
 - Letting a register loosen the caveat, the privacy sentence or a safety-bearing line.
 - Reporting rhythm numbers that were never counted, or a fingerprint that was never computed.
 - Raising the level to rescue a thin source. A source with two facts produces a short pack at every level.
+- Reading a low number as permission to do less than its level requires. 1 and 4 sit in the same level and differ only in how much of the pack takes an alternate shape.

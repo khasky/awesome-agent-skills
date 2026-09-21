@@ -64,6 +64,8 @@ Then place separators on the platforms whose editors carry one, per the support 
 
 Also in this pass: the code blocks sit inside the part they belong to, the links sit where the class says, the diagram is where the blueprint puts it, and the block shape matches the class.
 
+Short files have no parts, and this is where they are read as a sequence instead. Take each one line by line and ask what the line before it made the reader expect: the author enters, something sends them looking, the finding lands, the number bears it out. A line that answers nothing the line above it raised is where the post fell apart into a stack, and moving it rarely fixes that - the connective sentence it needed was never written. The arc and its two load-bearing rules are in `SKILL.md` Phase 7.
+
 Exit: every long file has its parts listed in `platform-plan.md`, its separator count inside the rule, and no literal separator characters on a platform that renders none.
 
 ## 4. Pass 3 - language, until a person wrote it
@@ -80,6 +82,7 @@ Read the whole body top to bottom, out loud where that is possible, and fix:
 - **Contractions and plain verbs** where the voice allows them, held consistently through the file rather than drifting.
 - **Tense and person consistency** inside a part. A switch mid-paragraph is a tell.
 - **The closing line.** Read it alone. A closing that could end any post on the topic ends none of them.
+- **Emphasis, last.** This is the pass where a marked span is added or removed, because it is the first pass that reads the whole body as a reader does. Ask of every candidate whether the sentence already carries the stress on its own; where it does, the mark comes out. Where it does not and the source carries a genuine outlier, mark it inside the class ceiling in `authored-style.md` section 10 and write the reason in `variation-plan.md`.
 
 The lexicon bans in `authored-style.md` section 7 and the tell-density rule in `creativity.md` section 8 are counted here rather than eyeballed.
 
