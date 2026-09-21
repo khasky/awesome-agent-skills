@@ -15,7 +15,7 @@ A second finding binds the whole file: the fix for uniform rhythm is not a presc
 The dial governs shape and phrasing. It never governs truth, and it never buys license to invent. At level 3 exactly as at level 1:
 
 - every number keeps the condition it was verified under, every peer stays the one Phase 3 locked, every command stays line-for-line what the source or the official page shows;
-- no fabricated first-person experience, no manufactured stakes, no invented specifics, no performed candor, no contrarian stance the source does not support. A higher level asks for a more human voice, not for material the run does not have;
+- no fabricated first-person experience, no manufactured stakes, no invented specifics, no performed candor, no contrarian stance the source does not support. A higher level asks for a more human voice, not for material the run does not have. The run's own acts are not the author's: the pages this run opened, the count this run made and the links this run checked never appear as `I read all three pages myself`;
 - hard caps, the frontmatter contract, the footer byte-for-byte, the platform tag fields, the media and publishing separation;
 - ASCII punctuation, no semicolons. Both are rendering and tell decisions rather than style ones: the em dash reads as machine-made in this genre now, and a run of semicolons is the plainest tell a body can carry;
 - the caveat's content, the privacy line and any safety-bearing sentence. Their wording may move at levels 2 and 3; what they oblige the reader to do may not;
@@ -28,13 +28,11 @@ When a level's permission and the floor disagree, the floor wins and the report 
 Variation that comes from a coin toss cannot be re-run, reviewed or explained. Variation that comes from the source can. Before Phase 6, compute one small number from the source itself and use it to index the catalogs:
 
 ```text
-fingerprint = (count of [C] claims
-               + 3 x count of [M] modules
-               + count of characters in the primary subject
-               + count of [N] numbers) mod 12
+fingerprint = (total characters of every file saved under source/
+               + count of characters in the primary subject) mod 12
 ```
 
-Two different sources give different fingerprints, so two packs differ structurally without anyone choosing to differ. The same source gives the same fingerprint, so a second run is explainable and a defect is reproducible. Record it in `editorial-brief.md` beside the level, and name it in the report.
+Two different sources give different fingerprints, so two packs differ structurally without anyone choosing to differ. The same source gives the same fingerprint, so a second run is explainable and a defect is reproducible. It is computed from the saved bytes and the subject string, never from the run's own counts of claims, modules or numbers: three runs on one source that computed it from their evidence notes got two different fingerprints, because each run drew the notes a little differently, and a fingerprint that moves with the note-taking reproduces nothing. Record it in `editorial-brief.md` beside the level, and name it in the report.
 
 Where a catalog has `k` entries, the run starts at `fingerprint mod k` and walks forward, which is what keeps the first choice from being the first row of every table on every run.
 
@@ -70,8 +68,8 @@ Level 1 is the floor of the dial and `1 - Normal`, the number 1, is the default 
 
 | Axis | 1 | 2 | 3 |
 | --- | --- | --- | --- |
-| **Structure** | blueprint default per class, with the share of files taking an alternate from section 6 set by the dial position above (a tenth of the pack at 1, two fifths at 4) and the long forms taking one section-order variant, both by fingerprint | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
-| **Anchors** | verbatim, with the frame prose around them written per platform | 2 to 3 registered variants per anchor, each verified once, assigned per class, never per post | re-voiced per post, with numbers, conditions, peers and named cases frozen; the audit compares facts, not strings |
+| **Structure** | blueprint default per class, with the share of files taking an alternate from section 6 set by the dial position above (a tenth of the pack at 1, two fifths at 4), and on the deep-article and mini-blog classes no two files sharing a section order or a heading set, the fingerprint choosing the first and each further file walking the alternates table from there | every class re-planned: the blueprint is the fallback, the register is the lead; no two files in a class share a section order | composed from the module map; the blueprint informs, it does not decide; a class may carry two different takes on the same source |
+| **Anchors** | one string per anchor, verbatim on at most a third of its carriers and written from the fact set on the rest; the stance, the closing and the ladder are frames; on an essay only numbers, quotations, blocks and the thesis are strings at all | 2 to 3 registered variants per anchor, each verified once, assigned per class, never per post | re-voiced per post, with numbers, conditions, peers and named cases frozen; the audit compares facts, not strings |
 | **Rhythm** | spread floor B (section 5), fragments allowed above the hard caps | spread floor C, fragments common, one self-correction and one hedge per long form | spread floor C with no ceiling, one-word sentences allowed anywhere above the hard caps |
 | **Openers, titles, closings** | catalogs plus register-native moves, distributions as Phase 6 states them | invented moves allowed when they pass the opener tests in `references/authored-style.md` | free, with the three opener tests and the title spine the only survivors |
 | **Register authority** | sets lexicon, emoji baseline, question habit and heading style | decides structure, length target inside the band, and which platforms get the long treatment | decides everything the floor does not |
@@ -148,7 +146,7 @@ Two rules bind the moves at every level: no file changes more than two moves at 
 
 The anchor layer is what makes the pack one family, and it is also the loudest source of sameness. The compromise is registered variation rather than free paraphrase.
 
-- **Level 1.** One string per anchor, verbatim, with the frame prose around it written per platform.
+- **Level 1.** One string per anchor, verbatim on at most a third of the files that carry it and written from the anchor's fact set on the rest, with the frame prose around it written per platform. Which sentences are anchors at all is the source type's decision (`references/authored-style.md` section 1): on an essay the strings are the numbers, the quotations, the blocks and the thesis, and the ladder, the verdict and the caveat are fact sets. The stance, the closing and the what-I-do-now ladder are frames here as at every level: a level-1 pack that ships one closing sentence to half the platforms has not used the floor of the dial, it has skipped the frame layer.
 - **Level 2.** Each anchor may carry 2 or 3 variants. Every variant is written in `anchors.md`, verified once against the same evidence line, and assigned to whole presentation classes rather than to individual posts. A reader who follows the author on three feeds meets one wording; a reader who also reads the long form meets a second. Numbers, units, conditions, peer names and the named cases of the split are identical across variants, and the audit compares those, not the prose.
 - **Level 3.** The anchor is a fact set rather than a string: the proof carries the subject tier, each peer with its own range, and the basis; the split carries its named cheap-path tasks and its named escalation cases and its escalation target; the caveat carries the things not to send and the alternative. Each post writes them in its own words, and the audit checks that every element of the fact set is present and unchanged in meaning. A post that drops a peer, merges two ranges, or softens the caveat into advice fails, exactly as it would at level 1.
 
@@ -163,7 +161,7 @@ A banned-word list produces prose that dodges the list. Count instead, per 200 w
 - a stock intensifier (`crucial`, `pivotal`, `robust`, `seamless`, `powerful`), an abstraction standing where a named thing belongs;
 - a sentence whose subject is the post itself.
 
-The count is reported per file at levels 2 and 3, where the looser frames make these easier to slip in. Technical terms that are the only precise word for the thing are not tells and are not counted, and a construction quoted from the source keeps its quotation marks and is exempt.
+The count is reported per file at every level. The looser frames at 2 and 3 make these easier to slip in, but the construction the count catches most often is the abstraction standing where a named thing belongs, and that one arrives at every level: a pack that wrote `<an abstraction where the method had a name>` into a quarter of its files had the method's name and its number in its own evidence notes. Technical terms that are the only precise word for the thing are not tells and are not counted, and a construction quoted from the source keeps its quotation marks and is exempt.
 
 ## 9. What the level does to the audit
 
@@ -192,3 +190,5 @@ Count them. A number that was not counted is not reported: an asserted rhythm sc
 - Reporting rhythm numbers that were never counted, or a fingerprint that was never computed.
 - Raising the level to rescue a thin source. A source with two facts produces a short pack at every level.
 - Reading a low number as permission to do less than its level requires. 1 and 4 sit in the same level and differ only in how much of the pack takes an alternate shape.
+- Giving the long forms of a level-1 pack one shared section order and one shared heading set. That is the blueprint pasted eighteen times, and the reader rejects it on most of them whatever the frames say.
+- Computing the fingerprint from the run's own notes, so two runs on one source land on two shapes and neither can be reproduced.
