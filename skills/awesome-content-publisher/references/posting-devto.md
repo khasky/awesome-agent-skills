@@ -36,12 +36,12 @@ tags: tag1, tag2, tag3
 cover_image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png
 ---
 
-![<alt text>](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png)
+![<frontmatter title>](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png)
 
 <body>
 ```
 
-Uploading and then referencing it only from `cover_image` is the failure to avoid: the article body then has no image in it, and the cover carries no alt text. The in-body markdown is also the only place the declared alt text survives. Confirm on the published page that an `img` sits above the first `h2` and that its `alt` is the post file's alt text.
+Uploading and then referencing it only from `cover_image` is the failure to avoid: the article body then has no image in it, and the cover carries no alt text. The in-body markdown is also the only place the alt text (the frontmatter `title`) survives. Confirm on the published page that an `img` sits above the first `h2` and that its `alt` is the post file's alt text.
 
 Proving the uploaded URL is yours without leaving the editor: load it as an `Image()` inside `page.evaluate` and read `naturalWidth`/`naturalHeight` off the `onload`. That compares against the source file's dimensions in one call and costs no navigation, so the draft stays intact.
 
