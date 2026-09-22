@@ -226,6 +226,8 @@ Each is a plain *is*.
 
 The register of a model describing code; a developer typing the same comment uses the plain verb. Scope matters more here than anywhere else on this page: each of these is ordinary English in a document and ordinary vocabulary in some products, so outside comment text and message prose they are not findings. Prose written about the code carries the same register and the same scope — a spec, a design note, a review reply explaining a mechanism — because the sentence there is a comment that happens to live outside the file.
 
+Two Tier 1 entries reach into this scope as well: `deliberately` and `intentionally`, with their family (`deliberate`, `on purpose`, `by design`). `// Deliberately less sensitive than the calibration above` and `// The list is deliberately exhaustive` tell a reader who wondered to stop wondering, where the sentence naming what breaks otherwise settles it and proves the choice was one; in a commit message the word claims the diff was meant, which the diff already says. Replace with the reason. The comment stays when it carries that reason and the word is gone.
+
 - `honored` — applied, enforced, respected
 - `honoured` — applied, enforced, respected
 - `mint` — create, generate, issue
