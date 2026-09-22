@@ -340,6 +340,8 @@ correction locality and deep-detail budget (one third of the pack at most)
 short-post arc on hard caps and on every band aim under 600: order, the author's
 own line, payoff last, no movable line
 no repeat inside a file: the key number once, no 2-word phrase in two sentences
+no sentence appears twice in a file, and no paragraph is a copy of another, compared after
+collapsing whitespace — a duplicate that reaches the publisher is a question it has to stop and ask
 numbers without decoration zeros
 emoji count equals the drawn count for the length class, density on long forms
 emphasis: marked spans per class, capitals span, reasons recorded, exclamation

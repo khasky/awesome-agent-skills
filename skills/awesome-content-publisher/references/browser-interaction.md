@@ -406,3 +406,20 @@ Three platforms in one run presented the same symptom — the submit is enabled,
 So after any submit that appears to do nothing, before climbing the click ladder: enumerate every `[role=dialog]`, `.modal`, `[class*="modal"]`, `[class*="popup"]`, `[class*="overlay"]` **and** `.swal2-container` that has a non-zero rect, and print the first 60 characters of each one's text. One call, no guessing at vocabulary. Read what is on screen and answer it.
 
 The same discipline applies to the checklists platforms put beside a submit. HackerNoon renders `n/7 ready` over seven labelled rows, each satisfied row carrying a tick `svg`; the counter alone says only that something is missing, while the rows say which. Read the rows. And read the row's own text rather than inferring from it — one run spent four attempts chasing a phrase in a row's subtext (`Debut, goals, or blogging set`) that named nothing configurable, when the real gap was an empty URL field two sections away.
+
+## One tab, never a second page from run_code
+
+`page.context().newPage()` inside `browser_run_code_unsafe` opened the page and then hung the whole tool call past its timeout, twice on two platforms; the bridge tracks the tab it was given and a page created behind its back never returns. Read-backs on a second surface go through the working tab (`page.goto`, then back), or through `browser_tabs` when a second tab is unavoidable. The one exception that worked was a short-lived page closed inside the same call, and even that is a risk not worth the saved navigation.
+
+## Long bodies and the 30-second action timeout
+
+`handle.type` and `elementHandle.click` carry a 30-second action timeout, and typing a 2,000-character body with a per-key delay runs over it — the call fails with the composer holding the typed prefix and the run has no idea how much landed. Either pass `{ timeout: 120000 }` on the call, or type in chunks of a few hundred characters, and on any timeout read the field back, confirm the value is a prefix of the body, and type the remainder from where it stopped.
+
+## A `beforeunload` after a throwaway probe is accepted, not dismissed
+
+The rule above (dismiss with `accept: false`) protects a draft. After an upload done only to learn the asset's URL, the page's `beforeunload` guards nothing the run wants: accept it, let the reload finish, and confirm the editor reads empty before the real fill. A navigation blocked by that dialog can still complete the rest of the script once the dialog is answered, so re-read the editor's state rather than assuming the fill did not run.
+
+## Chooser answers need a staged copy; `setInputFiles` does not
+
+`browser_file_upload` reads only from the bridge's allowed roots, so a native chooser (YouTube, Flipboard, LiveJournal, Teletype) is answered from a copy of the campaign image staged in the run's artifact folder — copy each file there before the platform that needs it, and delete the folder in Phase 9. `setInputFiles` on an `input[type=file]` from inside `run_code` reaches any path on disk, so the platforms with a reachable input (Tumblr, Minds, LiveJournal's cover, HackerNoon's widget, the Google picker frame on Blogger) take the source path directly.
+
