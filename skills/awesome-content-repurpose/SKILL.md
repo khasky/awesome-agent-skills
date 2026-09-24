@@ -23,7 +23,7 @@ Reference files, read when their phase is reached rather than up front:
 - `references/registers.md` - how to read the subject family from the source, and how each family sounds. Phase 0.
 - `references/creativity.md` - the creativity dial: what each level permits, the rhythm floors, the tell count, and the floor no level lifts. Phase 1.
 - `references/fidelity.md` - the evidence-note format, the module map, the claims ledger, comparison peers, correction locality. Phase 2.
-- `references/forms.md` - the three forms, their platform groups, their ceilings and where each number came from, what the publisher does with each file, and the picture per form. Phase 5.
+- `references/forms.md` - the three forms, their platform groups, their ceilings and where each number came from, what the publisher does with each file, and the two pictures. Phase 5.
 - `references/authored-style.md` - anchors, openers, closings, titles, lexicon, emoji and emphasis. Phase 4, before the anchors are written.
 - `references/surface-rules.md` - the smaller writing rules that support Phase 5 to 7. Read with Phase 5.
 - `references/revision.md` - the passes between a fast draft and a finished file, and the exit condition each one stops at. Phase 5, before the long form is drafted.
@@ -233,17 +233,17 @@ The three files exist. One question, and the run does not end before it is answe
 
 A supplied file is a path or a URL. A URL is downloaded into `media/` and the run says what it saved, from where, and its size and type. Anything that is not an image or a video is reported and the question asked again.
 
-**Images.** Supplied: the file is resolved into `media/` and it is the approved picture. Generated: `awesome-content-graphics` is handed the facts from `source-notes.md`, its boundary section, the long form's title, the output language and `<posts folder>/media/` as its output folder; it runs its own count question and pick gate, and this skill does not restate them or proceed until it hands control back. Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. It writes one picture per form file, named after it (`1-short.png` beside `1-short.md`), in the frame most of that form's platforms use.
+**Images.** Supplied: the file is resolved into `media/` and it is the approved picture. Generated: `awesome-content-graphics` is handed the facts from `source-notes.md`, its boundary section, the long form's title, the output language and `<posts folder>/media/` as its output folder; it runs its own count question and pick gate, and this skill does not restate them or proceed until it hands control back. Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. It writes two pictures beside the post files, `horizontal.png` (16:9) and `vertical.png` (9:16), and says which platforms take each; a picture no listed platform takes is not written.
 
 **Video.** One source file becomes stills and a short, both made with video tooling already on the machine (`ffmpeg` is the usual one; confirm it answers first, and where nothing is installed ship the posts text-only and say what was skipped). Stills: at most 4 frames, chosen as the moments the posts talk about, never ticks off a stopwatch. The short: vertical 9:16, cut to the shortest verified video limit among the platforms that take video, keeping the moment the proof lands. Each form file declares the stills or the short its platforms can take.
 
 **Frontmatter.** Media is declared after `hashtags`:
 
 ```yaml
-attachments: [{ file: 1-short.png, alt: "<what it shows and what it means>" }]
+attachments: [{ file: horizontal.png, frame: horizontal, alt: "<what it shows and what it means>" }, { file: vertical.png, frame: vertical, alt: "<what it shows and what it means>" }]
 ```
 
-Paths are relative to the posts folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No graphics` is an answer about pictures, never about which forms get written.
+Each form file lists the pictures its own platforms take: both entries where its group mixes wide and square-or-tall frames, one where it does not. The `frame` marks alternatives rather than a carousel, and the publisher gives each platform the one that matches its shape. Paths are relative to the posts folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No graphics` is an answer about pictures, never about which forms get written.
 
 **Then close `run-settings.md`**: fill its `Media` line with the answer, the files that came out of it, and which forms carry none.
 

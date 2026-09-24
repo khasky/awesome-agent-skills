@@ -8,55 +8,109 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 
 ## The canonical table
 
-`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and never a dot — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` says what the platform does with an attachment: required means it cannot post without one, optional means it takes one and the run's image belongs there too, and a row saying none is supported takes no attachment at all. Optional is not a synonym for "skip it" — when the campaign has an image, every optional row that the post targets gets it. `Image` is the frame shape the platform shows an attachment in, which is a structural fact about the surface rather than a volatile limit: `awesome-content-image-adapter` reads this column, and its `awesome-content-image-adapter/references/geometry.md` turns each shape into a pixel target. A row reading `none` takes no image file at all. `Genre` names the register file Phase 5 writes against.
+`Slug` is the vocabulary token: filenames carry it verbatim, so it stays lowercase with hyphens and never a dot — a dot collides with the file extension when a name is parsed back. `Site` says which service the slug means, because several of them are not guessable from the token. `Target` is the detail posting requires and the interview must collect (Phase 2); a post reaching the publisher without it is a publication blocker. `Media` says what the platform does with an attachment: required means it cannot post without one, optional means it takes one and the run's image belongs there too, and a row saying none is supported takes no attachment at all. Optional is not a synonym for "skip it" — when the campaign has an image, every optional row that the post targets gets it. `Picture` is which of the post set's two pictures the platform takes: `horizontal` (16:9) or `vertical` (9:16, the whole source sharp across its middle). It is the one the platform's feed shows largest without cutting into the picture, as researched in *The picture each platform takes* below, and `awesome-content-image-adapter`, `awesome-content-repurpose` and `awesome-content-publisher` all read this column. A row reading `none` takes no image file at all. `Genre` names the register file Phase 5 writes against.
 
-| Slug | Site | Target the interview must collect | Media | Image | Genre file |
+| Slug | Site | Target the interview must collect | Media | Picture | Genre file |
 | --- | --- | --- | --- | --- | --- |
-| `facebook-wall` | facebook.com | defaults to the personal timeline (`facebook.com/<handle>`); a group URL when the user names a group to post into | optional | 4:5 | `genre-community-post.md` |
-| `facebook-page` | facebook.com/<page> | the Page, asked only when the account manages more than one | optional | 4:5 | `genre-micro-post.md` |
-| `linkedin` | linkedin.com | — | optional | 1.91:1 | `genre-micro-post.md` |
-| `reddit` | reddit.com | subreddit | optional | 16:9 | `genre-community-post.md` |
-| `lemmy` | any Lemmy instance | instance domain + community | optional | 16:9 | `genre-community-post.md` |
-| `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | 4:3 | `genre-community-post.md` |
-| `tumblr` | tumblr.com | — | optional | 4:5 | `genre-micro-post.md` |
-| `mastodon` | any Mastodon instance | instance domain | optional | 16:9 | `genre-micro-post.md` |
-| `bluesky` | bsky.app | — | optional | 16:9 | `genre-micro-post.md` |
-| `x` | x.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `threads` | threads.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `truthsocial` | truthsocial.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `bastyon` | bastyon.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `vk-wall` | vk.com | own wall or a community the user may post to | optional | 16:9 | `genre-micro-post.md` |
-| `telegram` | t.me | channel or group | optional | 16:9 | `genre-micro-post.md` |
-| `peerlist` | peerlist.io | — | optional | 16:9 | `genre-micro-post.md` |
-| `minds` | minds.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `instagram` | instagram.com | — | required | 4:5 | `genre-micro-post.md` |
-| `pinterest` | pinterest.com | board | required | 2:3 | `genre-micro-post.md` |
-| `pixelfed` | pixelfed.social, or another Pixelfed instance | defaults to `pixelfed.social`; ask only when the account lives on another instance | required | 1:1 | `genre-micro-post.md` |
-| `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | 16:9 | `genre-micro-post.md` |
-| `ko-fi` | ko-fi.com | — | optional | 1:1 | `genre-micro-post.md` |
-| `buymeacoffee` | buymeacoffee.com | — | optional | 16:9 | `genre-micro-post.md` |
+| `facebook-wall` | facebook.com | defaults to the personal timeline (`facebook.com/<handle>`); a group URL when the user names a group to post into | optional | vertical | `genre-community-post.md` |
+| `facebook-page` | facebook.com/<page> | the Page, asked only when the account manages more than one | optional | vertical | `genre-micro-post.md` |
+| `linkedin` | linkedin.com | — | optional | vertical | `genre-micro-post.md` |
+| `reddit` | reddit.com | subreddit | optional | vertical | `genre-community-post.md` |
+| `lemmy` | any Lemmy instance | instance domain + community | optional | vertical | `genre-community-post.md` |
+| `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | horizontal | `genre-community-post.md` |
+| `tumblr` | tumblr.com | — | optional | vertical | `genre-micro-post.md` |
+| `mastodon` | any Mastodon instance | instance domain | optional | horizontal | `genre-micro-post.md` |
+| `bluesky` | bsky.app | — | optional | horizontal | `genre-micro-post.md` |
+| `x` | x.com | — | optional | horizontal | `genre-micro-post.md` |
+| `threads` | threads.com | — | optional | horizontal | `genre-micro-post.md` |
+| `truthsocial` | truthsocial.com | — | optional | horizontal | `genre-micro-post.md` |
+| `bastyon` | bastyon.com | — | optional | horizontal | `genre-micro-post.md` |
+| `vk-wall` | vk.com | own wall or a community the user may post to | optional | horizontal | `genre-micro-post.md` |
+| `telegram` | t.me | channel or group | optional | horizontal | `genre-micro-post.md` |
+| `peerlist` | peerlist.io | — | optional | horizontal | `genre-micro-post.md` |
+| `minds` | minds.com | — | optional | horizontal | `genre-micro-post.md` |
+| `instagram` | instagram.com | — | required | vertical | `genre-micro-post.md` |
+| `pinterest` | pinterest.com | board | required | vertical | `genre-micro-post.md` |
+| `pixelfed` | pixelfed.social, or another Pixelfed instance | defaults to `pixelfed.social`; ask only when the account lives on another instance | required | horizontal | `genre-micro-post.md` |
+| `patreon` | patreon.com | — (visibility public/members is per-post: ask) | optional | horizontal | `genre-micro-post.md` |
+| `ko-fi` | ko-fi.com | — | optional | horizontal | `genre-micro-post.md` |
+| `buymeacoffee` | buymeacoffee.com | — | optional | horizontal | `genre-micro-post.md` |
 | `hackernews` | news.ycombinator.com | — | none supported | none | `genre-community-post.md` |
-| `daily-dev` | daily.dev | defaults to a direct post from the personal profile (`New Post`, audience everyone); ask only when the user names a squad | optional | 16:9 | `genre-community-post.md` |
-| `wonderful-dev` | wonderful.dev | — | optional | 16:9 | `genre-community-post.md` |
-| `devto` | dev.to | — | optional | 16:9 | `genre-long-article.md` |
-| `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | 16:9 | `genre-long-article.md` |
-| `hackernoon` | hackernoon.com | — | optional | 16:9 | `genre-long-article.md` |
-| `medium` | medium.com | publication, when posting into one | optional | 16:9 | `genre-long-article.md` |
-| `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | 16:9 | `genre-long-article.md` |
-| `telegraph` | telegra.ph | — | optional | 16:9 | `genre-long-article.md` |
-| `teletype` | teletype.in | blog, when the account has more than one | optional | 16:9 | `genre-long-article.md` |
-| `blogger` | blogger.com | blog, when the account has more than one | optional | 16:9 | `genre-long-article.md` |
-| `flipboard` | flipboard.com | magazine | optional | 4:3 | `genre-micro-post.md` |
-| `livejournal` | livejournal.com | defaults to the personal journal; ask only when the user names a community | optional | 16:9 | `genre-long-article.md` |
-| `dreamwidth` | dreamwidth.org | defaults to the personal journal (`Post to:`); ask only when the user names a community | optional | 16:9 | `genre-long-article.md` |
-| `mewe` | mewe.com | defaults to the personal feed; ask only when the user names a group | optional | 16:9 | `genre-micro-post.md` |
-| `youtube` | youtube.com | channel, when the account manages more than one | optional | 1:1 | `genre-micro-post.md` |
-| `tiktok` | tiktok.com | — | required (photos) | 9:16 | `genre-micro-post.md` |
-| `imgur` | imgur.com | — | required | 16:9 | `genre-micro-post.md` |
-| `flickr` | flickr.com | — | required | 16:9 | `genre-micro-post.md` |
-| `mataroa` | mataroa.blog | — | optional | 16:9 | `genre-long-article.md` |
-| `github-gists` | gist.github.com | — | none supported (images by URL only) | 16:9 | `genre-long-article.md` |
-| `deviantart` | deviantart.com | — | optional | 16:9 | `genre-long-article.md` |
+| `daily-dev` | daily.dev | defaults to a direct post from the personal profile (`New Post`, audience everyone); ask only when the user names a squad | optional | horizontal | `genre-community-post.md` |
+| `wonderful-dev` | wonderful.dev | — | optional | horizontal | `genre-community-post.md` |
+| `devto` | dev.to | — | optional | horizontal | `genre-long-article.md` |
+| `hashnode` | hashnode.com | publication, when posting to one rather than a personal blog | optional | horizontal | `genre-long-article.md` |
+| `hackernoon` | hackernoon.com | — | optional | horizontal | `genre-long-article.md` |
+| `medium` | medium.com | publication, when posting into one | optional | horizontal | `genre-long-article.md` |
+| `substack` | substack.com | defaults to the personal profile (`substack.com/@handle`, Create → Article, no email); ask only when the user names a publication to send from | optional | horizontal | `genre-long-article.md` |
+| `telegraph` | telegra.ph | — | optional | horizontal | `genre-long-article.md` |
+| `teletype` | teletype.in | blog, when the account has more than one | optional | horizontal | `genre-long-article.md` |
+| `blogger` | blogger.com | blog, when the account has more than one | optional | horizontal | `genre-long-article.md` |
+| `flipboard` | flipboard.com | magazine | optional | horizontal | `genre-micro-post.md` |
+| `livejournal` | livejournal.com | defaults to the personal journal; ask only when the user names a community | optional | horizontal | `genre-long-article.md` |
+| `dreamwidth` | dreamwidth.org | defaults to the personal journal (`Post to:`); ask only when the user names a community | optional | horizontal | `genre-long-article.md` |
+| `mewe` | mewe.com | defaults to the personal feed; ask only when the user names a group | optional | horizontal | `genre-micro-post.md` |
+| `youtube` | youtube.com | channel, when the account manages more than one | optional | vertical | `genre-micro-post.md` |
+| `tiktok` | tiktok.com | — | required (photos) | vertical | `genre-micro-post.md` |
+| `imgur` | imgur.com | — | required | horizontal | `genre-micro-post.md` |
+| `flickr` | flickr.com | — | required | horizontal | `genre-micro-post.md` |
+| `mataroa` | mataroa.blog | — | optional | horizontal | `genre-long-article.md` |
+| `github-gists` | gist.github.com | — | none supported (images by URL only) | horizontal | `genre-long-article.md` |
+| `deviantart` | deviantart.com | — | optional | horizontal | `genre-long-article.md` |
+
+## The picture each platform takes
+
+What the `Picture` column rests on: how each platform shows one image attached to an ordinary post, where readers see it. Researched on 2026-09-24 from the platforms' own help pages where they could be read and from 2025-2026 size guides where they could not; `Confidence` says which. A row whose feed has been looked at on a real account says `measured`, and a measurement outranks every guide. When a live feed disagrees with a row, the feed wins and the row is updated with the date and the evidence.
+
+The vertical picture holds the whole source in a band across its middle, so a platform that crops a tall image to 4:5, 1:1 or a card still shows all of it. That is why a platform that crops tall images can take `vertical`, and why a platform that shows every image uncropped at its own ratio takes `horizontal`: there the vertical file would only add blurred fill.
+
+| Slug | Picture | What the feed does with one image | Source | Confidence |
+| --- | --- | --- | --- | --- |
+| `facebook-wall` | vertical | shows 9:16 to 16:9 uncropped; taller formats take more of the mobile feed | facebook.com/business/help/923747721335004 | medium |
+| `facebook-page` | vertical | same renderer and range as the personal timeline | facebook.com/business/help/923747721335004 | medium |
+| `linkedin` | vertical | up to 4:5 tall and 3:1 wide; taller is center-cropped to 4:5, which keeps the band | linkedin.com/help/lms/answer/a527229 | medium-high |
+| `reddit` | vertical | no enforced ratio; preview boxes between 4:3 and 16:9 keep the band; guides split | size guides only | low |
+| `lemmy` | vertical | list view shows a near-square generated thumbnail | join-lemmy.org release notes | low |
+| `quora` | horizontal | scales to the reading column, no forced crop | size guides only | low |
+| `tumblr` | vertical | fixed-width dashboard column, tall images shown in full | size guides only | medium |
+| `mastodon` | horizontal | 16:9 is the preview box many clients and instances still crop to | docs.joinmastodon.org/user/posting | medium |
+| `bluesky` | horizontal | 16:9 shows clean in every source; tall images are a crop risk in one | docs.bsky.app, size guides | medium |
+| `x` | horizontal | 16:9 fills the timeline width uncropped | size guides agreeing on the documented ideal | high |
+| `threads` | horizontal | guides call 1:1 to 9:16 uncropped, but wide images read better in the account's own feed | the account's feed, 2026-09 | measured |
+| `truthsocial` | horizontal | Mastodon-derived timeline, cropped to about 16:9 | help.truthsocial.com, size guides | low-medium |
+| `bastyon` | horizontal | no documentation found; wide by default until a feed is looked at | none | low |
+| `vk-wall` | horizontal | a single wall photo scales to the post width; 16:9 is the usual recommendation | size guides only | low |
+| `telegram` | horizontal | very tall uploads get their preview cropped in the channel | size guides only | medium-low |
+| `peerlist` | horizontal | no published spec | help.peerlist.io | low |
+| `minds` | horizontal | no published spec for post images | minds.com blog | low |
+| `instagram` | vertical | 4:5 tallest, 1.91:1 widest, anything outside center-cropped to the limit | help.instagram.com/1631821640426723 | high |
+| `pinterest` | vertical | 9:16 is a first-class pin ratio, truncated only past about 1:2.1 | help.pinterest.com, review pin specs | high |
+| `pixelfed` | horizontal | no crop implemented; a tall image shows long with its fill visible | pixelfed source, issue 3586 | medium |
+| `patreon` | horizontal | 16:9 native, other ratios letterboxed | support.patreon.com, image sizing article | medium |
+| `ko-fi` | horizontal | every image slot is landscape, about 2:1 for a post | help.ko-fi.com, creating posts | medium |
+| `buymeacoffee` | horizontal | embeds at native ratio without a crop | creator guides only | low |
+| `hackernews` | none | text only | news.ycombinator.com/formatdoc | high |
+| `daily-dev` | horizontal | landscape card cover by convention; no published ratio | docs.daily.dev | low |
+| `wonderful-dev` | horizontal | no published spec | none | low |
+| `mewe` | horizontal | timeline fit-scales a single photo; no published crop | support.mewe.com | low |
+| `youtube` | vertical | community posts show images 1:1 in the feed; a square crop keeps the band | support.google.com/youtube/answer/7124474 | high |
+| `tiktok` | vertical | photo mode is a 9:16 full-screen canvas | tiktok.com photo size guidance | high |
+| `imgur` | horizontal | the post view scales to width at the original ratio | no official page | low |
+| `flickr` | horizontal | photostream and photo page keep the original ratio, no crop | flickr help forum | medium |
+| `devto` | horizontal | cover cropped to about 1000 x 420 on the page and cards | dev.to community guides | high |
+| `hashnode` | horizontal | cover cropped to 1.9:1 on the page and cards | hashnode.com guides | high |
+| `hackernoon` | horizontal | wide banner on the story, landscape thumbnail in feeds | guides; help.hackernoon.com not readable | low |
+| `medium` | horizontal | landscape lead image and preview crop, about 1.91:1 | guides; help.medium.com not readable | high |
+| `substack` | horizontal | wide cover banner, social image about 1.91:1 | support.substack.com (snippet), guides | medium |
+| `telegraph` | horizontal | inline at column width, no crop and no cover slot | telegra.ph/api | medium |
+| `teletype` | horizontal | cover about 16:9, inline images at a fixed column width | teletype.in guides | low |
+| `blogger` | horizontal | inline at native ratio; the featured image must be landscape for Google Discover | developers.google.com, Discover docs | high |
+| `flipboard` | horizontal | accepts 4:3 to 9:16 and fits to the card; the feed and covers are mostly landscape | about.flipboard.com | medium |
+| `livejournal` | horizontal | inline in the style's column, no crop | style community notes | low |
+| `dreamwidth` | horizontal | inline in the style's column, no crop | style-system.dreamwidth.org | low |
+| `mataroa` | horizontal | markdown image in a narrow column, no crop | mataroa.blog/guides/images | low |
+| `github-gists` | horizontal | markdown image by URL at column width, no crop | GitHub markdown rendering | medium |
+| `deviantart` | horizontal | journal header is a wide 2:1 crop; the viewer shows landscape larger | deviantart journal guides | medium |
 
 A platform the user names that is not on this list is written for like any other — research it live in Phase 3, and add its row here plus a posting note in `awesome-content-publisher` rather than leaving the vocabulary split between a file and a conversation.
 

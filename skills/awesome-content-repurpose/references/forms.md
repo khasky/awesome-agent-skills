@@ -73,6 +73,6 @@ The three files are written for `awesome-content-publisher`, which fans each one
 - **Footer.** Never on a short post. On regular and long it is part of the body the run wrote, so the publisher neither adds it nor removes it.
 - **Markdown.** On a platform whose composer renders none, the publisher converts the body to plain text: fences dropped with their lines kept, emphasis unwrapped, `***` removed, and each `##` heading replaced by an emoji that fits its words, followed by the heading text. That is why a regular heading is written as a short line of plain words that reads well after an emoji.
 
-## 5. The picture per form
+## 5. The pictures
 
-Each form gets one picture, not one per platform. Its frame is the shape most of the form's platforms show an image in, taken from the `Image` column of `awesome-content-campaign/references/platforms.md`. `awesome-content-image-adapter` computes it from the form's own `platforms` list at run time, so a narrowed list can change the answer. With the default groups all three forms come out 16:9.
+A post set gets two pictures, not one per form or per platform: `horizontal.png` at 16:9 and `vertical.png` at 9:16, written by `awesome-content-image-adapter`. Which one a platform takes is its `Picture` column in `awesome-content-campaign/references/platforms.md`, researched per platform in that file. Each form file declares the pictures its own platforms take, each entry marked with its `frame`, and the publisher picks per platform. With the default groups every form takes both: the long form for `tumblr`, the regular form for `facebook-wall`, `instagram`, `linkedin` and `youtube`, and the short form for `pinterest` and `tiktok`; everything else takes the horizontal one.
