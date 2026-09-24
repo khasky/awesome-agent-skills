@@ -9,7 +9,7 @@ Russian version: [content-skills-guide.ru.md](content-skills-guide.ru.md).
 ## Contents
 
 - [What you are setting up](#what-you-are-setting-up)
-- [The six skills](#the-six-skills)
+- [The five skills](#the-five-skills)
 - [Part 1 — Install the agent](#part-1--install-the-agent)
 - [Part 2 — Install the skills](#part-2--install-the-skills)
 - [Part 3 — Connect your browser](#part-3--connect-your-browser)
@@ -36,20 +36,19 @@ The shape of the whole thing: you talk to the agent → the agent reads a skill 
 
 Two things you need before any of it: an account with an AI provider that the agent bills against (Claude Code needs a Claude subscription or API billing — set that up at the provider first, the agent will not run without it), and accounts on the platforms you want to post to, signed in already.
 
-## The six skills
+## The five skills
 
 | Skill | Input | Output |
 | --- | --- | --- |
 | [awesome-content-voice](../skills/awesome-content-voice) | Your existing posts, files, or an interview | One reusable voice profile file |
 | [awesome-content-campaign](../skills/awesome-content-campaign) | A repo, a site, files — a product you want to talk about, plus the topic, the start date and how long it runs | Dated folders of post files, one per platform slot, plus a manifest |
 | [awesome-content-repurpose](../skills/awesome-content-repurpose) | One existing text: a link, a file, pasted notes | Three post files, short, regular and long, each listing the platforms it publishes to, no schedule |
-| [awesome-content-graphics](../skills/awesome-content-graphics) | A reference: text, images, a URL — whatever the picture should be about | A set of drawn images of the size you name, and the one you picked |
 | [awesome-content-image-adapter](../skills/awesome-content-image-adapter) | One finished picture, and the posts it belongs to | The same picture in two frames, a horizontal 16:9 and a vertical 9:16, each platform taking the one that matches its own frame |
 | [awesome-content-publisher](../skills/awesome-content-publisher) | A folder of post files | Published posts on your own accounts, plus a ledger |
 
 `campaign` and `repurpose` both write the file format `publisher` reads. Pick `campaign` when you have product sources and want a schedule; pick `repurpose` when you have one article and want it everywhere. Either way a piece of content becomes three files: a long read, a regular post derived from it, and a short post, and each one publishes unchanged to every platform in its group.
 
-`voice` and `graphics` are optional inputs to the other three: the voice profile shapes how the posts sound, the graphics give them a picture. `image-adapter` is the step after the picture — it puts that one picture into a horizontal and a vertical frame, and it runs on its own just as happily on any image you already have.
+`voice` is an optional input to the other three: the voice profile shapes how the posts sound. The picture comes from you: an image, a video the writing skills cut into stills, or nothing at all, since no skill here draws or generates one. `image-adapter` is the step after the picture — it puts that one picture into a horizontal and a vertical frame, and it runs on its own just as happily on any image you already have.
 
 ## Part 1 — Install the agent
 
@@ -124,7 +123,7 @@ Inside a running session, `/model` changes the same thing.
 
 **Switch to `high` when the run is long or the platforms are unfamiliar.** The difference is not writing quality; it is what happens when a page does not behave. At `high` the agent is more patient about working out *why* a submit silently refused, more willing to climb the ladder of click techniques instead of repeating the one that failed, and more careful choosing a repair that does not lose a half-filled draft. It also handles the judgement calls in the writing skills better — which paragraph to drop when a post is over a platform's cap, which claims a picture is allowed to carry. The cost is time: every step takes longer.
 
-A practical split: writing and graphics at `medium`, a publishing run across many platforms at `high`. `low` is not worth it here — these skills are long multi-step procedures with gates, and cheap steps are exactly where a gate gets skipped. `xhigh` and `max` exist for harder reasoning than this work needs.
+A practical split: writing at `medium`, a publishing run across many platforms at `high`. `low` is not worth it here — these skills are long multi-step procedures with gates, and cheap steps are exactly where a gate gets skipped. `xhigh` and `max` exist for harder reasoning than this work needs.
 
 This is guidance from how the skills behave, not a benchmark.
 
@@ -300,20 +299,6 @@ Use awesome-content-repurpose on https://example.com/my-article — all three fo
 
 Same output format, no schedule. This is the one to use when the source is a single text.
 
-### Making the picture
-
-```text
-Use awesome-content-graphics for this campaign: vertical 1080x1350, 100 images
-```
-
-You hand over a reference — the article, a few pictures, a link, or all three. The run tells you in one sentence what it thinks the picture is about, so you can correct it before a hundred pictures are made of the wrong thing. Then it asks how many you want: 10, 20, 50 or 100.
-
-The agent draws the set itself — there is no image service to sign up for, no key to set and nothing to install. It composes each picture, saves them into one folder and opens it. You answer with a number. If nothing fits, ask for another round: it rebuilds the set from different ideas, not the same ones recoloured. The earlier rounds stay on disk.
-
-The picture you pick is copied into a folder of its own, which opens separately — so you are never hunting for the chosen file among the ninety-nine it beat.
-
-What this gives you is flat, graphic work: shape, type, colour, diagrams, patterns. It does not give photographs. Where you want a photograph, supply your own and go straight to fitting it per platform.
-
 ### Fitting the picture to each platform
 
 ```text
@@ -340,15 +325,14 @@ The usual order, and what to hand over at each step:
 
 1. **`awesome-content-voice`** once, ever. Keep the profile file.
 2. **`awesome-content-campaign`** or **`awesome-content-repurpose`** — point it at the source and the voice profile. Read the drafts. This is the moment to fix wording; every later stage treats these files as the author's words and will not rewrite them.
-3. **`awesome-content-graphics`** — it reads the campaign's material, asks how many images you want and gives back a set. Pick one by number, or ask for another round. Supplying your own picture instead is the same step, answered differently.
-4. **`awesome-content-image-adapter`** — it runs straight after the pick, without being asked, and writes the picture in a horizontal and a vertical frame beside the posts.
-5. Nothing to do by hand: the post files name the picture that sits next to them.
-6. **`awesome-content-publisher`** — point it at the folder. Approve the run plan. Let it work.
+3. **Your picture, or none.** At the media question, hand over an image or a video (a video is cut into stills and a vertical short), or answer that the posts go out as text.
+4. **`awesome-content-image-adapter`** — it runs straight after you hand the picture over, without being asked, and writes it in a horizontal and a vertical frame beside the posts.
+5. **`awesome-content-publisher`** — point it at the folder. Approve the run plan. Let it work.
 
 A single sentence that runs the whole chain also works, and the agent will stop at each gate that needs your answer:
 
 ```text
-Take https://example.com/my-article through awesome-content-repurpose, make graphics for it, then publish everything with awesome-content-publisher
+Take https://example.com/my-article through awesome-content-repurpose with ./cover.png as the picture, then publish everything with awesome-content-publisher
 ```
 
 ## What the run will ask you
@@ -456,8 +440,6 @@ What inflates a run: a composer whose live page has changed since the notes were
 **The token changed.** The status page has a regenerate control. After regenerating, the configuration holding the old token is stale until you update it — `claude mcp remove playwright` then add it again — and restart.
 
 **A platform asks for a login or shows a captcha mid-run.** The run stops there and hands the browser to you. Sign in yourself in that window, then tell the agent to continue. It will never do that part for you.
-
-**The graphics skill goes looking for an image service.** It should not: the agent draws the pictures itself, and there is nothing to connect. A run that stops to hunt for a generator has misread the skill — say so and ask it to draw the set. The one thing it does need is something that turns its drawings into PNG files; without that it still hands over the drawings and says they were not converted.
 
 **A post published with wrong formatting.** The publisher diffs every published post against its source file and repairs it — by editing where the platform allows, by delete-and-republish only within 5 minutes and only with no engagement, and by telling you plainly where the platform allows neither. If you find one it missed, say so: it reopens the audit rather than patching the single line you named.
 

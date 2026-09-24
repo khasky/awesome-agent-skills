@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Repurposes one source (a link, a file, a guide, pasted notes) into three posts that together cover every publishing platform: a full long read written first, a regular post derived from it, and a short post that carries the whole point inside the tightest cap of its group. Each file lists its platforms, title, links and hashtag pool in frontmatter, and the publisher places title, tags and link per platform. Source notes every claim traces to, a module map that keeps a guide a guide, live verification of what is volatile, an interview for language, idea, voice, emoji, creativity and footer, a counted audit, one media question. Use when asked to repurpose an article or guide into posts, adapt a text for social media, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), to make or resize images (awesome-content-graphics, awesome-content-image-adapter), or to build the voice profile (awesome-content-voice)."
+description: "Repurposes one source (a link, a file, a guide, pasted notes) into three posts that together cover every publishing platform: a full long read written first, a regular post derived from it, and a short post that carries the whole point inside the tightest cap of its group. Each file lists its platforms, title, links and hashtag pool in frontmatter, and the publisher places title, tags and link per platform. Source notes every claim traces to, a module map that keeps a guide a guide, live verification of what is volatile, an interview for language, idea, voice, emoji, creativity and footer, a counted audit, one media question. Use when asked to repurpose an article or guide into posts, adapt a text for social media, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), to resize images (awesome-content-image-adapter), or to build the voice profile (awesome-content-voice)."
 license: MIT
 metadata:
   author: Khasky
@@ -226,16 +226,16 @@ The three files exist. One question, and the run does not end before it is answe
 
 | # | Option | What happens |
 | --- | --- | --- |
-| 1 | Images | Generated with `awesome-content-graphics` from this post set, or supplied by the user |
+| 1 | Images | The user supplies a picture, as a path or a URL |
 | 2 | Video | The user supplies one file, and the run derives stills and a vertical short |
-| 3 | No graphics | The three files ship as text |
+| 3 | No media | The three files ship as text |
 | 4 | Type here | Anything else the user means by media |
 
 A supplied file is a path or a URL. A URL is downloaded into `media/` and the run says what it saved, from where, and its size and type. Anything that is not an image or a video is reported and the question asked again.
 
-**Images.** Supplied: the file is resolved into `media/` and it is the approved picture. Generated: `awesome-content-graphics` is handed the facts from `source-notes.md`, its boundary section, the long form's title, the output language and `<posts folder>/media/` as its output folder; it runs its own count question and pick gate, and this skill does not restate them or proceed until it hands control back. Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. It writes two pictures beside the post files, `horizontal.png` (16:9) and `vertical.png` (9:16), and says which platforms take each; a picture no listed platform takes is not written.
+**Images.** The supplied file is resolved into `media/` and it is the approved picture. Nothing is drawn or generated: a user who has no picture answers `No media`. Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. It writes two pictures beside the post files, `horizontal.png` (16:9) and `vertical.png` (9:16), and says which platforms take each; a picture no listed platform takes is not written.
 
-**Video.** One source file becomes stills and a short, both made with video tooling already on the machine (`ffmpeg` is the usual one; confirm it answers first, and where nothing is installed ship the posts text-only and say what was skipped). Stills: at most 4 frames, chosen as the moments the posts talk about, never ticks off a stopwatch. The short: vertical 9:16, cut to the shortest verified video limit among the platforms that take video, keeping the moment the proof lands. Each form file declares the stills or the short its platforms can take.
+**Video.** One source file becomes stills and a short, both made with video tooling already on the machine (`ffmpeg` is the usual one; confirm it answers first, and where nothing is installed ship the posts text-only and say what was skipped). Stills: at most 4 frames, chosen as the moments the posts talk about, never ticks off a stopwatch. The short: vertical 9:16, cut to the shortest verified video limit among the platforms that take video, keeping the moment the proof lands. The still that best carries the post becomes its picture and goes through `awesome-content-image-adapter` like a supplied image. Each form file declares the pictures, the other stills or the short its platforms can take.
 
 **Frontmatter.** Media is declared after `hashtags`:
 
@@ -243,7 +243,7 @@ A supplied file is a path or a URL. A URL is downloaded into `media/` and the ru
 attachments: [{ file: horizontal.png, frame: horizontal, alt: "<what it shows and what it means>" }, { file: vertical.png, frame: vertical, alt: "<what it shows and what it means>" }]
 ```
 
-Each form file lists the pictures its own platforms take: both entries where its group mixes wide and square-or-tall frames, one where it does not. The `frame` marks alternatives rather than a carousel, and the publisher gives each platform the one that matches its shape. Paths are relative to the posts folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No graphics` is an answer about pictures, never about which forms get written.
+Each form file lists the pictures its own platforms take: both entries where its group mixes wide and square-or-tall frames, one where it does not. The `frame` marks alternatives rather than a carousel, and the publisher gives each platform the one that matches its shape. Paths are relative to the posts folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No media` is an answer about pictures, never about which forms get written.
 
 **Then close `run-settings.md`**: fill its `Media` line with the answer, the files that came out of it, and which forms carry none.
 

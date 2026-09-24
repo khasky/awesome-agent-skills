@@ -1,6 +1,6 @@
 ---
 name: awesome-content-image-adapter
-description: "Adapts one finished image into two pictures, a horizontal 16:9 and a vertical 9:16, that together serve every platform a post set publishes to: which one each platform takes is the researched Picture column of awesome-content-campaign/references/platforms.md, so no file here restates it. Runs alone, a source image in and two PNGs out, or right after the user picks the picture in a content run, writing both beside the post files. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make horizontal and vertical post images, or 'адаптируй картинку под платформы'. Do not use to design or generate artwork (awesome-content-graphics), to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
+description: "Adapts one finished image into two pictures, a horizontal 16:9 and a vertical 9:16, that together serve every platform a post set publishes to: which one each platform takes is the researched Picture column of awesome-content-campaign/references/platforms.md, so no file here restates it. Runs alone, a source image in and two PNGs out, or right after the user hands over a picture in a content run, writing both beside the post files. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make horizontal and vertical post images, or 'адаптируй картинку под платформы'. Do not use to design, draw or generate artwork, which no skill in this chain does, to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
 license: MIT
 compatibility: "Requires a local way to write RGB PNG files at exact pixel sizes. Nothing is uploaded and no image service is called."
 metadata:
@@ -25,7 +25,7 @@ Bundled file (load on demand):
 
 **Alone.** The user hands over an image and asks for post images. Two files are written into a new folder under the session's temporary area, `horizontal.png` and `vertical.png`. The folder is opened on the machine, and the absolute path is reported.
 
-**In a chain.** `awesome-content-repurpose` has written the post files and the picture is approved, generated and picked through `awesome-content-graphics` or handed over by the user. This skill runs without being asked again: the approved file goes in, and the two pictures land beside the post files:
+**In a chain.** `awesome-content-repurpose` has written the post files and the user has handed over a picture, or a still has been cut from their video. This skill runs without being asked again: the approved file goes in, and the two pictures land beside the post files:
 
 ```
 1-short.md     horizontal.png
@@ -81,5 +81,5 @@ A file count that does not match the pictures the platforms need is reported as 
 - Regenerating, redrawing, upscaling with a model, or improving the source. The picture the user approved is the picture that ships.
 - A vertical frame served by a center-cropped landscape, so the subject loses its sides. The whole source stays in the frame.
 - Leaving a manifest, a master copy or a zip beside the pictures.
-- Asking which mode to run in when the caller already said, or asking again for a picture the previous step just approved.
+- Asking which mode to run in when the caller already said, or asking again for a picture the previous step just handed over.
 - Claiming the folder opened where nothing could open it.

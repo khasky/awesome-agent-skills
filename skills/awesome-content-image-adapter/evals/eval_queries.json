@@ -7,12 +7,12 @@
   { "query": "my banner comes out cropped on phones when it goes to instagram - build a proper set from the original", "should_trigger": true, "split": "validation" },
   { "query": "нужны 1080x1350 и 1200x630 из одного исходника, исходник не перерисовывать", "should_trigger": true, "split": "validation" },
   { "query": "the designer sent final_v3.png, output the post images and name them so they sit next to the post files", "should_trigger": true, "split": "validation" },
-  { "query": "make a picture for my post about the release", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "train" },
-  { "query": "нарисуй картинку для поста про новую фичу", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "train" },
-  { "query": "give me 20 image options for the post and I will pick one", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "train" },
+  { "query": "make a picture for my post about the release", "should_trigger": false, "split": "train" },
+  { "query": "нарисуй картинку для поста про новую фичу", "should_trigger": false, "split": "train" },
+  { "query": "give me 20 image options for the post and I will pick one", "should_trigger": false, "split": "train" },
   { "query": "write the launch post for linkedin and x out of this changelog", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
   { "query": "publish the prepared posts to my accounts tomorrow morning", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
   { "query": "what image size does linkedin recommend for a link preview these days", "should_trigger": false, "split": "validation" },
   { "query": "compress these product photos so the page stops loading slowly", "should_trigger": false, "split": "validation" },
-  { "query": "generate an avatar for my new side project", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "validation" }
+  { "query": "generate an avatar for my new side project", "should_trigger": false, "split": "validation" }
 ]

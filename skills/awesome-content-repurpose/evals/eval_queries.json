@@ -11,7 +11,7 @@
   { "query": "из этого ридми сделай длинную статью и производные посты покороче", "should_trigger": true, "split": "validation" },
   { "query": "plan a two-week posting schedule about my product from the repo and the landing page", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
   { "query": "publish the three post files in ~/posts/queue-retries_social_posts to my accounts", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
-  { "query": "draw a cover image for my article about queue retries", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "train" },
+  { "query": "draw a cover image for my article about queue retries", "should_trigger": false, "split": "train" },
   { "query": "resize cover.png into the frames the short, regular and long posts need", "should_trigger": false, "belongs_to": "awesome-content-image-adapter", "split": "train" },
   { "query": "build a voice profile from my last twenty posts so future posts sound like me", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
   { "query": "write the headline, meta description and button labels for the pricing page", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "validation" },
