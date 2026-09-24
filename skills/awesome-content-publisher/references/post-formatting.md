@@ -21,7 +21,9 @@ The class is a hypothesis until the live page proves it. `wonderful-dev` renders
 
 ## Stripping for plain-text composers
 
-Remove, in this order: fence lines (` ``` ` and ` ```lang `, keeping the code lines), inline backticks, leading `#` heading markers, `> ` quote markers, `**` and `*` emphasis, and flatten `[text](url)` to `text (url)`. Then collapse three or more consecutive newlines to two.
+Remove, in this order: fence lines (` ``` ` and ` ```lang `, keeping the code lines), inline backticks, `> ` quote markers, `**` and `*` emphasis, a line holding only `***` or `---`, and flatten `[text](url)` to `text (url)`. Then collapse three or more consecutive newlines to two.
+
+A heading is not stripped to bare words, because a plain line of text between paragraphs reads as a stray sentence and the section break disappears. Replace each heading's `#` markers with one emoji that fits the heading's words, followed by a space and the heading text: a section about cost takes one from the money group, a section about a failure one from the tools or warning groups, a list of findings a pin or a magnifier. Take them from the rendering-safe palette and gate in `awesome-content-repurpose/references/authored-style.md` (section 8), use a different emoji for each heading of one post, and fall back to `📌` where nothing fits. Keep one blank line above and below the heading line, as the source had.
 
 Two traps in the stripping itself:
 
@@ -86,7 +88,7 @@ A failure here is a fix in the composer, never a publish followed by a repair.
 
 Patreon disables Publish without a title; Ko-fi's blog, Hashnode, Medium and Substack all need one.
 
-Take it from a sibling post file in the same folder. A campaign folder written for many platforms always contains long-form units that carry an H1 — `devto`, `hashnode`, `medium` and `substack` posts open with one — and any of those titles is the campaign's own words for this piece. Read the siblings, pick the one whose length and register fit the target, and record in the ledger which file it came from.
+A form file always carries its own `title` in frontmatter, and that is the title. For any other file, take it from a sibling post file in the same folder. A campaign folder written for many platforms always contains long-form units that carry an H1 — `devto`, `hashnode`, `medium` and `substack` posts open with one — and any of those titles is the campaign's own words for this piece. Read the siblings, pick the one whose length and register fit the target, and record in the ledger which file it came from.
 
 Only when no sibling in the folder carries a title does the first sentence of the post's own body become the fallback, and that is worth naming in the report. Inventing a title is not an option at any point.
 

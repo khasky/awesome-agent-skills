@@ -42,14 +42,14 @@ Two things you need before any of it: an account with an AI provider that the ag
 | --- | --- | --- |
 | [awesome-content-voice](../skills/awesome-content-voice) | Your existing posts, files, or an interview | One reusable voice profile file |
 | [awesome-content-campaign](../skills/awesome-content-campaign) | A repo, a site, files — a product you want to talk about, plus the topic, the start date and how long it runs | Dated folders of post files, one per platform slot, plus a manifest |
-| [awesome-content-repurpose](../skills/awesome-content-repurpose) | One existing text: a link, a file, pasted notes | The same folder format, no schedule |
+| [awesome-content-repurpose](../skills/awesome-content-repurpose) | One existing text: a link, a file, pasted notes | Three post files, short, regular and long, each listing the platforms it publishes to, no schedule |
 | [awesome-content-graphics](../skills/awesome-content-graphics) | A reference: text, images, a URL — whatever the picture should be about | A set of drawn images of the size you name, and the one you picked |
-| [awesome-content-image-adapter](../skills/awesome-content-image-adapter) | One finished picture, and the posts it belongs to | The same picture in each platform's own frame, one PNG per platform |
+| [awesome-content-image-adapter](../skills/awesome-content-image-adapter) | One finished picture, and the posts it belongs to | The same picture in three frames, one PNG per post form, each in the shape most of that form's platforms use |
 | [awesome-content-publisher](../skills/awesome-content-publisher) | A folder of post files | Published posts on your own accounts, plus a ledger |
 
-`campaign` and `repurpose` both write the file format `publisher` reads. Pick `campaign` when you have product sources and want a schedule; pick `repurpose` when you have one article and want it in every platform's own register.
+`campaign` and `repurpose` both write the file format `publisher` reads. Pick `campaign` when you have product sources and want a schedule; pick `repurpose` when you have one article and want it everywhere. Either way a piece of content becomes three files: a long read, a regular post derived from it, and a short post, and each one publishes unchanged to every platform in its group.
 
-`voice` and `graphics` are optional inputs to the other three: the voice profile shapes how the posts sound, the graphics give them a picture. `image-adapter` is the step after the picture — it puts that one picture into every platform's own frame, and it runs on its own just as happily on any image you already have.
+`voice` and `graphics` are optional inputs to the other three: the voice profile shapes how the posts sound, the graphics give them a picture. `image-adapter` is the step after the picture — it puts that one picture into one frame per post form, and it runs on its own just as happily on any image you already have.
 
 ## Part 1 — Install the agent
 
@@ -295,7 +295,7 @@ You will be asked which platforms, over what period, and in which language.
 ### Writing posts from one existing article
 
 ```text
-Use awesome-content-repurpose on https://example.com/my-article — every platform in the table
+Use awesome-content-repurpose on https://example.com/my-article — all three forms
 ```
 
 Same output format, no schedule. This is the one to use when the source is a single text.
@@ -320,7 +320,7 @@ What this gives you is flat, graphic work: shape, type, colour, diagrams, patter
 Use awesome-content-image-adapter on ./poster.png
 ```
 
-Every platform shows a picture in its own frame: wide on an article site, tall in a phone feed, square on a profile. This takes the one picture you approved and writes it out in each of those frames, one file per platform, named after the platform. Run on its own it puts them in a temporary folder and opens it. Run as part of a chain it puts them next to the posts, so `linkedin.md` and `linkedin.png` sit side by side and the publisher finds the picture without being told where it is.
+Every platform shows a picture in its own frame: wide on an article site, tall in a phone feed, square on a profile. This takes the one picture you approved and writes three files, one per post form, each in the frame most of that form's platforms use. Run on its own it puts them in a temporary folder and opens it. Run as part of a chain it puts them next to the posts, so `1-short.md` and `1-short.png` sit side by side and the publisher finds the picture without being told where it is.
 
 Nothing is redrawn. A frame wider than your picture is a minimal centred crop; a frame taller than it keeps the whole picture and fills the space above and below with a blurred, darkened continuation of the same image.
 
@@ -341,7 +341,7 @@ The usual order, and what to hand over at each step:
 1. **`awesome-content-voice`** once, ever. Keep the profile file.
 2. **`awesome-content-campaign`** or **`awesome-content-repurpose`** — point it at the source and the voice profile. Read the drafts. This is the moment to fix wording; every later stage treats these files as the author's words and will not rewrite them.
 3. **`awesome-content-graphics`** — it reads the campaign's material, asks how many images you want and gives back a set. Pick one by number, or ask for another round. Supplying your own picture instead is the same step, answered differently.
-4. **`awesome-content-image-adapter`** — it runs straight after the pick, without being asked, and writes the picture in every platform's frame beside the posts.
+4. **`awesome-content-image-adapter`** — it runs straight after the pick, without being asked, and writes the picture in one frame per post form beside the posts.
 5. Nothing to do by hand: the post files name the picture that sits next to them.
 6. **`awesome-content-publisher`** — point it at the folder. Approve the run plan. Let it work.
 
@@ -413,6 +413,8 @@ The body of the post, exactly as you want it published.
 ```
 
 `target` is an extra frontmatter line for platforms that need one — a subreddit, an instance, a board, a group. The publisher refuses to guess it.
+
+A file written by `awesome-content-repurpose` or `awesome-content-campaign` carries a `platforms` list instead of one `platform`, and publishes to each of them. The publisher then adds per platform what fits: the title into the platform's own title field where it has one, hashtags from the file's `hashtags` list, and on a short post its one link. A hand-written file with a single `platform` works exactly as shown above.
 
 Platform names are the slugs the skills use: `mastodon`, `bluesky`, `linkedin`, `instagram`, `pixelfed`, `medium`, `teletype` and so on. The full table is in [`awesome-content-campaign`'s platform reference](../skills/awesome-content-campaign/references/platforms.md).
 

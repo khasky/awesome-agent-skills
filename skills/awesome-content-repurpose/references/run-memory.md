@@ -4,7 +4,7 @@ The skill works from a clean install: no previous post set, no source-specific b
 
 ## 1. Opt-in
 
-A normal invocation ignores every runtime memory file. Only `--use-memory` reads them, and even then the four interview questions (language, idea, voice, emoji) are asked again and no source-specific prose, title, link, anchor or brief is reused.
+A normal invocation ignores every runtime memory file. Only `--use-memory` reads them, and even then the six interview questions (language, idea, voice, emoji, creativity, footer) are asked again and no source-specific prose, title, link, anchor or brief is reused.
 
 Files, all in the agent's scratch root under `repurpose/`, never in the invocation directory:
 

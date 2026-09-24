@@ -1,0 +1,22 @@
+[
+  { "query": "turn docs/why-we-moved-to-sqlite.md into posts I can put everywhere, a long one, a normal one and a tiny one", "should_trigger": true, "split": "train" },
+  { "query": "перепиши мою статью про кэширование в посты для соцсетей: лонгрид, обычный пост и короткий", "should_trigger": true, "split": "train" },
+  { "query": "here's my blog post https://example.dev/posts/queue-retries - repurpose it for social", "should_trigger": true, "split": "train" },
+  { "query": "I wrote a README for the new CLI, can you make social posts out of it for devto, linkedin and x", "should_trigger": true, "split": "train" },
+  { "query": "adapt this benchmark writeup into something I can post on medium and bluesky, same numbers everywhere", "should_trigger": true, "split": "train" },
+  { "query": "адаптируй заметку notes/incident-march.md под площадки, куда я обычно пишу", "should_trigger": true, "split": "validation" },
+  { "query": "make a short post that fits in 280 chars and a longer article from this research memo", "should_trigger": true, "split": "validation" },
+  { "query": "I have one guide about running a local model behind my editor, I need it as posts for every platform I use", "should_trigger": true, "split": "validation" },
+  { "query": "take the talk transcript in talks/2026-rust-meetup.txt and repackage it for feeds and blogs", "should_trigger": true, "split": "train" },
+  { "query": "из этого ридми сделай длинную статью и производные посты покороче", "should_trigger": true, "split": "validation" },
+  { "query": "plan a two-week posting schedule about my product from the repo and the landing page", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
+  { "query": "publish the three post files in ~/posts/queue-retries_social_posts to my accounts", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
+  { "query": "draw a cover image for my article about queue retries", "should_trigger": false, "belongs_to": "awesome-content-graphics", "split": "train" },
+  { "query": "resize cover.png into the frames the short, regular and long posts need", "should_trigger": false, "belongs_to": "awesome-content-image-adapter", "split": "train" },
+  { "query": "build a voice profile from my last twenty posts so future posts sound like me", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
+  { "query": "write the headline, meta description and button labels for the pricing page", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "validation" },
+  { "query": "this paragraph reads like AI wrote it, clean it up", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "validation" },
+  { "query": "translate my russian article into english for an english-speaking audience", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "validation" },
+  { "query": "check the claims in this blog draft against sources before I post it", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "validation" },
+  { "query": "what is the character limit for a linkedin post these days", "should_trigger": false, "split": "train" }
+]

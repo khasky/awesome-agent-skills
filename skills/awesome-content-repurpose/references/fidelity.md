@@ -24,20 +24,20 @@ A number without its condition is not reusable. A `[D]` line combines grounded n
 ```text
 [M1] <module name>
 role: primary-path | secondary-path | decision-axis | caveat | troubleshooting | auxiliary-detail
-portable takeaway: <one sentence that survives a hard cap>
+portable takeaway: <one sentence that survives the short form>
 medium details: <supporting specifics for feeds>
 deep details: <raw rates, exact windows, policy wording, alias history, long config>
 representation: prose | list | steps | code/config | table | mixed
 evidence: C#, N#, S#, Q#, E#
 ```
 
-At most 2 `primary-path` modules. The map is structural evidence: a post can be accurate in every sentence and still be unfaithful when it drops most modules for one derived theme. For a guide, module coverage is a first-class check; for the other source types the modules follow the blueprints in `platform-specs.md` section 5.
+At most 2 `primary-path` modules. The map is structural evidence: a post can be accurate in every sentence and still be unfaithful when it drops most modules for one derived theme. For a guide, module coverage is a first-class check; for the other source types the modules follow the shapes in `authored-style.md` section 4.
 
 ## 3. Ledgers
 
-`claims.md`, one row per atomic factual claim per post: `| post | claim | evidence |`. Every factual claim has evidence; framing and opinion need no row; no `UNSUPPORTED` survives; quotations stay verbatim; a volatile claim cannot rest on old source text alone when verification was required.
+`claims.md`, one row per atomic factual claim per form: `| form | claim | evidence |`. Every factual claim has evidence; framing and opinion need no row; no `UNSUPPORTED` survives; quotations stay verbatim; a volatile claim cannot rest on old source text alone when verification was required.
 
-`coverage.md`, one row per post: `| post | modules present | modules grouped or omitted, with the platform reason |`. A long-form version that omits core modules without a platform reason fails.
+`coverage.md`, one row per form: `| form | modules present | modules grouped or omitted, with the reason |`. A long form that omits a core module fails whatever the reason; a regular or short form omits deep details by design and keeps the portable takeaways.
 
 ## 4. Verification is correction and support, not expansion
 
@@ -56,13 +56,13 @@ Never the peer: a client's current default model, a premium top rung, a preview,
 
 ## 6. Correction locality
 
-A `[X]` correction repairs the stale statement where it occurs. The current correct name goes into every block silently. The sentence explaining the change appears once, in the relevant setup section, on the two deepest surfaces at most, unless the correction is `core` (it changes the reader's decision), in which case one sentence travels to every surface that carries that decision and may carry an `as of <date>` qualifier. A correction repeated across sections, or promoted to its own section without being a source module, is drift.
+A `[X]` correction repairs the stale statement where it occurs. The current correct name goes into every block silently. The sentence explaining the change appears once, in the relevant section of the long form, unless the correction is `core` (it changes the reader's decision), in which case one sentence travels to every form that carries that decision and may carry an `as of <date>` qualifier. A correction repeated across sections, or promoted to its own section without being a source module, is drift.
 
-The same budget binds source-derived deep details: exact clock windows, jurisdiction and storage wording, retired names, long diagnostic sequences appear on at most 2 files, inside their module, on the deepest surfaces; a workload cost example on at most 3.
+The same budget binds source-derived deep details: exact clock windows, jurisdiction and storage wording, retired names, long diagnostic sequences appear in the long form only, inside their module, and so does a workload cost example.
 
 ## 7. Commands
 
-Publish a command only if it appears in the source and remains valid, or was corrected or confirmed by current official documentation. Never infer a variable name or flag from a similar tool, and never add a launch line, a variable or a step to a block because it seems implied: a setup block is the source's lines and nothing else. A remote script URL may appear in a code block when the official source documents it; it is never a frontmatter link. The minimal setup block per primary path is identical on every surface that shows it.
+Publish a command only if it appears in the source and remains valid, or was corrected or confirmed by current official documentation. Never infer a variable name or flag from a similar tool, and never add a launch line, a variable or a step to a block because it seems implied: a setup block is the source's lines and nothing else. A remote script URL may appear in a code block when the official source documents it; it is never a frontmatter link. The minimal setup block per primary path is identical in every form that shows it.
 
 ## 8. Personal framing
 
@@ -74,7 +74,7 @@ A title fails when it no longer names the primary subject or turns a practical g
 
 ## 10. Clean run
 
-By default ignore runtime memory, previous posts and previous briefs; derive type, modules and anchors from the supplied source; verify normally; ask the four interview questions. Stability across reruns comes from the classification, the module map, the anchors and the blueprints, never from replaying prior prose.
+By default ignore runtime memory, previous posts and previous briefs; derive type, modules and anchors from the supplied source; verify normally; ask the six interview questions. Stability across reruns comes from the classification, the module map, the anchors and the shapes, never from replaying prior prose.
 
 ## 11. Drift after editing
 
@@ -83,10 +83,10 @@ After any wording fix re-check numbers, model and tool names, negations, peers, 
 ## 12. Finding format
 
 ```text
-post:
+form:
 span:
 rule:
 verdict: FIX | REWRITE
 ```
 
-`REWRITE` for source-promise drift, major module loss on a long surface, an unsupported current claim, wrong voice, or the wrong source type's structure. `FIX` for local wording or format. An anchor defect is fixed in `anchors.md` and every carrier is rebuilt.
+`REWRITE` for source-promise drift, major module loss in the long form, an unsupported current claim, wrong voice, or the wrong source type's structure. `FIX` for local wording or format. An anchor defect is fixed in `anchors.md` and every form that carries it is rebuilt.

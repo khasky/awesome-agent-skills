@@ -104,7 +104,7 @@ Then probe the material, not the fields. The ten questions above settle logistic
 
 Ask the moment the material stops being interesting, not only when a field is empty. Never write around a gap you noticed: a thin answer accepted quietly in Phase 2 becomes every post in the batch. The answers land in the knowledge map like any other source, and the manifest records which probes had to be re-asked.
 
-Per-platform targets that posting requires — collect now, not at write time, reading the Target column of `references/platforms.md` for exactly which platforms need what. Each answer goes into every affected post's frontmatter `target`. A post that reaches the publisher without the target its platform needs is a publication blocker, not a missing detail.
+Per-platform targets that posting requires — collect now, not at write time, reading the Target column of `references/platforms.md` for exactly which platforms need what. Each answer goes into the `targets` map of every form file that lists the platform, keyed by its slug. A post that reaches the publisher without the target its platform needs is a publication blocker, not a missing detail.
 
 ## Phase 3 — Live platform research
 
@@ -128,7 +128,7 @@ Compute slots from the start date, the duration and the frequency, in the public
 
 Where the times come from is question 3b's answer:
 
-- **Best time to post** — each platform's slots land inside its own window in `references/best-time-to-post.md`, on a varied minute rather than :00 every day, which also spreads platforms so five do not fire in the same minute. Two slots on one platform stay at least two hours apart. A row marked `class default` is used the same way and marked as a class default in the manifest, so a thin result is traceable to a missing dataset rather than to the schedule. A window in UTC (`reddit`, `lemmy`, `hackernews`) is converted into the publication timezone once, and the manifest records both.
+- **Best time to post** — a unit goes out as three form files (Phase 5), each publishing to a group of platforms one after another from its time, so a slot's time is chosen per form: it lands inside the window in `references/best-time-to-post.md` that most of the form's platforms share, on a varied minute rather than :00 every day, and the three forms of one unit sit at least a few minutes apart. Two slots on one platform stay at least two hours apart. A row marked `class default` is used the same way and marked as a class default in the manifest, so a thin result is traceable to a missing dataset rather than to the schedule. A window in UTC (`reddit`, `lemmy`, `hackernews`) is converted into the publication timezone once, and the manifest records both.
 - **The user's own schedule** — their times are used as given, unconverted and unimproved, and the only thing this phase adds is the minute spread where two platforms collide on the same minute. A time that falls outside the platform's researched window is kept and noted once, never moved.
 
 An explicit per-post preference from the interview overrides either.
@@ -148,7 +148,7 @@ That skill not installed → say so, and offer the same two honest options as Ph
 Filename per post:
 
 ```
-YYYY-mm-dd_HH-mm_<pub-timezone>_<full-post-title>_<target-platform-name>.<ext>
+YYYY-mm-dd_HH-mm_<pub-timezone>_<full-post-title>_<form>.<ext>
 ```
 
 Exactly 5 fields separated by `_`; inside a field only `-` (never `_`, which would break parsing):
@@ -169,9 +169,9 @@ Where a platform's own title field carries the post (`reddit`, `lemmy`, `hackern
 Length is part of the rule, and a long-form title is not licence to write two. Aim for 50 to 60 characters, hard cap 70, six to ten words, and no terminal period — the range where a headline survives a search result, a feed card and a file listing without being cut. Extending a title with its own consequence is how it doubles: `Two Claude Code sessions can message each other` (46) is the headline, and `Two Claude Code sessions can message each other. That does not stop them overwriting your files.` (95) is that headline with the article's first sentence welded on. Two sentences joined by a full stop is the shape to catch — the second one belongs in the opening paragraph, where it has room.
 
 On `devto`, `medium`, `substack` and `hashnode` the title is also the URL. Every word gets slugged into the permalink, so an overlong title publishes as an unreadable address that no one can quote or type. Cutting the title short is the only fix; the slug is not editable afterwards.
-- target-platform-name — one of the canonical slugs from Phase 2, verbatim.
+- form — `short`, `regular` or `long`, the form file the post came from. The platforms it publishes to are its frontmatter `platforms` list, never the filename.
 
-Validation is part of this phase, not a hope. Once the posts exist, settle the mechanical half of it over the whole folder, by whatever means is cheapest where you are running: every filename parses back against the contract above and its platform token is a slug from `references/platforms.md`; no platform holds two posts in one date-and-time slot; every Markdown post opens with frontmatter that parses, carrying platform, scheduled, timezone, title and status, none of them empty; the frontmatter agrees with the filename it sits next to, on platform, on timezone and on the scheduled date and time; every attachment path resolves to a file that exists; no body is empty and none still carries TBD, TODO, FIXME, lorem ipsum or a bracketed placeholder; and no two posts for the same platform carry the same body text. Each disagreement is a defect the publisher would hit, because it reads the frontmatter and falls back to the filename — two copies of the truth that differ stop a post from shipping. Fix every one before the phase closes, and report the count checked rather than the intention.
+Validation is part of this phase, not a hope. Once the posts exist, settle the mechanical half of it over the whole folder, by whatever means is cheapest where you are running: every filename parses back against the contract above and its form token is `short`, `regular` or `long`; every slug in every `platforms` list is a slug from `references/platforms.md`; no platform receives two posts in one date-and-time slot; every Markdown post opens with frontmatter that parses, carrying platforms, scheduled, timezone, title and status, none of them empty, and a `targets` entry for every listed platform whose Target column names one; the frontmatter agrees with the filename it sits next to, on timezone and on the scheduled date and time; every attachment path resolves to a file that exists; no body is empty and none still carries TBD, TODO, FIXME, lorem ipsum or a bracketed placeholder; and no two posts for the same platform carry the same body text. Each disagreement is a defect the publisher would hit, because it reads the frontmatter and falls back to the filename — two copies of the truth that differ stop a post from shipping. Fix every one before the phase closes, and report the count checked rather than the intention.
 
 ## Phase 5 — Write the posts, through `awesome-content-repurpose`
 
@@ -183,7 +183,7 @@ Per unit, in slot order, call the Skill tool with "awesome-content-repurpose" an
 - **the flags that answer its interview**, so it asks the user nothing this skill already asked: `--platforms` (the selected slugs), `--language`, `--idea` (this unit's angle in one sentence), `--voice`, `--emoji`, `--footer` and `--media`. A value supplied on its invocation is the user's answer there and is not asked again;
 - **nothing about scheduling.** That skill writes content-only frontmatter plus attachments, by design, and this phase adds the publishing fields afterwards.
 
-What comes back is a folder of one `.md` per platform. This skill then, per file: adds `scheduled` (the slot's date and time), `timezone`, `target` where the platform needs one and `status: draft` to the frontmatter, leaving the five content keys and any `attachments` exactly as written; renames the file to the Phase 4 contract, taking the platform token from the frontmatter `platform` key rather than from the incoming filename, which is not always the slug (`youtube-post.md` carries `youtube`); and moves it into its date folder (Phase 7). The body is not edited here. A post that needs a change goes back through that skill rather than being patched in place, because its own audit is what proves the change did not break a cap, an anchor or a claim.
+What comes back is three form files, `1-short.md`, `2-regular.md` and `3-long.md`, each listing its platforms in a frontmatter `platforms` key. This skill then, per file: adds `scheduled` (that form's time in the slot), `timezone`, `targets` (a map from slug to target, for every listed platform whose Target column names one) and `status: draft` to the frontmatter, leaving the content keys and any `attachments` exactly as written; renames the file to the Phase 4 contract with its form as the last field; and moves it into its date folder (Phase 7). Hand that skill `--platforms` with the selected slugs, and it sorts them into its three groups itself. The body is not edited here. A post that needs a change goes back through that skill rather than being patched in place, because its own audit is what proves the change did not break a cap, an anchor or a claim.
 
 What stays in this phase: the angle rotation across the schedule, the interest gate below, and the per-platform uniqueness rule, since one unit per slot is this skill's decision and no single repurpose run can see the others. The angle of every unit is recorded in the manifest, and two units never carry the same one on one platform.
 
@@ -195,7 +195,7 @@ The rules from here to the end of this phase are no longer executed by this skil
 
 Load the genre file for every selected platform before the brief is written — `references/platforms.md` names which of the three governs each platform. The genre file carries that genre's human baseline, the tells it produces, and its rules; the human-style rules further down this phase are global. Genre is what makes a post native to where it lands: the same content unit is one idea in a feed post, the same idea with the work shown in a long-form article, and the usable part first with the affiliation disclosed in a community. A campaign spanning several genres writes each post to its own genre file, not to an average of them.
 
-The content model: one unit, many platforms — never twice on one platform. Each slot in the schedule carries one content unit; the unit fans out to every selected platform as the SAME core text, adjusted only for each platform's mechanics: trimmed to the verified length cap, hashtags formatted to the platform's norm, the CTA phrased for the platform ("link in bio" on instagram, the disclosure line on reddit, a title+body split on reddit and the article platforms, the hook above LinkedIn's "…see more" fold). Cross-platform repetition of a unit is by design — one post for different platforms is one content. The hard rule runs the other way: within one platform, no two posts of the campaign may ever share the same text — most platforms treat duplicate posts as spam and remove them or ban for them, so per-platform uniqueness is a publication requirement, not a style preference.
+The content model: one unit, three forms, many platforms — never twice on one platform. Each slot in the schedule carries one content unit, written as a long, a regular and a short form, and each form goes out unchanged to every platform in its group. What differs per platform is added by `awesome-content-publisher` at publish time and only where it fits whole: the title in the platform's own title field, the hashtags from the form's pool at the platform's norm, and a short post's one link. So the brief asks for a form that works on every platform of its group: the hook inside the first lines, no CTA that only one platform understands ("link in bio" belongs nowhere in a shared form), and a disclosure line wherever the unit promotes the product. Cross-platform repetition of a unit is by design — one post for different platforms is one content. The hard rule runs the other way: within one platform, no two posts of the campaign may ever share the same text — most platforms treat duplicate posts as spam and remove them or ban for them, so per-platform uniqueness is a publication requirement, not a style preference.
 
 Rotate angles across the schedule so day 12 does not repeat day 2: feature spotlight · problem→solution · behind-the-scenes/build log · comparison (honest, from the Differentiators section) · practical tip the product enables · user-perspective story (only if sources contain one) · numbers update (only real numbers) · question to the community. Track which angle each slot used in the manifest.
 
@@ -280,14 +280,15 @@ Findings and fixes are reported, not silently absorbed: the final report states 
 Everything lands in the `posts/` subfolder of the campaign folder Phase 1 created, split into one folder per publication date and named per Phase 4:
 
 ```text
-content-campaign/<slug>/posts/2026-09-18/2026-09-18_09-40_Europe-Kyiv_<title>_linkedin.md
-content-campaign/<slug>/posts/2026-09-18/2026-09-18_10-05_Europe-Kyiv_<title>_x.md
+content-campaign/<slug>/posts/2026-09-18/2026-09-18_09-40_Europe-Kyiv_<title>_long.md
+content-campaign/<slug>/posts/2026-09-18/2026-09-18_09-55_Europe-Kyiv_<title>_regular.md
+content-campaign/<slug>/posts/2026-09-18/2026-09-18_10-05_Europe-Kyiv_<title>_short.md
 content-campaign/<slug>/posts/2026-09-19/...
 ```
 
 The date folder is the campaign's calendar, so a user opening the folder sees the schedule as folders rather than as a manifest they have to read. The filename keeps its full contract regardless, because the publisher parses the name and never the path. A `one time` campaign still gets its single date folder.
 
-The frontmatter contract is `awesome-content-repurpose`'s five content keys plus its `attachments`, exactly as that skill wrote them, and the four publishing keys this skill adds on top: `scheduled`, `timezone`, `target` where the platform needs one, and `status`. Nothing else is added, and nothing that skill wrote is rewritten.
+The frontmatter contract is `awesome-content-repurpose`'s content keys (`platforms`, `title`, `voice`, `creativity`, `model`, `links`, `hashtags`) plus its `attachments`, exactly as that skill wrote them, and the four publishing keys this skill adds on top: `scheduled`, `timezone`, `targets` where a listed platform needs one, and `status`. Nothing else is added, and nothing that skill wrote is rewritten.
 
 When every file is in place, open the campaign folder on the user's machine and say that it was opened: `explorer` on Windows, `open` on macOS, `xdg-open` on Linux, verified to exist before it is called, skipped in a headless or scheduled run, and a failure is a one-line note rather than an error that stops the run.
 
@@ -297,11 +298,12 @@ One file per post in the chosen format, named per Phase 4.
 
 ```yaml
 ---
-platform: facebook-page
+platforms: [daily-dev, facebook-wall, instagram, linkedin]
 scheduled: 2026-09-01 10:00
 timezone: Europe/Kyiv
 title: "Post title as published"
-target: "https://www.facebook.com/example-page"   # subreddit / instance / board / group / Page — when the platform needs one
+targets:                                             # one entry per listed platform that needs one
+  facebook-wall: "https://www.facebook.com/example-handle"
 attachments:                                         # relative to the campaign folder, must exist;
   - file: media/launch-demo.png                      # a plain path string is also accepted
     alt: "Terminal showing the account switch command"
@@ -312,7 +314,7 @@ status: draft
 ```
 
 - `.txt` / `.html` — the same metadata as a plain header block (`Key: value` lines / a `<pre>` metadata block), then the body. No CSS in the HTML — semantic tags only.
-- `.csv` — header row + one data row per file (columns: date, time, timezone, platform, title, target, body, attachments, links, hashtags, status). Kept per-post so the naming scheme holds for every format.
+- `.csv` — header row + one data row per file (columns: date, time, timezone, form, platforms, title, targets, body, attachments, links, hashtags, status). Kept per-post so the naming scheme holds for every format.
 - `.pdf` — generated from the `.md` via an installed converter (`pandoc --version` exits 0; otherwise say so and deliver `.md` with instructions). The `.md` sources are kept alongside — PDF is for humans; a publisher reads the `.md`.
 
 Plus the manifest `content-campaign/<slug>/campaign.md`: interview answers, which of the three Phase 2 quality probes had to be re-asked and what the second answer added, the interest-gate result per slot (which of the four questions the unit passed, and any unit shipped on a single weak pass), the voice profile used (path and its confidence stamp, or "none"), per-platform limits table with checked-on dates and whether each value was freshly verified or reused from `platform-cache.md`, per-platform best-time windows with sources (or a fallback mark), per-platform overrides, the Profile-prerequisites section (per platform, the exact URL the profile bio must carry for bio-CTA posts), the full schedule table (slot, platform, title, angle, file), which media assets were generated rather than supplied, and the Unverified-claims list.
@@ -336,7 +338,7 @@ The final report cites evidence, not intentions: N posts across M platforms and 
 - One CTA line with one URL stamped verbatim across the batch, or links wrapped in shorteners.
 - A bio-CTA promising a page the single bio link will not hold, or a Profile prerequisite written to paper over that mismatch instead of fixing the CTAs.
 - Deciding the platform set from the sources — the stack, the audience, the accounts found in Phase 1 — instead of asking question 4 with the full list every run; the same applies to shortening the list to "the ones that fit this product" before the user sees it.
-- A platform the product already posts on left out of the campaign because the canonical slug list did not carry it, or a post shipped without the `target` its platform needs.
+- A platform the product already posts on left out of the campaign because the canonical slug list did not carry it, or a form file shipped without the `targets` entry one of its platforms needs.
 - Re-deriving a voice inside the campaign instead of reading the profile `awesome-content-voice` produced, or treating a `confidence: low` profile as observed fact.
 - Deleting a habit the voice profile's *Personal tics* section protects because the slop pass recognizes the shape.
 - Auditing and rewriting in the same read, or rewriting a post before the whole batch has been listed — both are how a batch ends up scrubbed on the surface and templated underneath.

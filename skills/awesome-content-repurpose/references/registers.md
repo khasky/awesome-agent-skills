@@ -2,7 +2,7 @@
 
 A source type says how the material is organised (`guide/tutorial`, `benchmark/report`, `essay/opinion` and the rest, in `SKILL.md` Phase 0). A subject family says how people who write about that subject actually sound. The two are independent: a tutorial about a deployment pipeline and a tutorial about a morning routine share a structure and share almost nothing else.
 
-Read this file at Phase 0, right after the source type is decided. What the family decides depends on the creativity level (`references/creativity.md` section 4): at level 1 it sets the lexicon, the emoji baseline, the question habit and the heading style, and at levels 2 and 3 it leads the structure as well.
+Read this file at Phase 0, right after the source type is decided. What the family decides depends on the creativity level (`references/creativity.md` section 3): at level 1 it sets the lexicon, the emoji baseline, the question habit and the heading style, and at levels 2 and 3 it leads the structure as well.
 
 ## 1. Deciding the family
 
@@ -25,7 +25,7 @@ An unlisted subject takes the family it most nearly behaves like and the report 
 
 ## 2. The families
 
-Rhythm columns are word counts per sentence on prose, matching the floors in `references/creativity.md` section 5. `Ask` is whether a question to the reader is native, and it governs the exclamation mark too: only `sometimes` and `often` families may carry one at all (`references/authored-style.md` section 10). `Emoji` is the baseline before the interview count is applied, and the interview answer never raises a family that sits at zero above one per post - except on a deep article or a mini-blog, where the baseline rises by exactly one because the same count is a different density across fifteen hundred words.
+Rhythm columns are word counts per sentence on prose, matching the floors in `references/creativity.md` section 4. `Ask` is whether a question to the reader is native, and it governs the exclamation mark too: only `sometimes` and `often` families may carry one at all (`references/authored-style.md` section 10). `Emoji` is the baseline before the interview count is applied, and the interview answer never raises a family that sits at zero above one per form - except in the long form, where the baseline rises by exactly one because the same count is a different density across fifteen hundred words.
 
 | Family | Rhythm | Structure habits | Opener habits | Closing habits | Ask | Emoji |
 | --- | --- | --- | --- | --- | --- | --- |
@@ -57,11 +57,11 @@ What each family's writers say, and what marks a text as written from outside it
 
 ## 4. Platform norms measured against these families
 
-Measured on 2026-09-19 across the platforms this skill writes for. These are the natives' habits, not instructions to copy wholesale: the interview answers and the caps still bind, and a promotional block or a house rule in `references/platform-specs.md` wins where they conflict.
+Measured on 2026-09-19 across the platforms these forms land on. These are the natives' habits, not instructions to copy wholesale: the interview answers and the ceilings in `references/forms.md` still bind, and they win where the two conflict.
 
 - Article platforms carry the family almost unchanged: a technical piece there used no emoji, no questions to the reader and headings that stated findings, while a career piece on the same platform ran a third shorter per sentence, used many sentences under seven words and closed by inviting replies.
 - Professional feeds run one idea per line with blank lines between them, a hook line first, and numbers early. A dense paragraph reads as an article pasted into a feed.
-- Fediverse surfaces run short: sentence means between five and thirteen words, anecdote and blunt opinion, and trending posts frequently carrying no hashtags at all. Tags there still serve discovery, so the run keeps the platform's floor rather than copying a zero.
+- Fediverse surfaces run short: sentence means between five and thirteen words, anecdote and blunt opinion, and trending posts frequently carrying no hashtags at all. Tags there still serve discovery, so the hashtag pool keeps at least three tags rather than copying a zero.
 - The largest microblog and the newer one both showed posts with no hashtags and no emoji, built either from one long sentence or from a run of very short ones, with a result-led first line.
 - Developer community surfaces use the platform's own category tags rather than topic hashtags, and ask the room direct questions as a normal register rather than as a closing device.
 - Long-form newsletter and publication surfaces put a specific personal claim in the subtitle rather than a list of the sections.
@@ -69,13 +69,13 @@ Measured on 2026-09-19 across the platforms this skill writes for. These are the
 ## 5. What the family never decides
 
 - Whether a fact is true, which peer the comparison uses, what a command says, or what the caveat obliges the reader to do.
-- The hard caps, the depth bands, the frontmatter contract, the footer's placement or the tag fields.
+- The ceilings in `references/forms.md`, the frontmatter contract or the footer's placement.
 - Whether a module appears. Coverage belongs to `references/fidelity.md`, and a register that would drop the privacy section is overruled.
 - The voice the interview selected. A family sets register, not person: a `personal-essay` source under neutral third person stays in third person.
 
 ## 6. Anti-patterns
 
 - Choosing a family from the topic's vocabulary rather than from what the source does. A piece about a payments API that teaches a protocol is `eng-concept`, not `business-money`.
-- Writing every platform in the family's register and ignoring the surface. The family sets the voice, the platform still sets the shape.
-- Using a family to justify an emoji count the interview did not authorise, or a question on a surface whose blueprint has none.
-- Switching family between files of one pack. The pack has one subject and therefore one family, with the runner-up named in the report and used nowhere.
+- Writing every form in the family's register and ignoring its length. The family sets the voice, the form still sets the shape.
+- Using a family to justify an emoji count the interview did not authorise, or a question in a form whose shape has none.
+- Switching family between the three forms. They share one subject and therefore one family, with the runner-up named in the report and used nowhere.
