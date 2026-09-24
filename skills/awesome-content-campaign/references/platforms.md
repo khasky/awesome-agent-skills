@@ -22,7 +22,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `mastodon` | any Mastodon instance | instance domain | optional | 16:9 | `genre-micro-post.md` |
 | `bluesky` | bsky.app | — | optional | 16:9 | `genre-micro-post.md` |
 | `x` | x.com | — | optional | 16:9 | `genre-micro-post.md` |
-| `threads` | threads.com | — | optional | 4:5 | `genre-micro-post.md` |
+| `threads` | threads.com | — | optional | 16:9 | `genre-micro-post.md` |
 | `truthsocial` | truthsocial.com | — | optional | 16:9 | `genre-micro-post.md` |
 | `bastyon` | bastyon.com | — | optional | 16:9 | `genre-micro-post.md` |
 | `vk-wall` | vk.com | own wall or a community the user may post to | optional | 16:9 | `genre-micro-post.md` |

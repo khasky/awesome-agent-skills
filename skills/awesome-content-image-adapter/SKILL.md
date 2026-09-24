@@ -32,13 +32,13 @@ linkedin.md     linkedin.png
 ...
 ```
 
-The name is the platform slug, verbatim from the canonical table, so a post and its picture are one glance apart and the publisher resolves the path with no mapping.
+The picture takes the post file's own name with `.png`, so a post and its picture are one glance apart and the publisher resolves the path with no mapping. For almost every platform that name is the slug verbatim from the canonical table; where the writing skill names a file differently (`youtube-post.md` carries the `youtube` slug), the picture follows the file (`youtube-post.png`) and the slug is read from the file's frontmatter `platform` key.
 
 The mode is decided by where the call came from, never by a question: a caller passing a posts folder and an approved image is the chain, anything else is the standalone run.
 
 ## Which platforms get a file
 
-**In a chain, the posts folder is the list.** Every `<slug>.md` already written there is a platform this set actually targets, and it gets `<slug>.png` beside it. A set written for nine platforms gets nine pictures, not forty-four, because the other thirty-five were never part of this run. The canonical table is still what says which shape each of those slugs takes, and which of them takes no attachment at all.
+**In a chain, the posts folder is the list.** Every post file already written there is a platform this set actually targets, and it gets a `.png` of the same name beside it. The platform is the file's frontmatter `platform` key, never the filename: the two differ where a writing skill disambiguates a surface, and a run that matched filenames against the table left `youtube-post.md` without a picture, and the publisher had to borrow another platform's file in a different frame. A set written for nine platforms gets nine pictures, not forty-four, because the other thirty-five were never part of this run. The canonical table is still what says which shape each of those slugs takes, and which of them takes no attachment at all.
 
 **Standalone, the table is the list.** Every row whose `Image` column names a shape, one file each, named `<slug>.png`.
 
@@ -46,12 +46,12 @@ Either way, a row whose `Image` column reads `none` gets no file — the surface
 
 A row the table marks as taking images by URL only still gets its file: the picture is hosted and linked rather than uploaded, and the file is what gets hosted.
 
-A post file naming a platform the table does not carry is a defect in the post set, reported rather than guessed at — the table is the vocabulary and a slug outside it has no frame to be fitted into.
+A post file whose `platform` key names a slug the table does not carry is a defect in the post set, reported rather than guessed at — the table is the vocabulary and a slug outside it has no frame to be fitted into.
 
 ## The run
 
 1. **Resolve one source image.** A local path or a URL, PNG, JPEG, WebP, BMP or TIFF; a URL is downloaded first and the run says what it saved and from where. Several candidates and no instruction → ask which, once. In the chain there is no ambiguity: the approved file is the one the caller handed over.
-2. **Take the list.** In a chain, the `<slug>.md` files in the posts folder; standalone, the canonical table's rows. Either way the shape comes from that table's `Image` column, read at run time: never a list typed out here or remembered from a previous run, because the table moves and a copy does not.
+2. **Take the list.** In a chain, the post files in the posts folder, each resolved to its slug through its frontmatter `platform` key; standalone, the canonical table's rows. Either way the shape comes from that table's `Image` column, read at run time: never a list typed out here or remembered from a previous run, because the table moves and a copy does not.
 3. **Apply the orientation the file declares** before anything is measured. An EXIF rotation ignored here turns every output on its side.
 4. **Fit the picture into each shape** by the rules in `references/geometry.md`, and write RGB PNG.
 5. **Verify** what the geometry reference says to verify, then report: the absolute folder, the file count, the slugs skipped and why.
@@ -86,4 +86,5 @@ A file count that does not match its own list — the post files in a chain, the
 - Leaving a manifest, a master copy or a zip beside the platform files.
 - Asking the user which mode to run in when the caller already said, or asking again for a picture the previous step just approved.
 - Writing forty-four files beside a post set of nine. The folder is the list in a chain.
+- Reading the platform off the filename. A post file whose name is not its slug (`youtube-post.md`) is still a post, and its picture shares its name.
 - Claiming the folder opened where nothing could open it.

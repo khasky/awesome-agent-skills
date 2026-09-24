@@ -348,7 +348,7 @@ A supplied file is a path on the machine or a URL. A URL is downloaded into `med
 - *Supplied.* The user gives a path or a URL. It is resolved into `media/` and that file is the approved picture.
 - *Generated.* `awesome-content-graphics` is handed the facts from `source-notes.md`, that file's boundary section, the post title, the output language, the target ratio and `<posts folder>/media/` as its output folder, and hands back the picked file with its alt text. It asks its own count question and runs its own pick gate; this one does not restate them, does not ask anything it is about to ask, and does not proceed until it hands control back.
 
-Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. The posts are already written, so the platform list is the folder itself: one `<slug>.png` beside each `<slug>.md` whose platform takes an image, in that platform's frame. It skips a platform the canonical table marks as taking no attachment and says which. Nothing existing in the folder is moved or overwritten, and the run does not proceed until that skill hands control back.
+Then, without another question, `awesome-content-image-adapter` is called with the approved picture and the posts folder. The posts are already written, so the platform list is the folder itself: one `.png` beside each post file whose platform takes an image, sharing that file's name (`youtube-post.png` beside `youtube-post.md`), in that platform's frame. It skips a platform the canonical table marks as taking no attachment and says which. Nothing existing in the folder is moved or overwritten, and the run does not proceed until that skill hands control back.
 
 **Video.** One source file becomes two things, both made before a post file is touched, and both needing video tooling on the machine (`ffmpeg` is the usual one): confirm it answers before promising either, and where nothing is installed say so, ship the posts text-only and name what was skipped.
 
@@ -360,7 +360,7 @@ Then, without another question, `awesome-content-image-adapter` is called with t
 **Frontmatter.** Media is declared where the publisher reads it, after `hashtags`:
 
 ```yaml
-attachments: [{ file: <slug>.png, alt: "<what it shows and what it means>" }]
+attachments: [{ file: <post-file-name>.png, alt: "<what it shows and what it means>" }]
 ```
 
 Paths are relative to the posts folder, so the publisher resolves them there. A post whose picture came from the image adapter names the file that sits beside it and shares its name; a still or a video derived in this phase names its file under `media/` the same way. Alt text is written in the run's output language, says what the picture shows and what it means, and carries no date. The key is absent on a post with no media, several entries in order carry a sequence, and `scheduled`, `timezone`, `status` and `target` stay forbidden here as before.
