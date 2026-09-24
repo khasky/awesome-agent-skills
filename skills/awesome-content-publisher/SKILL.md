@@ -119,6 +119,8 @@ A `skipped` entry says whose decision it was. "The user chose to skip rather tha
 
 Write the ledger through a small helper beside it, not by re-emitting the file. Regenerating the whole JSON through the model on every state change is expensive and one interrupted turn away from a truncated ledger. A few-line script in `publish-state/` taking platform, status, URL, evidence and `degraded` keeps each write atomic and cheap; create it on the first write of the run.
 
+Per post, the ledger also keeps `phases`: a list of `{phase, at}` marks the helper stamps when the work on that post enters a step — `nav` (opening the platform, the login and duplicate checks, finding the composer), `text` (title, body, tags, formatting repairs), `image` (upload, alt text), `publish` (submit and read-back), `wait` (a question to the user is open). Stamp on entry, at the moment the step starts, and never afterwards from memory; a step entered twice gets two marks. A mark's duration runs to the next mark, and the last one ends at the write that gives the post its final status. The run itself carries the same kind of list for the steps that belong to no post — `preflight` from the first call, `wait` while a preflight question or the gate is open, `final` from the final pass to the end of cleanup. These marks are what the Phase 9 table is computed from.
+
 Every timestamp in the ledger comes from the machine's clock at the moment of the write — the helper stamps `updated` itself, and `posted_at` is passed in from the shell's own clock, never typed as a number the model believes the time to be. A run that wrote estimated times produced a ledger whose entries are minutes to an hour away from when those posts actually published, out of order against each other, and useless afterwards for the two things the field exists for: proving the same-platform spacing in Phase 7 was respected, and telling the user where the run's time went.
 
 `incidents` records outward-facing side effects this skill caused that were not one of the planned posts — a stray upload, an edit, anything visible on the account that the run plan did not promise. Each entry: when, platform, what happened, the cause, the evidence that identified it, the artifact's URL, and how the user chose to resolve it. A side effect that is only in the transcript is lost the moment the session ends; the ledger is the only durable record the user can act on later.
@@ -230,18 +232,24 @@ Between due times, idle using whatever long-wait mechanism the agent runtime has
 
 ## Phase 9 — Report
 
+The report is one table with a row per post, in the order the run worked them — a platform with several posts in the campaign gets several rows, each naming its file after the slug — and nothing in free form around it except the lines listed after the table. The same table goes into the chat and into `publish-state/report.md`. Column names and the notes column are written in the user's language; the shape stays fixed:
+
 ```text
-Source:      <folder>   (<N> posts, <M> platforms, <date range>)
-Posted:      <n> — each with platform, time, and the read-back URL
-Pending:     <n> approval queues (a moderated group target, hackernoon, ...)
-Skipped:     <n> (<platforms and why — not logged in, user choice>)
-Failed:      <n> (<file: last error>)
-Unverified:  <n> (submitted, not found on read-back — resolve before any retry)
-Degraded:    <n> (posted, but missing something the file declared — e.g. alt text)
-Incidents:   <n> (side effects outside the plan, with URLs and how each was resolved)
-Remaining:   <n> pending, next due <time> (<pub TZ> / <local>)
-Ledger:      <absolute path>
+| # | Platform | Result | Start | Total | Calls | Navigate & inspect | Text | Image | Publish & read-back | Waiting for user | Actions and issues |
+|---|----------|--------|-------|-------|-------|--------------------|------|-------|---------------------|------------------|--------------------|
+| — | Preflight | — | <hh:mm> | <m:ss> | <n> | <m:ss> | | | | <m:ss> | <bridge, source scan, logins, gate> |
+| 1 | <slug> | posted — <permalink> | <hh:mm> | <m:ss> | <n> | <m:ss> | <m:ss> | <m:ss> | <m:ss> | | <what was done; each failure and how it was resolved> |
+| 2 | <slug> | degraded — <permalink> | ... | | | | | | | | <what the post went out without> |
+| 3 | <slug> | skipped | ... | | | | | | | | <whose decision and why> |
+| — | Final pass and cleanup | — | <hh:mm> | <m:ss> | <n> | <m:ss> | | | | | <permalinks re-opened, late checks, what was cleaned up> |
 ```
+
+- **Result** is the ledger status, with the permalink where one exists — `degraded` in place of `posted` when the entry's `degraded` field is set (posted, missing something the file declared), and `superseded` rows kept with the URL that replaced them: `posted`, `degraded`, `pending-approval`, `unverified` (submitted, not found on read-back — resolve before any retry), `failed` (with the last error), `skipped`, `pending` (not due yet). A submitted post without a read-back URL is never written as `posted`.
+- **Start**, **Total** and the five step columns are computed from the ledger's `phases` marks (Phase 5), in `m:ss`; an empty cell means the step never ran. Total is the sum of the post's marks, so a post that waited days for its due time does not count the wait.
+- **Calls** is the number of tool calls spent on that row, counted from the session transcript where the runtime keeps one; where it does not, write `—` rather than an estimate.
+- **Actions and issues** is one or two short clauses: the route that worked, and every failure, retry, incident, degraded field and user decision on that platform. Never "no issues" padding; an uneventful row says what was done.
+
+Under the table, and only these lines: the source folder with its post count, platform count and date range; the run's span, the time spent waiting for the user, the publishing span and the average per platform (with and without the slowest outlier when one dominates); the slowest and fastest rows with the cause in a few words; incidents with their URLs and how each was resolved; `Remaining: <n> pending, next due <time> (<pub TZ> / <local>)` when anything is left; and the ledger's absolute path.
 
 Every number comes from the ledger, not from memory. Anything unverified is named as unverified — a submitted post without a read-back URL is never reported as published. State plainly which posts went out degraded and what is now permanent about that (several platforms will not accept an image description after posting). Repeat any prerequisite the user chose to override — a stale bio link keeps mis-attributing every later post on that platform, not only the one just published. Re-open every permalink of the run once more before writing the report. The cheap form is one scripted pass per batch of about twenty URLs that records the HTTP status of each `goto`, the page title and whether a phrase from the post body is present on the page; a permalink that answers 200 with a title but without the phrase is a listing or a login wall, not the post, and is reported as such. Some defects only surface minutes later — a post held by moderation, an image that failed processing server-side, a draft that never went live — and the report is the last cheap moment for the user to act on them. Finally, clear the run's artifacts: delete the screenshots and generated helper scripts this run wrote, wherever the allowed roots forced the artifact folder to live, and leave the user's project tree with nothing untracked that the run put there. A folder inside the working directory is a legitimate place to work from when the bridge refuses anywhere else; it is not a place to leave things.
 
