@@ -127,6 +127,8 @@ A practical split: writing at `medium`, a publishing run across many platforms a
 
 This is guidance from how the skills behave, not a benchmark.
 
+The `opus` alias follows the newest Opus. On Opus 5.5 `medium` is the default, and Anthropic's prompting guide for that model reports it matching or beating Opus 5 at `high` on coding and knowledge work, while thinking more per turn at any given level. Start there, and read the `high` advice above as Opus 5 experience that has not been re-measured on 5.5.
+
 ## Part 2 — Install the skills
 
 Leave the agent for a moment (`/exit`) and run these in the same terminal:
