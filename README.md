@@ -274,6 +274,8 @@ Skills trigger on intent — plain requests work. Explicit mentions make the cho
 
 They also chain: implement → **awesome-code-cleanup** in audit mode (read-only findings) → apply the cleanup → **awesome-code-review** before merge. Or: **awesome-content-campaign** from your repo and site → review the drafts → **awesome-content-publisher** ships them on schedule.
 
+The four skills that rewrite a published history or post to live accounts (**awesome-git-history-reset**, **awesome-git-history-rebuild**, **awesome-git-author-rewrite**, **awesome-content-publisher**) set `disable-model-invocation: true`: in Claude Code and Cursor they run only when you name them (`/awesome-content-publisher`), never on a matching request alone.
+
 ## Skill format
 
 Each skill follows the [Agent Skills specification](https://agentskills.io/specification):
