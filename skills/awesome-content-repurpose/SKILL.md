@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Repurposes one source (a link, a file, a guide, pasted notes) into three posts that together cover every publishing platform: a full long read written first, a regular post derived from it, and a short post that carries the whole point inside the tightest cap of its group. Each file lists its platforms, title, links and hashtag pool in frontmatter, and the publisher places title, tags and link per platform. Source notes every claim traces to, a module map that keeps a guide a guide, live verification of what is volatile, an interview for language, idea, voice, emoji, creativity and footer, a counted audit, one media question. Use when asked to repurpose an article or guide into posts, adapt a text for social media, or 'адаптируй статью под соцсети'. Do not use for a scheduled campaign from product sources (awesome-content-campaign), to publish (awesome-content-publisher), to resize images (awesome-content-image-adapter), or to build the voice profile (awesome-content-voice)."
+description: "Turns one source (article, guide, notes) into three posts for all platforms: a long read, a regular and a short post, in the language the user picks. Use when asked to adapt a text for social posts, or 'адаптируй статью под соцсети'. Do not use for a product campaign (awesome-content-campaign)."
 license: MIT
 metadata:
   author: Khasky

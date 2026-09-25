@@ -1,0 +1,22 @@
+[
+  { "query": "can you proofread this email before I send it, just flag the issues don't change my words", "should_trigger": true, "split": "train" },
+  { "query": "проверь грамматику в этом посте, но не переписывай текст", "should_trigger": true, "split": "train" },
+  { "query": "this paragraph has a claim that adoption rose because we shipped in Q3 - is that actually logically sound", "should_trigger": true, "split": "train" },
+  { "query": "check this doc for subject-verb agreement and comma splices, AP style", "should_trigger": true, "split": "train" },
+  { "query": "is this passage clear? I want notes on the flow, not a rewrite", "should_trigger": true, "split": "train" },
+  { "query": "I wrote this for investors and I'm not sure the case actually holds together logically - can you look at it without touching my wording", "should_trigger": true, "split": "train" },
+  { "query": "give me a list of grammar issues in this ticket description, keep control of the final wording myself", "should_trigger": true, "split": "validation" },
+  { "query": "посмотри абзац и скажи, где логика хромает, но текст я перепишу сам", "should_trigger": true, "split": "validation" },
+  { "query": "что-то в этом абзаце режет слух, но я не пойму что - покажи конкретные места, текст сам перепишу", "should_trigger": true, "split": "validation" },
+  { "query": "check the pronoun references and punctuation in this one-page brief, and tell me if it reads as ready to publish", "should_trigger": true, "split": "validation" },
+  { "query": "this text sounds like AI wrote it, can you rewrite it so it sounds more human", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
+  { "query": "de-bloat this markdown doc and fix the vague 'Overview' headings", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
+  { "query": "write me a punchy headline for the new pricing page", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
+  { "query": "does this blog post's user-count claim still match what's in our database", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "переведи этот абзац с русского на английский", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "train" },
+  { "query": "rewrite this paragraph so it matches the voice guide we saved at styles/northlane.md", "should_trigger": false, "belongs_to": "awesome-style-mimic", "split": "train" },
+  { "query": "what's the difference between 'affect' and 'effect'", "should_trigger": false, "split": "validation" },
+  { "query": "как правильно - 'в течение' или 'в течении'", "should_trigger": false, "split": "validation" },
+  { "query": "fix the typo on line 8, it says 'seperate' instead of 'separate'", "should_trigger": false, "split": "validation" },
+  { "query": "сколько слов обычно в абзаце делового письма", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-accessibility-audit
-description: "Read-only WCAG 2.1/2.2 audit of UI and markup — semantic HTML, keyboard and focus, labels, contrast, dynamic content, target size — with the concrete fix beside each finding. Use when asked to check accessibility, a11y, WCAG, screen-reader or keyboard support, 'доступность', or before shipping a page, form or modal. Reports; never edits files. Do not use for conversion structure (awesome-landing-audit) or discoverability (awesome-seo-audit)."
+description: "Read-only WCAG audit of UI and markup with a concrete fix per finding. Use when asked to check accessibility, a11y, keyboard or screen-reader support, contrast, or 'проверь доступность'. Do not use for conversion (awesome-landing-audit) or SEO (awesome-seo-audit)."
 license: MIT
 metadata:
   author: Khasky

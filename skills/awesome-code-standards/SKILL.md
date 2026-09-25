@@ -1,6 +1,6 @@
 ---
 name: awesome-code-standards
-description: "Universal coding standards — naming, structure, immutability, error handling, type safety, backend layering, frontend architecture — that fill the gaps after the project's own conventions. Use when starting a module, refactoring to team conventions, setting up lint rules, onboarding, or 'стандарты кода'. Do not use for a repo-wide comment cleanup pass (awesome-code-cleanup) or for designing the API error contract (awesome-error-standards)."
+description: "Coding conventions that fill the gaps a project's own rules leave: naming, structure, immutability, types, error handling, layering. Use when starting a module, setting lint rules, refactoring to conventions, onboarding, or 'стандарты кода'. Do not use to review a diff (awesome-code-review)."
 license: MIT
 metadata:
   author: Khasky
@@ -17,7 +17,7 @@ Apply consistent naming, structure, and patterns so code is readable and maintai
 - Starting a new project or module
 - Refactoring to match team conventions
 - Setting up or updating lint/format/type-check rules
-- Reviewing code for consistency
+- Settling which conventions a codebase follows (reviewing a specific diff belongs to awesome-code-review)
 - Onboarding: documenting or applying coding conventions
 - Enforcing naming, formatting, or structural consistency
 

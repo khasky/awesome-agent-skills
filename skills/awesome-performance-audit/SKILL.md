@@ -1,6 +1,6 @@
 ---
 name: awesome-performance-audit
-description: "Read-only audit of performance and reliability — event-loop discipline, streaming and backpressure, memory and CPU diagnostics, shutdown/timeout/job habits, resilience topology (circuit breakers, retry budgets, queue bounds), and frontend delivery (Core Web Vitals, bundle size, hydration) — with evidence per finding and a SHIP / FIX / BLOCK verdict. Use when a service or page is slow, memory climbs, tail latency is bad, a worker OOMs, before a load event, or 'почему тормозит'. Measures and reports; rewrites no hot paths. Do not use for retry/idempotency contracts (awesome-error-standards) or render style rules (awesome-code-standards)."
+description: "Read-only performance and reliability audit: event loop, backpressure, memory and CPU, timeouts, retries, queues, Core Web Vitals, bundles, with a verdict. Use when something is slow, memory climbs or latency spikes, or 'почему тормозит'. Do not use for a reproducible bug (awesome-bug-fix)."
 license: MIT
 metadata:
   author: Khasky

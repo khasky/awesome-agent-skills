@@ -1,0 +1,22 @@
+[
+  { "query": "we had three outages this month for different services and each write-up blamed something different, we need the real systemic thread", "should_trigger": true, "split": "train" },
+  { "query": "проведи анализ первопричины: заявки на возврат обрабатываются на 2 дня дольше, чем полагается, уже третий месяц подряд", "should_trigger": true, "split": "train" },
+  { "query": "write the postmortem for yesterday's checkout outage, no one on call could tell why it started", "should_trigger": true, "split": "train" },
+  { "query": "each new hire spends their first week fighting the same broken onboarding step, do a 5-whys on it", "should_trigger": true, "split": "train" },
+  { "query": "customers keep getting double-charged during the batch billing run and it's not a bug we can point at one line", "should_trigger": true, "split": "train" },
+  { "query": "run a fishbone analysis on why our release train keeps slipping by two days every sprint", "should_trigger": true, "split": "train" },
+  { "query": "our support team keeps escalating the same billing complaint every week, nobody knows why the fix doesn't stick", "should_trigger": true, "split": "validation" },
+  { "query": "разберись, почему инцидент с недоступностью API повторяется каждую последнюю пятницу месяца", "should_trigger": true, "split": "validation" },
+  { "query": "there's no test that reproduces it, but every quarter our data warehouse sync silently drops a batch of records", "should_trigger": true, "split": "validation" },
+  { "query": "сделай A3 отчёт по тому, почему склад раз в неделю теряет заказы при передаче между сменами", "should_trigger": true, "split": "validation" },
+  { "query": "checkout is throwing a null reference exception on line 88 of checkout.ts, can you trace it and fix it", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
+  { "query": "тест test_refund_flow падает через раз, нужно найти причину именно в коде и починить", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
+  { "query": "during last night's incident we had no idea what happened because the logs were basically empty, set up proper structured logging", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "train" },
+  { "query": "the dashboard gets sluggish every day around 3pm and nobody's dug into why, take a look", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
+  { "query": "what's the difference between a fishbone diagram and a 5 whys analysis", "should_trigger": false, "split": "train" },
+  { "query": "bump the postmortem doc's date field to today", "should_trigger": false, "split": "train" },
+  { "query": "the API returns 500 whenever the cart has more than 20 items, reproduce and patch it", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "validation" },
+  { "query": "добавь request_id и уровни логирования в сервис оплаты, а то в логах каша", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "validation" },
+  { "query": "how long should we keep incident postmortems archived for", "should_trigger": false, "split": "validation" },
+  { "query": "что такое PDCA цикл, объясни коротко", "should_trigger": false, "split": "validation" }
+]

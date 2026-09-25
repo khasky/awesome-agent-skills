@@ -1,6 +1,7 @@
 ---
 name: awesome-content-publisher
-description: "Publishes a prepared batch of scheduled posts to the user's own accounts through their live browser (Playwright MCP bridge): bridge and format preflights, per-platform login checks that never automate a login, a persistent ledger that prevents duplicate posts across restarts, timezone-mapped scheduling that can idle for days, sequential human-paced posting with read-back verification and a confirmation gate before anything goes public, plus an opt-in engagement harvest. Use when asked to publish a campaign, post prepared files to accounts, post on schedule, or 'опубликуй посты'. Do not use to write the posts (awesome-content-campaign, awesome-content-repurpose) or to learn a site's style (awesome-style-mimic)."
+description: "Publishes prepared posts to the user's own accounts through their live browser, on schedule, with login checks, a no-duplicates ledger and a confirmation gate before anything goes public. Use when asked to publish posts, or 'опубликуй посты'. Do not use to write posts (awesome-content-repurpose)."
+disable-model-invocation: true
 license: MIT
 compatibility: "Requires the Playwright MCP --extension bridge attached to the user's own logged-in Chrome or Edge. No headless browser, and no credential is ever typed or stored by the skill."
 metadata:

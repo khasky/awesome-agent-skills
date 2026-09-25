@@ -1,0 +1,22 @@
+[
+  { "query": "Can you review the diff for PR #341 before I merge it?", "should_trigger": true, "split": "train" },
+  { "query": "сделай ревью моих изменений в ветке feature/checkout-retry перед мержем", "should_trigger": true, "split": "train" },
+  { "query": "I just finished the refund-flow feature - take a look before I open the pull request.", "should_trigger": true, "split": "train" },
+  { "query": "Here's the patch that adds OAuth login to api/auth.py - go through it for bugs and anything security-related before it goes out.", "should_trigger": true, "split": "train" },
+  { "query": "проверь этот пул-реквест на баги и проблемы с безопасностью, у нас скоро релиз", "should_trigger": true, "split": "train" },
+  { "query": "I fixed a nasty race condition in the queue worker - can someone (well, you) go over the fix critically before I push?", "should_trigger": true, "split": "train" },
+  { "query": "The team lead won't approve anything that hasn't had a second pair of eyes. Here's my diff for the new export endpoint.", "should_trigger": true, "split": "validation" },
+  { "query": "Take a hard look at this changeset touching billing/invoice.go - I want to know if it's safe to ship.", "should_trigger": true, "split": "validation" },
+  { "query": "посмотри диф в файле src/payments/charge.ts перед тем как мы это зальём в main", "should_trigger": true, "split": "validation" },
+  { "query": "We just wrapped the new rate-limiter middleware. Before it goes to main, I want someone to check it for correctness and security holes.", "should_trigger": true, "split": "validation" },
+  { "query": "My teammate left five comments on my PR about the caching layer - help me respond to each one.", "should_trigger": false, "belongs_to": "awesome-code-review-feedback", "split": "train" },
+  { "query": "This new pricing-calculator module shipped with zero tests. Write some before we even think about reviewing it.", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
+  { "query": "Forget the diff, I want a full security audit of the whole auth service - injection, secrets, everything.", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "не смотри один пул-реквест, я хочу оценку архитектуры всего проекта целиком", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "What's the difference between a Critical finding and a Suggestion in your review format?", "should_trigger": false, "split": "train" },
+  { "query": "просто исправь опечатку в строке 12 файла utils/format.ts, это весь пул-реквест.", "should_trigger": false, "split": "train" },
+  { "query": "We're starting a brand-new notifications service from scratch - lay out our naming and structure conventions before anyone writes code.", "should_trigger": false, "belongs_to": "awesome-code-standards", "split": "validation" },
+  { "query": "This PR only touches README.md - can you line-edit the prose so it reads less like a template?", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "validation" },
+  { "query": "быстрый вопрос: вы проверяете производительность в рамках обычного ревью или это отдельно?", "should_trigger": false, "split": "validation" },
+  { "query": "Bump the timeout constant in config/http.ts from 3000 to 5000, one-line change.", "should_trigger": false, "split": "validation" }
+]

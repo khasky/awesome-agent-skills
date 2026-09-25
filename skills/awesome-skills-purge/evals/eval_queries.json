@@ -1,0 +1,22 @@
+[
+  { "query": "clean out every installed skill on this machine except the ones in the awesome-agent-skills collection", "should_trigger": true, "split": "train" },
+  { "query": "удали все навыки со всех агентов на компьютере, оставь только себя", "should_trigger": true, "split": "train" },
+  { "query": "I've got skills scattered across Claude Code, Cursor and Gemini CLI now and I want almost all of them gone, just keep three specific ones", "should_trigger": true, "split": "train" },
+  { "query": "my skills directories are a mess of symlinks and duplicates across every agent I use, I want a fresh start with barely anything left", "should_trigger": true, "split": "train" },
+  { "query": "go through ~/.claude/skills, ~/.codex/skills and whatever Cursor uses, and get rid of everything that isn't this collection, but save a backup somewhere first", "should_trigger": true, "split": "train" },
+  { "query": "у меня на машине скопилось куча ненужных навыков в разных агентах, хочу почти всё снести, но аккуратно", "should_trigger": true, "split": "train" },
+  { "query": "purge every skill from every agent on this machine, keep collection, back everything up first, and ask before deleting anything", "should_trigger": true, "split": "validation" },
+  { "query": "we tested a dozen experimental skills last quarter, none of them are needed anymore except awesome-code-review, sweep the rest", "should_trigger": true, "split": "validation" },
+  { "query": "очисти скилы во всех агентах кроме коллекции awesome-agent-skills, сделай архив перед удалением", "should_trigger": true, "split": "validation" },
+  { "query": "half these skill folders are symlinks into an old git clone I don't use anymore, I just want the links themselves gone from every agent, not the clone", "should_trigger": true, "split": "validation" },
+  { "query": "check whether the skills and MCP servers installed under .claude/ in this repo are pinned to a commit SHA and don't fetch code from a URL at runtime", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "проверь установленные MCP-серверы и скиллы в .claude/ на предмет опасных прав доступа и незафиксированных версий", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "is this new Claude Code plugin from the marketplace safe to install, does it request more tool access than it needs", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "go through this repo's skills folder and strip out stale narration comments and dead code left over from an early draft", "should_trigger": false, "belongs_to": "awesome-code-cleanup", "split": "train" },
+  { "query": "почисти закомментированный мёртвый код и старые комментарии в файлах этого репозитория", "should_trigger": false, "belongs_to": "awesome-code-cleanup", "split": "train" },
+  { "query": "find any AI-slop markers like stale comments or template stamps across this codebase's skill scripts", "should_trigger": false, "belongs_to": "awesome-slop-audit", "split": "train" },
+  { "query": "uninstall the awesome-agent-skills plugin entirely from Claude Code, not just its skills", "should_trigger": false, "split": "validation" },
+  { "query": "delete the git clone at ~/repos/my-skills-fork that one of my symlinked skills points at", "should_trigger": false, "split": "validation" },
+  { "query": "какие есть популярные коллекции скиллов для Claude Code, посоветуй", "should_trigger": false, "split": "validation" },
+  { "query": "why does my Cursor agent not pick up skills from the same folder Claude Code uses", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-design-doc
-description: "Produces a design document or ADR for a feature or architectural decision: requirements and scale numbers first, real alternatives with trade-offs, a recommendation grounded in the requirements, explicit non-goals and migration path. Use when asked to write a design doc, write an ADR, decide which approach to take, run a pre-mortem on a plan before committing to it, 'спроектируй', 'сделай pre-mortem', or when awesome-code-review requests an ADR for a load-bearing decision. Do not use for auditing an existing architecture (awesome-architecture-audit) or for HTTP resource modeling detail (awesome-api-design)."
+description: "Writes a design doc or ADR: requirements and scale first, real alternatives with trade-offs, a grounded recommendation, non-goals, migration path; also runs a pre-mortem on a plan. Use when choosing an approach, or 'спроектируй', 'сделай pre-mortem'. Do not use for API detail (awesome-api-design)."
 license: MIT
 metadata:
   author: Khasky

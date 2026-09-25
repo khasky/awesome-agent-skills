@@ -1,0 +1,22 @@
+[
+  { "query": "publish the posts in ~/campaigns/launch-week to our accounts on their scheduled times", "should_trigger": true, "split": "train" },
+  { "query": "опубликуй подготовленные посты из папки content-campaign/launch на моих аккаунтах", "should_trigger": true, "split": "train" },
+  { "query": "do a dry run on this posts folder first, don't actually post anything yet", "should_trigger": true, "split": "train" },
+  { "query": "we're three days behind schedule, just publish everything now in order with normal spacing", "should_trigger": true, "split": "train" },
+  { "query": "go read the likes and comments on the posts we already published last week", "should_trigger": true, "split": "train" },
+  { "query": "I've had these five drafts sitting ready since Monday and nothing's gone out yet - can you get them onto my actual accounts on schedule", "should_trigger": true, "split": "train" },
+  { "query": "restrict this run to just linkedin and x, and post only for those two platforms from the folder", "should_trigger": true, "split": "validation" },
+  { "query": "прогоняй посты из папки без расписания, но с интервалом в час между ними", "should_trigger": true, "split": "validation" },
+  { "query": "these posts have been sitting as files for a week and I keep forgetting to actually put them up anywhere - handle that for me through my browser", "should_trigger": true, "split": "validation" },
+  { "query": "у меня всё готово в папке с постами, просто ничего из этого ещё не появилось у меня в профилях - разберись", "should_trigger": true, "split": "validation" },
+  { "query": "plan two weeks of posts about our product launch, pulling facts from the repo", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
+  { "query": "turn this one article into a long read, a regular post and a short post", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
+  { "query": "crawl our own blog and build a style guide we can reuse", "should_trigger": false, "belongs_to": "awesome-style-mimic", "split": "train" },
+  { "query": "собери профиль моего стиля по последним пятнадцати постам", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
+  { "query": "make the horizontal and vertical versions of this launch image", "should_trigger": false, "belongs_to": "awesome-content-image-adapter", "split": "train" },
+  { "query": "check the user-count numbers in these draft posts against our actual database before anything goes out", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "what's a safe posting interval to avoid getting rate-limited", "should_trigger": false, "split": "validation" },
+  { "query": "сколько раз в день можно постить без риска бана", "should_trigger": false, "split": "validation" },
+  { "query": "fix the broken link in this draft post before we do anything else with it", "should_trigger": false, "split": "validation" },
+  { "query": "как понять, что аккаунт залогинен в браузере", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-code-review
-description: "Reviews a diff, patch or pull request for correctness, security and team standards, with confidence-scored findings in severity buckets (Critical / Suggestions / Nice to have). Use when asked to review a change, before merging, after finishing a feature, or 'сделай ревью'. Do not use for responding to review feedback you received (awesome-code-review-feedback) or for docs-only and formatting-only changes."
+description: "Reviews a diff, patch or pull request for correctness, security and team standards, with severity-ranked findings. Use when asked to review a change or PR, before merging, or 'сделай ревью'. Do not use to answer review comments you received (awesome-code-review-feedback)."
 license: MIT
 metadata:
   author: Khasky

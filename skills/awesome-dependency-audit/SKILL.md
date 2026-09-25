@@ -1,6 +1,6 @@
 ---
 name: awesome-dependency-audit
-description: "Read-only audit of third-party dependencies — lockfile discipline, typosquats and hallucinated package names, dependency confusion, install-script exposure, provenance, licenses, CVE reachability — with a SHIP / FIX / BLOCK verdict. Use when asked to audit dependencies or the supply chain, judge whether a package is safe, review a manifest change, after a bot version bump, or 'проверь зависимости'. Do not use for vulnerabilities in your own code (awesome-security-audit) or to execute the upgrades (awesome-dependency-upgrade)."
+description: "Read-only supply-chain audit of packages and agent extensions: lockfiles, typosquats, dependency confusion, install scripts, licenses, CVEs. Use when asked if a package, manifest change or bot bump is safe, or 'проверь зависимости'. Do not use to apply upgrades (awesome-dependency-upgrade)."
 license: MIT
 metadata:
   author: Khasky

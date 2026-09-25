@@ -1,0 +1,22 @@
+[
+  { "query": "every request that hits the API should leave one line we can query later showing what happened and how long it took", "should_trigger": true, "split": "train" },
+  { "query": "у нас логи не структурированы, просто текстовые строки, приведи к JSON с нужными полями", "should_trigger": true, "split": "train" },
+  { "query": "choose which of these should be warn versus error versus info in our new payment worker", "should_trigger": true, "split": "train" },
+  { "query": "set up one request-scoped log line per call that on-call can grep instead of twenty scattered debug lines", "should_trigger": true, "split": "train" },
+  { "query": "our debug logs print every item in a 10000-row loop and it's flooding the log pipeline", "should_trigger": true, "split": "train" },
+  { "query": "design what fields belong on the request-completed log line for our checkout service", "should_trigger": true, "split": "train" },
+  { "query": "we're logging full request bodies right now and I'm worried tokens are ending up in there", "should_trigger": true, "split": "validation" },
+  { "query": "проверь, что мы не пишем полные номера карт и пароли в логи", "should_trigger": true, "split": "validation" },
+  { "query": "какие уровни логирования использовать для повторяемых, но не критичных сбоев", "should_trigger": true, "split": "validation" },
+  { "query": "add request_id and trace_id so we can correlate a failure across three services", "should_trigger": true, "split": "validation" },
+  { "query": "decide whether a payment timeout should retry automatically or fail immediately back to the client", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "train" },
+  { "query": "спроектируй единый конверт ответа об ошибке для нашего API", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "train" },
+  { "query": "find out why last night's outage happened, we genuinely don't know the cause yet", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "train" },
+  { "query": "scan the codebase for any hardcoded API keys or credentials committed to the repo", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "what's the difference between INFO and DEBUG level conceptually", "should_trigger": false, "split": "train" },
+  { "query": "rename the logger import from 'log' to 'logger' in server.js", "should_trigger": false, "split": "train" },
+  { "query": "разберись, почему один и тот же инцидент с очередью повторяется третий месяц подряд", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "validation" },
+  { "query": "check our auth middleware for privilege escalation bugs", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "validation" },
+  { "query": "сколько дней обычно хранят логи на проде", "should_trigger": false, "split": "validation" },
+  { "query": "how many log lines does our service emit per second right now", "should_trigger": false, "split": "validation" }
+]

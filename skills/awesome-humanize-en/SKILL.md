@@ -1,6 +1,6 @@
 ---
 name: awesome-humanize-en
-description: "Removes the signs of AI generation from English text (Russian via a calibration file): clichés, filler, corporate jargon, sycophantic tone, emoji bullet lists, gratuitous em-dashes, fabricated sources, plus venue rules for release notes, PR and issue replies, postmortems, tickets and technical articles. Two operations: review (diagnose only, evidence-first report) and edit at four intensities. Use when asked to humanize, de-slop, or check text for AI voice ('this reads like a chatbot', 'убери следы ИИ в тексте'), or when copy-paste chatbot markers are present: ':contentReference', '?utm_source=chatgpt.com', 'oai_citation', '[cite: 8]'. Do not use on source code, on legal documents, on other languages, or on literary prose and résumés, where rhythm and the em-dash are authorial devices."
+description: "Removes signs of AI writing from English text: cliches, filler, jargon, sycophancy, em-dash habits, fake sources, chatbot markers like ':contentReference'. Use when text reads like a chatbot, or 'убери следы ИИ в тексте'. Do not use on code (awesome-code-cleanup) or legal or literary text."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-security-audit
-description: "Read-only audit of code for injection, secrets, auth and authorization flaws, dependency CVEs, CI/CD pipeline exposure and cryptographic misuse — confidence-gated, evidence-backed findings mapped to CWE/OWASP, each carrying the fix it calls for. Use when asked for a security review or audit, before a release, after adding auth, payments or sensitive-data handling, when hardening CI workflows, or 'проверь безопасность'. Reports; never edits code. Do not use for what a public client discloses about a private backend (awesome-leak-audit)."
+description: "Read-only security audit of code: injection, secrets, auth and authorization, dependency CVEs, CI/CD exposure, crypto misuse, with CWE-mapped fixes. Use for a security review, before a release, after adding auth or payments, or 'проверь безопасность'. Do not use for live testing (awesome-pentest)."
 license: MIT
 metadata:
   author: Khasky

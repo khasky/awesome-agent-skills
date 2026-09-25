@@ -1,6 +1,6 @@
 ---
 name: awesome-slop-audit
-description: "Read-only audit of a repository for machine-written 'AI slop' across code, comments, tests, docs, configs and CI, against a verified catalog: glyph pockets, stale and false comments, change-narration, drift-bait numbers, template stamps, impossible defensiveness, copy-paste drift, negative-parallelism prose, borrowed diction. Every suspect is verified against the code, absence is proven per category, and the ranked findings hand off to awesome-code-cleanup, which owns every edit. Use when asked to find AI slop or machine-written markers, or 'проверь код на следы ИИ'. Do not use to fix what it finds, for prose line-editing (awesome-document-style), or for public-claims drift (awesome-claims-audit)."
+description: "Read-only audit of a repository for AI-slop markers in code, comments, tests, docs and CI, each verified against the code and ranked for awesome-code-cleanup. Use when asked to find AI slop or machine-written code, or 'проверь код на следы ИИ'. Do not use to fix findings (awesome-code-cleanup)."
 license: MIT
 metadata:
   author: Khasky

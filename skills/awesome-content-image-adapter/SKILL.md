@@ -1,6 +1,6 @@
 ---
 name: awesome-content-image-adapter
-description: "Adapts one finished image into two pictures, a horizontal 16:9 and a vertical 9:16, that together serve every platform a post set publishes to: which one each platform takes is the researched Picture column of awesome-content-campaign/references/platforms.md, so no file here restates it. Runs alone, a source image in and two PNGs out, or right after the user hands over a picture in a content run, writing both beside the post files. The source artwork is preserved: nothing is regenerated, redrawn, restyled or sent to an image service. Use when asked to resize an image for social platforms, to make horizontal and vertical post images, or 'адаптируй картинку под платформы'. Do not use to design, draw or generate artwork, which no skill in this chain does, to write the posts (awesome-content-repurpose), or to publish them (awesome-content-publisher)."
+description: "Adapts one finished image into a horizontal 16:9 and a vertical 9:16 version for social platforms without redrawing the artwork. Use when asked to resize a picture for posts, or 'адаптируй картинку под платформы'. Do not use to draw or generate images, which no skill here does."
 license: MIT
 compatibility: "Requires a local way to write RGB PNG files at exact pixel sizes. Nothing is uploaded and no image service is called."
 metadata:

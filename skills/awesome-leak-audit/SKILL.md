@@ -1,6 +1,6 @@
 ---
 name: awesome-leak-audit
-description: "Audits a public-facing client (extension, mobile or desktop app, SPA, CLI, SDK) so its published surface reveals nothing about the private backend: leaked internals in comments, docs and tests (rate limits, anti-abuse, quotas, test backdoors, infra, schema, env-var names), plus client hardening (permissions, message-sender validation, token handling, DOM sinks, bundled secrets). Use when asked whether a repo leaks backend details, before open-sourcing or a store submission, to harden a client, or 'что раскрывает наш клиент'. Do not use for server-side vulnerability hunting (awesome-security-audit)."
+description: "Audits a public client (extension, app, SPA, CLI, SDK) for what it reveals about the private backend (limits, anti-abuse, backdoors, infra) and client hardening. Use before open-sourcing or a store submission, or 'что раскрывает наш клиент'. Do not use for server-side flaws (awesome-security-audit)."
 license: MIT
 metadata:
   author: Khasky

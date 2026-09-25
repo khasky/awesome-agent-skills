@@ -1,6 +1,6 @@
 ---
 name: awesome-copywriting
-description: "Writes the short copy a product ships on its own surfaces: headlines and page titles, meta and store descriptions, button, empty-state and error microcopy, email subject lines, CTAs. Starts from the reader's state at the moment the line reaches them and the plainest way to say the thing; runs an ICP/category/story intake that probes for quality rather than filled fields, gates a weak story before drafting, and delivers variants with a pick justified by that reader state. Use when asked to write or punch up a headline, product description, button label, empty state, error message, subject line or CTA, or 'напиши заголовок', 'текст кнопки', 'текст для лендинга'. Do not use to edit prose that already exists (awesome-humanize-en, awesome-document-style), to write scheduled social posts (awesome-content-campaign, awesome-content-repurpose), or to audit a page's conversion structure (awesome-landing-audit)."
+description: "Writes short product copy: headlines, titles, meta and store descriptions, buttons, empty states, error messages, subject lines, CTAs. Use when asked for such copy, or 'напиши заголовок'. Do not use to edit existing prose (awesome-humanize-en) or for posts (awesome-content-campaign)."
 license: MIT
 metadata:
   author: Khasky

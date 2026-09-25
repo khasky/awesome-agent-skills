@@ -1,0 +1,22 @@
+[
+  { "query": "we're about to add a public endpoint for exporting reports, help me shape the URL, methods, and pagination before we write code", "should_trigger": true, "split": "train" },
+  { "query": "спроектируй версионирование для нашего публичного API, сейчас никакой стратегии нет", "should_trigger": true, "split": "train" },
+  { "query": "review whether our /getUserOrders endpoint should actually be a REST resource instead", "should_trigger": true, "split": "train" },
+  { "query": "clients keep double-submitting the create-order call on retry and duplicating orders, how should the API prevent that", "should_trigger": true, "split": "train" },
+  { "query": "we want to add a cancel action on the subscription resource, is a POST /subscriptions/{id}/cancel the right shape", "should_trigger": true, "split": "train" },
+  { "query": "оцени черновик OpenAPI спецификации для нового публичного API и укажи на проблемы", "should_trigger": true, "split": "train" },
+  { "query": "should list endpoints use cursor-based paging or page numbers as the catalog grows past a million rows", "should_trigger": true, "split": "validation" },
+  { "query": "нужно решить, как эндпоинт обновления профиля должен себя вести при конкурентных запросах", "should_trigger": true, "split": "validation" },
+  { "query": "our JSON payloads mix camelCase and snake_case across endpoints, help make the naming consistent before v2", "should_trigger": true, "split": "validation" },
+  { "query": "when we deprecate the old /v1/search endpoint, what's the right way to give clients time to move", "should_trigger": true, "split": "validation" },
+  { "query": "what should the JSON body look like when we return a validation error from any endpoint", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "train" },
+  { "query": "определи, как классифицировать ошибку подключения к базе против ошибки пользователя", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "train" },
+  { "query": "check our order endpoints for IDOR, can one user fetch another user's order by guessing the id", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "does our current service split still match what the architecture docs describe", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "what does idempotent actually mean in plain terms", "should_trigger": false, "split": "train" },
+  { "query": "rename the query param 'q' to 'search' in the existing search endpoint", "should_trigger": false, "split": "train" },
+  { "query": "review the auth middleware on our handlers for privilege escalation issues", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "validation" },
+  { "query": "оцени, насколько легко добавить нового провайдера платежей в текущую архитектуру", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "validation" },
+  { "query": "чем отличается PATCH от PUT простыми словами", "should_trigger": false, "split": "validation" },
+  { "query": "how many endpoints does our current API have right now", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-document-style
-description: "Clean and line-edit Markdown documents for clear, specific, publication-ready prose. Use when asked to de-bloat, de-template, remove chatbot artifacts, fix vague wording, settle whether numbers are written as digits or spelled out, make Markdown read like careful human editorial writing, or 'отредактируй документ'. Do not use to fabricate facts or bypass detectors."
+description: "Line-edits Markdown documents into clear, specific, publication-ready prose: cuts bloat and template structure, fixes vague wording and number style. Use when asked to edit, tighten or polish a document, or 'отредактируй документ'. Do not use for AI voice or chatbot markers (awesome-humanize-en)."
 license: MIT
 metadata:
   author: Khasky

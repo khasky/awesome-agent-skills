@@ -109,8 +109,10 @@ def frontmatter_is_valid() -> list[str]:
             description = unquote(keys["description"], rel(path))
             if not description:
                 fail.append(f"{rel(path)}: empty description - the agent has nothing to trigger on")
-            elif len(description) > 1024:
-                fail.append(f"{rel(path)}: description is {len(description)} chars (max 1024)")
+            # The spec allows 1024, but every installed description loads into
+            # every session, and a long one pushes others out of the listing.
+            elif len(description) > 300:
+                fail.append(f"{rel(path)}: description is {len(description)} chars (max 300)")
 
     return fail
 
@@ -252,7 +254,7 @@ def skill_line_budget() -> list[str]:
     # Progressive disclosure, enforced rather than advised: SKILL.md is the map
     # an agent always loads, and detail belongs in references/.
     budget = 500
-    grandfathered = {"awesome-git-history-rebuild"}
+    grandfathered: set[str] = set()
 
     fail, stale = [], []
     for folder in skill_dirs():

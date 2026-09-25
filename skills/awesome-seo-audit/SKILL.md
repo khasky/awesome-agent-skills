@@ -1,6 +1,6 @@
 ---
 name: awesome-seo-audit
-description: "Read-only SEO audit of a whole site or web codebase — crawl and indexing, on-page and content, structured data and SERP appearance, rendering and mobile parity, international and local, the link graph, scaled-content safety, and AI/agent visibility — with evidence per finding, no composite score, a verdict on the search axis and the AI axis separately, and a baseline/diff mode that catches what a deploy quietly broke. Use when asked to audit SEO, check titles, descriptions, keywords, hreflang, local pages or a link profile, judge whether LLMs and agents can read the site, confirm a release changed nothing that ranks, or 'проверь SEO'. Reports only; writes no content. Do not use for WCAG accessibility (awesome-accessibility-audit) or landing conversion mechanics (awesome-landing-audit)."
+description: "Read-only SEO audit of a site or web codebase: crawling, indexing, on-page, structured data, rendering, hreflang, links, visibility to LLMs and agents, baseline diffs. Use when asked to audit SEO, titles or meta, or 'проверь SEO'. Do not use for accessibility (awesome-accessibility-audit)."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-root-cause
-description: "Structured root-cause analysis for incidents, recurring failures and process problems with no failing test to run — 5-Whys, fishbone, PDCA, and a one-page A3 write-up. Use for a postmortem or incident retro, when asked why something keeps happening, to find the root cause of a non-code issue, or 'найди первопричину'. Do not use for a code bug with a reproducible failure (awesome-bug-fix)."
+description: "Root-cause analysis for incidents, recurring failures and process problems with no failing test: 5 Whys, fishbone, PDCA, A3. Use for a postmortem or why something keeps happening, or 'найди первопричину'. Do not use for a reproducible bug (awesome-bug-fix) or slowness (awesome-performance-audit)."
 license: MIT
 metadata:
   author: Khasky
@@ -12,10 +12,11 @@ metadata:
 
 Find the real cause of an incident, a recurring failure, or a process problem — the kind with no failing test to reproduce — and drive it to a durable countermeasure. Blame-free by design: the goal is a systemic fix, not a person to fault.
 
-## When to use vs awesome-bug-fix
+## When to use vs awesome-bug-fix and awesome-performance-audit
 
 - This skill — an outage retro, a "this keeps breaking", a data-quality or handoff or deploy-process problem, a near-miss. The failure lives in process, environment, or coordination, and you can't just run it and watch it fail.
 - awesome-bug-fix — a specific code bug with a reproduction. If you can write a failing test, use that skill; come here when there's nothing to run.
+- awesome-performance-audit — a service or page that is slow, leaks memory or spikes in latency, even on a recurring schedule; measurement comes before asking why.
 
 If the problem is a mix (a code bug that a broken process let ship), fix the bug in awesome-bug-fix and use this skill on the process that allowed it.
 

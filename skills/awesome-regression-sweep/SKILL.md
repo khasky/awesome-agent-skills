@@ -1,6 +1,6 @@
 ---
 name: awesome-regression-sweep
-description: "Read-only regression sweep over a codebase and its live surfaces, answering in deltas against a recorded baseline: a layered aspect pass (typecheck, lint, generated-artifact drift, unit and integration suites, black-box wire contract, cross-implementation parity, downstream consumer build) plus nine rotating deep angles from shuffled test order to deployed-vs-committed drift. Never deploys, never writes, never calls a mutating route. Use when asked to verify everything before or after a deploy, check for regressions, or 'проверь что ничего не сломалось'. Do not use to design tests (awesome-test-writing), diagnose one failure (awesome-bug-fix), or profile latency (awesome-performance-audit)."
+description: "Read-only sweep for regressions against a recorded baseline: typecheck, lint, test suites, wire contracts, generated-file drift, downstream builds, deploy drift. Use to verify everything before or after a deploy, or 'проверь что ничего не сломалось'. Do not use to write tests (awesome-test-writing)."
 license: MIT
 metadata:
   author: Khasky

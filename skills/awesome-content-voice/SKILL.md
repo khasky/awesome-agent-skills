@@ -1,6 +1,6 @@
 ---
 name: awesome-content-voice
-description: "Builds one reusable author-voice profile from whatever evidence exists — the user's own posts read through their logged-in browser, files, pasted samples, or an interview plus a tuned archetype — and writes it as a file other skills read instead of re-deriving a voice: presence and counted absence signals, per-platform register, protected personal tics, a source-and-confidence stamp. Thin evidence yields a low-confidence profile that says so. Use when asked to build, learn or update the user's writing voice, or 'собери мой авторский стиль'. Do not use for a website's brand voice (awesome-style-mimic), to write posts (awesome-content-campaign), or to strip AI voice (awesome-humanize-en)."
+description: "Builds a reusable profile of the user's own writing voice from their posts, files, samples or an interview, for other skills to read. Use when asked to learn the user's voice, or 'собери мой авторский стиль'. Do not use for a website's style (awesome-style-mimic) or AI voice (awesome-humanize-en)."
 license: MIT
 metadata:
   author: Khasky

@@ -1,0 +1,22 @@
+[
+  { "query": "npm audit says twelve packages need fixes, work through them safely without breaking prod", "should_trigger": true, "split": "train" },
+  { "query": "обнови все зависимости в этом проекте до безопасных версий и проверь, что тесты проходят", "should_trigger": true, "split": "train" },
+  { "query": "our lockfile is two years stale, get everything current without me finding out three weeks from now that something silently broke", "should_trigger": true, "split": "train" },
+  { "query": "express is still on version 3 somehow and I need this thing modernized before the audit comes back", "should_trigger": true, "split": "train" },
+  { "query": "walk react from 16 to 18 for this app, read whatever the migration guides say and don't skip the codemods", "should_trigger": true, "split": "train" },
+  { "query": "у нас накопилось много устаревших пакетов, надо привести всё в порядок постепенно, без риска всё сломать", "should_trigger": true, "split": "train" },
+  { "query": "batch the patch and minor bumps together, run majors one at a time, and give me one revertable commit per batch", "should_trigger": true, "split": "validation" },
+  { "query": "the dependency audit flagged five packages with known CVEs and no fix upstream, handle what you can and pin the rest with a note", "should_trigger": true, "split": "validation" },
+  { "query": "выполни обновление зависимостей по отчёту аудита, каждая пачка должна быть отдельным коммитом", "should_trigger": true, "split": "validation" },
+  { "query": "our automated bot opened a PR bumping fifteen packages at once - split it into batches by risk and land them one at a time", "should_trigger": true, "split": "validation" },
+  { "query": "just tell me which of our dependencies have known CVEs or look like typosquats, don't change anything yet", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "проверь, нет ли в наших зависимостях уязвимостей или поддельных пакетов, ничего пока не меняй", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "give this new lodash-replacement package a SHIP/FIX/BLOCK verdict before we add it", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
+  { "query": "review this diff, it's mostly refactoring a service layer, nothing dependency related", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "write regression tests for the payment flow now that we're done migrating to the new SDK", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
+  { "query": "напиши тесты для модуля оплаты после этой миграции на новый SDK", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
+  { "query": "is it worth adding a brand-new caching library to this project or should we roll our own", "should_trigger": false, "split": "validation" },
+  { "query": "what's the actual difference between semver major and minor in practice", "should_trigger": false, "split": "validation" },
+  { "query": "что означает статус deprecated у npm-пакета", "should_trigger": false, "split": "validation" },
+  { "query": "why does yarn.lock keep changing every time I run install even without touching package.json", "should_trigger": false, "split": "validation" }
+]

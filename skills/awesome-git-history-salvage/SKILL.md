@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-salvage
-description: "Reconstructs every commit a repository has ever held, force-pushed-away history included, by merging current refs, pull-request refs, any mirror backup and every ref state the host's activity log recorded, then fetching unreachable commits by SHA over the git protocol. Emits sha/date/author/subject rows at the detail level the user picks. Read-only: never writes to a remote. Use when asked what a repo held before a rewrite, to recover erased history or deleted commits, or 'найти удалённые коммиты'. Do not use to restore a branch, to recover a local branch alone (git reflog), or to erase history (awesome-git-history-reset)."
+description: "Read-only recovery of every commit a repository ever held, force-pushed history included, from refs, PR refs, backups and the host's activity log. Use when asked what a repo held before a rewrite, or 'найти удалённые коммиты'. Do not use to erase history (awesome-git-history-reset)."
 license: MIT
 compatibility: "Requires git and the GitHub CLI (gh). Read-only, and it never writes to a remote."
 metadata:

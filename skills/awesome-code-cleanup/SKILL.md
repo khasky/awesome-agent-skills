@@ -1,6 +1,6 @@
 ---
 name: awesome-code-cleanup
-description: "Repo-wide cleanup of AI-like code noise, behavior-preserving: a comment pass (delete narration, condense bloat, fix stale, keep load-bearing), a read-only audit mode, an opt-in refactor mode for vague names and over-abstraction, a detection mode for dead code and logical inconsistencies, and an execution mode that applies another audit's findings. Use when asked to clean up or condense comments, de-slop vibe-coded files, apply a YAGNI pass, find dead code, apply a slop-audit report, or 'почисти код', 'найди мёртвый код'. Do not use for prose (awesome-humanize-en, awesome-document-style) or for the read-only marker sweep (awesome-slop-audit), whose report it executes."
+description: "Behavior-preserving cleanup of AI-like code noise: narrating comments, dead code, vague names, over-abstraction; applies a slop-audit report. Use when asked to clean up code or comments, de-slop, or 'почисти код'. Do not use for prose (awesome-humanize-en) or a read-only sweep (awesome-slop-audit)."
 license: MIT
 metadata:
   author: Khasky

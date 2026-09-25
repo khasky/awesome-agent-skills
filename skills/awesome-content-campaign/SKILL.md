@@ -1,6 +1,6 @@
 ---
 name: awesome-content-campaign
-description: "Builds a scheduled batch of platform-fit marketing posts from any sources (repos, sites, files): a knowledge map where every claim traces to evidence, an interview for the topic, voice, platforms, timezone, start date, duration and posting times, a shipped best-time-to-post table refreshed only on request, live checks of each platform's limits, the writing delegated to awesome-content-repurpose per unit, a two-stage anti-slop audit, dated folders of posts plus a manifest. A single-post mode writes one unit for named platforms, no schedule. Use when asked to plan a content campaign, write posts about a product, write a post for named platforms, or 'контент-план', 'посты для соцсетей на неделю'. Do not use to publish them (awesome-content-publisher), to build the voice profile (awesome-content-voice), or to de-slop existing text (awesome-humanize-en)."
+description: "Plans a scheduled batch of platform-fit posts about a product from repos, sites or files, every claim traced to evidence; also writes one post for named platforms. Use when asked for a content plan or product posts, or 'контент-план'. Do not use to repurpose one article (awesome-content-repurpose)."
 license: MIT
 metadata:
   author: Khasky

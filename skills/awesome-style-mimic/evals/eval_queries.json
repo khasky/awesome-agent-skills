@@ -1,0 +1,22 @@
+[
+  { "query": "crawl driftpost.example and build a reusable style guide from their blog", "should_trigger": true, "split": "train" },
+  { "query": "изучи стиль сайта northlane.example и сделай гайд по стилю, который можно применять к другим текстам", "should_trigger": true, "split": "train" },
+  { "query": "we already have styles/cascadenotes.md from last time - rewrite this landing page copy in that voice", "should_trigger": true, "split": "train" },
+  { "query": "learn how mintledger.example writes their product pages, then rewrite our three drafts to sound the same", "should_trigger": true, "split": "train" },
+  { "query": "apply the northlane.example style guide across these five blog posts so they read consistently", "should_trigger": true, "split": "train" },
+  { "query": "everything on our site sounds like five different writers - there's a competitor at driftpost.example whose blog reads like one voice, get us there", "should_trigger": true, "split": "train" },
+  { "query": "перепиши эти тексты в стиле сайта mintledger.example, используй уже собранный гайд", "should_trigger": true, "split": "validation" },
+  { "query": "deep-crawl fernwoodgoods.example and give me their voice, tone rules and a few golden samples", "should_trigger": true, "split": "validation" },
+  { "query": "I want our onboarding emails to sound like they came from the same person who writes fernwoodgoods.example's blog", "should_trigger": true, "split": "validation" },
+  { "query": "хочу, чтобы наши посты звучали так же, как у cascadenotes.example - собери что нужно и примени", "should_trigger": true, "split": "validation" },
+  { "query": "build a profile of my own writing from my last twenty blog posts", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
+  { "query": "this paragraph sounds like a chatbot wrote it, strip the AI tells out", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
+  { "query": "переведи эту статью с русского на английский", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "train" },
+  { "query": "plan two weeks of social posts about our new feature launch", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
+  { "query": "de-bloat this markdown doc and fix the vague headings", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
+  { "query": "turn this guide into a long read, a regular post and a short post", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
+  { "query": "what counts as 'voice' versus 'tone' in copywriting terms", "should_trigger": false, "split": "validation" },
+  { "query": "чем стиль текста отличается от тона", "should_trigger": false, "split": "validation" },
+  { "query": "fix the broken link on the pricing page, it points to the old docs URL", "should_trigger": false, "split": "validation" },
+  { "query": "сколько обычно длится анализ стиля сайта, если он большой", "should_trigger": false, "split": "validation" }
+]

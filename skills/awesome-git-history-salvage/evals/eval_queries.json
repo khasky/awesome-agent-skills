@@ -1,0 +1,22 @@
+[
+  { "query": "our repo https://github.com/acme/platform got force-pushed and lost a bunch of commits, can you find everything that's still recoverable", "should_trigger": true, "split": "train" },
+  { "query": "найди удалённые коммиты в репозитории https://gitlab.example.com/org/service, которые пропали после force-push", "should_trigger": true, "split": "train" },
+  { "query": "before that history rewrite last month, what did this repository actually used to contain, sha by sha", "should_trigger": true, "split": "train" },
+  { "query": "I swear there used to be way more commits on this project, where did they all go and can I see them", "should_trigger": true, "split": "train" },
+  { "query": "pull together every commit this repo has ever held, from old PR branches, deleted branches, everywhere, and list them out", "should_trigger": true, "split": "train" },
+  { "query": "мне кажется в этом репозитории раньше было гораздо больше коммитов, их что, стёрли навсегда", "should_trigger": true, "split": "train" },
+  { "query": "give me a full sha/date/author/subject report of every commit ever fetched into git@example.com:org/repo.git, including unreachable ones", "should_trigger": true, "split": "validation" },
+  { "query": "check the mirror backup at /backups/repo.git and the host's activity log together and tell me what history existed before last week's rewrite", "should_trigger": true, "split": "validation" },
+  { "query": "восстанови список всех когда-либо существовавших коммитов в этом репозитории, включая недоступные", "should_trigger": true, "split": "validation" },
+  { "query": "someone rewrote this repo's history six months ago and I need proof of exactly what commits existed before that, read-only is fine", "should_trigger": true, "split": "validation" },
+  { "query": "wipe this repo's history completely and push a single clean Initial commit", "should_trigger": false, "belongs_to": "awesome-git-history-reset", "split": "train" },
+  { "query": "очисти всю историю гита в этом репозитории и оставь только один коммит", "should_trigger": false, "belongs_to": "awesome-git-history-reset", "split": "train" },
+  { "query": "rebuild this messy history into a readable curated series of commits and push it", "should_trigger": false, "belongs_to": "awesome-git-history-rebuild", "split": "train" },
+  { "query": "перепиши историю репозитория в аккуратную серию подписанных коммитов", "should_trigger": false, "belongs_to": "awesome-git-history-rebuild", "split": "train" },
+  { "query": "the author email on one commit is wrong, fix just that commit's identity", "should_trigger": false, "belongs_to": "awesome-git-author-rewrite", "split": "train" },
+  { "query": "give me a commit plan that splits my current working changes into a bisectable series before I commit anything", "should_trigger": false, "belongs_to": "awesome-git-commit-plan", "split": "train" },
+  { "query": "how do I check my local reflog to get back a branch I just deleted by accident", "should_trigger": false, "split": "validation" },
+  { "query": "как восстановить одну ветку, которую я случайно удалил вчера", "should_trigger": false, "split": "validation" },
+  { "query": "does GitHub keep deleted forks around somewhere", "should_trigger": false, "split": "validation" },
+  { "query": "how long does GitHub retain the activity log for a private repository", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-claims-audit
-description: "Audits every checkable public claim — marketing pages, README, store listing, privacy policy, docs, structured data — against the constants, manifests, catalogs and locale strings that decide it, across repos, then fixes the drift in a separate phase. Use when asked whether the site still matches the code, to find outdated claims, before a store submission or privacy-policy review, or 'проверь факты на сайте'. Do not use for prose quality (awesome-document-style), conversion structure (awesome-landing-audit), or internal docs fidelity (awesome-architecture-audit)."
+description: "Checks public claims (site, README, store listing, privacy policy, structured data) against the code and config that decide them, then fixes drift. Use when asked whether the site still matches the product, or 'проверь факты на сайте'. Do not use for prose (awesome-document-style)."
 license: MIT
 metadata:
   author: Khasky

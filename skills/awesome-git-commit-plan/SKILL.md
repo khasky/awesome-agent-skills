@@ -1,6 +1,6 @@
 ---
 name: awesome-git-commit-plan
-description: "Turns a codebase into a commit plan: a navigation map of its modules and their dependency direction, then a split where every commit builds and tests on its own, so the series is bisectable end to end. Each commit is verified by replaying the ladder in a scratch clone against the repo's own gates. Output is one plan file numbered #1 to #N, no dates. Takes a repository URL or local path. Use when asked to split a project into commits, plan a commit history, or 'разбей проект на коммиты'. Do not use to execute the plan (awesome-git-history-rebuild) or to review a diff (awesome-code-review)."
+description: "Plans a codebase as a bisectable commit series: a module map, then commits that each build and test alone, verified in a scratch clone, as one plan file. Use when asked to split a project into commits, or 'разбей проект на коммиты'. Do not use to execute it (awesome-git-history-rebuild)."
 license: MIT
 metadata:
   author: Khasky

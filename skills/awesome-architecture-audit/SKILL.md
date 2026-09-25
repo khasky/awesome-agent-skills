@@ -1,6 +1,6 @@
 ---
 name: awesome-architecture-audit
-description: "Read-only whole-project audit of design: module boundaries and dependency direction, docs-vs-code fidelity, YAGNI/KISS/SOLID, and extensibility (build from source, add a provider), producing a prioritized report with a SHIP / FIX / BLOCK verdict. Language-agnostic. Use when asked to audit the architecture of a whole codebase, check whether the docs still match the code, judge how hard it is to extend, or 'оцени архитектуру'. Do not use for one diff (awesome-code-review), a vulnerability (awesome-security-audit), runtime latency (awesome-performance-audit), or comment cleanup (awesome-code-cleanup)."
+description: "Read-only audit of a whole codebase's design: module boundaries, dependency direction, docs-vs-code drift, extensibility, with a verdict. Use when asked to audit the architecture, or 'оцени архитектуру'. Do not use for one diff (awesome-code-review) or latency (awesome-performance-audit)."
 license: MIT
 metadata:
   author: Khasky

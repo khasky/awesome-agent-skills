@@ -1,0 +1,22 @@
+[
+  { "query": "we need to pick between building a new microservice or extending the monolith for the new notifications feature, walk through the trade-offs and land on one", "should_trigger": true, "split": "train" },
+  { "query": "спроектируй, как мы будем хранить историю изменений заказа: нужен документ с альтернативами и решением", "should_trigger": true, "split": "train" },
+  { "query": "write up why we chose Postgres over DynamoDB for the new billing service so future engineers don't relitigate it", "should_trigger": true, "split": "train" },
+  { "query": "we have two ways to handle the inventory sync, sync-write or async-queue, help pick with real numbers", "should_trigger": true, "split": "train" },
+  { "query": "draft the one-pager explaining why we're moving session storage from cookies to a token service", "should_trigger": true, "split": "train" },
+  { "query": "нужен ADR о переходе на событийную архитектуру для модуля уведомлений", "should_trigger": true, "split": "train" },
+  { "query": "before we commit to this sharding plan, poke holes in it as if it already failed a year from now", "should_trigger": true, "split": "validation" },
+  { "query": "сделай pre-mortem по плану миграции на новый биллинг перед тем как мы начнём", "should_trigger": true, "split": "validation" },
+  { "query": "the team keeps re-arguing whether to build this in-house or buy a vendor solution, put the decision on paper with a recommendation", "should_trigger": true, "split": "validation" },
+  { "query": "estimate the load for the new activity feed and decide fan-out-on-write vs fan-out-on-read before we start building", "should_trigger": true, "split": "validation" },
+  { "query": "check whether our current codebase's module boundaries still match what the architecture doc claims", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "оцени архитектуру текущего проекта: насколько легко добавить новый модуль", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "shape the URL structure and pagination for the new /reports endpoint we're about to build", "should_trigger": false, "belongs_to": "awesome-api-design", "split": "train" },
+  { "query": "write the postmortem for last week's outage, we need to know why it happened not what to build next", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "train" },
+  { "query": "what's the difference between an RFC and an ADR", "should_trigger": false, "split": "train" },
+  { "query": "fix the typo in the ADR-014 title, it says 'Databse' instead of 'Database'", "should_trigger": false, "split": "train" },
+  { "query": "should this new list endpoint use cursor pagination, decide the contract details", "should_trigger": false, "belongs_to": "awesome-api-design", "split": "validation" },
+  { "query": "разберись, почему один и тот же баг с рассинхронизацией данных повторяется каждый релиз", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "validation" },
+  { "query": "что такое YAGNI простыми словами", "should_trigger": false, "split": "validation" },
+  { "query": "how many ADRs do we currently have in docs/adr", "should_trigger": false, "split": "validation" }
+]

@@ -1,6 +1,6 @@
 ---
 name: awesome-grammar-check
-description: "Advisory copy-edit of prose — reports grammar, logic and flow issues as suggestions without rewriting the text. Use when asked to proofread or copy-edit an article, email, doc or post, or 'проверь грамматику', and the author wants to keep control of the wording. Do not use for removing AI voice and markers (awesome-humanize-en) or for rewriting and de-bloating Markdown in place (awesome-document-style)."
+description: "Proofreads prose and reports grammar, logic and flow issues as suggestions without rewriting the text. Use when asked to proofread or copy-edit an article, email, doc or post while keeping the author's wording, or 'проверь грамматику'. Do not use to rewrite in place (awesome-document-style)."
 license: MIT
 metadata:
   author: Khasky

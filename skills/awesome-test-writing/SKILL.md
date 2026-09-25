@@ -1,6 +1,6 @@
 ---
 name: awesome-test-writing
-description: "Designs and writes tests that catch real regressions — placement (unit/integration/E2E), factories and fixtures, behavior-first assertions, characterization tests for legacy code, property/fuzz tests for parsers. Use when asked to write tests or add coverage for a module, 'напиши тесты', when a bug fix needs its regression test, or when awesome-bug-fix, awesome-code-review or awesome-security-audit calls for one. Do not use for judging existing tests in a review (awesome-code-review) or for diagnosing the bug itself (awesome-bug-fix)."
+description: "Designs and writes tests that catch real regressions: unit, integration or E2E placement, fixtures, behavior-first assertions, characterization and property tests. Use when asked to write tests, add coverage or a regression test, or 'напиши тесты'. Do not use to find the bug (awesome-bug-fix)."
 license: MIT
 metadata:
   author: Khasky

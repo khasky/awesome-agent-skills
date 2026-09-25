@@ -1,6 +1,6 @@
 ---
 name: awesome-code-review-feedback
-description: "How to respond to code review feedback: verify before implementing, clarify unclear items, and push back with technical reasoning when needed. Use when asked to address a review, when reviewer or bot findings need answering, or 'ответь на ревью'. Applies to any team or culture. Do not use for performing the review itself (awesome-code-review)."
+description: "Responds to code review feedback: verifies each point before changing code, clarifies unclear items, pushes back with reasons when a point is wrong. Use when asked to address reviewer or bot comments, or 'ответь на ревью'. Do not use to perform a review (awesome-code-review)."
 license: MIT
 metadata:
   author: Khasky

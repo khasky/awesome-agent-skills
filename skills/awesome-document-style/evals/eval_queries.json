@@ -1,0 +1,22 @@
+[
+  { "query": "Can you tighten up README.md, it reads like a template nobody bothered to fill in", "should_trigger": true, "split": "train" },
+  { "query": "отредактируй документ docs/onboarding.md, чтобы он читался как текст живого редактора", "should_trigger": true, "split": "train" },
+  { "query": "notes/rollout.md mixes '12 users' with 'twelve users' in the same paragraph, and has three decorative '---' dividers doing nothing - clean the whole file up", "should_trigger": true, "split": "train" },
+  { "query": "Go through changelog.md and make the headings actually say something instead of 'Overview' and 'Summary'", "should_trigger": true, "split": "train" },
+  { "query": "This file has paragraphs hard-wrapped at 100 characters, and a 'Key Takeaways' section at the end that just repeats the intro - please clean the whole thing", "should_trigger": true, "split": "train" },
+  { "query": "make numbers digits instead of spelled out where it matters in docs/pricing.md", "should_trigger": true, "split": "train" },
+  { "query": "почисти docs/roadmap.md - абзацы там жёстко перенесены на 100 символов, а заголовки сплошь 'Обзор' и 'Итоги'", "should_trigger": true, "split": "validation" },
+  { "query": "I pasted a doc into the project - can you make it read like something a careful human editor would sign off on before it goes out", "should_trigger": true, "split": "validation" },
+  { "query": "notes/plan.md has a bunch of leftover '[INSERT SOURCE]' placeholders and a stray '2025-XX-XX' date - deal with those and general prose looseness", "should_trigger": true, "split": "validation" },
+  { "query": "просмотри docs/faq.md - там куча лишних жирных выделений и абзацы будто из одного вордового шаблона", "should_trigger": true, "split": "validation" },
+  { "query": "this reads like a chatbot, get rid of the corporate jargon and fake enthusiasm", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
+  { "query": "proofread this email for grammar issues but don't rewrite my sentences", "should_trigger": false, "belongs_to": "awesome-grammar-check", "split": "train" },
+  { "query": "check whether the numbers in this landing page still match what's in the pricing config", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "scan the repo for AI-written comment slop and templated boilerplate", "should_trigger": false, "belongs_to": "awesome-slop-audit", "split": "train" },
+  { "query": "translate this Russian design doc into English", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "train" },
+  { "query": "write a punchier headline for the pricing page hero", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
+  { "query": "как правильно пишется 'по-другому' - слитно или через дефис", "should_trigger": false, "split": "validation" },
+  { "query": "поправь опечатку в 12 строке readme, там 'получаеться' вместо 'получается'", "should_trigger": false, "split": "validation" },
+  { "query": "какая разница между markdown и plain text", "should_trigger": false, "split": "validation" },
+  { "query": "should this heading be H2 or H3 here", "should_trigger": false, "split": "validation" }
+]
