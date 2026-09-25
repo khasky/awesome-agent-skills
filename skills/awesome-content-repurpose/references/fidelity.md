@@ -4,7 +4,7 @@ Every check here compares against `source/`, the notes, or a count, never agains
 
 ## 1. Evidence notes
 
-`source-notes.md` opens with `Source paragraphs: N`, `Source type`, `Primary subject`, `Source promise`, then evidence lines, each with its position `(at pN)` where it comes from the source:
+`source-notes.md` opens with `Source paragraphs: N`, `Source type`, `Primary subject`, `Thesis`, `Source promise`, `Form sources`, then evidence lines, each with its position `(at pN)` where it comes from the source:
 
 ```text
 [C1] <claim in the source's own terms> (at pN)
@@ -41,7 +41,7 @@ At most 2 `primary-path` modules. The map is structural evidence: a post can be 
 
 ## 4. Verification is correction and support, not expansion
 
-Research may validate a claim, update a stale value, name or command, supply the current value a source-requested comparison needs, or settle a caveat that changes usability. It may not discover a new theme and make it the article, add a detailed policy regime to a source that gives a generic warning, add unrelated benchmarks, or build a framework from adjacent documentation. Long-form balance: source-origin facts at least twice the externally added ones, corrections of stale claims exempt.
+Research may validate a claim, update a stale value, name or command, supply the current value a source-requested comparison needs, or settle a caveat that changes usability. It may not discover a new theme and make it the article, add a detailed policy regime to a source that gives a generic warning, add unrelated benchmarks, or build a framework from adjacent documentation. Long-form balance: source-origin facts at least twice the externally added ones, corrections of stale claims exempt. A user who asked for more facts lifts the ratio for the forms they named (`SKILL.md` Phase 3), and nothing else: every added fact still substantiates the thesis or one of the source's own reasons, and the thesis stays the lead.
 
 ## 5. Comparison peers
 
