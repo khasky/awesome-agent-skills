@@ -106,6 +106,8 @@ One subagent per file, spawned in parallel. Each subagent gets: the style-guide 
 
 After all rewrites land (2+ files), run ONE consistency-pass subagent over the whole output set (for >15 files: first/last 3 paragraphs plus a middle excerpt each): find cross-document drift — lexicon used in one file but violated in another, tone shifts, inconsistent heading/CTA patterns — fix findings directly with edits, return the `path: what changed` list. Report that list to the user; it is the evidence the batch reads as one author.
 
+Apply ends when every file in the target set is rewritten, skipped with its reason, or failed after its retry, and the consistency pass has run. A wave that landed is a progress line, not a place to end the turn while files remain; the stops that count are an output-mode question the user has not answered and the user saying stop.
+
 ## Verification (both modes)
 
 - Learn: the final report cites the ingester's numbers (pages visited, non-serial coverage %, serial patterns sampled, failures) — from the crawl record, not memory — and states that every golden sample was grep-verified verbatim against the corpus.
