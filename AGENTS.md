@@ -24,7 +24,7 @@ A rule a skill states is proved by reading it, and a check it prescribes is prov
 
 **A set is required where the risk is**: a new skill whose description overlaps one already here, and any rewrite of a description. Everywhere else it is optional.
 
-**A claim about triggering is a number or it is nothing.** Trigger rate over at least three runs per query, with the model and the date recorded beside it. "Triggers reliably" with no run behind it is exactly what this section exists to stop, and an unrun set proves no more than an unwritten one.
+**A claim about triggering is a number or it is nothing.** Trigger rate over at least three runs per query, with the model, its effort level and the date recorded beside it: effort names do not mean the same amount of thinking on two models, and a model's default level moves between releases. "Triggers reliably" with no run behind it is exactly what this section exists to stop, and an unrun set proves no more than an unwritten one.
 
 **Fix the category, not the keyword.** A should-trigger query that failed marks a gap in what the description covers; pasting that query's own words into the description buys that query and nothing beyond it. Choose the iteration by its validation pass rate, which is often not the last one written.
 
