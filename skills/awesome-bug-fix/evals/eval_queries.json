@@ -1,22 +1,22 @@
 [
   { "query": "the login endpoint returns 500 every time someone submits an empty password field", "should_trigger": true, "split": "train" },
-  { "query": "у меня падает тест test_order_total второй раз подряд, но не всегда", "should_trigger": true, "split": "train" },
+  { "query": "my test_order_total test is failing for the second time in a row, but not every time", "should_trigger": true, "split": "train" },
   { "query": "CI build fails on step 'build:web' with exit code 1 but only on the release branch", "should_trigger": true, "split": "train" },
-  { "query": "почему при загрузке файла размером больше 10мб сервис отдаёт таймаут вместо ошибки", "should_trigger": true, "split": "train" },
+  { "query": "why does the service return a timeout instead of an error when uploading a file bigger than 10mb", "should_trigger": true, "split": "train" },
   { "query": "I've tried three different fixes for the race condition in the queue worker and none stuck", "should_trigger": true, "split": "train" },
   { "query": "the export CSV script crashes with 'undefined is not a function' on line 42 of exporter.js", "should_trigger": true, "split": "train" },
   { "query": "checkout button does nothing when I click it twice fast", "should_trigger": true, "split": "validation" },
   { "query": "users report the search page shows yesterday's results sometimes", "should_trigger": true, "split": "validation" },
-  { "query": "наше приложение падает с ошибкой segmentation fault при запуске на новых серверах, нужно быстро найти причину", "should_trigger": true, "split": "validation" },
+  { "query": "our app crashes with a segmentation fault on startup on the new servers, need to find the cause fast", "should_trigger": true, "split": "validation" },
   { "query": "why does the /invoices endpoint return an empty array for a customer who definitely has invoices", "should_trigger": true, "split": "validation" },
-  { "query": "у меня в проде растёт потребление памяти на воркере, за сутки съедает 4 гб", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
+  { "query": "memory usage on the worker keeps growing in prod, it eats up 4gb in a day", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
   { "query": "add a p99 latency check before the flash sale next week", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
   { "query": "we keep having the same deploy break every Friday for a month, find why our process allows it", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "train" },
   { "query": "write unit tests for the discount calculator module", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
   { "query": "what does the error code ECONNRESET mean in node.js", "should_trigger": false, "split": "train" },
   { "query": "rename the variable usrId to userId in auth.js", "should_trigger": false, "split": "train" },
   { "query": "why do incidents keep happening during on-call handoff, no code bug involved", "should_trigger": false, "belongs_to": "awesome-root-cause", "split": "validation" },
-  { "query": "добавь тесты для нового модуля валидации email", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "validation" },
+  { "query": "add tests for the new email validation module", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "validation" },
   { "query": "what's the difference between exit code 1 and exit code 127", "should_trigger": false, "split": "validation" },
-  { "query": "объясни что такое null pointer exception простыми словами", "should_trigger": false, "split": "validation" }
+  { "query": "explain what a null pointer exception is in plain terms", "should_trigger": false, "split": "validation" }
 ]

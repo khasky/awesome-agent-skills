@@ -1,6 +1,6 @@
 ---
 name: awesome-content-voice
-description: "Builds a reusable profile of the user's own writing voice from their posts, files, samples or an interview, for other skills to read. Use when asked to learn the user's voice, or 'собери мой авторский стиль'. Do not use for a website's style (awesome-style-mimic) or AI voice (awesome-humanize-en)."
+description: "Builds a reusable profile of the user's own writing voice from their posts, files, samples or an interview, for other skills to read. Use when asked to learn the user's voice."
 license: MIT
 metadata:
   author: Khasky

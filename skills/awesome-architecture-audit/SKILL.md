@@ -1,6 +1,6 @@
 ---
 name: awesome-architecture-audit
-description: "Read-only audit of a whole codebase's design: module boundaries, dependency direction, docs-vs-code drift, extensibility, with a verdict. Use when asked to audit the architecture, or 'оцени архитектуру'. Do not use for one diff (awesome-code-review) or latency (awesome-performance-audit)."
+description: "Read-only audit of a whole codebase's design: module boundaries, dependency direction, docs-vs-code drift, extensibility, with a verdict. Use when asked to audit the architecture."
 license: MIT
 metadata:
   author: Khasky

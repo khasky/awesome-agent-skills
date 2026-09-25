@@ -1,6 +1,6 @@
 ---
 name: awesome-style-mimic
-description: "Learns a website's writing style by crawling it in a live browser, writes a reusable style guide, then rewrites documents in that voice. Use when asked to learn a site's style or write in its voice, or 'изучи стиль сайта'. Do not use for the user's own voice (awesome-content-voice)."
+description: "Learns a website's writing style by crawling it in a live browser, writes a reusable style guide, then rewrites documents in that voice. Use when asked to learn a site's style or write in its voice."
 license: MIT
 compatibility: "Learn mode requires browser automation against the live site (the Playwright MCP --extension bridge, or an equivalent the agent already has). Apply mode needs none."
 metadata:

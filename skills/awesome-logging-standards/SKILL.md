@@ -1,6 +1,6 @@
 ---
 name: awesome-logging-standards
-description: "Applies structured logging: levels, PII redaction, request logging, wide events (canonical log lines). Use when adding or reviewing logs, choosing levels, or after logs failed or leaked data in an incident, or 'логирование'. Do not use for the error contract (awesome-error-standards)."
+description: "Applies structured logging: levels, PII redaction, request logging, wide events (canonical log lines). Use when adding or reviewing logs, choosing levels, or after logs failed or leaked data in an incident."
 license: MIT
 metadata:
   author: Khasky

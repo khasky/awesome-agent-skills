@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-rebuild
-description: "Erases a repository's history and rebuilds it as a curated commit series over the same tree, with a backup, confirmation gates and a tree-hash proof. Use when asked to rewrite history as readable commits, or 'закоммить историю по частям'. Do not use for one commit (awesome-git-history-reset)."
+description: "Erases a repository's history and rebuilds it as a curated commit series over the same tree, with a backup, confirmation gates and a tree-hash proof. Use when asked to rewrite history as readable commits."
 disable-model-invocation: true
 license: MIT
 compatibility: "Requires git and the GitHub CLI (gh) authenticated with push access to the target repository."

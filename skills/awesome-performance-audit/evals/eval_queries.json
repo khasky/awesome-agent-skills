@@ -1,22 +1,22 @@
 [
   { "query": "our checkout API's p99 latency has crept up over the last two weeks, figure out what's eating the time", "should_trigger": true, "split": "train" },
-  { "query": "почему сайт так тормозит при загрузке главной страницы на мобильных", "should_trigger": true, "split": "train" },
+  { "query": "why is the site so slow loading the homepage on mobile", "should_trigger": true, "split": "train" },
   { "query": "the worker process gets OOM-killed every few hours under normal traffic, we need to understand why before the sale", "should_trigger": true, "split": "train" },
   { "query": "measure whether our largest contentful paint and layout shift are actually within budget on the product page", "should_trigger": true, "split": "train" },
   { "query": "one dependency taking a while to respond seems to be taking the whole service down with it", "should_trigger": true, "split": "train" },
-  { "query": "оцени, почему память нашего воркера постоянно растёт и не освобождается", "should_trigger": true, "split": "train" },
+  { "query": "figure out why our worker's memory keeps growing and never gets released", "should_trigger": true, "split": "train" },
   { "query": "check whether our export job holds the entire file in RAM before writing it out", "should_trigger": true, "split": "validation" },
-  { "query": "проверь наш сервис перед пиковой нагрузкой в чёрную пятницу, нет ли узких мест", "should_trigger": true, "split": "validation" },
+  { "query": "check our service for bottlenecks before the Black Friday traffic spike", "should_trigger": true, "split": "validation" },
   { "query": "our Node service seems to freeze up for a second or two under heavy request bursts", "should_trigger": true, "split": "validation" },
   { "query": "audit whether our bundle size and hydration cost are why the app feels sluggish on load", "should_trigger": true, "split": "validation" },
   { "query": "the /checkout endpoint returns the wrong total when a coupon and a gift card are both applied, find the bug and fix it", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
-  { "query": "функция расчёта скидки возвращает неверное значение в редких случаях, разберись и почини", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
+  { "query": "the discount calculation function returns the wrong value in rare cases, figure out why and fix it", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
   { "query": "define whether a timed-out downstream call should be retried and how many times", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "train" },
   { "query": "review our React components for consistent naming and folder structure", "should_trigger": false, "belongs_to": "awesome-code-standards", "split": "train" },
   { "query": "our orders query does SELECT * and has no index on the filter column, review the query patterns", "should_trigger": false, "belongs_to": "awesome-database-audit", "split": "train" },
   { "query": "what's the difference between LCP and INP", "should_trigger": false, "split": "train" },
-  { "query": "спроектируй, как классифицировать ошибку сети против ошибки валидации в нашем сервисе", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "validation" },
+  { "query": "design how to classify a network error versus a validation error in our service", "should_trigger": false, "belongs_to": "awesome-error-standards", "split": "validation" },
   { "query": "check if our product pages are actually getting crawled and indexed by Google", "should_trigger": false, "belongs_to": "awesome-seo-audit", "split": "validation" },
   { "query": "bump the request timeout constant from 5000 to 8000 in config.js", "should_trigger": false, "split": "validation" },
-  { "query": "что такое circuit breaker простыми словами", "should_trigger": false, "split": "validation" }
+  { "query": "what's a circuit breaker in plain words", "should_trigger": false, "split": "validation" }
 ]

@@ -1,12 +1,12 @@
 [
   { "query": "half our endpoints throw raw stack traces to the client and the other half swallow exceptions silently, nothing matches", "should_trigger": true, "split": "train" },
-  { "query": "у нас разные форматы ответа при сбоях на каждом эндпоинте, приведи всё к одному стандарту", "should_trigger": true, "split": "train" },
+  { "query": "we've got a different response format for failures on every endpoint, bring it all to one standard", "should_trigger": true, "split": "train" },
   { "query": "should a missing required field be a 400 or a 422 in our API, and how do we decide", "should_trigger": true, "split": "train" },
   { "query": "some of our catch blocks in the payment service are just empty, decide what they should actually do", "should_trigger": true, "split": "train" },
   { "query": "when the downstream inventory service times out, should the checkout call retry blindly or is that unsafe", "should_trigger": true, "split": "train" },
-  { "query": "ревью того, как сервис обрабатывает сбои: где кидать исключение, а где просто вернуть результат с ошибкой", "should_trigger": true, "split": "train" },
+  { "query": "review how the service handles failures, where we should throw an exception versus just return an error result", "should_trigger": true, "split": "train" },
   { "query": "define how we classify a broken database connection versus a user submitting a bad email", "should_trigger": true, "split": "validation" },
-  { "query": "спроектируй единый конверт ошибок для нашего REST API с кодом, сообщением и деталями", "should_trigger": true, "split": "validation" },
+  { "query": "design a single error envelope for our REST API with a code, message and details", "should_trigger": true, "split": "validation" },
   { "query": "our error responses leak the SQL query straight to the frontend, redesign what the user actually sees", "should_trigger": true, "split": "validation" },
   { "query": "add typed error classes so callers can tell a not-found from a conflict without string-matching the message", "should_trigger": true, "split": "validation" },
   { "query": "our error logs just say 'Error: undefined' with no context, set up proper structured logging fields", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "train" },
@@ -15,8 +15,8 @@
   { "query": "review our naming conventions and folder layout for the new backend module", "should_trigger": false, "belongs_to": "awesome-code-standards", "split": "train" },
   { "query": "what HTTP status code is 418 actually for", "should_trigger": false, "split": "train" },
   { "query": "rename the ApiError class to AppError across the file", "should_trigger": false, "split": "train" },
-  { "query": "добавь уровни логирования и request_id в наши логи ошибок, сейчас там сплошной console.log", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "validation" },
-  { "query": "падает конкретный тест на обработку платежа, разберись в чём причина и почини", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "validation" },
+  { "query": "add log levels and a request_id to our error logs, right now it's all just console.log", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "validation" },
+  { "query": "one specific test for payment processing is failing, figure out why and fix it", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "validation" },
   { "query": "we need to decide on a versioning strategy before v1 of the public API ships", "should_trigger": false, "belongs_to": "awesome-api-design", "split": "validation" },
-  { "query": "какая разница между 401 и 403 простыми словами", "should_trigger": false, "split": "validation" }
+  { "query": "what's the difference between 401 and 403 in plain terms", "should_trigger": false, "split": "validation" }
 ]

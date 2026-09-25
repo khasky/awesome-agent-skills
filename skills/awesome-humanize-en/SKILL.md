@@ -1,6 +1,6 @@
 ---
 name: awesome-humanize-en
-description: "Removes signs of AI writing from English text: cliches, filler, jargon, sycophancy, em-dash habits, fake sources, chatbot markers like ':contentReference'. Use when text reads like a chatbot, or 'убери следы ИИ в тексте'. Do not use on code (awesome-code-cleanup) or legal or literary text."
+description: "Removes signs of AI writing from English text: cliches, filler, jargon, sycophancy, em-dash habits, fake sources, chatbot markers like ':contentReference'. Use when text reads like a chatbot."
 license: MIT
 metadata:
   author: Khasky

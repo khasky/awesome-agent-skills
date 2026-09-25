@@ -1,6 +1,6 @@
 ---
 name: awesome-error-standards
-description: "Applies consistent error handling: typed errors, operational vs programmer errors, API error envelopes, HTTP status mapping, user-facing messages. Use when adding or refactoring error handling or designing an error contract, or 'обработка ошибок'. Do not use for logging (awesome-logging-standards)."
+description: "Applies consistent error handling: typed errors, operational vs programmer errors, API error envelopes, HTTP status mapping, user-facing messages. Use when adding or refactoring error handling or designing an error contract."
 license: MIT
 metadata:
   author: Khasky

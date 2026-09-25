@@ -1,22 +1,22 @@
 [
   { "query": "Can you audit whether our marketing site still matches what the product actually does before the next release?", "should_trigger": true, "split": "train" },
-  { "query": "проверь факты на сайте, особенно раздел с лимитами тарифов", "should_trigger": true, "split": "train" },
+  { "query": "check the facts on the site, especially the section about plan limits", "should_trigger": true, "split": "train" },
   { "query": "check our README against the actual CLI flags before we tag the release", "should_trigger": true, "split": "train" },
   { "query": "the pricing page says 'unlimited projects on every plan' but I'm pretty sure the free tier caps out at three, can someone check", "should_trigger": true, "split": "train" },
   { "query": "our privacy policy lists five third-party processors, I want to know if that list is still accurate before we submit to the app store", "should_trigger": true, "split": "train" },
   { "query": "go through every number our landing page quotes, storage limits, uptime, pricing tiers, and trace each one back to whatever actually decides it in the code", "should_trigger": true, "split": "train" },
-  { "query": "у нас на сайте написано про поддержку 12 языков интерфейса, я не уверен что это всё ещё так, можешь сверить с кодом", "should_trigger": true, "split": "validation" },
+  { "query": "our site says we support 12 interface languages, I'm not sure that's still true, can you check it against the code", "should_trigger": true, "split": "validation" },
   { "query": "the docs say this feature works on the free plan, but the entitlement check in the billing service looks like it requires Pro, which one is right", "should_trigger": true, "split": "validation" },
-  { "query": "нужен аудит публичных утверждений на сайте и в документации на предмет расхождений с кодом", "should_trigger": true, "split": "validation" },
+  { "query": "need an audit of the public claims on the site and in the docs for discrepancies with the code", "should_trigger": true, "split": "validation" },
   { "query": "our store listing says the app supports offline mode, does the code actually have that anymore", "should_trigger": true, "split": "validation" },
   { "query": "clean up the wording in this README, it's full of vague filler phrases", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
   { "query": "why isn't this pricing page converting, check the CTA and form structure", "should_trigger": false, "belongs_to": "awesome-landing-audit", "split": "train" },
   { "query": "does our internal architecture doc still match how the billing module actually works", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
   { "query": "check whether the JSON-LD on this product page will actually render a rich result", "should_trigger": false, "belongs_to": "awesome-seo-audit", "split": "train" },
   { "query": "before we open-source this SDK, check what it reveals about our internal infrastructure", "should_trigger": false, "belongs_to": "awesome-leak-audit", "split": "train" },
-  { "query": "напиши более сильный заголовок для главной страницы", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
+  { "query": "write a stronger headline for the homepage", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "what's generally a safe way to phrase a compatibility claim without overpromising", "should_trigger": false, "split": "validation" },
   { "query": "just fix this one typo in the README, recieve should be receive", "should_trigger": false, "split": "validation" },
-  { "query": "как вообще принято оформлять disclaimer в privacy policy, есть стандартная формулировка", "should_trigger": false, "split": "validation" },
-  { "query": "просто поправь одну опечатку в этом абзаце, больше ничего не трогай", "should_trigger": false, "split": "validation" }
+  { "query": "what's the usual way to phrase a disclaimer in a privacy policy, is there a standard wording", "should_trigger": false, "split": "validation" },
+  { "query": "just fix one typo in this paragraph, don't touch anything else", "should_trigger": false, "split": "validation" }
 ]

@@ -1,6 +1,6 @@
 ---
 name: awesome-design-doc
-description: "Writes a design doc or ADR: requirements and scale first, real alternatives with trade-offs, a grounded recommendation, non-goals, migration path; also runs a pre-mortem on a plan. Use when choosing an approach, or 'спроектируй', 'сделай pre-mortem'. Do not use for API detail (awesome-api-design)."
+description: "Writes a design doc or ADR: requirements and scale first, real alternatives with trade-offs, a grounded recommendation, non-goals, migration path; also runs a pre-mortem on a plan. Use when choosing an approach."
 license: MIT
 metadata:
   author: Khasky

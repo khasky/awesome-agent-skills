@@ -1,22 +1,22 @@
 [
   { "query": "translate this Russian README into English, keep the code blocks and links exactly as they are", "should_trigger": true, "split": "train" },
-  { "query": "переведи эту статью на английский, я потом опубликую её на medium", "should_trigger": true, "split": "train" },
+  { "query": "translate this Russian article into English, I'll publish it on medium afterward", "should_trigger": true, "split": "train" },
   { "query": "I have a folder of Russian docs, mirror them into an english/ folder with the same file names", "should_trigger": true, "split": "train" },
   { "query": "this changelog is in Russian, I need the English version for our international users, keep the version numbers untouched", "should_trigger": true, "split": "train" },
   { "query": "translate my russian marketing email into english, keep the casual tone", "should_trigger": true, "split": "train" },
   { "query": "our support ticket came in written in Russian and the on-call engineer only reads English - can you get this into something he can read, keeping the error codes as they are", "should_trigger": true, "split": "train" },
-  { "query": "переведи этот технический доклад с русского на английский, термины из кода не трогай", "should_trigger": true, "split": "validation" },
+  { "query": "translate this technical talk from Russian into English, don't touch the code terms", "should_trigger": true, "split": "validation" },
   { "query": "here's a Russian short story I wrote, render it in English and keep my voice, don't smooth it into generic prose", "should_trigger": true, "split": "validation" },
   { "query": "half my team doesn't read Russian and this design doc is in Russian - can you make an English version they can review, tables and all", "should_trigger": true, "split": "validation" },
-  { "query": "сделай английскую версию этого файла на русском, ссылки и плейсхолдеры не трогай", "should_trigger": true, "split": "validation" },
+  { "query": "make an English version of this file that's in Russian, don't touch the links or placeholders", "should_trigger": true, "split": "validation" },
   { "query": "this English translation I made myself sounds like a machine wrote it, can you fix the voice", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
-  { "query": "убери следы ИИ в этом русском черновике, переводить пока не нужно", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
+  { "query": "clean up the AI tells in this Russian draft, no need to translate it yet", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
   { "query": "clean up this English press release, the headings are all just 'Overview'", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
   { "query": "proofread my English translation for grammar mistakes, don't rewrite it", "should_trigger": false, "belongs_to": "awesome-grammar-check", "split": "train" },
   { "query": "rewrite this English paragraph so it matches our style guide at styles/northlane.md", "should_trigger": false, "belongs_to": "awesome-style-mimic", "split": "train" },
   { "query": "write an English tagline for our product, no Russian source to translate", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "translate this English announcement into Russian for our Russian users", "should_trigger": false, "split": "validation" },
-  { "query": "как по-русски будет 'rate limit' - принято ли переводить этот термин", "should_trigger": false, "split": "validation" },
+  { "query": "what's the Russian for 'rate limit' - is it common to translate that term", "should_trigger": false, "split": "validation" },
   { "query": "is 'colour' or 'color' the right spelling for our docs", "should_trigger": false, "split": "validation" },
-  { "query": "чем машинный перевод отличается от человеческого в двух словах", "should_trigger": false, "split": "validation" }
+  { "query": "what's the difference between machine translation and human translation, in a nutshell", "should_trigger": false, "split": "validation" }
 ]

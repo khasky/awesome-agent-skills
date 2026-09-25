@@ -1,6 +1,6 @@
 ---
 name: awesome-root-cause
-description: "Root-cause analysis for incidents, recurring failures and process problems with no failing test: 5 Whys, fishbone, PDCA, A3. Use for a postmortem or why something keeps happening, or 'найди первопричину'. Do not use for a reproducible bug (awesome-bug-fix) or slowness (awesome-performance-audit)."
+description: "Root-cause analysis for incidents, recurring failures and process problems with no failing test: 5 Whys, fishbone, PDCA, A3. Use for a postmortem or why something keeps happening."
 license: MIT
 metadata:
   author: Khasky

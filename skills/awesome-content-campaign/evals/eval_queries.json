@@ -1,22 +1,22 @@
 [
   { "query": "build me two weeks of posts about our new CLI tool from the repo at ~/dev/streamline-cli", "should_trigger": true, "split": "train" },
-  { "query": "сделай контент-план на неделю про наш продукт по материалам с сайта northlane.example", "should_trigger": true, "split": "train" },
+  { "query": "put together a week's content plan about our product using material from northlane.example", "should_trigger": true, "split": "train" },
   { "query": "write one post about our v2 launch for linkedin and x, using the changelog as the source", "should_trigger": true, "split": "train" },
   { "query": "I need a month of social posts about our product, pull facts from the docs folder and the landing page", "should_trigger": true, "split": "train" },
   { "query": "plan a launch week campaign starting tomorrow, best times to post, using our repo and pricing page as sources", "should_trigger": true, "split": "train" },
   { "query": "we're launching next Monday and have nothing scheduled anywhere - I've got the repo and the landing page, can you get a week of posts ready across our usual platforms", "should_trigger": true, "split": "train" },
-  { "query": "напиши один пост про новую фичу для telegram и vk, источник - наш changelog", "should_trigger": true, "split": "validation" },
+  { "query": "write one post about the new feature for telegram and vk, source is our changelog", "should_trigger": true, "split": "validation" },
   { "query": "spin up a two-week posting schedule from these product docs, spread across instagram, x and linkedin", "should_trigger": true, "split": "validation" },
   { "query": "our socials have been dead for a month and we just shipped something worth talking about - the repo has everything, can you get something going on a schedule", "should_trigger": true, "split": "validation" },
-  { "query": "у нас скоро релиз, а в соцсетях тишина - вот ссылка на репозиторий, сделай что-то на пару недель вперёд", "should_trigger": true, "split": "validation" },
+  { "query": "we've got a release coming up soon and it's dead quiet on social media - here's the repo link, put something together for the next couple weeks", "should_trigger": true, "split": "validation" },
   { "query": "publish the posts we already have ready to our accounts starting tomorrow morning", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
   { "query": "build a profile of my own writing voice from my last twenty posts", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
   { "query": "this draft post sounds like a chatbot wrote it, clean up the AI voice before I use it", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
-  { "query": "переработай эту одну статью в лонгрид, обычный пост и короткий, без расписания", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
+  { "query": "turn this one article into a long read, a regular post and a short one, no schedule needed", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
   { "query": "resize our cover.png into the horizontal and vertical frames our posts need", "should_trigger": false, "belongs_to": "awesome-content-image-adapter", "split": "train" },
   { "query": "write a headline for the pricing page hero section", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "what's a good posting frequency for a B2B SaaS account", "should_trigger": false, "split": "validation" },
-  { "query": "сколько платформ обычно стоит вести одновременно небольшой команде", "should_trigger": false, "split": "validation" },
+  { "query": "how many platforms should a small team typically run at the same time", "should_trigger": false, "split": "validation" },
   { "query": "fix the broken markdown link in this draft post, it points to the old docs page", "should_trigger": false, "split": "validation" },
-  { "query": "что лучше - публиковать раз в день или три раза в неделю", "should_trigger": false, "split": "validation" }
+  { "query": "what's better, posting once a day or three times a week", "should_trigger": false, "split": "validation" }
 ]

@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-salvage
-description: "Read-only recovery of every commit a repository ever held, force-pushed history included, from refs, PR refs, backups and the host's activity log. Use when asked what a repo held before a rewrite, or 'найти удалённые коммиты'. Do not use to erase history (awesome-git-history-reset)."
+description: "Read-only recovery of every commit a repository ever held, force-pushed history included, from refs, PR refs, backups and the host's activity log. Use when asked what a repo held before a rewrite."
 license: MIT
 compatibility: "Requires git and the GitHub CLI (gh). Read-only, and it never writes to a remote."
 metadata:

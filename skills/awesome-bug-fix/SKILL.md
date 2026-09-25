@@ -1,6 +1,6 @@
 ---
 name: awesome-bug-fix
-description: "Fixes a bug by building a runnable reproduction and finding the root cause before any fix. Use for errors, crashes, failing tests or builds, flaky behavior, repeated failed fixes, or 'не работает'. Do not use for slowness (awesome-performance-audit) or incidents with no repro (awesome-root-cause)."
+description: "Fixes a bug by building a runnable reproduction and finding the root cause before any fix. Use for errors, crashes, failing tests or builds, flaky behavior, or repeated failed fixes."
 license: MIT
 metadata:
   author: Khasky

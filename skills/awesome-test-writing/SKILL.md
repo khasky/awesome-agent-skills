@@ -1,6 +1,6 @@
 ---
 name: awesome-test-writing
-description: "Designs and writes tests that catch real regressions: unit, integration or E2E placement, fixtures, behavior-first assertions, characterization and property tests. Use when asked to write tests, add coverage or a regression test, or 'напиши тесты'. Do not use to find the bug (awesome-bug-fix)."
+description: "Designs and writes tests that catch real regressions: unit, integration or E2E placement, fixtures, behavior-first assertions, characterization and property tests. Use when asked to write tests, add coverage or a regression test."
 license: MIT
 metadata:
   author: Khasky

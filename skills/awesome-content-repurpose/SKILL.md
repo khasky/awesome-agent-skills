@@ -1,6 +1,6 @@
 ---
 name: awesome-content-repurpose
-description: "Turns one source (article, guide, notes) into three posts for all platforms: a long read, a regular and a short post, in the language the user picks. Use when asked to adapt a text for social posts, or 'адаптируй статью под соцсети'. Do not use for a product campaign (awesome-content-campaign)."
+description: "Turns one source (article, guide, notes) into three posts for all platforms: a long read, a regular and a short post, in the language the user picks. Use when asked to adapt a text for social posts."
 license: MIT
 metadata:
   author: Khasky

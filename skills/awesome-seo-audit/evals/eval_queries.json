@@ -1,22 +1,22 @@
 [
   { "query": "Can you audit the SEO on our whole site before the redesign launches?", "should_trigger": true, "split": "train" },
-  { "query": "проверь SEO нашего блога, особенно hreflang для en и ru версий", "should_trigger": true, "split": "train" },
+  { "query": "check the SEO on our blog, especially the hreflang setup for the en and ru versions", "should_trigger": true, "split": "train" },
   { "query": "check whether our titles, meta descriptions and structured data are still healthy across the site", "should_trigger": true, "split": "train" },
   { "query": "we shipped a new deploy last night, can you confirm nothing that ranking depends on quietly broke, robots.txt, canonicals, that kind of thing", "should_trigger": true, "split": "train" },
   { "query": "we have three thousand auto-generated /city/service pages, I'm worried Google sees them as duplicate junk", "should_trigger": true, "split": "train" },
   { "query": "go check whether ChatGPT and other AI answer engines can actually crawl and cite our docs pages", "should_trigger": true, "split": "train" },
-  { "query": "посмотри, находят ли поисковики вообще наши страницы, может там где-то запрещён обход в robots.txt", "should_trigger": true, "split": "validation" },
+  { "query": "check whether search engines can even find our pages, maybe something in robots.txt is blocking the crawl", "should_trigger": true, "split": "validation" },
   { "query": "compare how the page looks in the raw HTML versus what actually renders in the browser, I think something's hidden from crawlers", "should_trigger": true, "split": "validation" },
-  { "query": "проверь структурированные данные и то, как страница будет выглядеть в поиске", "should_trigger": true, "split": "validation" },
+  { "query": "check our structured data and how the page will show up in search results", "should_trigger": true, "split": "validation" },
   { "query": "our local landing pages for each city, do they have the business info Google needs to show them in local results", "should_trigger": true, "split": "validation" },
   { "query": "check whether this page is usable with a screen reader before we ship it", "should_trigger": false, "belongs_to": "awesome-accessibility-audit", "split": "train" },
   { "query": "why isn't this page converting, does the CTA structure need fixing", "should_trigger": false, "belongs_to": "awesome-landing-audit", "split": "train" },
-  { "query": "проверь, совпадает ли наш JSON-LD с ценами, которые мы реально берём", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "check whether our JSON-LD matches the prices we actually charge", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
   { "query": "why is our LCP so bad on mobile for the pricing page", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
   { "query": "write a keyword-rich meta description for this new landing page", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "review this PR that changes our robots.txt and sitemap generator before merge", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
   { "query": "what's the practical difference between a 301 and a 302 redirect", "should_trigger": false, "split": "validation" },
   { "query": "just add a canonical tag to this one page, one line change", "should_trigger": false, "split": "validation" },
-  { "query": "что такое хлебные крошки на сайте, зачем они вообще нужны", "should_trigger": false, "split": "validation" },
-  { "query": "добавь один атрибут rel=nofollow на эту ссылку, больше ничего не трогай", "should_trigger": false, "split": "validation" }
+  { "query": "what are breadcrumbs on a site, what are they even for", "should_trigger": false, "split": "validation" },
+  { "query": "add one rel=nofollow attribute to this link, don't touch anything else", "should_trigger": false, "split": "validation" }
 ]

@@ -1,6 +1,6 @@
 ---
 name: awesome-content-publisher
-description: "Publishes prepared posts to the user's own accounts through their live browser, on schedule, with login checks, a no-duplicates ledger and a confirmation gate before anything goes public. Use when asked to publish posts, or 'опубликуй посты'. Do not use to write posts (awesome-content-repurpose)."
+description: "Publishes prepared posts to the user's own accounts through their live browser, on schedule, with login checks, a no-duplicates ledger and a confirmation gate before anything goes public. Use when asked to publish posts."
 disable-model-invocation: true
 license: MIT
 compatibility: "Requires the Playwright MCP --extension bridge attached to the user's own logged-in Chrome or Edge. No headless browser, and no credential is ever typed or stored by the skill."

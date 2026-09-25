@@ -1,6 +1,6 @@
 ---
 name: awesome-performance-audit
-description: "Read-only performance and reliability audit: event loop, backpressure, memory and CPU, timeouts, retries, queues, Core Web Vitals, bundles, with a verdict. Use when something is slow, memory climbs or latency spikes, or 'почему тормозит'. Do not use for a reproducible bug (awesome-bug-fix)."
+description: "Read-only performance and reliability audit: event loop, backpressure, memory and CPU, timeouts, retries, queues, Core Web Vitals, bundles, with a verdict. Use when something is slow, memory climbs or latency spikes."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-git-commit-plan
-description: "Plans a codebase as a bisectable commit series: a module map, then commits that each build and test alone, verified in a scratch clone, as one plan file. Use when asked to split a project into commits, or 'разбей проект на коммиты'. Do not use to execute it (awesome-git-history-rebuild)."
+description: "Plans a codebase as a bisectable commit series: a module map, then commits that each build and test alone, verified in a scratch clone, as one plan file. Use when asked to split a project into commits."
 license: MIT
 metadata:
   author: Khasky

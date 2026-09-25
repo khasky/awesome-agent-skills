@@ -1,22 +1,22 @@
 [
   { "query": "Can you do a security review of the payment service before we ship it?", "should_trigger": true, "split": "train" },
-  { "query": "проверь безопасность нашего API перед продакшеном", "should_trigger": true, "split": "train" },
+  { "query": "check the security of our API before we go to production", "should_trigger": true, "split": "train" },
   { "query": "we just added OAuth login to the dashboard, check it for auth and authorization holes", "should_trigger": true, "split": "train" },
   { "query": "our contractor pasted raw SQL built from request query params right into the execute call in orders.py, is that okay to ship", "should_trigger": true, "split": "train" },
   { "query": "I found an API key sitting in a committed config file in the billing repo, what else should I check before we push this live", "should_trigger": true, "split": "train" },
   { "query": "before checkout-service goes out the door, walk through the login flow and the file upload handler for anything an attacker could abuse", "should_trigger": true, "split": "train" },
-  { "query": "гляди, у нас в CI лежит токен деплоя прямо в yml файле, надо бы всё это перепроверить на предмет дыр", "should_trigger": true, "split": "validation" },
+  { "query": "hey, we've got a deploy token sitting right in a yml file in CI, we should probably recheck everything for holes", "should_trigger": true, "split": "validation" },
   { "query": "walk through the new /checkout/apply-coupon endpoint and tell me where someone could smuggle in unescaped input", "should_trigger": true, "split": "validation" },
-  { "query": "нужен аудит кода order-service на предмет уязвимостей и неправильного использования крипто-библиотек", "should_trigger": true, "split": "validation" },
+  { "query": "need a code audit of order-service for vulnerabilities and misuse of crypto libraries", "should_trigger": true, "split": "validation" },
   { "query": "we just wired up a new GitHub Actions workflow that pulls deploy secrets from the vault, can you make sure nothing there could leak a token to a fork's pull request", "should_trigger": true, "split": "validation" },
   { "query": "before we open-source the mobile client, check what it reveals about our backend infrastructure", "should_trigger": false, "belongs_to": "awesome-leak-audit", "split": "train" },
   { "query": "run an authorized penetration test against staging.example.com, we own the box", "should_trigger": false, "belongs_to": "awesome-pentest", "split": "train" },
   { "query": "is the lodash version pinned in package-lock.json still vulnerable to any known CVE", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
   { "query": "review the migrations folder in inventory-service for schema anti-patterns before the next release", "should_trigger": false, "belongs_to": "awesome-database-audit", "split": "train" },
-  { "query": "сделай ревью этого пул-реквеста перед мерджем, там не только про безопасность", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "review this pull request before we merge it, it's not just about security", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
   { "query": "our request logs in payments-api are printing full customer records, fix the log levels and redact the PII", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "train" },
   { "query": "what does a CVSS score of 7.5 actually mean in plain terms", "should_trigger": false, "split": "validation" },
   { "query": "add a try/catch around this one parseAmount function real quick", "should_trigger": false, "split": "validation" },
-  { "query": "что такое OWASP Top 10 вкратце, объясни своими словами", "should_trigger": false, "split": "validation" },
-  { "query": "проверь наши зависимости в requirements.txt на уязвимости перед релизом", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "validation" }
+  { "query": "what's the OWASP Top 10 briefly, explain it in your own words", "should_trigger": false, "split": "validation" },
+  { "query": "check our dependencies in requirements.txt for vulnerabilities before the release", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "validation" }
 ]

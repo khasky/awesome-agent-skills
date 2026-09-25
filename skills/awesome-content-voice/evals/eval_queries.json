@@ -1,22 +1,22 @@
 [
   { "query": "read through my last twenty tweets and write down what actually makes my writing sound like me, save it for later", "should_trigger": true, "split": "train" },
-  { "query": "собери мой авторский стиль по последним постам в телеграм-канале", "should_trigger": true, "split": "train" },
+  { "query": "put together my writing style from my recent posts on my telegram channel", "should_trigger": true, "split": "train" },
   { "query": "I don't have any samples handy, just ask me a few questions about how I write and put together something reusable from that", "should_trigger": true, "split": "train" },
   { "query": "here are ten of my published articles as files, learn my voice from them and save a profile", "should_trigger": true, "split": "train" },
   { "query": "update my existing voice profile with the newsletter issues I wrote this quarter", "should_trigger": true, "split": "train" },
   { "query": "every ghostwriter we've used for me sounds a little off - can you figure out what actually makes my writing mine and write that down somewhere reusable", "should_trigger": true, "split": "train" },
   { "query": "go through my LinkedIn posts through my logged-in browser and build a profile of my writing habits", "should_trigger": true, "split": "validation" },
-  { "query": "обнови мой профиль стиля новыми черновиками, которые я тебе скину", "should_trigger": true, "split": "validation" },
+  { "query": "update my style profile with new drafts that I'll send you", "should_trigger": true, "split": "validation" },
   { "query": "future posts keep sounding generic even when I brief them well - I think the problem is nobody's ever written down my actual tics, can you fix that once", "should_trigger": true, "split": "validation" },
-  { "query": "хочу, чтобы посты для меня писали в моём настоящем стиле, а не в каком-то усреднённом - собери что для этого нужно", "should_trigger": true, "split": "validation" },
+  { "query": "I want posts written for me in my actual style, not some averaged-out one - put together whatever you need for that", "should_trigger": true, "split": "validation" },
   { "query": "crawl our competitor's blog and build a style guide we can apply to our own posts", "should_trigger": false, "belongs_to": "awesome-style-mimic", "split": "train" },
   { "query": "write two weeks of posts about our new feature launch", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
   { "query": "this draft reads like a chatbot, strip the AI tells out before I send it", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
   { "query": "turn this guide into a long read, a regular post and a short post", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
-  { "query": "опубликуй эти пять запланированных постов на моих аккаунтах завтра", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
+  { "query": "publish these five scheduled posts to my accounts tomorrow", "should_trigger": false, "belongs_to": "awesome-content-publisher", "split": "train" },
   { "query": "write a short email subject line for my newsletter announcement, in my usual voice", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "what's the difference between voice and tone", "should_trigger": false, "split": "validation" },
-  { "query": "сколько постов обычно нужно, чтобы понять стиль автора", "should_trigger": false, "split": "validation" },
+  { "query": "how many posts do you usually need to figure out an author's style", "should_trigger": false, "split": "validation" },
   { "query": "fix the typo in my bio draft, it says 'recieve'", "should_trigger": false, "split": "validation" },
-  { "query": "можно ли использовать один и тот же профиль стиля для двух разных авторов", "should_trigger": false, "split": "validation" }
+  { "query": "can the same style profile be used for two different authors", "should_trigger": false, "split": "validation" }
 ]

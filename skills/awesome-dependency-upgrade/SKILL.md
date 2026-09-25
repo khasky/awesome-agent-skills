@@ -1,6 +1,6 @@
 ---
 name: awesome-dependency-upgrade
-description: "Plans and executes dependency upgrades: batches by risk, changelog-driven majors, CVE overrides, one revertable commit per batch. Use when asked to upgrade packages, merge bot update PRs, act on an audit report, or 'обнови зависимости'. Do not use to judge risk (awesome-dependency-audit)."
+description: "Plans and executes dependency upgrades: batches by risk, changelog-driven majors, CVE overrides, one revertable commit per batch. Use when asked to upgrade packages, merge bot update PRs, or act on an audit report."
 license: MIT
 metadata:
   author: Khasky

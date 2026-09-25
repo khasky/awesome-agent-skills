@@ -1,6 +1,6 @@
 ---
 name: awesome-slop-audit
-description: "Read-only audit of a repository for AI-slop markers in code, comments, tests, docs and CI, each verified against the code and ranked for awesome-code-cleanup. Use when asked to find AI slop or machine-written code, or 'проверь код на следы ИИ'. Do not use to fix findings (awesome-code-cleanup)."
+description: "Read-only audit of a repository for AI-slop markers in code, comments, tests, docs and CI, each verified against the code and ranked for awesome-code-cleanup. Use when asked to find AI slop or machine-written code."
 license: MIT
 metadata:
   author: Khasky

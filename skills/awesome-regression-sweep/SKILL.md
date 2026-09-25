@@ -1,6 +1,6 @@
 ---
 name: awesome-regression-sweep
-description: "Read-only sweep for regressions against a recorded baseline: typecheck, lint, test suites, wire contracts, generated-file drift, downstream builds, deploy drift. Use to verify everything before or after a deploy, or 'проверь что ничего не сломалось'. Do not use to write tests (awesome-test-writing)."
+description: "Read-only sweep for regressions against a recorded baseline: typecheck, lint, test suites, wire contracts, generated-file drift, downstream builds, deploy drift. Use to verify everything before or after a deploy."
 license: MIT
 metadata:
   author: Khasky

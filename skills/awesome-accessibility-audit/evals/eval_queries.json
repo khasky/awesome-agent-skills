@@ -1,22 +1,22 @@
 [
   { "query": "Can you check the accessibility of our new signup form before we ship it?", "should_trigger": true, "split": "train" },
-  { "query": "проверь доступность модального окна оплаты перед релизом", "should_trigger": true, "split": "train" },
+  { "query": "check the accessibility of the payment modal before we release it", "should_trigger": true, "split": "train" },
   { "query": "we need a WCAG audit of the dashboard before the compliance review", "should_trigger": true, "split": "train" },
   { "query": "when I tab through the checkout page, focus just disappears after the promo code field, and I can never get to the submit button", "should_trigger": true, "split": "train" },
   { "query": "our product manager wants to know if someone who can't use a mouse at all could actually finish signing up on this page", "should_trigger": true, "split": "train" },
   { "query": "go through the new settings modal and tell me what someone using only assistive tech would run into", "should_trigger": true, "split": "train" },
-  { "query": "посмотри, смогут ли пользователи с плохим зрением нормально прочитать текст на странице оплаты, там серый на белом", "should_trigger": true, "split": "validation" },
+  { "query": "check whether people with poor eyesight can actually read the text on the payment page, it's gray on white", "should_trigger": true, "split": "validation" },
   { "query": "check whether every input on the checkout form actually announces itself properly to someone who can't see the screen", "should_trigger": true, "split": "validation" },
-  { "query": "нужен аудит клавиатурной навигации и фокуса в этой форме", "should_trigger": true, "split": "validation" },
+  { "query": "need an audit of keyboard navigation and focus in this form", "should_trigger": true, "split": "validation" },
   { "query": "before this modal ships, make sure someone who can't see the screen can still close it and finish the action", "should_trigger": true, "split": "validation" },
   { "query": "why isn't this landing page converting, is the CTA structure off", "should_trigger": false, "belongs_to": "awesome-landing-audit", "split": "train" },
-  { "query": "проверь title и мета-описание на этой странице перед публикацией", "should_trigger": false, "belongs_to": "awesome-seo-audit", "split": "train" },
+  { "query": "check the title and meta description on this page before we publish it", "should_trigger": false, "belongs_to": "awesome-seo-audit", "split": "train" },
   { "query": "why does this page load so slowly on 3G, especially all the product images", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
   { "query": "can someone review this component's pull request before I merge it", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
   { "query": "the submit button just says OK, can you write something clearer for it", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "what's the right way to structure this React form component, hooks vs class", "should_trigger": false, "belongs_to": "awesome-code-standards", "split": "train" },
   { "query": "what's the minimum contrast ratio WCAG AA requires for normal-size text", "should_trigger": false, "split": "validation" },
   { "query": "just add an alt attribute to this one img tag, quick", "should_trigger": false, "split": "validation" },
-  { "query": "что такое ARIA простыми словами, объясни", "should_trigger": false, "split": "validation" },
-  { "query": "просто добавь стиль фокуса на эту одну кнопку, больше ничего менять не надо", "should_trigger": false, "split": "validation" }
+  { "query": "what is ARIA in plain terms, can you explain", "should_trigger": false, "split": "validation" },
+  { "query": "just add a focus style to this one button, nothing else needs changing", "should_trigger": false, "split": "validation" }
 ]

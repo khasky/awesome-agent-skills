@@ -1,22 +1,22 @@
 [
   { "query": "We're about to open-source our Chrome extension, can you check what it reveals about our backend?", "should_trigger": true, "split": "train" },
-  { "query": "что раскрывает наш клиент о внутреннем устройстве бэкенда, до того как мы выложим его в стор", "should_trigger": true, "split": "train" },
+  { "query": "what does our client reveal about the backend's internals, before we publish it to the store", "should_trigger": true, "split": "train" },
   { "query": "harden our Electron desktop app so nothing about the server leaks through it", "should_trigger": true, "split": "train" },
   { "query": "our support macro just told a customer 'our rate limiter kicks in after 100 requests per minute per IP', and I noticed that same number is hardcoded in a comment in the mobile app repo too", "should_trigger": true, "split": "train" },
   { "query": "the test files in our SDK repo have full request/response fixtures with the internal service names our gateway proxies to", "should_trigger": true, "split": "train" },
   { "query": "we're getting ready to submit the iOS app to the App Store, go through the bundle and make sure nothing in there gives away how the backend works", "should_trigger": true, "split": "train" },
-  { "query": "перед тем как выложить SDK в открытый репозиторий, посмотри, не проговаривается ли где код о наших внутренних лимитах и механизмах защиты от абьюза", "should_trigger": true, "split": "validation" },
+  { "query": "before we publish the SDK to a public repo, check whether the code gives away anything about our internal rate limits or anti-abuse mechanisms", "should_trigger": true, "split": "validation" },
   { "query": "go through our CLI tool's help text and error messages and strip anything that describes what the server actually does under the hood", "should_trigger": true, "split": "validation" },
-  { "query": "укрепи наше расширение для браузера: права доступа, обработка токенов, проверка отправителя сообщений", "should_trigger": true, "split": "validation" },
+  { "query": "harden our browser extension: permissions, token handling, message sender validation", "should_trigger": true, "split": "validation" },
   { "query": "before this SDK goes public, walk the comments and docs for anything that spells out our anti-abuse logic or infra stack", "should_trigger": true, "split": "validation" },
   { "query": "check our Express API for SQL injection and broken auth on the /admin routes", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
   { "query": "run an authorized penetration test against our Android app hitting the live staging API", "should_trigger": false, "belongs_to": "awesome-pentest", "split": "train" },
   { "query": "does our privacy policy still match what data the app actually collects", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
   { "query": "audit our whole npm dependency tree for typosquatted packages and stale licenses", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "train" },
-  { "query": "у нас в внутренней вики всё ещё описан старый флоу авторизации, проверь, совпадает ли это с текущим кодом", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "our internal wiki still describes the old auth flow, check whether it still matches the current code", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
   { "query": "check whether our App Store listing still lists the permissions the app actually requests", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
   { "query": "what's the practical difference between a public and a private npm package", "should_trigger": false, "split": "validation" },
   { "query": "rename this one console.log line so it doesn't print the internal service name, quick edit", "should_trigger": false, "split": "validation" },
-  { "query": "что такое минимально необходимая публичная поверхность API у клиента, вкратце", "should_trigger": false, "split": "validation" },
-  { "query": "просто убери один комментарий с адресом внутреннего redis из этого файла", "should_trigger": false, "split": "validation" }
+  { "query": "what's the minimal necessary public API surface for a client, briefly", "should_trigger": false, "split": "validation" },
+  { "query": "just remove one comment with the internal redis address from this file", "should_trigger": false, "split": "validation" }
 ]

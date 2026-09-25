@@ -1,6 +1,6 @@
 ---
 name: awesome-content-image-adapter
-description: "Adapts one finished image into a horizontal 16:9 and a vertical 9:16 version for social platforms without redrawing the artwork. Use when asked to resize a picture for posts, or 'адаптируй картинку под платформы'. Do not use to draw or generate images, which no skill here does."
+description: "Adapts one finished image into a horizontal 16:9 and a vertical 9:16 version for social platforms without redrawing the artwork. Use when asked to resize a picture for posts."
 license: MIT
 compatibility: "Requires a local way to write RGB PNG files at exact pixel sizes. Nothing is uploaded and no image service is called."
 metadata:

@@ -1,6 +1,6 @@
 ---
 name: awesome-copywriting
-description: "Writes short product copy: headlines, titles, meta and store descriptions, buttons, empty states, error messages, subject lines, CTAs. Use when asked for such copy, or 'напиши заголовок'. Do not use to edit existing prose (awesome-humanize-en) or for posts (awesome-content-campaign)."
+description: "Writes short product copy: headlines, titles, meta and store descriptions, buttons, empty states, error messages, subject lines, CTAs. Use when asked for such copy."
 license: MIT
 metadata:
   author: Khasky

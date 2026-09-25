@@ -1,6 +1,6 @@
 ---
 name: awesome-database-audit
-description: "Read-only audit of a database layer: schema anti-patterns, query and index fit, integrity, concurrency, migrations, tenancy, with a verdict. Use when asked to review a schema, migrations or data model, or 'проверь схему базы'. Do not use for runtime profiling (awesome-performance-audit)."
+description: "Read-only audit of a database layer: schema anti-patterns, query and index fit, integrity, concurrency, migrations, tenancy, with a verdict. Use when asked to review a schema, migrations or data model."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-content-campaign
-description: "Plans a scheduled batch of platform-fit posts about a product from repos, sites or files, every claim traced to evidence; also writes one post for named platforms. Use when asked for a content plan or product posts, or 'контент-план'. Do not use to repurpose one article (awesome-content-repurpose)."
+description: "Plans a scheduled batch of platform-fit posts about a product from repos, sites or files, every claim traced to evidence; also writes one post for named platforms. Use when asked for a content plan or product posts."
 license: MIT
 metadata:
   author: Khasky

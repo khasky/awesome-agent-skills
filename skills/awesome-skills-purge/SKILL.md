@@ -1,6 +1,6 @@
 ---
 name: awesome-skills-purge
-description: "Removes installed agent skills from every AI agent on the machine (Claude Code, Codex, Gemini CLI, Cursor...) behind a keep list, an archive and a confirmation gate. Use when asked to uninstall installed skills, or 'удали все навыки'. Do not use to judge a skill's safety (awesome-dependency-audit)."
+description: "Removes installed agent skills from every AI agent on the machine (Claude Code, Codex, Gemini CLI, Cursor...) behind a keep list, an archive and a confirmation gate. Use when asked to uninstall installed skills."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-api-design
-description: "Designs or reviews an HTTP API's shape before code: resources, versioning, pagination, idempotency, filtering. Use when asked to design an API or an endpoint, or 'спроектируй API'. Do not use for the error envelope (awesome-error-standards) or built architecture (awesome-architecture-audit)."
+description: "Designs or reviews an HTTP API's shape before code: resources, versioning, pagination, idempotency, filtering. Use when asked to design an API or an endpoint."
 license: MIT
 metadata:
   author: Khasky

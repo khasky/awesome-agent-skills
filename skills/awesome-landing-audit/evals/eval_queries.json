@@ -1,22 +1,22 @@
 [
   { "query": "Can you audit our new pricing landing page for conversion issues before we launch the campaign?", "should_trigger": true, "split": "train" },
-  { "query": "почему лендинг не конвертит, посмотри структуру", "should_trigger": true, "split": "train" },
+  { "query": "why isn't this landing page converting, take a look at the structure", "should_trigger": true, "split": "train" },
   { "query": "check if this page is conversion-ready, we're about to run paid traffic to it", "should_trigger": true, "split": "train" },
   { "query": "the ad says '30% off your first order' but the page it lands on just says 'Welcome to Acme', something feels off", "should_trigger": true, "split": "train" },
   { "query": "there's a Buy button, a Book a demo button and a Download button all the same size and color at the top of the page, is that a problem", "should_trigger": true, "split": "train" },
   { "query": "look at what a visitor actually sees on this page before scrolling and tell me if the value proposition is even there", "should_trigger": true, "split": "train" },
-  { "query": "человек заходит на страницу, а там сразу три одинаковые по весу кнопки зовут в разные места, это нормально?", "should_trigger": true, "split": "validation" },
+  { "query": "a visitor lands on the page and right away there are three equally weighted buttons pointing to different places, is that normal?", "should_trigger": true, "split": "validation" },
   { "query": "the signup form on this page asks for name, company, phone and a message before you can even start, is that too much for a first touch", "should_trigger": true, "split": "validation" },
-  { "query": "нужен аудит структуры конверсии на этой посадочной странице перед запуском рекламы", "should_trigger": true, "split": "validation" },
+  { "query": "need an audit of the conversion structure on this landing page before we launch the ads", "should_trigger": true, "split": "validation" },
   { "query": "a promo banner slides in at the top of this page and the content jumps down when it loads, is that going to hurt us", "should_trigger": true, "split": "validation" },
   { "query": "this hero paragraph reads like a chatbot wrote it, can you clean up the tone", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
   { "query": "why isn't this landing page showing up in Google search results at all", "should_trigger": false, "belongs_to": "awesome-seo-audit", "split": "train" },
   { "query": "can someone using only a keyboard actually get through this landing page's signup form", "should_trigger": false, "belongs_to": "awesome-accessibility-audit", "split": "train" },
   { "query": "write me a stronger headline for this pricing page", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "train" },
   { "query": "measure our actual field CLS on this page, not just whether the layout looks stable", "should_trigger": false, "belongs_to": "awesome-performance-audit", "split": "train" },
-  { "query": "у нас на лендинге написано про поддержку 50 стран, это всё ещё правда", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "our landing page says we support 50 countries, is that still true", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
   { "query": "what's generally considered a good landing page conversion rate", "should_trigger": false, "split": "validation" },
   { "query": "just change this one button's color to blue, nothing else", "should_trigger": false, "split": "validation" },
-  { "query": "что такое above the fold, объясни простыми словами", "should_trigger": false, "split": "validation" },
-  { "query": "просто подвинь эту одну кнопку чуть выше, больше ничего не меняй", "should_trigger": false, "split": "validation" }
+  { "query": "what is above the fold, explain it in plain words", "should_trigger": false, "split": "validation" },
+  { "query": "just move this one button up a bit, don't change anything else", "should_trigger": false, "split": "validation" }
 ]

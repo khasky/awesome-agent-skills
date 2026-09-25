@@ -1,6 +1,6 @@
 ---
 name: awesome-claims-audit
-description: "Checks public claims (site, README, store listing, privacy policy, structured data) against the code and config that decide them, then fixes drift. Use when asked whether the site still matches the product, or 'проверь факты на сайте'. Do not use for prose (awesome-document-style)."
+description: "Checks public claims (site, README, store listing, privacy policy, structured data) against the code and config that decide them, then fixes drift. Use when asked whether the site still matches the product."
 license: MIT
 metadata:
   author: Khasky

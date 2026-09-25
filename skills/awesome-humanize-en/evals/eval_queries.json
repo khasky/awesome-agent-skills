@@ -1,22 +1,22 @@
 [
   { "query": "this release note sounds like it was written by a robot, can you punch it up so it reads human", "should_trigger": true, "split": "train" },
   { "query": "check this PR reply for AI voice before I post it, don't change anything yet", "should_trigger": true, "split": "train" },
-  { "query": "убери следы ИИ из этого текста про наш продукт", "should_trigger": true, "split": "train" },
+  { "query": "strip the AI-sounding traces out of this text about our product", "should_trigger": true, "split": "train" },
   { "query": "this postmortem draft has 'in conclusion' and three em-dashes in one paragraph, clean it up", "should_trigger": true, "split": "train" },
   { "query": "there's a stray ':contentReference[oaicite:3]' still in this ticket description, and it also reads pretty stiff overall", "should_trigger": true, "split": "train" },
   { "query": "my coworker said this comment reply sounds like customer support boilerplate, not like me - can you fix that before I send it", "should_trigger": true, "split": "train" },
-  { "query": "текст получился слишком гладким и обезличенным, будто его сгенерировали - поправь", "should_trigger": true, "split": "validation" },
+  { "query": "this text came out too smooth and impersonal, like it was generated - fix it up", "should_trigger": true, "split": "validation" },
   { "query": "run the standard edit pass on this technical article, medium intensity", "should_trigger": true, "split": "validation" },
   { "query": "I need this bug report to sound like an actual person wrote it, not a corporate template", "should_trigger": true, "split": "validation" },
-  { "query": "проверь этот пост на признаки ИИ-генерации, но пока ничего не переписывай", "should_trigger": true, "split": "validation" },
+  { "query": "check this post for signs of AI generation, but don't rewrite anything yet", "should_trigger": true, "split": "validation" },
   { "query": "point out the grammar mistakes in this cover letter but leave my wording alone", "should_trigger": false, "belongs_to": "awesome-grammar-check", "split": "train" },
   { "query": "this readme is hard-wrapped at 100 characters and the headings are all just 'Overview' - reflow it and fix the headings", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
-  { "query": "переведи этот пресс-релиз с русского на английский", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "train" },
+  { "query": "translate this press release from Russian into English", "should_trigger": false, "belongs_to": "awesome-translate-ru-en", "split": "train" },
   { "query": "crawl our competitor's blog and build a style guide so future posts sound like them", "should_trigger": false, "belongs_to": "awesome-style-mimic", "split": "train" },
   { "query": "build a voice profile from my last fifteen LinkedIn posts so I can reuse it later", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
   { "query": "scan our codebase for AI-generated comment slop and stale docstrings", "should_trigger": false, "belongs_to": "awesome-slop-audit", "split": "train" },
   { "query": "what's the difference between an em-dash and a hyphen", "should_trigger": false, "split": "validation" },
-  { "query": "как по-английски будет 'дорожная карта' - roadmap или road map", "should_trigger": false, "split": "validation" },
+  { "query": "what's the English for 'dorozhnaya karta' (roadmap) - roadmap or road map", "should_trigger": false, "split": "validation" },
   { "query": "fix the typo 'recieve' on line 40 of this ticket", "should_trigger": false, "split": "validation" },
-  { "query": "сколько символов обычно в посте на x", "should_trigger": false, "split": "validation" }
+  { "query": "how many characters are usually in a post on X", "should_trigger": false, "split": "validation" }
 ]

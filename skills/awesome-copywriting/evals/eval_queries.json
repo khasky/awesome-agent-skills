@@ -1,22 +1,22 @@
 [
   { "query": "Can you write a headline for our new pricing page?", "should_trigger": true, "split": "train" },
-  { "query": "напиши текст кнопки для формы оформления заказа", "should_trigger": true, "split": "train" },
+  { "query": "write the button text for the checkout form", "should_trigger": true, "split": "train" },
   { "query": "we need an error message for when a payment fails on checkout", "should_trigger": true, "split": "train" },
   { "query": "our onboarding screen is just blank when someone has zero projects yet, there's nothing telling them what to do next", "should_trigger": true, "split": "train" },
   { "query": "the email that goes out when someone's trial is about to end, right now what shows up in their inbox is just the word 'Reminder', that's not landing at all", "should_trigger": true, "split": "train" },
   { "query": "the line at the top of our homepage right now is 'Welcome to Acme', we need something that actually says what the product does for a first-time visitor", "should_trigger": true, "split": "train" },
-  { "query": "у нас на странице оплаты после ошибки просто написано 'Ошибка', человеку это ничего не объясняет, нужно что-то более понятное", "should_trigger": true, "split": "validation" },
+  { "query": "on our payment page, after an error it just shows 'Error', that doesn't explain anything to the person, we need something clearer", "should_trigger": true, "split": "validation" },
   { "query": "we're about to submit to the App Store, need a couple lines for the listing that actually make someone want to tap install", "should_trigger": true, "split": "validation" },
-  { "query": "нужны варианты заголовка и подзаголовка для главного экрана лендинга", "should_trigger": true, "split": "validation" },
+  { "query": "need a few options for the headline and subheadline on the landing page hero", "should_trigger": true, "split": "validation" },
   { "query": "give me a few options for what the export button should say instead of just 'Export'", "should_trigger": true, "split": "validation" },
   { "query": "this product description already exists but it reads like a chatbot wrote it, clean up the tone", "should_trigger": false, "belongs_to": "awesome-humanize-en", "split": "train" },
   { "query": "de-bloat this changelog entry, it's full of vague corporate phrases", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
   { "query": "plan two weeks of social posts about our new feature launch", "should_trigger": false, "belongs_to": "awesome-content-campaign", "split": "train" },
   { "query": "turn this blog post into a long read, a regular post and a short post for social", "should_trigger": false, "belongs_to": "awesome-content-repurpose", "split": "train" },
   { "query": "why isn't our pricing page converting, is it the CTA layout", "should_trigger": false, "belongs_to": "awesome-landing-audit", "split": "train" },
-  { "query": "собери мой авторский стиль по последним двадцати постам, чтобы будущие тексты звучали как я", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
+  { "query": "build my writing voice from my last twenty posts so future posts sound like me", "should_trigger": false, "belongs_to": "awesome-content-voice", "split": "train" },
   { "query": "what's generally a good character limit for an email subject line", "should_trigger": false, "split": "validation" },
   { "query": "just change this button label from Submit to Continue, literally just that word", "should_trigger": false, "split": "validation" },
-  { "query": "какая обычно оптимальная длина email subject line, вкратце", "should_trigger": false, "split": "validation" },
-  { "query": "просто поменяй слово Отправить на Продолжить в этой одной кнопке", "should_trigger": false, "split": "validation" }
+  { "query": "what's usually the ideal length for an email subject line, briefly", "should_trigger": false, "split": "validation" },
+  { "query": "just swap the word Send for Continue on this one button, that's it", "should_trigger": false, "split": "validation" }
 ]

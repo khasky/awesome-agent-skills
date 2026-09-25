@@ -1,6 +1,6 @@
 ---
 name: awesome-landing-audit
-description: "Read-only audit of a landing page's conversion structure: primary CTA, form friction, message match, trust elements, above-the-fold value. Use when a page is not converting, or 'почему лендинг не конвертит'. Do not use for claim accuracy (awesome-claims-audit) or SEO (awesome-seo-audit)."
+description: "Read-only audit of a landing page's conversion structure: primary CTA, form friction, message match, trust elements, above-the-fold value. Use when a page is not converting."
 license: MIT
 metadata:
   author: Khasky

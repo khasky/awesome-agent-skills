@@ -1,6 +1,6 @@
 ---
 name: awesome-seo-audit
-description: "Read-only SEO audit of a site or web codebase: crawling, indexing, on-page, structured data, rendering, hreflang, links, visibility to LLMs and agents, baseline diffs. Use when asked to audit SEO, titles or meta, or 'проверь SEO'. Do not use for accessibility (awesome-accessibility-audit)."
+description: "Read-only SEO audit of a site or web codebase: crawling, indexing, on-page, structured data, rendering, hreflang, links, visibility to LLMs and agents, baseline diffs. Use when asked to audit SEO, titles or meta."
 license: MIT
 metadata:
   author: Khasky

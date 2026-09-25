@@ -1,6 +1,6 @@
 ---
 name: awesome-translate-ru-en
-description: "Translates Russian text of any genre into natural English, keeping structure, formatting, links, identifiers and the author's voice; can mirror a folder. Use when asked to translate Russian into English, or 'переведи на английский'. Do not use to turn a text into posts (awesome-content-repurpose)."
+description: "Translates Russian text of any genre into natural English, keeping structure, formatting, links, identifiers and the author's voice; can mirror a folder. Use when asked to translate Russian into English."
 license: MIT
 metadata:
   author: Khasky

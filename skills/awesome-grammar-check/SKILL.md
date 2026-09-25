@@ -1,6 +1,6 @@
 ---
 name: awesome-grammar-check
-description: "Proofreads prose and reports grammar, logic and flow issues as suggestions without rewriting the text. Use when asked to proofread or copy-edit an article, email, doc or post while keeping the author's wording, or 'проверь грамматику'. Do not use to rewrite in place (awesome-document-style)."
+description: "Proofreads prose and reports grammar, logic and flow issues as suggestions without rewriting the text. Use when asked to proofread or copy-edit an article, email, doc or post while keeping the author's wording."
 license: MIT
 metadata:
   author: Khasky

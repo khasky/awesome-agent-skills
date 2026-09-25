@@ -1,6 +1,6 @@
 ---
 name: awesome-git-history-reset
-description: "Erases a repository's entire history into one fresh commit and force-pushes, after access checks, a mirror backup, a secret scan and a confirmation gate. Use when asked to wipe history, or 'очистить историю git'. Do not use for a curated series (awesome-git-history-rebuild) or a branch squash."
+description: "Erases a repository's entire history into one fresh commit and force-pushes, after access checks, a mirror backup, a secret scan and a confirmation gate. Use when asked to wipe history."
 disable-model-invocation: true
 license: MIT
 compatibility: "Requires git and the GitHub CLI (gh) authenticated with push access to the target repository."
