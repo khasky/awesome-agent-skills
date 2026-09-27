@@ -53,7 +53,7 @@ A first sentence made only of category nouns (`a cheaper model`, `the client you
 
 **For an essay, a benchmark or a retrospective**, the opener is the author's own situation, or the question the measurement answers, concrete and with the subject named. It passes when a reader could not mistake it for the opening of a post on another subject.
 
-**One scene, one turn.** The first sentence may run long as long as it is one situation; the openers readers kept averaged 20 words. The judgment is not folded into it. The turn that sent the author looking is its own sentence after it, at most 6 words. A quotation, a paper, a vendor document or the mechanism sentence opens a form only where the source itself opens on it.
+**One scene, and a turn where the source has one.** The first sentence may run long as long as it is one situation; the openers readers kept averaged 20 words. The judgment is not folded into it. Where the source records what sent the author looking, that turn is its own sentence after the scene, at most 6 words. Where it records none, the form goes on to the finding: a turn written to fill the slot ends up as a contrast with somebody else's product. A quotation, a paper, a vendor document or the mechanism sentence opens a form only where the source itself opens on it.
 
 **A stance opener carries its reason in the same sentence.** `I would put <subject> behind <A>.` is a preference with nothing behind it. `I would run <subject> under <A> for the cheap half of the work.` is the same move plus the thing the reader came for.
 
@@ -71,9 +71,9 @@ What each form covers, by source type. These are default orders; the source's ow
 - Short: the stance with its reason, the proof, the split in one sentence, the verdict.
 
 **Project/repository.**
-- Long: what it is, the headline result, how it works, requirements and quick start, limits, who it is for, the verified install and the link.
-- Regular: what was found, the headline result, the practical use, the caveat, the link.
-- Short: what was found, the headline result, one verdict.
+- Long: what it is, what it contains, how it works, the verified install and how to update it, how a user checks it works, limits, who it is for, the link. Each section is built from the repository itself (`SKILL.md` Phase 0), naming the project's own parts and what each one does for the reader. The projects it learned from get one sentence in the opening at most.
+- Regular: what it is, the headline result, the practical use, the caveat, the link.
+- Short: what it is, what it gives the reader, the proof, one verdict.
 
 **Announcement/update.** What changed, why it matters, the mechanism, the main caveat, who should care, the official link. The short form keeps what changed and who it matters to.
 
@@ -108,6 +108,10 @@ Composed from the `Title spine`; the three titles differ. Each names the subject
 
 Banned: a count-led inventory (`Six ways to`) unless the count is the claim; a label about the post itself (`the short version`, `setup notes`); a thesis with a colon; announcement voice (`<vendor> documents`); a teaser that withholds the subject; a mechanism noun or an abstraction as the centre (`the variable`, `the endpoint`, `dial`, `era`); a secondary module as the centre (the paper, the vendor's sentence); an audience in place of the subject (`for solo developers`).
 
+The long form's title carries two more tests, because it is what an article platform shows in search and in its own feed. It is a sentence about the subject rather than about the author, whatever the voice: `<Subject> <verb> <reader or user> <outcome>` reads as a finding, and `I built <subject>` reads as a diary line. It opens on the subject's name, a verb or the benefit, never on an article, since `A <adjective> <subject> ...` reads as one entry in a list. And it answers two questions at once: what sets the subject apart, and what it gives the reader. Coverage alone (`<subject> for <A>, <B>, <C> and <D>`) answers neither and reads as a catalogue.
+
+Also banned in the long form's title: first person, an opening article, an apposition joined by a comma or a dash (`<Name>, <description>`), and the subject's origin or competitors as the centre. The final report offers five alternative long-form titles that pass these tests, each a different reading of the subject: what it does for its user, what it removes, what it protects, what it makes consistent.
+
 ## 7. Lexicon
 
 The register is a competent person explaining something they found useful. Verbs stay plain: keep, swap, put X behind Y, route through, escalate, cut, cost, cover, show. Prose names products and models by their display name; the lowercase identifier belongs in code only. Comparison language is fixed: `roughly <range>x cheaper than`, `at current <basis> rates`, `depending on <condition> and <condition>`.
@@ -117,6 +121,7 @@ Banned in every form:
 - coined taglines the source never used: a contrast pair (`X, not Y`), a numbers slogan, a two-word aside stamped as a closer;
 - abstractions standing where the anchor names the product: `a stronger model` for the named peer, `the model layer`, `identity`;
 - literary and report words: `thus`, `hence`, `myriad`, `albeit`, `salient`, `deliberately`, `figure` for a number;
+- literary constructions nobody says out loud: `<A> and <B> first among them`, `worked out what <X> actually <does>`, `took <X> apart` for reading something;
 - hype: `game changer`, `this changes everything`, `a new era`;
 - filler: `it is important to note`, `it is worth mentioning`, `in conclusion`, `overall`, `moreover`, `furthermore`;
 - meta-framing about the debate: `picking a side`, `a camp`, `a winner`, `the question is`;

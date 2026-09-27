@@ -55,7 +55,8 @@ These are the platform limits the defaults rest on. Each row names where the num
 
 What that gives the three forms:
 
-- **short: 280, counted as `x` counts.** Each emoji weighs 2. The body holds no URL, so no link weight is spent inside it. Every other platform in the group allows at least that much, so a body that fits `x` fits all of them.
+- **short: 280, counted as `x` counts.** Each emoji weighs 2. The body holds no URL, and every other platform in the group allows at least that much, so a body that fits `x` fits all of them.
+- **short with a link: lower, by the link's weight.** When the short file's `links` holds a URL, the publisher appends it only where it fits whole, so a body that fills 280 publishes without its link on exactly the platforms where the link was the point. The body ceiling is then the tightest, across the group, of each platform's limit minus the link's weight there and the blank line before it: on `x` 280 - 23 - 2 = 255, on `bluesky` 300 minus the URL's full length minus 2, which is lower than `x` for any URL over 23 characters. Record the resulting number beside the body length in the report.
 - **regular: 2000 characters.** The whole body counts, from the first line to the last line of the footer, with the link line and the `***` separator inside it. `wonderful-dev` sets the number, and it rejects anything longer without a visible error.
 - **long: no ceiling below 65,535 characters among the documented ones, and no single paragraph above 4096.** The paragraph rule is `tumblr`'s block size. `telegraph` publishes no limit at all, so a long form over about 30,000 characters is reported to the user as untested there rather than assumed to fit.
 

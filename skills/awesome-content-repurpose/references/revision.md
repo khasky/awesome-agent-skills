@@ -47,7 +47,7 @@ Only shape moves here; no sentence is rewritten for sound.
 
 The long form is grouped into its top-level parts, not its headings: a part is a stretch the reader could stop after and still have something whole. Most long reads have three to five. A `***` or `---` rule inside the long body marks a part boundary, never a heading boundary, at most three of them, never under a heading and never two in a row. The one before the footer is part of the footer block and does not count.
 
-The regular form is read as a sequence of sections, each earning its heading by carrying something the others do not. The short form has no parts. It is read line by line, asking what the line before it made the reader expect: the author enters, something sends them looking, the finding lands, the number bears it out, the verdict closes. A line that answers nothing the line above raised is where the post fell apart into a stack.
+The regular form is read as a sequence of sections, each earning its heading by carrying something the others do not. The short form has no parts. It is read line by line, asking what the line before it made the reader expect: the author enters, something sends them looking where the source records it, the finding lands, the number bears it out, the verdict closes. A line that answers nothing the line above raised is where the post fell apart into a stack.
 
 Exit: the parts of the long form are listed in the run notes, the separator count is inside the rule, and the short form reads as one passage.
 
