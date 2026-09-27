@@ -1,3 +1,5 @@
+![Awesome Agent Skills](.github/banner.jpg)
+
 # Awesome Agent Skills
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Emojery](https://api.emojery.app/badge/github/khasky/awesome-agent-skills.svg)](https://emojery.app/react?t=github/khasky/awesome-agent-skills)
