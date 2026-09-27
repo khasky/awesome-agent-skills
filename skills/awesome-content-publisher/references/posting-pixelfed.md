@@ -16,7 +16,7 @@ Alt text is behind the `Alt Text` row, which opens a *Media Descriptions* panel:
 
 Markdown does not render — strip it exactly as for `mastodon` (`post-formatting.md`) — while a URL in the caption does become a link, unlike `instagram`.
 
-Media comes first and the platform cannot post without it, so a post file that reached this phase with no attachment is a preflight bug, not something to publish around. The media description belongs to the file rather than to the post: where the post file declares no alt, publish and record the post `degraded` — never write a description the file does not carry.
+Media comes first and the platform cannot post without it, so a post file that reached this phase with no attachment is a preflight bug, not something to publish around. The media description is the post's frontmatter `title`, like every alt text in this skill (`SKILL.md`), whatever the file's own `alt` says; a description field that will not take it after two attempts leaves the post `degraded`.
 
 The caption cap is an instance setting, not a platform constant, and the 2000 above is `pixelfed.social`. On any other instance read the composer's own counter before typing; a number carried over is a guess.
 

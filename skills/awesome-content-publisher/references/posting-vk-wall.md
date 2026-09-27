@@ -12,6 +12,6 @@ Publishing is two steps: Next ("Далі"/"Далее") → a settings screen �
 
 Read-back: the newest `article` on the wall, its `/wall-<owner>_<id>` permalink and its "just now" timestamp. Album ordering is not ID-ordered — the highest photo ID in a long album was item #40 of 233 — so for anything album-related use a count baseline instead.
 
-The composer collapses runs of spaces, so a comparison block that relies on column alignment loses it. A body carrying `Flash vs Claude Sonnet 5   ~7-17x cheaper` published with single spaces; the content survived and only the alignment went. That is worth recording as `degraded` rather than repairing, and worth avoiding upstream — a source that needs alignment should not depend on a plain HTML composer to keep it.
+The composer collapses runs of spaces, so a comparison block that relies on column alignment loses it. A body carrying `Flash vs Claude Sonnet 5   ~7-17x cheaper` published with single spaces; the content survived and only the alignment went. That is worth recording as `adapted` rather than repairing, and worth avoiding upstream — a source that needs alignment should not depend on a plain HTML composer to keep it.
 
 The composer's image lands on `sun9-*.vkuserphoto.ru` rather than staying a `blob:`, so a blob-only probe reads zero attachments on a composer that is holding the picture. Count the upload's own `Delete` control instead, and confirm `location.href` did not change — a navigation means the page-level album input was hit, which is the incident this note's earlier paragraph exists to prevent.
