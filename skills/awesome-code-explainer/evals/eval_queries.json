@@ -1,0 +1,22 @@
+[
+  { "query": "Explain how https://gitlab.example.org/tools/relay-bridge works - I start on that team Monday and have never seen it.", "should_trigger": true, "split": "train" },
+  { "query": "go through ~/src/harbor-sync and make me a page that explains how everything is put together: stack, structure, how a request flows", "should_trigger": true, "split": "train" },
+  { "query": "What does this repo actually do and how is it organized? https://github.com/example-org/quill-render", "should_trigger": true, "split": "train" },
+  { "query": "I inherited D:/work/ledger-core and nobody is left who wrote it. Walk the code and give me an overview I can open in the browser.", "should_trigger": true, "split": "train" },
+  { "query": "Make an onboarding explainer for new hires of the bitbucket repo acme/fleet-dispatch - entry points, main flow, patterns, where to start reading.", "should_trigger": true, "split": "train" },
+  { "query": "break down this codebase for me like ExplainThisRepo does, but as a proper illustrated page", "should_trigger": true, "split": "train" },
+  { "query": "Our PM wants to understand what the notifier service does without reading code. Can you explain the repo in plain language as a page?", "should_trigger": true, "split": "validation" },
+  { "query": "Just the packages/ingest folder of https://codeberg.org/example/stream-kit - how does it work and what patterns does it use?", "should_trigger": true, "split": "validation" },
+  { "query": "I'm evaluating whether to depend on this library. Explain its architecture and main flow first: https://github.com/example-org/tiny-queue", "should_trigger": true, "split": "validation" },
+  { "query": "Give me a map of this monorepo: which package does what, how they depend on each other, and what I should read first.", "should_trigger": true, "split": "validation" },
+  { "query": "Audit the architecture of the harbor-sync repo and give me a SHIP / FIX / BLOCK verdict with what to fix first.", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "Generate an AGENTS.md for this repo so Codex and Cursor know the build commands and conventions.", "should_trigger": false, "belongs_to": "awesome-agents-md-generator", "split": "train" },
+  { "query": "Review the diff on my feature branch before I open the PR.", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "What does this regex in parser.ts line 40 match? Just tell me here.", "should_trigger": false, "split": "train" },
+  { "query": "Check whether the README's feature list still matches what the code ships.", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "Recover every commit this repo ever had before someone force-pushed over main.", "should_trigger": false, "belongs_to": "awesome-git-history-salvage", "split": "train" },
+  { "query": "Write a design doc for splitting the billing module out of the monolith.", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "validation" },
+  { "query": "Is anything in this repo's dependency tree a typosquat or carrying a known CVE?", "should_trigger": false, "belongs_to": "awesome-dependency-audit", "split": "validation" },
+  { "query": "Tell me in one line what the git flag --depth does.", "should_trigger": false, "split": "validation" },
+  { "query": "Find security holes in the auth flow of this service - injection, secrets, broken access control.", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "validation" }
+]

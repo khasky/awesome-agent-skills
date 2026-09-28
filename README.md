@@ -22,6 +22,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Code quality and refactoring](#code-quality-and-refactoring)
     - [Testing](#testing)
     - [Design and planning](#design-and-planning)
+    - [Understanding a codebase](#understanding-a-codebase)
     - [Debugging and reliability](#debugging-and-reliability)
     - [Audits](#audits)
     - [Git and repository operations](#git-and-repository-operations)
@@ -154,6 +155,12 @@ To clear an install, `npx skills remove -g -s <name>` takes explicit skill names
 | [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, risks found by inverting to failure first, non-goals and rollout — with a structural gate run before delivery |
 | [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resource modeling, versioning by layering, cursor pagination, idempotency keys |
 
+### Understanding a codebase
+
+| Skill | What it does |
+| --- | --- |
+| [awesome-code-explainer](skills/awesome-code-explainer) | Explains how a codebase works as one illustrated, self-contained page, from a local folder or a temporary clone of any git host URL: purpose, stack, structure, entry points, the main flow traced hop by hop, patterns with evidence, data model, history, where to start reading and open questions — every claim linked to the file at the analyzed commit, the page published as an artifact or opened in the browser |
+
 ### Debugging and reliability
 
 | Skill | What it does |
@@ -252,6 +259,8 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | awesome-security-audit · awesome-dependency-audit | Both report CVEs | Vulnerabilities in code you wrote → security-audit. The dependency graph itself — lockfiles, typosquats, install scripts, reachability → dependency-audit. |
 | awesome-dependency-audit · awesome-dependency-upgrade | Same package set, two halves of one job | Decide what is risky → audit. Execute the bumps in verified batches → upgrade. |
 | awesome-performance-audit · awesome-database-audit | Both answer "why is this slow" | Runtime behavior — event loop, memory, streams, resilience topology → performance-audit. The static data layer — schema, index-vs-predicate fit, migrations → database-audit. |
+| awesome-code-explainer · awesome-architecture-audit | Both read a whole codebase and map its layers | Understand how it works — a neutral, illustrated explanation for a newcomer, no verdict → code-explainer. Judge whether the design is sound, with a SHIP/FIX/BLOCK verdict → architecture-audit. |
+| awesome-code-explainer · awesome-agents-md-generator | Both mine the same signals — commands, entry points, patterns | A page a person reads once to understand the project → code-explainer. Standing instructions an agent loads every session → agents-md-generator. |
 | awesome-bug-fix · awesome-root-cause | Both refuse to fix before the cause is known | A failure you can reproduce on command → bug-fix. An incident or process problem with nothing runnable to fail → root-cause. |
 | awesome-test-writing · awesome-regression-sweep | Both live in the test suite | Designing and writing tests → test-writing. Running every layer against a recorded baseline and reporting deltas → regression-sweep. |
 | awesome-seo-audit · awesome-landing-audit · awesome-accessibility-audit | 3 read-only audits of the same public page | Found and parsed by search and LLMs → seo-audit. Structure that converts — CTA, form friction, message match → landing-audit. Usable by everyone, WCAG → accessibility-audit. |
@@ -354,4 +363,4 @@ Part of a set of agent tooling — pick the layer you need:
 
 ## License
 
-Released under the [MIT license](LICENSE). The [awesome-humanize-en](skills/awesome-humanize-en) skill adapts material from [humanizer-ru](https://github.com/Vladimir-Human/humanizer-ru) and, for its venue rules, editing-trace tests and evidence ledger, from [sepia](https://github.com/Nanako0129/sepia); [awesome-seo-audit](skills/awesome-seo-audit) cross-checked its Google-policy detail against [claude-seo](https://github.com/AgriciDaniel/claude-seo), from which it also took the falsifiability line on every recommendation, the fix-ordering rule and the refusal of unsafe fetch targets, and took its collection mechanics from [on-page-seo](https://github.com/AgriciDaniel/on-page-seo); its two-axis verdict follows [claude-seo-ai](https://github.com/Hainrixz/claude-seo-ai) and its evidence-and-confidence contract follows [Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill). [awesome-agents-md-generator](skills/awesome-agents-md-generator) takes its section set and its differences-only nested files from [agentseed](https://github.com/avinshe/agentseed), and its file format from [agents.md](https://agents.md/).
+Released under the [MIT license](LICENSE). The [awesome-humanize-en](skills/awesome-humanize-en) skill adapts material from [humanizer-ru](https://github.com/Vladimir-Human/humanizer-ru) and, for its venue rules, editing-trace tests and evidence ledger, from [sepia](https://github.com/Nanako0129/sepia); [awesome-seo-audit](skills/awesome-seo-audit) cross-checked its Google-policy detail against [claude-seo](https://github.com/AgriciDaniel/claude-seo), from which it also took the falsifiability line on every recommendation, the fix-ordering rule and the refusal of unsafe fetch targets, and took its collection mechanics from [on-page-seo](https://github.com/AgriciDaniel/on-page-seo); its two-axis verdict follows [claude-seo-ai](https://github.com/Hainrixz/claude-seo-ai) and its evidence-and-confidence contract follows [Agentic-SEO-Skill](https://github.com/Bhanunamikaze/Agentic-SEO-Skill). [awesome-agents-md-generator](skills/awesome-agents-md-generator) takes its section set and its differences-only nested files from [agentseed](https://github.com/avinshe/agentseed), and its file format from [agents.md](https://agents.md/). [awesome-code-explainer](skills/awesome-code-explainer) takes its signals-first method, its input forms and its reading-path and open-questions sections from [ExplainThisRepo](https://github.com/calchiwo/ExplainThisRepo).
