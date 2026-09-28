@@ -18,7 +18,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `reddit` | reddit.com | subreddit | optional | vertical | `genre-community-post.md` |
 | `lemmy` | any Lemmy instance | instance domain + community | optional | vertical | `genre-community-post.md` |
 | `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | horizontal | `genre-community-post.md` |
-| `tumblr` | tumblr.com | — | optional | vertical | `genre-micro-post.md` |
+| `tumblr` | tumblr.com | — | optional | horizontal | `genre-micro-post.md` |
 | `mastodon` | any Mastodon instance | instance domain | optional | horizontal | `genre-micro-post.md` |
 | `bluesky` | bsky.app | — | optional | horizontal | `genre-micro-post.md` |
 | `x` | x.com | — | optional | horizontal | `genre-micro-post.md` |
@@ -72,7 +72,7 @@ The vertical picture holds the whole source in a band across its middle, so a pl
 | `reddit` | vertical | no enforced ratio; preview boxes between 4:3 and 16:9 keep the band; guides split | size guides only | low |
 | `lemmy` | vertical | list view shows a near-square generated thumbnail | join-lemmy.org release notes | low |
 | `quora` | horizontal | scales to the reading column, no forced crop | size guides only | low |
-| `tumblr` | vertical | fixed-width dashboard column, tall images shown in full | size guides only | medium |
+| `tumblr` | horizontal | fixed-width dashboard column, tall images shown in full, so the vertical file shows its blurred fill top and bottom | the account's own post, 2026-09 | measured |
 | `mastodon` | horizontal | 16:9 is the preview box many clients and instances still crop to | docs.joinmastodon.org/user/posting | medium |
 | `bluesky` | horizontal | 16:9 shows clean in every source; tall images are a crop risk in one | docs.bsky.app, size guides | medium |
 | `x` | horizontal | 16:9 fills the timeline width uncropped | size guides agreeing on the documented ideal | high |
