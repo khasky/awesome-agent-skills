@@ -1,0 +1,22 @@
+[
+  { "query": "Generate an AGENTS.md for the repo in ~/work/ledger-api so Codex and Cursor stop guessing how to run the tests.", "should_trigger": true, "split": "train" },
+  { "query": "go through the whole invoice-hub codebase, pull out the conventions it actually follows and write them up as instructions for AI coding agents", "should_trigger": true, "split": "train" },
+  { "query": "Our AGENTS.md is a year old and half the commands in it don't work anymore. Refresh it against the current code.", "should_trigger": true, "split": "train" },
+  { "query": "We have a CLAUDE.md, a .cursorrules and a copilot-instructions file that all say slightly different things. Consolidate them into one agent-agnostic file.", "should_trigger": true, "split": "train" },
+  { "query": "This is a pnpm monorepo with 6 packages - I want agent instructions at the root plus per-package ones where they differ.", "should_trigger": true, "split": "train" },
+  { "query": "write the agent instructions file for D:/projects/tile-forge: build/test commands, where things go, what not to touch", "should_trigger": true, "split": "train" },
+  { "query": "Can you analyze the patterns used in this Django project and turn them into rules for AI assistants, something like agentseed does?", "should_trigger": true, "split": "validation" },
+  { "query": "Every agent we use keeps forgetting to register new plugins in the registry. Produce a README-for-agents from how the code is actually structured.", "should_trigger": true, "split": "validation" },
+  { "query": "set up AGENTS.md for the orbit-cli project, and make it work for Gemini CLI and Claude Code too", "should_trigger": true, "split": "validation" },
+  { "query": "Scan the source of the storefront app and derive coding rules for agents - only rules the code really follows, not generic best practices.", "should_trigger": true, "split": "validation" },
+  { "query": "Our team has no coding conventions at all. Propose a naming and error-handling standard we should adopt for the new service.", "should_trigger": false, "belongs_to": "awesome-code-standards", "split": "train" },
+  { "query": "Audit the architecture of the ledger-api repo - boundaries, dependency direction, is it safe to extend - and give me a verdict.", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "Tighten the prose in our AGENTS.md - it's wordy and vague, just line-edit it, don't change what it says.", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
+  { "query": "Does the feature list in our README still match what the product actually ships?", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "Remove all the agent skills I've installed across Claude Code, Codex and Gemini except the three I use.", "should_trigger": false, "belongs_to": "awesome-skills-purge", "split": "train" },
+  { "query": "What is the difference between AGENTS.md and CLAUDE.md, in two sentences?", "should_trigger": false, "split": "train" },
+  { "query": "Review this PR that adds a new endpoint to the orders service before I merge it.", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "validation" },
+  { "query": "Find the AI-slop in this repo: narrating comments, drifted numbers, copy-pasted test blocks.", "should_trigger": false, "belongs_to": "awesome-slop-audit", "split": "validation" },
+  { "query": "Split this codebase into a bisectable series of commits that each build on their own.", "should_trigger": false, "belongs_to": "awesome-git-commit-plan", "split": "validation" },
+  { "query": "Write a design doc for moving the notification service from polling to webhooks.", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "validation" }
+]

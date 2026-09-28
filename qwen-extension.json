@@ -1,6 +1,6 @@
 {
   "name": "awesome-agent-skills",
-  "version": "1.8.9",
+  "version": "1.9.0",
   "description": "Skills for AI coding agents: code review, test writing, design docs, debugging, security and dependency audits, git history surgery, refactoring, copywriting, and cleaning up AI-written code and text. Every skill is a plain SKILL.md folder under the open Agent Skills standard, stack-agnostic, and ends with the check that proves its claim.",
   "skills": "skills"
 }
