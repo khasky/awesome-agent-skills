@@ -8,9 +8,13 @@ The shape of what the run writes: which files, what each contains, and the rules
 - What each document contains
 - Module document
 - Symbol entry
+- User guide
+- Index statistics
 - Diagrams
 - Citations and evidence
 - Writing rules
+- Code excerpts
+- Written for retrieval
 - Size and depth
 
 ## File layout
@@ -31,13 +35,16 @@ reference/configuration.md   config files, keys, environment variable names, fea
 operations.md             build, test, CI gates, deploy, observability, runbooks the tree records
 guides/<task>.md          one how-to per recurring change
 patterns.md               the structural and code-level patterns the project uses, with where to see each
+user-guide/<feature>.md   what a user can do and how, without code (only when end users are an audience)
 glossary.md               project terms
 open-questions.md         what the code could not answer
+llms.txt                  a link index of the set for agents and search tools
+llms-full.txt             the whole set in one file (only on request)
 ```
 
 ## What each document contains
 
-- index — one paragraph on what the project is and for whom; a table of the set's documents with one line each; the reading order for a newcomer; the depth the set was generated at; the footer with the commit, the date and the source.
+- index — one paragraph on what the project is and for whom; a table of the set's documents with one line each; the reading order for a newcomer; the statistics block (see Index statistics); the depth the set was generated at; the footer with the commit, the date and the source.
 - getting-started — only steps the tree supports: toolchain versions from pin files, install and run commands from the manifest or task runner, test commands from CI, the environment variables a local run needs (names only). A step the tree does not reveal is an open question, not an invented instruction.
 - architecture — the system context (users, external systems) with a diagram; the units and how they talk (calls, queues, shared database) with a diagram; per unit, the modules by layer with a diagram; cross-cutting concerns each in a short section naming the module that owns it; design decisions — recorded ones from ADRs and comments with links, inferred ones in a separate list labeled as inference.
 - flows — trigger, preconditions, the hops as a numbered list with `file:line` and one sentence each, a sequence diagram, the error paths, and the data written along the way.
@@ -47,6 +54,7 @@ open-questions.md         what the code could not answer
 - patterns — each pattern with a plain-language meaning in this project, one or two sites to read, and a count when it is presented as the norm.
 - glossary — each project term with a one-line meaning taken from the code or docs, and a link to where it is defined.
 - open-questions — every gap, grouped by document, so owners can answer them in one pass.
+- llms.txt — the project name as a heading, the one-paragraph summary as a quote, then sections (Overview, Architecture, Modules, Reference, Guides, and User guide when present) listing each document as a relative link with a one-line description; the llmstxt.org format. llms-full.txt, when requested, concatenates the documents in the index's reading order, each preceded by its path as a heading, so a tool can load the set in one read.
 
 ## Module document
 
@@ -76,6 +84,26 @@ Inside the module document, under Public interface, or on a separate page when a
 - Usage: one or two real call sites linked, rather than an invented example. An example is written only where no call site exists (a library's public API), and it is marked as illustrative.
 - Source link.
 
+## User guide
+
+Written only when end users are an audience. It documents what the project lets a person do, not how the code does it.
+
+- One page per feature or workflow a user recognizes — sign up, import a file, run a report — found from what the code exposes to users: UI routes and screens, CLI commands, public endpoints a client calls, email and notification templates.
+- Each page: what the feature is for, what the user needs first, the steps as the user performs them, what they see when it succeeds and when it fails (error messages taken from the code), and limits the code enforces (sizes, quotas, roles that may use it).
+- No identifiers, paths, code or architecture. Citations go to a closing "Source" line per page for maintainers, not into the prose.
+- A behavior the code shows but a user could not reach (an admin-only path, a disabled flag) is left out or marked for whom it applies.
+
+## Index statistics
+
+A short block in the index, counted rather than estimated, over hand-written files only (vendored, generated and build output excluded and named as excluded):
+
+- Size: files and lines by language, rounded, largest first.
+- Shape: units, modules, graph layers, cycles collapsed.
+- Surface: public symbols, endpoints, CLI commands, configuration keys, events.
+- Tests: test files and their share of hand-written lines, per unit.
+- Coverage of the set: modules documented of total, public symbols with an entry of total, at the depth generated. A partial set says so here, with a link to the gaps in open-questions.
+- History, where available: first and latest commit in the fetched window, contributor count (never names).
+
 ## Diagrams
 
 - Mermaid inside fenced blocks, because the major code hosts render it inside Markdown and it stays diffable text. Where the user's docs platform does not render it, the fenced block still reads as a list of edges.
@@ -96,13 +124,31 @@ Inside the module document, under Public interface, or on a separate page when a
 - Present tense, active voice, the code's own names for things. Explain a general technical term at its first use on a page; project terms link to the glossary.
 - Describe, never judge: no "clean", "robust", "well-designed", no recommendations. "The module has no tests" is a fact; what to do about it is an audit's job.
 - No filler introductions, no closing summaries that repeat the page, no marketing adjectives from the README.
-- Code excerpts only where the shape of the code is the point, under about fifteen lines, with the source link.
 - Headings are stable and descriptive, so links to them survive regeneration.
 - Every page links back to the index and to its parent (the unit or the architecture page).
 
+## Code excerpts
+
+- Only where the shape of the code is the point; otherwise link to the lines.
+- Cut on syntactic boundaries: a whole function, a whole block, a whole statement, a whole configuration entry. Never start or stop in the middle of an expression, a call's argument list, or a literal. When the unit that makes the point is longer than about fifteen lines, show its signature and the few lines that matter, with an explicit elision marker between them, rather than a clipped tail.
+- Keep the original indentation and the language tag of the source, and put the source link with its line range directly above the block.
+- Strip nothing silently: an elision is marked, and a comment left in the excerpt is the code's own.
+
+## Written for retrieval
+
+Many readers will not open a page; they will land on one section of it through search, a retrieval index or an agent's context window. Every section is written to survive being read alone.
+
+- One subject per section, named in its heading and again in its first sentence: "The `payments` module retries failed charges…", not "It retries them…".
+- No references that only make sense in page order — "as above", "the previous section", "this one" — without the thing named.
+- Section length between roughly 500 and 3,000 characters. A shorter section merges with its neighbor; a longer one splits at a subheading that names its own subject.
+- Headings are specific and unique across the set: "Configuration of the `payments` module", not a bare "Configuration" repeated on every page.
+- Tables carry their subject in a caption line or the preceding sentence, since a table extracted alone loses its heading.
+- Each document starts with a one-line statement of what it covers and which unit it belongs to, so a retriever's first hit orients the reader.
+
 ## Size and depth
 
-- Overview depth: index, getting-started, architecture, flows, module documents without symbol entries, operations, glossary, open questions.
+- Overview depth: index, getting-started, architecture, flows, module documents without symbol entries, operations, glossary, open questions, llms.txt.
 - Standard depth: adds symbol entries for every public definition and the reference pages.
 - Exhaustive depth: adds internal definitions to module documents, and guides for every recurring change the history shows.
 - A module document stays readable in one sitting — around 300 lines at most. Beyond that, move symbol entries to their own page and link them.
+- The user guide and llms-full.txt are independent of depth: the first follows the audiences, the second the request.

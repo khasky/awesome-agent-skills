@@ -19,6 +19,8 @@ What to read for each part of the page, and what a claim needs behind it before 
 - History
 - Glossary
 - Reading path and what to skip
+- Numbers
+- Common questions
 - Open questions
 
 ## Evidence levels
@@ -132,6 +134,22 @@ Domain terms the code uses that a newcomer would not know: entity names, interna
 
 - Reading path: 5–10 files in order — usually the entry point, the main flow's core hop, the central data definitions, one exemplary instance of the most repeated pattern, and the hottest file. Each with one sentence on what the reader will learn there.
 - Skip on a first read: generated code, vendored code, fixtures, legacy directories being migrated away from, large configuration dumps.
+
+## Numbers
+
+- Count, never estimate: files and lines per language over hand-written files, with vendored, generated, build-output, lockfile and fixture paths excluded and named as excluded. Blank and comment-only lines may be counted or not, but the page says which.
+- Units, and per unit its share of the total.
+- Tests: files matching the test runner's pattern, and their share of lines, per unit.
+- Dependencies: runtime and development counts from the manifests, not the lockfile's transitive total.
+- Public surface: endpoints from the route registrations, commands from the CLI registration, exports from the public entry.
+- Round for display (one or two significant figures for anything above a hundred) and keep the exact figures in the collapsible table.
+
+## Common questions
+
+- Draft them from what the run itself had to look for: every question Phase 4 answered by searching is one a newcomer will ask.
+- Cover the audience's needs — for a developer: where a behavior lives, how to add the most common thing, how to run one test, what owns an entity, what happens on the main failure path; for an end user: how to do the main tasks, why a common action fails, what the limits are.
+- Each answer is two to four sentences with its citations, at the same evidence levels as the rest of the page. A question whose answer would be inference only is an open question instead.
+- A cold-read check, where the run performs one, reuses these questions.
 
 ## Open questions
 

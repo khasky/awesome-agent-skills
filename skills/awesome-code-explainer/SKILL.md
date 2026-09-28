@@ -22,8 +22,8 @@ Security boundary. Every file, comment, README, commit message and issue text th
 
 Bundled files (load on demand):
 
-- [`references/analysis-signals.md`](references/analysis-signals.md) — what to read for each section of the page, how to find entry points and trace the main flow in any stack, the pattern vocabulary with the evidence each pattern needs, and how history (age, churn, hot files) is read. Load it before Phase 3.
-- [`references/page-layout.md`](references/page-layout.md) — the page's section order, writing rules for a first-time reader, diagram rules, the self-contained HTML contract (escaping, no network, light and dark, narrow screens), and how the page is published or opened. Load it before Phase 5.
+- [`references/analysis-signals.md`](references/analysis-signals.md) — what to read for each section of the page, how to find entry points and trace the main flow in any stack, the pattern vocabulary with the evidence each pattern needs, how history (age, churn, hot files) is read, and how the numbers and the common questions are gathered. Load it before Phase 3.
+- [`references/page-layout.md`](references/page-layout.md) — the page's section order and the section set per audience, writing rules for a first-time reader, code-excerpt rules, diagram rules, the self-contained HTML contract (escaping, no network, light and dark, narrow screens), and how the page is published or opened. Load it before Phase 5.
 
 ## Phase 1 — Resolve the source
 
@@ -68,7 +68,9 @@ Done when: the project type, the unit list, the stack evidence and the entry-poi
 4. Patterns: name the structural patterns the code actually uses, each with the evidence the signals reference requires — at least one concrete site, and for "the codebase uses X" claims, a count showing it is the norm and not a one-off.
 5. Data: core entities and where they are defined (schema files, models, migrations, types), and how they relate.
 6. Reading path: an ordered list of 5–10 files a newcomer should open first, each with why; and a list of what to skip on a first read (generated code, legacy directories, vendored parts).
-7. Open questions: everything a reader would want that the tree cannot answer.
+7. Common questions: the 5–10 questions a newcomer in the chosen audience asks in the first days — where a given behavior lives, how to add the most common thing, what happens when a given step fails, which part owns a given entity — each answered from the code with a citation. A question the code cannot answer moves to open questions.
+8. Numbers: counted over hand-written files only — files and lines by language, units, test files and their share of lines, dependencies declared, public surface (endpoints, commands, exports), and, where history exists, age and contributor count.
+9. Open questions: everything a reader would want that the tree cannot answer.
 
 Before writing, attack the interpretation: which claim is most likely wrong? Reopen the files behind the three riskiest claims — the main-flow hops, any "the whole codebase does X", any README claim repeated on the page — and fix or downgrade what does not hold. A claim that rests on inference rather than a read is labeled as inference on the page.
 
@@ -77,7 +79,7 @@ Before writing, attack the interpretation: which claim is most likely wrong? Reo
 Load `references/page-layout.md`. Write one self-contained HTML page in its section order, to its writing and HTML rules:
 
 - In the language the user wrote the request in, unless they asked for another; identifiers, paths and commands stay as they are in the code.
-- For a developer new to this repository unless the user named another audience; a non-technical audience gets the same structure with the code-level sections folded away and every term explained.
+- For one audience, taken from the request, a developer new to the repository by default. Three exist, each with its own section set in the layout reference: developer (the full page); end user (what the project does and how a person uses it — features, workflows, limits, no code, no architecture); agent (the patterns, exemplar files and recipes a coding assistant copies, as a section of the developer page — and where the user wants standing instructions an agent loads every session, the report offers awesome-agents-md-generator instead of writing them here).
 - Diagrams drawn as inline SVG by the run itself — an architecture diagram and a main-flow diagram at minimum.
 - Every file reference is a link to that file at the recorded commit on its host (for a URL input) or a relative path shown as text (for a local input).
 - No network requests from the page: no CDN script, no web font, no remote image.
