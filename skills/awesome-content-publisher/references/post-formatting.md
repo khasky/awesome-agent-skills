@@ -17,7 +17,7 @@ Three classes, and the class decides what reaches the editor:
 
 A toolbar-only editor is the one class where the formatting is a second pass, not part of the fill. Patreon renders no markdown and sanitises an HTML paste away, so the body goes in as plain text and every `##` and `**…**` is then converted by hand: `Range` over the block's text node → the floating toolbar mounts above the selection → `button[aria-label="Text size"]` → `Heading 2`, or `button[aria-label="Bold"]` → then delete the marker characters, which the style does not consume. Budget for it: the pass is one round trip per heading, and skipping it publishes the markers as literal text.
 
-The class is a hypothesis until the live page proves it. `wonderful-dev` renders code fences, inline code and headings but not links, so it belongs to no class cleanly — and a run that assumed "markdown platform" shipped `[eli5](https://…)` as literal text. Before deciding, open one existing post on that platform and look at what its markup actually became.
+The class is a hypothesis until the live page proves it. `wonderful-dev` renders code fences, inline code and headings but not every link, so it belongs to no class cleanly (its note says which parts stay markdown; headings there take the plain-text emoji form) — and a run that assumed "markdown platform" shipped `[eli5](https://…)` as literal text. Before deciding, open one existing post on that platform and look at what its markup actually became.
 
 ## Stripping for plain-text composers
 
