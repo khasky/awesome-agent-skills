@@ -336,7 +336,7 @@ def eval_sets_are_well_formed() -> list[str]:
 
 
 def plugin_manifests_agree() -> list[str]:
-    # The two plugin manifests are the Claude Code install path. They carry the
+    # The .claude-plugin pair is the Claude Code install path. They carry the
     # repo's own name and are easy to leave behind on a rename.
     root = ROOT / ".claude-plugin"
     plugin = json.loads(read(root / "plugin.json"))
@@ -353,6 +353,21 @@ def plugin_manifests_agree() -> list[str]:
             fail.append(f"plugin.json is missing {key}")
     if not SKILLS.is_dir():
         fail.append("the plugin ships skills/ and it is not there")
+
+    # The other agents' manifests repeat the name and the version. The Claude
+    # manifest is the one a release bumps; the rest follow it or fall behind
+    # silently for their users.
+    for rel in ("plugin.json", "gemini-extension.json", "qwen-extension.json"):
+        other = json.loads(read(ROOT / rel))
+        for key in ("name", "version"):
+            if other.get(key) != plugin.get(key):
+                fail.append(f"{rel} {key} is {other.get(key)!r}, .claude-plugin/plugin.json has {plugin.get(key)!r}")
+        if not other.get("description"):
+            fail.append(f"{rel} is missing description")
+    codex = json.loads(read(ROOT / ".agents" / "plugins" / "marketplace.json"))
+    entries = [p.get("name") for p in codex.get("plugins", [])]
+    if entries != [plugin["name"]]:
+        fail.append(f".agents/plugins/marketplace.json lists {entries}, expected [{plugin['name']!r}]")
     return fail
 
 

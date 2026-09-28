@@ -46,7 +46,7 @@ A check that cannot be written as an instruction with a stated threshold and sta
 
 ## The plugin version moves with the skills
 
-`.claude-plugin/plugin.json` holds the only version number in the repository, and a user installed through the Claude Code plugin path sees new work only when that number changes. Bump it inside the same commit as the change that earns it, one step per commit, never in a commit of its own:
+`.claude-plugin/plugin.json` holds the version number, and a user installed through a plugin or extension sees new work only when that number changes. The other agents' manifests — `plugin.json` at the root (Codex and the Agent Plugins format), `gemini-extension.json` and `qwen-extension.json` — repeat it and move with it in the same commit; `scripts/lint.py` fails when any of them disagrees. Bump it inside the same commit as the change that earns it, one step per commit, never in a commit of its own:
 
 - **Patch** — anything inside a skill that already exists: wording, a `references/` file.
 - **Minor** — a skill folder added, or what a skill ships changing shape under an installed user (a file they could open or invoke leaving the folder).

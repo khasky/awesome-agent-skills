@@ -71,7 +71,16 @@ Where it copied, `npx skills update -g` re-fetches instead. Either way, re-run t
 
 Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs straight from GitHub — but it won't auto-sync with `git pull`.
 
-On Claude Code it also installs as a plugin: `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills`. That pulls every skill at once and updates with the plugin; a clone you have linked through stays the better choice if you want `git pull` to move them.
+Several agents also install the whole set as one plugin or extension, which pulls every skill at once and updates with it; a clone you have linked through stays the better choice if you want `git pull` to move them.
+
+| Agent | Install | Update |
+| --- | --- | --- |
+| Claude Code | `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills` | `/plugin marketplace update awesome-agent-skills` |
+| OpenAI Codex | `codex plugin marketplace add khasky/awesome-agent-skills`, then install `awesome-agent-skills` from `/plugins` | `codex plugin marketplace upgrade` |
+| Gemini CLI | `gemini extensions install https://github.com/khasky/awesome-agent-skills` | `gemini extensions update awesome-agent-skills` |
+| Qwen Code | `qwen extensions install https://github.com/khasky/awesome-agent-skills` | `qwen extensions update awesome-agent-skills` |
+
+Qwen Code registers extension skills under the extension's name, so there a skill is `awesome-agent-skills:awesome-code-review`. The manifests behind these rows (`.claude-plugin/`, `plugin.json` with `.agents/plugins/marketplace.json`, `gemini-extension.json`, `qwen-extension.json`) follow each agent's documented format; like the path table below, only the Claude Code row is exercised on every release.
 
 ## Install
 
