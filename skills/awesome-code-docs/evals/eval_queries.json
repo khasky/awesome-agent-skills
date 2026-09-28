@@ -1,0 +1,22 @@
+[
+  { "query": "Generate full technical documentation for ~/src/harbor-sync: architecture, every module, API reference, config, how to deploy.", "should_trigger": true, "split": "train" },
+  { "query": "we have zero docs for https://gitlab.example.org/platform/relay-bridge - write a proper docs/ folder for it", "should_trigger": true, "split": "train" },
+  { "query": "Document this whole codebase module by module, with the public functions of each and how they depend on each other.", "should_trigger": true, "split": "train" },
+  { "query": "Create developer documentation for the bitbucket repo acme/fleet-dispatch - reference for the REST endpoints, the data model, and how-to guides for common changes.", "should_trigger": true, "split": "train" },
+  { "query": "The docs in D:/work/ledger-core are a year out of date. Regenerate the documentation set from the current code.", "should_trigger": true, "split": "train" },
+  { "query": "something like AutoDocs but without installing anything: walk the dependency graph of this repo and write docs bottom-up", "should_trigger": true, "split": "train" },
+  { "query": "Write the technical docs for our pnpm monorepo - one section per package, architecture across packages, and the CLI reference.", "should_trigger": true, "split": "validation" },
+  { "query": "Before we hand this service to the ops team they need real documentation: config keys, env vars, flows, deployment. Produce it from the code.", "should_trigger": true, "split": "validation" },
+  { "query": "Update the generated docs in docs/ for the changes since the last run - only what changed and what depends on it.", "should_trigger": true, "split": "validation" },
+  { "query": "Produce API and module reference documentation for https://codeberg.org/example/stream-kit in Markdown.", "should_trigger": true, "split": "validation" },
+  { "query": "Just give me one page that explains what this repo is and how a request flows, I'm new here.", "should_trigger": false, "belongs_to": "awesome-code-explainer", "split": "train" },
+  { "query": "Write an AGENTS.md for this repo so Codex knows the build commands and conventions.", "should_trigger": false, "belongs_to": "awesome-agents-md-generator", "split": "train" },
+  { "query": "Our docs/architecture.md is wordy and vague - tighten the prose without changing what it says.", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
+  { "query": "Design the REST API for the new invoicing service before we write any code - resources, pagination, versioning.", "should_trigger": false, "belongs_to": "awesome-api-design", "split": "train" },
+  { "query": "Audit the architecture of harbor-sync and tell me whether it's safe to extend, with a verdict.", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "Add a docstring to the parseInvoice function in billing/parse.ts.", "should_trigger": false, "split": "train" },
+  { "query": "Write a design doc comparing Kafka and a Postgres queue for the event pipeline.", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "validation" },
+  { "query": "Does the README's feature list still match what the product actually ships?", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "validation" },
+  { "query": "Find stale comments and narrating docstrings across the repo and clean them up.", "should_trigger": false, "belongs_to": "awesome-code-cleanup", "split": "validation" },
+  { "query": "What's the difference between reference docs and how-to guides in Diataxis?", "should_trigger": false, "split": "validation" }
+]
