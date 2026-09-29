@@ -10,6 +10,8 @@ This composer restores a draft. It came back holding a *different platform's* bo
 
 The body takes an HTML paste like the other ProseMirror editors — headings, code blocks, lists and anchors all survive.
 
+A separator line needs its exact form to show as a rule. The `***` or `---` above a footer the user chose, and any other separator in the body, goes in as `---`, even where the source has `***`. It sits on a line of its own, with a line break before it and after it, so it is separated from the paragraph above and the footer below. Glued to either one, it publishes as three literal dashes. No extra keystroke is needed: in the pasted body that means `---` as its own block between the two neighbouring blocks. Check on the published `daily.dev/posts/<slug>` page that the number of rules matches the separators in the source and that no literal `---` or `***` shows in the text.
+
 Compose, legacy note: `New Post` (or `+`) from anywhere on the site, which posts from the personal profile. An original post takes a title and a Markdown body with code blocks; a link post takes the URL of an article already published elsewhere. Where the composer offers an audience, choose everyone, not a squad. Community Picks is gone — sunset in 2025 — so there is no separate submission mechanism to look for.
 
 Squad path, only when the post file's target names one: go to that squad's page, where posting rights are required and their absence shows as a missing composer (report and skip). A link already present in the feed is deduplicated by the platform — resubmitting is not a fix, it is a report.

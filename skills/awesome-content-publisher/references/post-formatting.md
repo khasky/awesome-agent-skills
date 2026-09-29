@@ -118,10 +118,10 @@ Then check what the paste autolinked. With the code container gone, the editor's
 
 ## Section separators travel or they are dropped, never typed
 
-A post file may carry `---` on its own line as a section separator. It is markup, not text, and it needs the same treatment as a heading:
+A post file may carry `---` or `***` on its own line as a section separator, most often the line above a footer the user chose. It is markup, not text, and it needs the same treatment as a heading:
 
 - On a **markdown-native** surface it goes through as written and renders as a rule.
-- On a **rich editor** it is converted with the rest of the body: `<hr>` inside the HTML paste where the schema has a `horizontalRule` node (Substack, DeviantArt, HackerNoon, Medium and Teletype all do), or the editor's own divider control where the paste drops it — HackerNoon's toolbar `Divider` (`ctrl _`), Teletype's block-menu `Divider`, Medium's `---` typed on an empty line, which converts as the third dash lands.
+- On a **rich editor** it is converted with the rest of the body: `<hr>` inside the HTML paste where the schema has a `horizontalRule` node (Substack, DeviantArt, HackerNoon, Medium and Teletype all do), or the editor's own divider control where the paste drops it — HackerNoon's toolbar `Divider` (`ctrl _`), Teletype's block-menu `Divider`, Medium's `---` typed on an empty line, which converts as the third dash lands. On `daily-dev` the rule appears only when the separator is written as `---` (`***` in the source included) on a line of its own, with a line break before and after it (`posting-daily-dev.md`).
 - On a **plain-text** surface, and on a rich editor whose schema has no rule node, the separator is **removed**. Three dashes in a composer that renders nothing are three dashes the reader sees. Tumblr's block menu and Quora's formatting menu both lack one; check the platform's own note before assuming.
 
 The pre-submit gate counts rules in the composer against separators in the source, the same way it counts code spans: equal on a platform that supports them, zero on a platform that does not, and never a literal `---` in the published text.
