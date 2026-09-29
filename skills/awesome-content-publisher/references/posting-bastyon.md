@@ -52,3 +52,7 @@ Hashtags do not exist inside the body here, and the composer has the real contro
 4. Clear the composer's stale state (a stuck thumbnail, a half-built link preview) or open a fresh tab, then compose again.
 
 The fifth failed attempt makes the entry `failed`, carrying the last request, its status and its response as the evidence, and the draft's state on the profile route. A validation line beside the button (`Please add Tags`) is not a failed attempt: it is a missing field, filled in the same attempt.
+
+**Two `input.sminput` fields, and the first is site search.** `input.sminput[placeholder="Search on Bastyon"]` sits in the header and `input.sminput[placeholder="Categories and tags"]` in the composer. Typing a tag and `Enter` into the first navigates to `/index?ss=<tag>`; the draft survives on the profile route but the attached image does not, and reattaching then restored the old attachment too, leaving two copies until one was removed with its `item remove` control. Always select the tag field by its placeholder. Typed there with `Enter`, each tag commits as a `#tag` chip.
+
+**The image upload goes through Imgur.** The page's own network log shows `POST api.imgur.com/3/image` for the composer's picture; a `429` there means Imgur's rate limit, not Bastyon, and the Post click does nothing while it lasts (the `Shares` counter stays put). When `imgur` is in the same run, publish `bastyon` before it, or expect this and record the entry `failed` with the 429 as the evidence after the retry budget; the draft stays on `<handle>?read=1`.
