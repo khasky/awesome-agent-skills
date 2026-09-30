@@ -7,9 +7,8 @@
     {
       "name": "awesome-agent-skills",
       "source": {
-        "source": "url",
-        "url": "https://github.com/khasky/awesome-agent-skills.git",
-        "ref": "main"
+        "source": "local",
+        "path": "./"
       },
       "policy": {
         "installation": "AVAILABLE",

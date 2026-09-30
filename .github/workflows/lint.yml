@@ -13,9 +13,69 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+        with:
+          # The version gate compares the pushed commit with its parent.
+          fetch-depth: 2
 
       # Every check lives in scripts/lint.py so the pre-commit hook and CI
       # cannot drift apart. `python3 scripts/install-hooks.py` installs the
       # hook; the script names each gate it runs and the ones that failed.
       - name: gates
         run: python3 scripts/lint.py
+
+  plugin-load:
+    # A manifest can pass every schema check and still fail to install, so each
+    # agent installs this checkout into an empty home and must list it enabled.
+    # No account or API key is involved. Versions are pinned to the ones the
+    # README's install steps were tested with.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@08c6903cd8c0fde910a37f88322edcfb5dd907a8 # v5.0.0
+
+      - name: install the agent CLIs
+        run: npm install -g @anthropic-ai/claude-code@2.1.283 @openai/codex@0.156.0 @google/gemini-cli@0.45.1 @github/copilot@1.0.89
+
+      - name: Claude Code
+        env:
+          CLAUDE_CONFIG_DIR: ${{ runner.temp }}/claude
+        run: |
+          claude plugin validate .
+          claude plugin marketplace add ./
+          claude plugin install awesome-agent-skills@awesome-agent-skills
+          claude plugin list | tee list.txt
+          grep -A3 'awesome-agent-skills@awesome-agent-skills' list.txt | grep -q 'enabled'
+
+      - name: Codex
+        env:
+          CODEX_HOME: ${{ runner.temp }}/codex
+        run: |
+          mkdir -p "$CODEX_HOME"
+          codex plugin marketplace add ./
+          codex plugin add awesome-agent-skills@awesome-agent-skills
+          codex plugin list | tee list.txt
+          grep 'awesome-agent-skills@awesome-agent-skills' list.txt | grep -q 'installed, enabled'
+          # The plugin is only as good as the skills it copied.
+          test "$(find "$CODEX_HOME/plugins/cache" -name SKILL.md | wc -l)" -eq "$(ls skills | wc -l)"
+
+      - name: GitHub Copilot CLI
+        env:
+          COPILOT_HOME: ${{ runner.temp }}/copilot
+        run: |
+          mkdir -p "$COPILOT_HOME"
+          copilot plugin marketplace add ./
+          copilot plugin install awesome-agent-skills@awesome-agent-skills | tee install.txt
+          grep -q "Installed $(ls skills | wc -l) skills" install.txt
+          copilot plugin list | tee list.txt
+          grep 'awesome-agent-skills@awesome-agent-skills' list.txt | grep -q 'enabled'
+
+      - name: Gemini CLI
+        env:
+          GEMINI_CLI_HOME: ${{ runner.temp }}/gemini
+        run: |
+          mkdir -p "$GEMINI_CLI_HOME"
+          gemini extensions validate .
+          gemini extensions link . --consent
+          # The CLI prints the list to stderr, so both streams go to the file.
+          gemini extensions list > list.txt 2>&1
+          cat list.txt
+          grep -q 'awesome-code-review' list.txt

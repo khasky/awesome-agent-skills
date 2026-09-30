@@ -1,5 +1,4 @@
 {
-  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "awesome-agent-skills",
   "version": "1.11.2",
   "description": "Skills for AI coding agents: code review, test writing, design docs, debugging, security and dependency audits, git history surgery, refactoring, copywriting, and cleaning up AI-written code and text. Every skill is a plain SKILL.md folder under the open Agent Skills standard, stack-agnostic, and ends with the check that proves its claim.",
@@ -23,19 +22,10 @@
     "content",
     "ai-cleanup"
   ],
-  "extensions": {
-    "com.openai": {
-      "interface": {
-        "displayName": "Awesome Agent Skills",
-        "shortDescription": "Review, test, audit, refactor and write with one skill set",
-        "longDescription": "Skills for AI coding agents: code review, test writing, design docs, debugging, security and dependency audits, git history surgery, refactoring, copywriting, and cleaning up AI-written code and text. Every skill is a plain SKILL.md folder under the open Agent Skills standard, stack-agnostic, and ends with the check that proves its claim.",
-        "developerName": "Khasky",
-        "category": "Coding",
-        "capabilities": [
-          "Instructions"
-        ],
-        "websiteURL": "https://github.com/khasky/awesome-agent-skills"
-      }
-    }
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Awesome Agent Skills",
+    "shortDescription": "Review, test, audit, refactor and write with one skill set",
+    "category": "Coding"
   }
 }

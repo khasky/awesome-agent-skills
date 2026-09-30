@@ -15,6 +15,7 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
 - [Awesome Agent Skills](#awesome-agent-skills)
   - [Contents](#contents)
   - [Quick start](#quick-start)
+  - [Install as a plugin](#install-as-a-plugin)
   - [Install](#install)
     - [Copies or symlinks](#copies-or-symlinks)
   - [Skills](#skills)
@@ -72,16 +73,24 @@ Where it copied, `npx skills update -g` re-fetches instead. Either way, re-run t
 
 Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs straight from GitHub — but it won't auto-sync with `git pull`.
 
-Several agents also install the whole set as one plugin or extension, which pulls every skill at once and updates with it; a clone you have linked through stays the better choice if you want `git pull` to move them.
+## Install as a plugin
 
-| Agent | Install | Update |
-| --- | --- | --- |
-| Claude Code | `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills` | `/plugin marketplace update awesome-agent-skills` |
-| OpenAI Codex | `codex plugin marketplace add khasky/awesome-agent-skills`, then install `awesome-agent-skills` from `/plugins` | `codex plugin marketplace upgrade` |
-| Gemini CLI | `gemini extensions install https://github.com/khasky/awesome-agent-skills` | `gemini extensions update awesome-agent-skills` |
-| Qwen Code | `qwen extensions install https://github.com/khasky/awesome-agent-skills` | `qwen extensions update awesome-agent-skills` |
+The plugin installs every skill at once and updates with the repository. Pick the plugin or the `skills add` install from the Quick start, not both: both put every skill in front of the agent twice.
 
-Qwen Code registers extension skills under the extension's name, so there a skill is `awesome-agent-skills:awesome-code-review`. The manifests behind these rows (`.claude-plugin/`, `plugin.json` with `.agents/plugins/marketplace.json`, `gemini-extension.json`, `qwen-extension.json`) follow each agent's documented format; like the path table below, only the Claude Code row is exercised on every release.
+| Agent | Install | Update | Uninstall |
+|---|---|---|---|
+| Claude Code | `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills` | `/plugin marketplace update awesome-agent-skills`, or turn on auto-update under `/plugin` → Marketplaces | `/plugin uninstall awesome-agent-skills@awesome-agent-skills` |
+| Codex | `codex plugin marketplace add khasky/awesome-agent-skills`, then `codex plugin add awesome-agent-skills@awesome-agent-skills` | `codex plugin marketplace upgrade awesome-agent-skills`, then the `add` again | `codex plugin remove awesome-agent-skills@awesome-agent-skills` |
+| GitHub Copilot CLI | `copilot plugin marketplace add khasky/awesome-agent-skills`, then `copilot plugin install awesome-agent-skills@awesome-agent-skills` | `copilot plugin update awesome-agent-skills` | `copilot plugin uninstall awesome-agent-skills` |
+| Gemini CLI | `gemini extensions install https://github.com/khasky/awesome-agent-skills` (add `--auto-update` to follow the repository) | `gemini extensions update awesome-agent-skills` | `gemini extensions uninstall awesome-agent-skills` |
+| Qwen Code | `qwen extensions install https://github.com/khasky/awesome-agent-skills` | `qwen extensions update awesome-agent-skills` | `qwen extensions uninstall awesome-agent-skills` |
+| Cursor | `git clone https://github.com/khasky/awesome-agent-skills ~/.cursor/plugins/local/awesome-agent-skills`, then **Developer: Reload Window** | `git pull` in that folder | delete the folder |
+| Antigravity | clone the repository, then `agy plugin install <clone>` | `git pull` in the clone, then the `install` again | `agy plugin uninstall awesome-agent-skills` |
+
+- Invoke a plugin skill as usual: `/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex. Qwen Code prefixes it with the extension's name: `awesome-agent-skills:awesome-code-review`.
+- Installed users get new work when the version in `.claude-plugin/plugin.json` changes, which every release bumps.
+- CI installs the plugin into Claude Code, Codex, Copilot CLI and Gemini CLI on every push. The Qwen Code, Cursor and Antigravity rows follow each agent's documentation and are not exercised.
+- Any other agent (opencode, Amp, Windsurf, Kiro, Grok Build, ...): use the Quick start or copy the folders by the table below.
 
 ## Install
 

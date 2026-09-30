@@ -357,18 +357,77 @@ def plugin_manifests_agree() -> list[str]:
     # The other agents' manifests repeat the name and the version. The Claude
     # manifest is the one a release bumps; the rest follow it or fall behind
     # silently for their users.
-    for rel in ("plugin.json", "gemini-extension.json", "qwen-extension.json"):
+    for rel in ("plugin.json", ".codex-plugin/plugin.json", "gemini-extension.json", "qwen-extension.json"):
         other = json.loads(read(ROOT / rel))
         for key in ("name", "version"):
             if other.get(key) != plugin.get(key):
                 fail.append(f"{rel} {key} is {other.get(key)!r}, .claude-plugin/plugin.json has {plugin.get(key)!r}")
         if not other.get("description"):
             fail.append(f"{rel} is missing description")
-    codex = json.loads(read(ROOT / ".agents" / "plugins" / "marketplace.json"))
-    entries = [p.get("name") for p in codex.get("plugins", [])]
-    if entries != [plugin["name"]]:
-        fail.append(f".agents/plugins/marketplace.json lists {entries}, expected [{plugin['name']!r}]")
+    # Copilot CLI reads .claude-plugin/marketplace.json too. Codex
+    # installs from .codex-plugin/plugin.json, which has to point at the
+    # skills; Copilot CLI, Cursor and Antigravity read the root plugin.json
+    # (Agent Plugins 1.0), which takes skills/ from its fixed location.
+    codex = json.loads(read(ROOT / ".codex-plugin" / "plugin.json"))
+    if codex.get("skills") != "./skills/":
+        fail.append(f".codex-plugin/plugin.json points its skills at {codex.get('skills')!r}, not ./skills/")
+    root_plugin = json.loads(read(ROOT / "plugin.json"))
+    if root_plugin.get("$schema") != "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json":
+        fail.append(f"plugin.json declares {root_plugin.get('$schema')!r}, not Agent Plugins 1.0.0")
+    # Agent Plugins has a closed schema: vendor data goes under "extensions".
+    extra = set(root_plugin) - {"$schema", "name", "version", "description", "author", "homepage",
+                                "repository", "license", "keywords", "extensions"}
+    if extra:
+        fail.append(f"plugin.json carries fields Agent Plugins does not allow: {sorted(extra)}")
+    # Codex reads its own marketplace before .claude-plugin/. A url source there
+    # installs from the remote branch instead of the checkout it was added from.
+    codex_market = json.loads(read(ROOT / ".agents" / "plugins" / "marketplace.json"))
+    entries = codex_market.get("plugins", [])
+    if [p.get("name") for p in entries] != [plugin["name"]]:
+        fail.append(f".agents/plugins/marketplace.json lists {[p.get('name') for p in entries]}, expected [{plugin['name']!r}]")
+    elif entries[0].get("source") != {"source": "local", "path": "./"}:
+        fail.append(f".agents/plugins/marketplace.json sources the plugin from {entries[0].get('source')!r}, not the repository itself")
     return fail
+
+
+def git_out(*args: str) -> tuple[int, str]:
+    run = subprocess.run(["git", *args], cwd=ROOT, capture_output=True, text=True)
+    return run.returncode, run.stdout
+
+
+def version_moves_with_skills() -> list[str]:
+    # A plugin install with a version in its manifest stays on that version:
+    # Claude Code answers "already at the latest version" to a pushed commit
+    # until the number changes. So a change under skills/ without a bump never
+    # reaches a plugin user. The pre-commit hook checks what is staged; CI,
+    # with nothing staged, checks the commit it was pushed.
+    manifest = ".claude-plugin/plugin.json"
+    code, staged = git_out("diff", "--cached", "--name-only")
+    if code == 0 and staged.strip():
+        changed, before, after = staged.split(), ("HEAD", manifest), None
+    else:
+        code, _ = git_out("rev-parse", "--verify", "--quiet", "HEAD~1")
+        if code != 0:
+            return []  # a shallow clone or the first commit: nothing to compare
+        _, names = git_out("diff", "--name-only", "HEAD~1", "HEAD")
+        changed, before, after = names.split(), ("HEAD~1", manifest), ("HEAD", manifest)
+    if not any(path.startswith("skills/") for path in changed):
+        return []
+
+    def version_at(ref: tuple[str, str] | None) -> str | None:
+        if ref is None:
+            return json.loads(read(ROOT / manifest)).get("version")
+        code, text = git_out("show", f"{ref[0]}:{ref[1]}")
+        return json.loads(text).get("version") if code == 0 else None
+
+    old, new = version_at(before), version_at(after)
+    if old is None or new is None:
+        return []
+    parse = lambda v: tuple(int(part) for part in re.findall(r"\d+", v)[:3])
+    if parse(new) <= parse(old):
+        return [f"skills/ changed and {manifest} stays at {new} (was {old}) - bump it as AGENTS.md describes, "
+                "or plugin users never receive the change"]
+    return []
 
 
 CHECKS = [
@@ -384,6 +443,7 @@ CHECKS = [
     ("SKILL.md stays inside the line budget", skill_line_budget),
     ("eval sets are well formed", eval_sets_are_well_formed),
     ("plugin manifests parse and agree", plugin_manifests_agree),
+    ("a change to skills/ bumps the plugin version", version_moves_with_skills),
 ]
 
 
