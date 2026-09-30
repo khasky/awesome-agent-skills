@@ -2,6 +2,8 @@
 
 Check: nothing to check — `telegra.ph` has no account. Compose: `telegra.ph` itself, three fields in one page (title, author, body). Publish gives a permanent URL.
 
+The title goes in title case (`form-files.md`), and the author field takes exactly the byline the user gave in the decision sweep: the name, plus its address where they gave one. With no account behind the page, that line is the only thing that says whose article it is, so it is never improvised and never left blank by default. Read both back on the published page.
+
 The body is a rich-text editor, so markdown is not typed in — it is applied. Pasting `## Where it breaks` publishes those hash characters as visible text, which is the single most common way an article lands here looking like a raw file. Type the heading's words as an ordinary paragraph, select the line, and use the floating toolbar that appears over a selection (or the matching keyboard shortcut) to set it. The format allows exactly two heading levels, `h3` and `h4`: map the post file's `##` to `h3` and `###` to `h4`, and never invent a third. Bold, italic, blockquote, ordered and bulleted lists, `code`, `pre` and a horizontal rule are the rest of what the page accepts. Links are inserted through the link control on a selection, never written as `[text](url)`.
 
 Editing is bound to the browser that published, through a token in that browser's local storage, so a page created in this session cannot be edited later from anywhere else; say so when a post goes here. There is no feed, no audience and no discovery, so a Telegraph page only makes sense as something another post links to.
