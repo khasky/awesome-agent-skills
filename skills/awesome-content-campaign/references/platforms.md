@@ -14,7 +14,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | --- | --- | --- | --- | --- | --- |
 | `facebook-wall` | facebook.com | defaults to the personal timeline (`facebook.com/<handle>`); a group URL when the user names a group to post into | optional | horizontal | `genre-community-post.md` |
 | `facebook-page` | facebook.com/<page> | the Page, asked only when the account manages more than one | optional | horizontal | `genre-micro-post.md` |
-| `linkedin` | linkedin.com | — | optional | vertical | `genre-micro-post.md` |
+| `linkedin` | linkedin.com | — | optional | horizontal | `genre-micro-post.md` |
 | `reddit` | reddit.com | subreddit | optional | vertical | `genre-community-post.md` |
 | `lemmy` | any Lemmy instance | instance domain + community | optional | vertical | `genre-community-post.md` |
 | `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | horizontal | `genre-community-post.md` |
@@ -68,7 +68,7 @@ The vertical picture holds the whole source in a band across its middle, so a pl
 | --- | --- | --- | --- | --- |
 | `facebook-wall` | horizontal | shows 9:16 to 16:9 uncropped, so either file fits; the 16:9 one is the owner's call for this surface, since a tall image pushes the caption below the fold and the post reads as a picture with a footnote | owner's decision, 2026-09 | decided |
 | `facebook-page` | horizontal | same renderer, range and choice as the personal timeline | owner's decision, 2026-09 | decided |
-| `linkedin` | vertical | up to 4:5 tall and 3:1 wide; taller is center-cropped to 4:5, which keeps the band | linkedin.com/help/lms/answer/a527229 | medium-high |
+| `linkedin` | horizontal | up to 4:5 tall and 3:1 wide, so either file fits; the 16:9 one is the owner's call, since the 4:5 crop of the vertical file shows the blurred fill and pushes the text below the fold | owner's decision, 2026-09 | decided |
 | `reddit` | vertical | no enforced ratio; preview boxes between 4:3 and 16:9 keep the band; guides split | size guides only | low |
 | `lemmy` | vertical | list view shows a near-square generated thumbnail | join-lemmy.org release notes | low |
 | `quora` | horizontal | scales to the reading column, no forced crop | size guides only | low |
