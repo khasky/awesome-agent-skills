@@ -8,7 +8,7 @@ Skills for AI coding agents: code review, test writing, design docs, debugging, 
 
 Distilled from widely-used public collections and the documented practice of large open-source projects, then sharpened over several rounds of use on real repositories.
 
-Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, Windsurf, Antigravity, and any other agent that supports the standard. See [Install](#install) for exact paths.
+Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, Windsurf, Antigravity, Kilo Code, Qwen Code, and any other agent that supports the standard. See [Install](#install) for exact paths.
 
 ## Contents
 
@@ -85,11 +85,13 @@ The plugin installs every skill at once and updates with the repository. Pick th
 | Gemini CLI | `gemini extensions install https://github.com/khasky/awesome-agent-skills` (add `--auto-update` to follow the repository) | `gemini extensions update awesome-agent-skills` | `gemini extensions uninstall awesome-agent-skills` |
 | Qwen Code | `qwen extensions install https://github.com/khasky/awesome-agent-skills` | `qwen extensions update awesome-agent-skills` | `qwen extensions uninstall awesome-agent-skills` |
 | Cursor | `git clone https://github.com/khasky/awesome-agent-skills ~/.cursor/plugins/local/awesome-agent-skills`, then **Developer: Reload Window** | `git pull` in that folder | delete the folder |
-| Antigravity | clone the repository, then `agy plugin install <clone>` | `git pull` in the clone, then the `install` again | `agy plugin uninstall awesome-agent-skills` |
+| Antigravity CLI | clone the repository, then `agy plugin install <clone>` | `git pull` in the clone, then the `install` again | `agy plugin uninstall awesome-agent-skills` |
+| Kilo Code CLI | clone the repository, then add its `skills` folder to `~/.config/kilo/kilo.jsonc`: `"skills": { "paths": ["C:/repos/awesome-agent-skills/skills"] }` | `git pull` in the clone | remove the path |
 
 - Invoke a plugin skill as usual: `/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex. Qwen Code prefixes it with the extension's name: `awesome-agent-skills:awesome-code-review`.
 - Installed users get new work when the version in `.claude-plugin/plugin.json` changes, which every release bumps.
-- CI installs the plugin into Claude Code, Codex, Copilot CLI and Gemini CLI on every push. The Qwen Code, Cursor and Antigravity rows follow each agent's documentation and are not exercised.
+- CI installs the plugin into Claude Code, Codex, Copilot CLI and Gemini CLI on every push. The Antigravity CLI and Kilo Code rows were checked by hand (`agy` 1.2.14, `kilo` 7.8.1: all skills listed); the Qwen Code and Cursor rows follow each agent's documentation.
+- Antigravity CLI installs from a folder only, and copies it: an `owner/repo` target is refused. Kilo Code has no plugin format for skills (`kilo plugin` installs npm code modules), so it reads the clone through `skills.paths` instead, and a `git pull` reaches it directly.
 - Any other agent (opencode, Amp, Windsurf, Kiro, Grok Build, ...): use the Quick start or copy the folders by the table below.
 
 ## Install
@@ -107,6 +109,7 @@ The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, 
 | Amp | `.agents/skills/` | `~/.agents/skills/` | [docs](https://ampcode.com/manual#agent-skills) |
 | Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
 | Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
+| Kilo Code | `.kilo/skills/` | `~/.kilo/skills/` or `~/.agents/skills/` | [docs](https://kilo.ai/docs/customize/skills) |
 
 - **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
 - **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
