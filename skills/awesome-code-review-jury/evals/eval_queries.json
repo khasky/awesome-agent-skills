@@ -1,0 +1,22 @@
+[
+  { "query": "Get me a second opinion on my diff against main - I don't trust a review from the same model that wrote it.", "should_trigger": true, "split": "train" },
+  { "query": "run a multi-model review of the changes in src/billing/ before I merge", "should_trigger": true, "split": "train" },
+  { "query": "Have several independent reviewers look at this migration patch and have someone reconcile what they find.", "should_trigger": true, "split": "train" },
+  { "query": "You wrote the retry logic in queue/worker.go, so don't review it yourself - spin up separate subagents on different models to check it.", "should_trigger": true, "split": "train" },
+  { "query": "panel review of PR #212 please, with a judge that settles any disagreements", "should_trigger": true, "split": "train" },
+  { "query": "This touches the payment webhook signature check. One review isn't enough here, I want a jury on it.", "should_trigger": true, "split": "train" },
+  { "query": "Two reviews of my auth refactor contradict each other. Can you get a few fresh reviewers on it and a verdict on who's right?", "should_trigger": true, "split": "validation" },
+  { "query": "cross-check my uncommitted changes with three blind reviewers and give me one consolidated list of findings", "should_trigger": true, "split": "validation" },
+  { "query": "Before this lock-handling change in db/pool.ts ships, get an independent check from models other than you.", "should_trigger": true, "split": "validation" },
+  { "query": "I want the feature branch reviewed by more than one model, then merged into a single P0-P3 report.", "should_trigger": true, "split": "validation" },
+  { "query": "Review the diff for PR #341 before I merge it - correctness and security, the usual.", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "My teammate left six comments on my PR about the cache layer - help me answer each one.", "should_trigger": false, "belongs_to": "awesome-code-review-feedback", "split": "train" },
+  { "query": "Forget one change - I want a full security audit of the whole auth service.", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "Assess the architecture of the entire repository and give me a ship or block verdict.", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "We have two designs for the event bus; write up the trade-offs and recommend one.", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "train" },
+  { "query": "how do I configure which model a subagent uses in my agent settings?", "should_trigger": false, "split": "train" },
+  { "query": "The checkout test fails intermittently on CI - find out why and fix it.", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "validation" },
+  { "query": "Go through the repo and find code and comments that look machine-written.", "should_trigger": false, "belongs_to": "awesome-slop-audit", "split": "validation" },
+  { "query": "Run every test suite and lint against last week's baseline and tell me what regressed.", "should_trigger": false, "belongs_to": "awesome-regression-sweep", "split": "validation" },
+  { "query": "Rename the config loader's variables so they match the rest of the module, one small cleanup.", "should_trigger": false, "split": "validation" }
+]

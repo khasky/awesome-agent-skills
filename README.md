@@ -144,6 +144,7 @@ To clear an install, `npx skills remove -g -s <name>` takes explicit skill names
 | --- | --- |
 | [awesome-code-review](skills/awesome-code-review) | Reviews diffs and PRs for correctness, security, and team standards |
 | [awesome-code-review-feedback](skills/awesome-code-review-feedback) | Responds to review feedback: verify before implementing, clarify, push back with reasoning |
+| [awesome-code-review-jury](skills/awesome-code-review-jury) | Second opinion on a change: blind read-only reviewers on different models, a judge that cross-examines them and returns one verdict |
 
 ### Code quality and refactoring
 
@@ -267,6 +268,7 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | --- | --- | --- |
 | awesome-code-review · awesome-architecture-audit | Both read code and rank findings on the same severity scale | One diff or PR before merge → code-review. The whole project — boundaries, docs-vs-code fidelity, extensibility, SHIP/FIX/BLOCK → architecture-audit. |
 | awesome-code-review · awesome-code-review-feedback | Two ends of one review thread | Writing the review → code-review. Answering comments you received → code-review-feedback. |
+| awesome-code-review · awesome-code-review-jury | Both review one change and rank findings by severity | One reviewer, one pass → code-review. Several isolated reviewers on different models plus a judge that cross-examines them, at several times the cost → code-review-jury. |
 | awesome-security-audit · awesome-pentest | Same vulnerability classes, same CWE mapping | Static white-box read of your own code, no gate → security-audit. Active probing of a live target, hard-gated behind written authorization → pentest. |
 | awesome-security-audit · awesome-leak-audit | Both ask what an attacker gains | Exploitable server-side flaws → security-audit. What a shipped public client reveals about the private backend → leak-audit. |
 | awesome-security-audit · awesome-dependency-audit | Both report CVEs | Vulnerabilities in code you wrote → security-audit. The dependency graph itself — lockfiles, typosquats, install scripts, reachability → dependency-audit. |
