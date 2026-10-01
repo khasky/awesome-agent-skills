@@ -32,6 +32,8 @@ The body the file carries is published whole, always. What the publisher adds ar
 1. the first entry of `links`, on its own line after a blank line, if the file lists one and it fits;
 2. then hashtags, taken from the front of the `hashtags` pool, up to the platform's norm in the hashtag table of `awesome-content-campaign/references/platforms.md`, as many whole tags as still fit, on one line after a blank line.
 
+On `x` the link is not optional (user's rule, 2026-10-01): the link outranks the hashtags and the text. Where the link does not fit, the text is shortened by meaning until it does and tags are added only into the room left — the one exception to "nothing is ever cut" and to the body being published whole. The shortened text is approved in Phase 3b; `references/posting-x.md` has the details.
+
 The short form never carries a footer, and the publisher never adds one to it.
 
 **Regular and long forms.** The body already ends with the link line, the `***` separator and the footer, written by the writing skill. The publisher adds only the hashtags, after the footer: taken from the front of the pool, up to the platform's norm, as many whole tags as still fit, on one line after a blank line.
