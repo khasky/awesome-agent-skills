@@ -361,6 +361,7 @@ This phase never touches the engagement itself. No liking, no commenting, no fol
 - Navigating away while a submit is uploading, then reading the empty profile as proof of failure.
 - Treating a highest ID, a first DOM node, or an unrendered lazy grid as the answer to "did it post?" — only a count taken before and after, plus the opened permalink, settles it.
 - Repeating an identical failing click a third time instead of climbing the ladder in `references/browser-interaction.md`.
+- A click fired from page code, a pointer jumped onto a control's centre, or a short field filled in one instant event, where a real pointer path and real keystrokes would do (`references/browser-interaction.md`, *Input the way a person gives it*).
 - Typing the markdown source into a composer that does not render markdown, or assuming a platform's class from a note instead of from one of its existing posts.
 - Shipping a post with the tag block the author wrote for a different platform — five on `x`, twenty on `instagram`, any at all on `peerlist` — or silently editing that block instead of asking first.
 - Rewording a sentence to fit a cap. Whole paragraphs go; the author's words stay as written. The one exception is an X post whose link would not fit: there the text is shortened by meaning and the link stays.
