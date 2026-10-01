@@ -13,6 +13,6 @@ Shared rules for every platform:
 
 Each platform's own notes are a file of their own, `posting-<slug>.md` in this folder: read the slugs the run actually posts to, not the set. The slugs with notes here, in the order they were added:
 
-`facebook-wall`, `facebook-page`, `linkedin`, `reddit`, `lemmy`, `quora`, `tumblr`, `mastodon`, `bluesky`, `x`, `truthsocial`, `wonderful-dev`, `hackernoon`, `hashnode`, `devto`, `hackernews`, `patreon`, `ko-fi`, `bastyon`, `buymeacoffee`, `instagram`, `pixelfed`, `pinterest`, `vk-wall`, `threads`, `telegram`, `peerlist`, `daily-dev`, `minds`, `medium`, `telegraph`, `teletype`, `substack`, `blogger`, `flipboard`, `livejournal`, `dreamwidth`, `mewe`, `youtube`, `tiktok`, `imgur`, `flickr`, `mataroa`, `deviantart`, `github-gists`.
+`facebook-wall`, `facebook-page`, `linkedin`, `reddit`, `lemmy`, `quora`, `tumblr`, `mastodon`, `bluesky`, `x`, `truthsocial`, `wonderful-dev`, `hackernoon`, `hashnode`, `devto`, `hackernews`, `patreon`, `ko-fi`, `bastyon`, `buymeacoffee`, `instagram`, `pixelfed`, `pinterest`, `vk-wall`, `threads`, `telegram`, `peerlist`, `daily-dev`, `minds`, `medium`, `telegraph`, `teletype`, `substack`, `blogger`, `flipboard`, `livejournal`, `dreamwidth`, `mewe`, `youtube`, `tiktok`, `imgur`, `flickr`, `mataroa`, `deviantart`, `github-gists`, `blind`.
 
 A slug the post set names with no file here is a slug this skill has no observed flow for. Say so in the report and drive it from the shared rules above plus an accessibility snapshot, never from another platform's notes.

@@ -17,6 +17,7 @@ Every platform on the list is reached as a website in a logged-in browser — `a
 | `linkedin` | linkedin.com | — | optional | horizontal | `genre-micro-post.md` |
 | `reddit` | reddit.com | subreddit | optional | vertical | `genre-community-post.md` |
 | `lemmy` | any Lemmy instance | instance domain + community | optional | vertical | `genre-community-post.md` |
+| `blind` | teamblind.com | channel, picked from the composer's list (the account's followed channels) | optional | horizontal | `genre-community-post.md` |
 | `quora` | quora.com | defaults to a personal post from the home composer (`Post`, audience `Everyone`); ask only when the user names a Space | optional | horizontal | `genre-community-post.md` |
 | `tumblr` | tumblr.com | — | optional | horizontal | `genre-micro-post.md` |
 | `mastodon` | any Mastodon instance | instance domain | optional | horizontal | `genre-micro-post.md` |
@@ -71,6 +72,7 @@ The vertical picture holds the whole source in a band across its middle, so a pl
 | `linkedin` | horizontal | up to 4:5 tall and 3:1 wide, so either file fits; the 16:9 one is the owner's call, since the 4:5 crop of the vertical file shows the blurred fill and pushes the text below the fold | owner's decision, 2026-09 | decided |
 | `reddit` | vertical | no enforced ratio; preview boxes between 4:3 and 16:9 keep the band; guides split | size guides only | low |
 | `lemmy` | vertical | list view shows a near-square generated thumbnail | join-lemmy.org release notes | low |
+| `blind` | horizontal | no published spec; the composer previews an upload as a landscape thumbnail | none | low |
 | `quora` | horizontal | scales to the reading column, no forced crop | size guides only | low |
 | `tumblr` | horizontal | fixed-width dashboard column, tall images shown in full, so the vertical file shows its blurred fill top and bottom | the account's own post, 2026-09 | measured |
 | `mastodon` | horizontal | 16:9 is the preview box many clients and instances still crop to | docs.joinmastodon.org/user/posting | medium |
@@ -153,6 +155,7 @@ Tag count is a platform property, not an author preference. The same tag block t
 | `hashnode`, `medium`, `hackernoon`, `substack` | up to 5 | the platform's own tag/topic field | Medium's publish panel states the five-topic cap in the UI. A body tag line is not the mechanism on any of them. |
 | `peerlist` | none — refused | — | The composer says so in words: *"We don't support hashtags (yet)."* A tag line must be dropped before submitting. |
 | `reddit`, `lemmy`, `hackernews` | none | — | No hashtag system at all. Flair (reddit) and the title do this job; a tag block marks the post as imported spam. |
+| `blind` | 2–4 | body, last line | Clickable: each `#tag` in a body links to `teamblind.com/search/<tag>`, and posts read on 2026-09-30 end on two to four of them. |
 | `quora` | none | — | Topics attach to questions, not to posts, and the composer offers no tag field. A post is filed by the profile or the Space it went to. |
 | `wonderful-dev`, `daily-dev` | none | — | Measured on published posts: body hashtags render as plain text with zero anchors on either platform, so a tag line indexes nothing and reads as an import. |
 | `ko-fi`, `buymeacoffee`, `patreon` | 0–3 | the platform's own field | Each has one and the body has no tag line: ko-fi a comma-separated `Tags` row in the blog editor's sidebar, buymeacoffee a `Categories` block in the right rail, patreon `Add tags` beside the editor. Audience is existing supporters rather than search, so the count stays low. |
@@ -193,6 +196,11 @@ Document posts, a PDF shown as swipeable pages, are LinkedIn's carousel; in Buff
 Title + body, markdown supported, no hashtags. Everything is per-subreddit: rules, flair (sometimes mandatory), automod filters, self-promotion limits (many subs enforce participation ratios). Marketing register is punished by design — posts must lead with value and disclose affiliation. Target detail required: subreddit; fetch and read its rules before writing.
 
 Reddit refuses the agent's fetcher outright, on `www.reddit.com` and `old.reddit.com` alike, including the `about/rules.json` endpoint; retrying the URL or a mirror host does not change that. The rules are read through the user's own logged-in browser (the publisher's browser bridge) or the user confirms them; the run never records "rules read" on the strength of a fetch. Lemmy is the opposite case: its instance API answers plain fetches, and the community search and `community?name=` endpoints return the sidebar, the rules and the subscriber and post counts.
+
+### blind
+Anonymous professional network (Blind, `teamblind.com`): verified employees post under a company label and a username, mostly about careers, pay, layoffs and the tech industry, in public channels. The audience is large and US-centred, and it reads anything that looks like marketing as an intrusion, so the post leads with the useful part and the link is a reference at the end. The composer is a page, not a dialog (`teamblind.com/post/write`): a channel, a title of up to 120 characters, and a plain-text body. Bare URLs become links and `#tags` link to search; no markdown renders. Target detail required: the channel, which the composer chooses from the account's own channel list. Each channel's placeholder states its rule, for example `Information Technology Career`: *"Keep it relevant. If the community flags your posts for going off topic, it will be invisible to the community."*
+
+Posting needs a company the platform has checked. An account whose `Company Name` is empty posts as `New / <username>`, and until Blind finishes reviewing the company it refuses every post with a toast that lasts about two seconds — *"We're reviewing your company information. This may take up to 72 business hours."* — while the page stays on the composer. Check this in Phase 3 rather than at publishing time.
 
 ### lemmy
 Federated link-and-discussion aggregator, reddit-shaped: title + markdown body or a link submission, per-community rules, no hashtags, votes and moderators. The instance is part of the address — `lemmy.world` is the largest but one among many, and a community name means nothing without it. Target detail required: instance domain and community; read that community's sidebar rules for self-promotion limits before writing, exactly as with a subreddit. Small, technically literate audience that reads marketing register as an intrusion.
