@@ -37,7 +37,7 @@ The failure classes, in this order, because each is a different repair:
 - **Stale.** The value was right when the source was written. Correct it per the correction-locality rule in `fidelity.md`.
 - **Causal overreach.** The source reports that two things happen together and the form says one causes the other.
 
-Then the links, every one in the form: open it, read the page, confirm it still says what the form says it says, and check the label against the destination. Record the check in the `url` column.
+Then the links, every one in the form: open it, read the page, confirm it still says what the form says it says, and check the label against the destination: a label that says nothing about it (`here`, `this link`) is rewritten to name the page. Record the check in the `url` column.
 
 Exit: every assertive sentence has a verdict, none is `unsupported` or `over-stated`, every URL opened this run.
 

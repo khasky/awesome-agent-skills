@@ -75,7 +75,8 @@ A banned-word list produces prose that dodges the list. Count instead, per 200 w
 - a nominalization where a verb was available, a transition word that names a relation the sentence order already shows (`additionally`, `moreover`, `furthermore`), a triad where the material has two items or four;
 - the `not X, but Y` frame, the `it is not only ... but also` frame, an announced thought (`the key insight is that`), a summary that restates the paragraph above it;
 - a stock intensifier (`crucial`, `pivotal`, `robust`, `seamless`, `powerful`), an abstraction standing where a named thing belongs;
-- a sentence whose subject is the post itself.
+- a sentence whose subject is the post itself;
+- a passive that hides an actor the reader needs (`the config is updated` where the installer, the user or the vendor does it).
 
 The abstraction standing where the method or the product has a name is the one that arrives at every level, usually while the name sits in the run's own evidence notes. Technical terms that are the only precise word are not tells, and a construction quoted from the source keeps its quotation marks and is exempt.
 

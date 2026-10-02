@@ -55,6 +55,8 @@ A first sentence made only of category nouns (`a cheaper model`, `the client you
 
 **One scene, and a turn where the source has one.** The first sentence may run long as long as it is one situation; the openers readers kept averaged 20 words. The judgment is not folded into it. Where the source records what sent the author looking, that turn is its own sentence after the scene, at most 6 words. Where it records none, the form goes on to the finding: a turn written to fill the slot ends up as a contrast with somebody else's product. A quotation, a paper, a vendor document or the mechanism sentence opens a form only where the source itself opens on it.
 
+**The promise, once, in a guide's long form.** For a `guide/tutorial` source or the `learning` family, the paragraph after the opener may state the `Source promise` in the reader's terms: what they will have running, or be able to do, when they finish. One sentence about the reader's result, never about the post or a list of its sections.
+
 **A stance opener carries its reason in the same sentence.** `I would put <subject> behind <A>.` is a preference with nothing behind it. `I would run <subject> under <A> for the cheap half of the work.` is the same move plus the thing the reader came for.
 
 Banned first lines: a vague event with a vague time; a mystery tease; a first line that could describe ten unrelated products; a line that restates the title; a line about how the topic is usually argued; a verdict announced before the content (`The setup I would actually keep is the boring one:`); a self-positioning contrast on the author's own reading (`I read <subject> as X, rather than as Y`); a second-person chore (`Open your <file> and count`) under first-person voice.
@@ -66,7 +68,7 @@ Where a question opens a regular post, it is one clause, one thing asked, and ev
 What each form covers, by source type. These are default orders; the source's own order wins where it differs.
 
 **Guide/tutorial.**
-- Long: an intro with the paths block, one `##` section per path in source order, the proof section under a question heading that names the peers, a caveat section, a troubleshooting section with its block and a one-line lesson, then the references. Setup comes before the economics, and the economics exist without consuming the article.
+- Long: an intro with the paths block, the prerequisites where the source lists them, one `##` section per path in source order, the proof section under a question heading that names the peers, a caveat section, a troubleshooting section with its block and a one-line lesson, then the references. Setup comes before the economics, and the economics exist without consuming the article.
 - Regular: the opener naming what stays and what changes, the primary path in prose (no block), the other paths in one sentence, the proof, the split, the scope, the caveat, the verdict, the link.
 - Short: the stance with its reason, the proof, the split in one sentence, the verdict.
 
@@ -92,7 +94,7 @@ Central parts, in the long form:
 - **Secondary paths** get one to three sentences, or one short block, never both.
 - **Text diagrams** carry the mental model, a routing split, a before-and-after or a question reframed, in fenced `text` blocks, three to eight lines, ASCII only. A diagram the run drew appears in the long form only; a block the source carries may appear wherever the form allows blocks.
 - **Headings** are literal or state the finding, one per module. A regular form's heading is a short line of plain words that still reads after the publisher replaces its `##` with an emoji on a plain-text platform.
-- **Paragraphs** are two to four sentences in the long form, one or two in the regular, and never three one-line fragments in a row.
+- **Paragraphs** carry one idea each: two to four sentences in the long form, one or two in the regular, and never three one-line fragments in a row. More than five prose paragraphs in a row in the long form need a heading, a block or a list between them.
 
 ## 5. Closings
 
@@ -176,7 +178,7 @@ When price is the decision axis: verified API-to-API rates, one locked peer set,
 
 ## 10. Punctuation, shape and emphasis
 
-ASCII only: `'`, `"`, `-`, `->`. No em or en dash and no Unicode arrow outside exact code, a quotation or the footer. No semicolons, at any length: two thoughts are two sentences. No calendar date in prose except an `as of` qualifier on a correction of a temporary state.
+ASCII only: `'`, `"`, `-`, `->`. No em or en dash and no Unicode arrow outside exact code, a quotation or the footer. No semicolons, at any length: two thoughts are two sentences. No calendar date in prose except an `as of` qualifier on a correction of a temporary state, and in the long form on a price, rate or plan tier (`references/surface-rules.md`).
 
 Numbers carry the precision they were measured with and no decoration zeros: `1.00%` is `1%`, a whole number never carries a decimal point, and a value the source states loosely keeps the source's precision.
 

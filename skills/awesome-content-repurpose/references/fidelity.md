@@ -4,7 +4,7 @@ Every check here compares against `source/`, the notes, or a count, never agains
 
 ## 1. Evidence notes
 
-`source-notes.md` opens with `Source paragraphs: N`, `Source type`, `Primary subject`, `Thesis`, `Source promise`, `Form sources`, then evidence lines, each with its position `(at pN)` where it comes from the source:
+`source-notes.md` opens with `Source paragraphs: N`, `Source type`, `Primary subject`, `Thesis`, `Source promise`, `Audience`, `Form sources`, then evidence lines, each with its position `(at pN)` where it comes from the source:
 
 ```text
 [C1] <claim in the source's own terms> (at pN)
@@ -23,7 +23,7 @@ A number without its condition is not reusable. A `[D]` line combines grounded n
 
 ```text
 [M1] <module name>
-role: primary-path | secondary-path | decision-axis | caveat | troubleshooting | auxiliary-detail
+role: prerequisite | primary-path | secondary-path | decision-axis | caveat | troubleshooting | auxiliary-detail
 portable takeaway: <one sentence that survives the short form>
 medium details: <supporting specifics for feeds>
 deep details: <raw rates, exact windows, policy wording, alias history, long config>
@@ -31,7 +31,7 @@ representation: prose | list | steps | code/config | table | mixed
 evidence: C#, N#, S#, Q#, E#
 ```
 
-At most 2 `primary-path` modules. The map is structural evidence: a post can be accurate in every sentence and still be unfaithful when it drops most modules for one derived theme. For a guide, module coverage is a first-class check; for the other source types the modules follow the shapes in `authored-style.md` section 4.
+At most 2 `primary-path` modules. A `prerequisite` module exists only where the source lists what must be in place first, and in the long form it comes before the first path. The map is structural evidence: a post can be accurate in every sentence and still be unfaithful when it drops most modules for one derived theme. For a guide, module coverage is a first-class check; for the other source types the modules follow the shapes in `authored-style.md` section 4.
 
 ## 3. Ledgers
 
@@ -63,6 +63,10 @@ The same budget binds source-derived deep details: exact clock windows, jurisdic
 ## 7. Commands
 
 Publish a command only if it appears in the source and remains valid, or was corrected or confirmed by current official documentation. Never infer a variable name or flag from a similar tool, and never add a launch line, a variable or a step to a block because it seems implied: a setup block is the source's lines and nothing else. A remote script URL may appear in a code block when the official source documents it; it is never a frontmatter link. The minimal setup block per primary path is identical in every form that shows it.
+
+Where the source shows what a command prints, or how the reader confirms a step worked, that output or check stays beside the command in the long form, as the source shows it. An output the source does not show is never written, and a run of the command in this session never supplies one.
+
+Some commands stay verbatim and still need a sentence: a remote script piped to a shell, a switch that turns off certificate or signature checks, permissions opened wide (`chmod 777`), a credential passed on the command line. The long form adds one sentence beside such a command saying what it does, and the safer step where the source or the official page names one. A credential-shaped value (a token, a key, a password that looks real) never reaches a post: it becomes a placeholder, and the report names the change.
 
 ## 8. Personal framing
 
