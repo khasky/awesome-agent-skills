@@ -7,7 +7,7 @@ A run writes three files and no others. Each one is a form that serves a group o
 | Form | File | Default platforms | Ceiling | Carries | Never carries |
 | --- | --- | --- | --- | --- | --- |
 | long | `3-long.md` | `blogger`, `buymeacoffee`, `deviantart`, `devto`, `dreamwidth`, `github-gists`, `hackernoon`, `hashnode`, `ko-fi`, `livejournal`, `mataroa`, `medium`, `patreon`, `substack`, `telegraph`, `teletype`, `tumblr` | section 3 | `##` and `###` headings, fenced `text` blocks, lists, a labelled reference list, the footer | an H1, a tag line, a markdown table |
-| regular | `2-regular.md` | `bastyon`, `blind`, `daily-dev`, `facebook-wall`, `instagram`, `linkedin`, `mewe`, `minds`, `pixelfed`, `quora`, `vk-wall`, `wonderful-dev`, `youtube` | 2000 characters, the whole body counted, link line and footer included | `##` headings, short lists, one bare link line, the footer | an H1, a fenced block, a table, a command that contains a URL, a tag line |
+| regular | `2-regular.md` | `bastyon`, `daily-dev`, `facebook-wall`, `instagram`, `linkedin`, `mewe`, `minds`, `pixelfed`, `quora`, `vk-wall`, `wonderful-dev`, `youtube` | 2000 characters, the whole body counted, link line and footer included | `##` headings, short lists, one bare link line, the footer | an H1, a fenced block, a table, a command that contains a URL, a tag line |
 | short | `1-short.md` | `bluesky`, `flickr`, `flipboard`, `imgur`, `mastodon`, `peerlist`, `pinterest`, `threads`, `tiktok`, `truthsocial`, `x` | 280, counted the way `x` counts | complete plain sentences, at most one emoji | a heading, a list, a fence, markdown emphasis, a URL, a tag, the footer |
 
 The slugs are the canonical ones in `awesome-content-campaign/references/platforms.md`. The youtube channel post carries the `youtube` slug.
@@ -44,7 +44,6 @@ These are the platform limits the defaults rest on. Each row names where the num
 | `youtube` | 10,000 | characters | measured |
 | `vk-wall` | about 16,000 | characters | secondary |
 | `facebook-wall` | 63,206 | characters | secondary |
-| `blind` | 120 title | characters; the body textarea took 12,000 characters without a counter or an error, and no server cap is known | measured |
 | `mewe`, `minds`, `daily-dev`, `quora` | none published | | |
 | `tumblr` | 4096 per text block | a longer paragraph is split into blocks automatically | documented |
 | `deviantart` | 65,535 | characters, embedded images included | secondary |

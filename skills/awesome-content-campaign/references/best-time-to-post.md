@@ -25,7 +25,6 @@ One window is never a schedule. The campaign spreads slots across the window on 
 | `pinterest` | 13:00-15:00, second peak 20:00-23:00 | weekdays | Measured, 2026 platform guides |
 | `telegram` | 13:00-16:00 for a work audience, 18:00-22:00 for a general one | Mon-Fri | Measured, 2026 channel datasets |
 | `reddit`, `lemmy` | 14:00-17:00 **UTC** | Tue-Thu | Measured, a 2026 analysis of 12 developer-tool subreddits; the window catches the European afternoon and the start of the US East Coast day |
-| `blind` | 15:00-19:00 **UTC** | Tue-Thu | Class default, US workplace community: 08:00-12:00 US Pacific, the start of the West Coast working day, when the audience reads on the job |
 | `hackernews` | 14:00-17:00 **UTC** | Tue-Thu | Measured, the same window in hours: 09:00-12:00 US Eastern, which is when the audience is awake and the author can answer comments |
 | `mastodon`, `pixelfed` | 09:00-12:00, second peak 18:00-21:00 | Tue-Thu | Class default, fediverse: no ranking algorithm, so a post reaches the followers who are online at that minute and the window is simply when they are |
 | `minds`, `bastyon`, `truthsocial`, `mewe`, `vk-wall`, `flipboard` | 09:00-12:00, second peak 18:00-21:00 | Tue-Thu | Class default, general feed |
