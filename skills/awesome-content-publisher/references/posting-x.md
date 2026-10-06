@@ -1,5 +1,15 @@
 # x
 
+## Account health during preflight
+
+After confirming the signed-in handle, inspect the rendered home page, the account's own profile and the All tab of notifications for platform-issued account notices. Open a notice's informational details when needed to establish whether it concerns this account and what it restricts; do not dismiss it, appeal it or change account settings. Look for temporary spam or authenticity labels, reach restrictions, locked or suspended status, posting limits and security or verification requirements. Read the meaning in the browser's language, not only English keywords; ordinary profile badges and other users' posts are not account warnings.
+
+Record the checked surfaces, time, handle and any relevant notice text and URL in the run's ledger, never in this skill. An old notification alone does not prove a restriction is still active: read its details and any explicit resolution notice. If its current status remains unclear, report that uncertainty. An unreadable surface or incomplete check is unknown, not clear; seeing no notice means only that none was visible on the checked surfaces, not that X guarantees unrestricted reach. Do not submit a test post to check account health.
+
+Any finding or uncertainty goes to the Phase 3b accept-risk-or-skip decision before the publishing gate. Skipping X affects only X entries, including X targets of shared form files; other platforms continue. A blocking challenge or restriction requires manual resolution and a fresh check even if the user accepts the risk.
+
+## Publishing
+
 On `/compose/post` the page carries two Post buttons and the background one is the trap. A search for the last enabled button whose text is `Post` returned the *timeline's* inline composer button, sitting under the modal backdrop — `elementFromPoint` came back as a full-screen `div` (`r-1xcajam`, position-fixed inset-0) and the coordinate click hit the scrim. Target `[data-testid="tweetButton"]` (the dialog's) and treat `[data-testid="tweetButtonInline"]` as the background one; it is `disabled` while the modal is open, which is the cheapest way to tell them apart.
 
 That button then answers `handle.click()` and not a coordinate click. A coordinate click at its own hit-tested centre left the composer full at 242 characters; `page.$('[data-testid="tweetButton"]')` plus `handle.click()` published immediately and the toast read *"Your post was sent."* Because two submit attempts happened, the profile was checked for duplicates: exactly one copy — but on a platform with no edit, that check is mandatory, not optional.
