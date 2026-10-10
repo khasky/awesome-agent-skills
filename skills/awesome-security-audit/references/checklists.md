@@ -59,6 +59,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 - In responses — Do not return PII, secrets, or internal details beyond what the client needs. Mask or omit fields as appropriate.
 - In logs — No PII (email, phone, etc.) or secrets in log messages. Use structured logging with redaction if the project supports it.
 - In errors — Do not expose stack traces, SQL, or internal paths to end users; log them server-side only.
+- In prompts — User data placed in an LLM prompt or context leaves for a third-party provider; checked under §7, Sensitive data sent to the model provider.
 
 ## 5. Dependencies
 
@@ -83,6 +84,7 @@ cursor.execute("SELECT * FROM users WHERE id = %s", (user_id,))
 
 - Output handling — LLM output that reaches SQL, shell, DOM, `eval`, or tool-call sinks is attacker-influenced input; trace `llm.complete(...) → sink` like any other injection.
 - Prompt assembly — User or retrieved content concatenated into instructions. Delimiters reduce, not eliminate, injection — the real finding is "untrusted input + LLM output reaching a privileged sink", not "no delimiter tags".
+- Sensitive data sent to the model provider — Personal or sensitive user data in a prompt, retrieved context, or tool result crosses a trust boundary to a third party (OWASP LLM02:2025 Sensitive Information Disclosure). Read the code path that assembles the prompt and list the fields it sends: only what the task needs goes out, identifiers and free-text PII are redacted or pseudonymized before the call, and the provider's retention and training terms are acknowledged in config or docs (a retention setting, a data-processing note). Model output that can echo sensitive context back is filtered before it reaches a response or a log. Evidence: the prompt-building function and its field list. CWE-359.
 - System prompt secrets — Credentials, keys, or authorization rules embedded in the system prompt: assume extractable.
 - Tool surface — Agent tools follow least privilege; destructive tools sit behind an approval gate; no admin credentials in agent context — short-lived scoped tokens instead.
 - Cost and abuse — Per-user token/cost caps and timeouts on completion endpoints.

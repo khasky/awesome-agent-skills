@@ -32,8 +32,10 @@ reference/cli.md          commands, arguments, flags, exit codes
 reference/events.md       events, messages, queues, webhooks
 reference/data-model.md   entities, relations, schema, migrations workflow
 reference/configuration.md   config files, keys, environment variable names, feature flags
+reference/errors.md       error codes and messages a user or developer sees, with cause and remedy
 operations.md             build, test, CI gates, deploy, observability, runbooks the tree records
 guides/<task>.md          one how-to per recurring change
+guides/upgrading.md       breaking changes and deprecations per version (only from a changelog or version tags)
 patterns.md               the structural and code-level patterns the project uses, with where to see each
 user-guide/<feature>.md   what a user can do and how, without code (only when end users are an audience)
 glossary.md               project terms
@@ -48,9 +50,9 @@ llms-full.txt             the whole set in one file (only on request)
 - getting-started — only steps the tree supports: toolchain versions from pin files, install and run commands from the manifest or task runner, test commands from CI, the environment variables a local run needs (names only). A step the tree does not reveal is an open question, not an invented instruction.
 - architecture — the system context (users, external systems) with a diagram; the units and how they talk (calls, queues, shared database) with a diagram; per unit, the modules by layer with a diagram; cross-cutting concerns each in a short section naming the module that owns it; design decisions — recorded ones from ADRs and comments with links, inferred ones in a separate list labeled as inference.
 - flows — trigger, preconditions, the hops as a numbered list with `file:line` and one sentence each, a sequence diagram, the error paths, and the data written along the way.
-- reference pages — tables generated from the code's own registrations, one row per item, each row citing the definition. Endpoints: method, path, handler, input schema, response shape, errors, auth. CLI: command, arguments, flags with defaults, exit codes. Configuration: key, type, default, where read, what it controls.
+- reference pages — tables generated from the code's own registrations, one row per item, each row citing the definition. Endpoints: method, path, handler, input schema, response shape, errors, auth. CLI: command, arguments, flags with defaults, exit codes. Configuration: key, type, default, where read, what it controls. Errors, only when the project has user- or developer-visible errors worth looking up: the code or message text as the code writes it, where it is raised (cited), the cause, and what the reader does about it; every row comes from a raise or return site, never from a message seen only in docs.
 - operations — declared commands with their source file; what CI runs and in which order; deploy target and mechanism; logs, metrics and traces as far as the code emits them.
-- guides — goal, prerequisites, ordered steps each naming a file to change or a command to run, how to verify the change works, and what commonly goes wrong (from pitfall comments and reverted commits).
+- guides — goal, prerequisites, ordered steps each naming a file to change or a command to run, how to verify the change works, and what commonly goes wrong (from pitfall comments and reverted commits). The upgrading guide is written only when a CHANGELOG or version tags exist to source it from: per version, the breaking changes and deprecations with the replacement for each, each linked to its changelog entry or the diff between tags; a version with no recorded source is left out, not reconstructed.
 - patterns — each pattern with a plain-language meaning in this project, one or two sites to read, and a count when it is presented as the norm.
 - glossary — each project term with a one-line meaning taken from the code or docs, and a link to where it is defined.
 - open-questions — every gap, grouped by document, so owners can answer them in one pass.
@@ -81,6 +83,7 @@ Inside the module document, under Public interface, or on a separate page when a
 - Parameters and return value, each with type and meaning; defaults.
 - Errors raised, and under which conditions.
 - Side effects: I/O, mutation of arguments or shared state, events emitted.
+- Deprecated, when the code marks it so: since which version and the replacement, taken from the deprecation annotation, doc tag or runtime warning; a marker that names neither is quoted as it stands.
 - Usage: one or two real call sites linked, rather than an invented example. An example is written only where no call site exists (a library's public API), and it is marked as illustrative.
 - Source link.
 

@@ -42,6 +42,7 @@ Before attempting ANY fix:
 1. Read error messages and stack traces
    - Do not skip past errors or warnings. Note line numbers, file paths, and error codes.
    - They often contain the exact cause or the failing component.
+   - Pin the expected behavior before you chase the wrong one. Read the whole ticket thread, not only its title — comments often carry the repro steps and the workaround users already rely on — and follow its links to the spec or ADR. Write down the acceptance criteria the fix must meet; if none exist anywhere, say so in the report rather than inventing them.
 
 2. Reproduce consistently — the feedback loop IS the work
    - Build a fast, deterministic check the agent can run without human interaction that produces pass/fail, not "looks wrong". This loop is the deliverable of this phase; if you catch yourself reading code to build a theory before the loop exists, stop and build the loop first.
@@ -54,6 +55,7 @@ Before attempting ANY fix:
 
 3. Check recent changes
    - What changed that could cause this? Git diff, recent commits, new dependencies, config or env changes.
+   - Check whether this bug was fixed before: fix commits touching the same files or symbol (`git log -p -- <file>`, `git log -S <symbol>`) and closed tickets with the same symptom. A symptom that came back means the earlier fix treated a symptom; say so in the report, read what that fix changed, and route the "why does it keep happening" question to awesome-root-cause rather than answering it inside this fix.
 
 4. Multi-component systems
    - When the system has multiple layers (e.g. CI → build → API → DB), add diagnostic instrumentation at each boundary: log what enters and exits, verify config and state. Run once to see where it breaks, then focus on that component.
@@ -75,6 +77,7 @@ Done when: the loop has been run at least once and its output matches the failur
    | Correct after restart or cache clear | Stale cache | Memoization, cache invalidation |
    | Works on one machine/env only | Config drift | Env vars, dependency versions, config files |
    | Out-of-order effects, empty results | Missing await / unresolved promise | Async call sites |
+   | Works one way only (saves but won't load, opens but won't close) | Paired operation drift | The other side of the pair: encode/decode, acquire/release, migrate up/down — one side changed, its partner did not |
 
 1. Find working examples — Similar code in the same codebase that works. What is different?
 2. Compare to references — If implementing a pattern (e.g. from docs or another service), read the reference fully; do not skim.
@@ -101,7 +104,7 @@ Done when: 3–5 falsifiable hypotheses are ranked and written down, the leading
 1. Minimize the repro — Before fixing, cut inputs, callers, config, data, and steps one at a time, re-running the loop after each cut, until only the essential trigger remains.
 2. Create a failing test (or repro) — Simplest reproduction: automated test if possible, or one-off script. Must exist before applying the fix — but only if a correct seam exists to test at; if no correct seam exists, that itself is the finding.
 3. Implement a single fix — Address the root cause. One change. No "while I'm here" refactors or extras.
-4. Verify — Test passes; no other tests broken; issue actually resolved.
+4. Verify — Test passes; no other tests broken; issue actually resolved; the acceptance criteria from Phase 1 are met. Then check the blast radius: callers that relied on the buggy behavior (search every call site of what changed), data already written wrong while the bug was live (its repair is a separate step the user approves, never folded into the fix), and whether the fix changes a contract — a response shape, a persisted format, an error code — in which case hand off to awesome-regression-sweep before calling it done.
 5. If the fix doesn't work — Stop. No fixes before diagnosis is complete, no exceptions; one fix at a time, test after each. If you have tried 3+ fixes and each reveals a problem elsewhere (a fix cascade), question the architecture (see below). Do not attempt a fourth fix without stepping back.
 
 Done when: the original repro no longer reproduces, the regression test fails without the fix and passes with it (or its missing seam is reported as the finding), and every `[DEBUG-...]` tag is gone.

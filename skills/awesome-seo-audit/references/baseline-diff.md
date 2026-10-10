@@ -7,6 +7,7 @@
 - Writing it so it diffs
 - Severity of a change
 - Same sample, or no diff
+- Migrations, where the URL set itself changes
 - Reporting drift
 
 ## Why the mode exists
@@ -121,6 +122,18 @@ A snapshot serialized in whatever order the parser happened to emit produces a d
 A diff taken over a different URL set is not a diff. If this run reached fewer pages — a budget cap, a fetch failure, a section that moved — say so and diff only the intersection, naming the URLs excluded from the comparison and why.
 
 The same applies to method. A baseline captured from raw HTML and compared against a run that captured rendered HTML produces a page of differences that are all artifacts. Record which was captured, and compare like against like.
+
+## Migrations, where the URL set itself changes
+
+The same-sample rule makes a migration invisible: every old URL drops out as missing, every new one as unseen, and the intersection is empty or nearly so. A domain move, an HTTPS or path restructure, or a platform change is diffed against a map instead.
+
+- **Capture the old set before the change.** The baseline sitemap, the internal crawl, and the indexed pages from Search Console where it is available, stored with the raw pulls. A list rebuilt after the switch holds only what the new site still links to. Where no pre-change list exists, say so: the map can then be checked only for the URLs someone remembered.
+- **An old→new map, one row per old URL**, supplied by the owner or derived and confirmed with them. An old URL with no row is the first finding.
+- **Each old URL reaches its own counterpart in one permanent redirect** — 301 or 308, one hop, landing on a 200. A chain, a 302, a redirect to the home page or a category root, or a target that is a soft 404 each sheds what the old URL had earned. Every old URL redirected to the home page is Critical: the engine reads it as a soft 404.
+- **The page carries its signals across.** Diff the old URL's snapshot against its counterpart's, field by field, on the severity scale above: title, description, `h1`, structured data, the canonical now naming the new URL rather than the old one, hreflang rewritten to the new set.
+- **Nothing still points at the old set.** Internal links, sitemap entries, canonicals, hreflang and feed items name new URLs directly. Each remaining reference costs a hop on every crawl; report the count.
+
+The block above the findings becomes `Migration vs baseline <date>: <n> old URLs · <n> mapped · <n> one hop to their counterpart · <n> failing`, with one line per failing row.
 
 ## Reporting drift
 

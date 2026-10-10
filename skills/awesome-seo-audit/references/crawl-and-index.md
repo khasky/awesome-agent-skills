@@ -140,3 +140,4 @@ Not SEO in itself, but it decides whether the next audit can corroborate anythin
 - An analytics tag present on every page template. A template with no tag is a permanent blind spot, and it usually happens to be the one nobody looks at.
 - No duplicate tag on the same page, which double-counts sessions and quietly invalidates every before-and-after comparison a fix is judged on.
 - Consent gating that blocks measurement entirely in a market where the site operates, reported as a measurement gap rather than an SEO defect.
+- Server access logs retained and reachable. They are the only record of what Googlebot and every other crawler actually fetched, which is how a crawl trap, a blocked path or a crawler that never arrives shows up as traffic rather than inference. Reading them and verifying bot identity is in [ai-visibility.md](ai-visibility.md); without them, crawler behavior is `NOT ASSESSED`.

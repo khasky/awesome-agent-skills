@@ -83,7 +83,7 @@ Write the layer list down with the edge list. It is the schedule for Phase 4 and
 Collect while reading, so writers do not re-derive them:
 
 - Module: purpose (one sentence), public surface (exported definitions), imports in and out, external systems touched, configuration read, errors raised and handled, state held (caches, singletons, connections), concurrency (workers, locks, async boundaries), and comments that record a reason or a warning.
-- Definition: signature, what the body does, preconditions it checks, what it returns, what it raises, side effects (I/O, mutation, events emitted), callers found by search, and whether it is reachable from the unit's public surface.
+- Definition: signature, what the body does, preconditions it checks, what it returns, what it raises, side effects (I/O, mutation, events emitted), a deprecation marker with its version and replacement, callers found by search, and whether it is reachable from the unit's public surface.
 - Unit: entry points, build and test commands from its manifest and CI, runtime version pins, deploy target.
 
 ## Scaling

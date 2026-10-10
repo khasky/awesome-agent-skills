@@ -116,8 +116,9 @@ For every paragraph, ask:
 4. Does it assert causation without evidence (post-hoc)? "Launched in Q3, so adoption rose" is a logic error — either supply the proof ("adoption rose 25% the next month, driven by the onboarding change") or downgrade to correlation. This is a repair that *adds evidence*, never a hedge.
 5. Is the heading specific enough for a reader scanning the page?
 6. Are names, filenames, variables, and section labels unambiguous?
-7. Will this content drift? Screenshots, UI step lists, and hardcoded version numbers go stale fastest — flag them with a TODO comment if you cannot verify they are current.
-8. Would a scanning reader find the answer in 15 seconds? Check the headings, code-block placement, and the first 100 words.
+7. Is each concept named by one term throughout? Two names for one thing read as two things: pick the term the document uses most (or the one its glossary or the product defines) and apply it everywhere. Is each abbreviation expanded at its first use, unless the stated audience knows it without help?
+8. Will this content drift? Screenshots, UI step lists, and hardcoded version numbers go stale fastest — flag them with a TODO comment if you cannot verify they are current.
+9. Would a scanning reader find the answer in 15 seconds? Check the headings, code-block placement, and the first 100 words.
 
 Intentional style deviations are not errors: sentence fragments in marketing copy or a deliberately punchy register may be the author's choice — ask before normalizing them.
 

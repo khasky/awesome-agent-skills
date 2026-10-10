@@ -31,12 +31,12 @@ One-page ADR for a single decision; full design doc when the feature needs a dat
 
 ## Work Process
 
-1. Requirements before components — functional requirements as testable statements, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after. Read the decisions already recorded (existing ADRs) and the project's own glossary before naming anything: a design that renames a concept the codebase already has costs every reader a translation, and one that silently contradicts an accepted ADR gets re-litigated in review instead of decided here.
-2. Back-of-envelope the load — requests/sec, storage/year, working-set size, fan-out per action. Three lines of arithmetic kill more bad designs than any diagram; a design without numbers is a vibe. State the assumptions so a reader can re-run the math when the assumptions age.
-3. Sketch the contract before the internals — the API endpoints or events in/out, and the data model's core entities with their invariants. The contract exposes scope errors while they are still cheap (`awesome-api-design` for HTTP resource detail).
+1. Requirements before components — functional requirements as testable statements, each with a stable label the rest of the document cites and the mandatory ones listed apart from the desirable ones, then the constraints that shape the design: expected scale (users, QPS, data volume and growth), latency targets, consistency needs (what must be read-your-write, what can lag), availability expectations, compliance boundaries, and who will operate and maintain the result — what the team already knows how to run is a constraint like any other. Getting the scope wrong makes a technically impressive design solve the wrong problem — clarify with the user before designing, not after. Read the decisions already recorded (existing ADRs) and the project's own glossary before naming anything: a design that renames a concept the codebase already has costs every reader a translation, and one that silently contradicts an accepted ADR gets re-litigated in review instead of decided here.
+2. Back-of-envelope the load — requests/sec, storage/year, working-set size, fan-out per action. Three lines of arithmetic kill more bad designs than any diagram; a design without numbers is a vibe. State the assumptions so a reader can re-run the math when the assumptions age. Close with one line of monthly running cost at that scale and the item that dominates it — an order of magnitude from the same arithmetic, not a price list.
+3. Sketch the contract before the internals — the API endpoints or events in/out, and the data model's core entities with their invariants. The contract exposes scope errors while they are still cheap (`awesome-api-design` for HTTP resource detail). Ground it in the code first: find the nearest existing implementation of the same kind, and list by search — not from memory — every caller or consumer the contract change touches. A design that puts a second pattern beside the incumbent says why the incumbent cannot carry it, and every consumer found appears in the rollout.
 4. Generate 2–3 genuine alternatives — including the simplest thing that could work ("do nothing" or "a cron job and a table" is often a legitimate contender). An alternative added only to be knocked down is padding; each one gets its honest best case.
-5. Evaluate on the trade-off axes the requirements activate — not a fixed rubric: consistency vs availability, sync vs async, SQL vs NoSQL, monolith-extension vs new service, build vs buy, latency vs cost. For each active axis, say which side the requirements favor and why. Skip axes with no tension — padding dilutes the load-bearing analysis.
-6. Recommend, grounded in requirements — one recommendation, tied by name to the requirements that drove it ("eventual consistency suffices because the feed tolerates 30s lag — that unlocks the cheaper fan-out-on-read"). State what new information would flip the decision.
+5. Evaluate on the trade-off axes the requirements activate — not a fixed rubric: consistency vs availability, sync vs async, SQL vs NoSQL, monolith-extension vs new service, build vs buy, latency vs cost, technology the team already runs vs one new to it. For each active axis, say which side the requirements favor and why; an alternative nobody on the team can operate does not win on the technical axes alone. Skip axes with no tension — padding dilutes the load-bearing analysis.
+6. Recommend, grounded in requirements — one recommendation, tied by label to the requirements that drove it ("eventual consistency suffices because the feed tolerates 30s lag — that unlocks the cheaper fan-out-on-read"). State what new information would flip the decision, and the design's ceiling: the number from step 2 at which it stops working, the component that breaks first, and the next move then — one sentence, not a phased roadmap.
 7. Invert before you mitigate, then name non-goals and the path — run the risk pass backwards first: it is a year on, this decision was the wrong one, and the design is being unwound. Name the three things that killed it, in the concrete ("the backfill never finished and writes diverged"), never the abstract ("scaling risk"). Inversion surfaces what a forward pass rationalizes away, because "what would kill this" cannot be answered with "we will be careful". Each named cause then earns an early warning sign a reader could actually observe and either a mitigation or a written acceptance. Then explicit non-goals (what this deliberately does not solve, so scope creep has to argue with a sentence), the top risks with their mitigations, the migration/rollout order for existing data and consumers, and the rollback story (`rules`-level deploy discipline applies; a design that cannot roll out incrementally gets that called out here, not discovered in the PR).
 
 ## ADR format
@@ -68,8 +68,8 @@ Desired behavior:  <what happens after, including edge cases and error condition
 Key interfaces:    <the types, signatures, events or config shapes that change, and how>
 
 Acceptance criteria:
-- [ ] <specific, independently verifiable — "returns 409 on a duplicate idempotency key",
-      not "handles duplicates correctly">
+- [ ] <requirement label> <specific, independently verifiable — "returns 409 on a duplicate
+      idempotency key", not "handles duplicates correctly">
 
 Out of scope:      <the adjacent thing that must NOT be touched, so gold-plating has to argue>
 ```
@@ -90,6 +90,7 @@ Blocking, a document with any of these is not ready to hand over:
 - A full doc carries a section for each of requirements or problem, design or proposal, alternatives, recommendation or decision, non-goals, risks, and rollout or rollback — each with a body under it, not a heading standing alone. An ADR instead carries Status, Context, Decision, Alternatives considered and Consequences, none of them empty.
 - An ADR status reads proposed, accepted or superseded, and nothing else.
 - Alternatives number two or more, counted as list items or table rows. A paragraph mentioning one option is one alternative however long it runs.
+- Where acceptance criteria exist, every requirement label is covered by at least one, and every criterion cites a label the requirements section actually defines.
 
 Warnings, each answered or explicitly waived:
 
@@ -101,7 +102,7 @@ Then the judgement, which no check settles:
 
 - The three-condition test verdict is stated in one line — why this decision earned a document at all.
 - Every scale number traces to a stated assumption a reader can re-run; a number with no assumption is a vibe with digits.
-- A recommendation exists, cites the requirements that drove it by name, and states what new information would flip it.
+- A recommendation exists, cites the requirements that drove it by label, states what new information would flip it, and names its ceiling with the component that breaks first.
 - Re-read each alternative as its advocate: if one collapses under its own best case, it was a straw man — replace it or drop it.
 - The risk list came out of the inversion pass, not out of what was convenient to mitigate: each risk names an early warning a reader could observe, and a risk with no mitigation is written down as accepted rather than dropped.
 - Non-goals, rollback, and marked open questions are present; any requirement you invented rather than confirmed is moved to Open questions or deleted.

@@ -65,7 +65,7 @@ Load `references/doc-set.md`.
 
 1. Walk the layers from 0 upward. For each module, read its code and the already-written summaries of what it depends on, then write its module document: purpose, public interface, how it works inside, what it depends on and what depends on it, the flows it takes part in, its configuration, its errors, and its caveats.
 2. Every module in one layer is independent of the others in that layer. Where the runtime supports sub-agents, give each module in a layer to its own writer, with the graph brief and the summaries of its dependencies; finish the layer before starting the next. Where it does not, go module by module in the same order.
-3. At standard depth and above, write the reference for every public symbol from its signature, its body and its call sites: what it does, parameters, return value, errors raised, side effects, and where it is used. Behavior is taken from the body, never from the name or the docstring alone; where a docstring disagrees with the body, the body wins and the disagreement goes to the report.
+3. At standard depth and above, write the reference for every public symbol from its signature, its body and its call sites: what it does, parameters, return value, errors raised, side effects, deprecation where the code marks one, and where it is used. Behavior is taken from the body, never from the name or the docstring alone; where a docstring disagrees with the body, the body wins and the disagreement goes to the report.
 4. Each module document ends with a two-to-four-sentence summary. That summary, not the full document, is what the next layer's writers read — it keeps the context small and forces the summary to be accurate.
 
 ## Phase 5 — Document top-down
@@ -74,9 +74,9 @@ With every module written, write the documents that span them, in this order, ea
 
 1. Architecture — context (the system and what surrounds it), the units and how they communicate, the modules per unit with the layer diagram, cross-cutting concerns (errors, logging, auth, configuration, concurrency), and recorded design decisions (from ADRs and comments; inferred ones labeled as inference).
 2. Flows — the three to seven end-to-end paths that matter most (the main request, the main command, the main job, startup, shutdown), each traced hop by hop with citations and a sequence diagram.
-3. Reference beyond code symbols — HTTP or RPC endpoints, CLI commands and flags, events and messages, database schema, configuration keys, environment variable names, feature flags.
+3. Reference beyond code symbols — HTTP or RPC endpoints, CLI commands and flags, events and messages, database schema, configuration keys, environment variable names, feature flags, and the user- or developer-visible errors with cause and remedy, when the project has errors worth looking up.
 4. Operations — build, test, run locally, CI gates, deploy, observability, as far as the tree shows. Commands are documented from their source files, not run.
-5. How-to guides — recipes for the changes the project makes repeatedly (add an endpoint, a migration, a plugin, a page), derived from co-change history and registries, each step naming a file or a command.
+5. How-to guides — recipes for the changes the project makes repeatedly (add an endpoint, a migration, a plugin, a page), derived from co-change history and registries, each step naming a file or a command; and an upgrading guide when a CHANGELOG or version tags exist to source it from.
 6. User guide, when end users are an audience — the features and workflows a user sees, taken from the UI routes, CLI commands and public endpoints the reference already lists, in plain language.
 7. Overview, getting started, glossary, and the index that links everything, with its statistics block counted from the inventory and the graph.
 8. The `llms.txt` index of the set, and `llms-full.txt` when the user wants the set in one file for a tool to ingest.

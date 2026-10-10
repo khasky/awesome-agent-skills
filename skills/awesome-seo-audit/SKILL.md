@@ -24,7 +24,7 @@ Eight tracks plus a re-audit mode. Run the ones in scope, name the ones skipped.
 | F. Links | internal graph, outbound hygiene, link-scheme exposure, and the declared limit on inbound data | [references/links.md](references/links.md) |
 | G. AI and agent visibility | crawler roster per vendor, directives, AIPREF, llms.txt posture, render-blindness, citability, measurement | [references/ai-visibility.md](references/ai-visibility.md) |
 | H. Scaled-content gate | uniqueness ratio, doorways, cannibalization, cohort size, borrowed reputation | [references/on-page-and-content.md](references/on-page-and-content.md) |
-| Re-audit | snapshot fields, drift severity, same-sample rule | [references/baseline-diff.md](references/baseline-diff.md) |
+| Re-audit | snapshot fields, drift severity, same-sample rule, URL migration against an old→new map | [references/baseline-diff.md](references/baseline-diff.md) |
 
 Before reporting anything, read [references/not-findings.md](references/not-findings.md). It names, check by check, what the popular crawlers flag that this audit does not, and why. Half of an inherited SEO checklist is in there.
 
