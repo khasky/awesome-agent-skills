@@ -167,6 +167,7 @@ To clear an install, `npx skills remove -g -s <name>` takes explicit skill names
 | --- | --- |
 | [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, risks found by inverting to failure first, non-goals and rollout — with a structural gate run before delivery |
 | [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resource modeling, versioning by layering, cursor pagination, idempotency keys |
+| [awesome-plan-simplify](skills/awesome-plan-simplify) | Simplifies a written plan, design or spec against the system it changes: claims checked in the code, over-engineering found through named lenses, each finding with what goes away counted and its price stated, written to a separate document beside the plan |
 
 ### Understanding a codebase
 
@@ -288,6 +289,7 @@ Some skills sit next to each other on purpose: they share a file format, a targe
 | awesome-git-commit-plan · awesome-git-history-rebuild | The same split, planned then executed | Read-only, produces the numbered plan → commit-plan. Erases the history and replays the tree to that plan → history-rebuild. |
 | awesome-git-history-reset · awesome-git-history-rebuild | Both erase history and force-push, behind the same safety gates | One Initial commit → history-reset. A curated series over the identical tree → history-rebuild. |
 | awesome-git-history-salvage · awesome-git-history-reset | Both act on a history that is about to be, or already was, rewritten | Recover and list every commit that ever existed, writing nothing → history-salvage. Destroy and replace → history-reset. |
+| awesome-design-doc · awesome-plan-simplify | Both work on a plan before code is written | No plan yet, or a pre-mortem asking what will kill the chosen approach → design-doc. An existing plan checked against the code for what can be cut at the same safety → plan-simplify. |
 | awesome-design-doc · awesome-api-design | Both run before code exists | The system — requirements, alternatives, recommendation, rollout → design-doc. The HTTP surface — resources, versioning, pagination, idempotency → api-design. |
 | awesome-error-standards · awesome-logging-standards | Both shape what happens on failure | The error contract — types, envelopes, status mapping, retries → error-standards. What gets written down — levels, structure, PII → logging-standards. |
 | awesome-humanize-en · awesome-document-style · awesome-grammar-check | 3 passes over the same English text | Strip AI fingerprints → humanize-en. Line-edit for clarity and specificity → document-style. Suggest without touching the text → grammar-check. |

@@ -1,0 +1,22 @@
+[
+  { "query": "go through docs/migration-plan.md and tell me what we can cut without losing safety, write the findings to a separate file next to it", "should_trigger": true, "split": "train" },
+  { "query": "our redesign plan has grown to 2000 lines after five revisions, find the over-engineered bits compared to what the code does today", "should_trigger": true, "split": "train" },
+  { "query": "review this RFC for redundant guards and mechanisms that duplicate each other, don't edit the RFC", "should_trigger": true, "split": "train" },
+  { "query": "check the claims in the rewrite spec against the current repos and list simplifications, ranked", "should_trigger": true, "split": "train" },
+  { "query": "is our new auth design overcomplicated? compare it with the existing implementation and suggest what to drop", "should_trigger": true, "split": "train" },
+  { "query": "there are three DB roles, two access apps and a separate alert service in the infra plan for a one-person project, review whether any of it is worth it", "should_trigger": true, "split": "train" },
+  { "query": "do a simplification pass over the architecture proposal before we start implementing, keep the previously rejected ideas out", "should_trigger": true, "split": "validation" },
+  { "query": "find contradictions and over-engineering in design/queue-redesign.md and save recommendations alongside it", "should_trigger": true, "split": "validation" },
+  { "query": "review the rollout plan document and tell me which steps and checks we can merge or remove", "should_trigger": true, "split": "validation" },
+  { "query": "audit the spec for fields and tables nobody reads and guards against harmless outcomes", "should_trigger": true, "split": "validation" },
+  { "query": "do a pre-mortem on the sharding plan, imagine it failed a year from now", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "train" },
+  { "query": "write a design doc for the new notifications service with alternatives and a recommendation", "should_trigger": false, "belongs_to": "awesome-design-doc", "split": "train" },
+  { "query": "audit the whole codebase's module boundaries and tell me if the architecture docs still match", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "review this PR before I merge it", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "tighten the prose in our design document, it reads vague and bloated", "should_trigger": false, "belongs_to": "awesome-document-style", "split": "train" },
+  { "query": "review the schema and migrations in the repo for missing indexes", "should_trigger": false, "belongs_to": "awesome-database-audit", "split": "validation" },
+  { "query": "proofread the plan for grammar without rewriting it", "should_trigger": false, "belongs_to": "awesome-grammar-check", "split": "validation" },
+  { "query": "simplify this function, it's too nested", "should_trigger": false, "split": "validation" },
+  { "query": "what's the difference between a plan and a spec", "should_trigger": false, "split": "validation" },
+  { "query": "shape the endpoints and pagination for the new reports API", "should_trigger": false, "belongs_to": "awesome-api-design", "split": "train" }
+]
