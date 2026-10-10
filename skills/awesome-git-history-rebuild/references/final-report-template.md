@@ -20,7 +20,7 @@ Dates:        author and committer both on the ladder — %ad == %cd on <N>/<N> 
 Signing:      <N>/<N> signed with <ssh|gpg key id>, host reports verified=true | unsigned as answered
               | unsigned — no key configured and none required
 Backup:       <absolute path>  (verified: N commits, fsck clean[, LFS blobs fetched])
-Secret scan:  clean | FINDINGS (rotate now) | not scanned (no gitleaks)
+Secret scan:  clean | FINDINGS (rotate now) | not scanned (no gitleaks) | push-protection rejection (<user's outcome>)
 Decisions:    tags <keep|delete: list> · releases <keep|delete: list> · contributors <clean|leave>
               · tree references <repair|disclose> · merged PRs <attribute|leave>   — all five asked at gate #1
 Tree refs:    <N> shas quoted, <M> left the history · <N> host links · badges <list> · pins <list>

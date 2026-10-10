@@ -18,5 +18,11 @@
   { "query": "Run a full regression sweep against the deployed API and tell me if anything broke since last release - don't design new tests, just verify.", "should_trigger": false, "belongs_to": "awesome-regression-sweep", "split": "validation" },
   { "query": "Across the whole repo, are our tests sitting at the right layer, or do we have DOM tests pretending to be unit tests?", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "validation" },
   { "query": "quick question: do you suggest property-based tests for any parser, or just for unvalidated input?", "should_trigger": false, "split": "validation" },
-  { "query": "Rename this one test title from 'test 2' to something readable, that's the whole ask.", "should_trigger": false, "split": "validation" }
+  { "query": "Rename this one test title from 'test 2' to something readable, that's the whole ask.", "should_trigger": false, "split": "validation" },
+  { "query": "What tests are we missing across the repo? Just rank the gaps by risk - nobody writes anything yet.", "should_trigger": false, "belongs_to": "awesome-test-gap-audit", "split": "train" },
+  { "query": "Audit the test suite for the orders service: which tests are weak, stale or skipped forever, and which behaviors have none?", "should_trigger": false, "belongs_to": "awesome-test-gap-audit", "split": "train" },
+  { "query": "Coverage is 90% but bugs keep slipping through - where are the real gaps? Report only.", "should_trigger": false, "belongs_to": "awesome-test-gap-audit", "split": "validation" },
+  { "query": "The refund-batch worker in our ledger-sync service has no tests and runs nightly against real money - write the suite for it, including what happens when the payment gateway times out.", "should_trigger": true, "split": "train" },
+  { "query": "Our slug generator mangles unicode titles and we only noticed in production. Add a regression test for it and some boundary cases around empty and very long input.", "should_trigger": true, "split": "validation" },
+  { "query": "Can you put tests around the new rate-limit middleware? Decide what belongs in unit tests and what needs an integration test against the real store.", "should_trigger": true, "split": "validation" }
 ]

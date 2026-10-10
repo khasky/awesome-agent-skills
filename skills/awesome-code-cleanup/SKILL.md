@@ -55,7 +55,8 @@ Read every in-scope file fully — grep sweeps find keywords, not bad comments. 
 ### DELETE
 - Comments restating the code or narrating control flow ("check if…", "loop through…", "return the…").
 - Tutorial-style / "this function…" comments where the name already says it.
-- JSDoc that only repeats the signature; param lists that add nothing.
+- JSDoc that only repeats the signature; param lists that add nothing. First check whether the docstring is visible at runtime (`__doc__`, CLI help text, generated API docs, a schema description): that text is a contract with a reader or a tool, so grep for the consumer before deleting it, and leave it when one exists.
+- Comments addressed to the reviewer, the prompt or the PR ("as requested", "per review", "changed this as you asked"): they talk to a conversation that is not in the file. Delete them; if a fact hides in one, keep the fact as a plain why-comment.
 - In tests: step narration ("click the button", "assert that…") — assertion messages and test titles already carry it.
 - Duplicates: the same fact stated in a file header and again at the definition — keep one (prefer the definition site).
 - Section rulers: `// --- HTTP`, `// --- the issuer key`, `// ==== Helpers ====`, `/* ---------- Name ---------- */`. A blank line before the block is how hand-written code separates one part from the next; a ruler is a table of contents for a file that needs splitting instead. Delete the divider and leave the blank line. Where the label carries a fact the code does not, keep that fact as an ordinary comment and drop the dashes.
@@ -135,7 +136,7 @@ Each of these has a legitimate-looking edit on one side and a broken build, a si
 
 ### NEVER
 - No behavior changes. No edits to string literals, regexes, selectors, CSS values, CSS class names, exported/public names, signatures, test titles, assertions, fixture values, test snapshots, wire-contract shapes, storage keys, message names, database columns.
-- Keep functional comment-directives: linter pragmas (biome-ignore, eslint-disable), `@ts-expect-error`, SPDX/license headers, shebangs, `/// <reference>`, source-map markers.
+- Keep functional comment-directives: SPDX/license headers, shebangs, `/// <reference>`, source-map markers. A suppression directive (`eslint-disable`, `biome-ignore`, `@ts-expect-error`, `noqa`) stays unless the tool itself proves it unused or stale (an unused-directive report, or `@ts-expect-error` erroring because nothing is suppressed), and its scope is never widened.
 - Keep TODO/FIXME; if one looks obsolete, flag it — don't resolve or delete it in a comment pass. Obsolete means it failed a check you ran: its reference resolves to nothing, its ticket is closed, or the condition it waits on no longer exists in the code (the same test `awesome-slop-audit` applies under its category 5); name which one on the flag.
 - Comments inside string literals (templated code, `page.evaluate` bodies) are code content — leave them unless clearly safe.
 - Allowed code change in a default comment pass, sparingly: renaming a local variable or non-exported helper within the same file, only when the rename makes a comment deletable and is unambiguously behavior-preserving. In refactor mode this allowance widens to the REFACTOR MODE rulebook — under the same proof bar. No logic edits, no new abstractions, no added comments except a short replacement of a confusing one. Any such edit turns the pass into a refactor for that file — refactoring only, never a functional change. This is the critical criterion of the whole skill: if there is any doubt an edit is behavior-identical (shadowing, dynamic access by name, string-keyed lookups, serialization), leave the code alone. Every rename and structural edit must be declared in the report and pass the regression gate in Phase 2.
@@ -167,5 +168,6 @@ Lead with the outcome: net line delta and the verification verdict. State wins c
 - per-partition highlights, with the stale-comment fixes called out individually (they're the interesting findings);
 - flags for the owner: possibly-dead code discovered along the way, obsolete TODOs, terminology left anchored, kept-long comments;
 - proposed commit messages in the repo's own convention (validated against its commitlint config when one exists), partitioned by concern — behavior fix, cleanup refactor, CI, docs — and never one commit spanning all four. Each commit must compile alone: a rename's import graph pulls its consumer files into the same commit even when they belong to another concern. A drift-pair unification or any other detection-mode fix is a `fix:`, kept out of the cleanup commit. Do not commit unless asked.
+- before closing, if nearly every comment survived the pass with only cosmetic edits, the pass was too timid: re-judge each survivor against the question "what would the reader lose without it?" and delete the ones with an honest answer of nothing.
 
 Done when: the report states the net line delta, the verification verdict, every stale comment fixed, every long comment kept, and the commit messages split by concern.

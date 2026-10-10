@@ -42,6 +42,17 @@ If the source is plain prose with no markup at all, this rule reduces to: preser
 - If the Russian source is more formal, academic, or literary, keep the English at the same register.
 - Match the genre. Fiction stays fiction; a tutorial stays a tutorial; an op-ed keeps its bite.
 
+### 2a. English-side calques of Russian syntax
+
+Russian bureaucratic and written registers carry shapes that survive word-for-word translation and read as translated. Check the English for each, and rewrite from the meaning:
+
+- Nominalization: a verb turned into a noun plus a light verb (`carry out a <noun> of <thing>`, `make a <noun>`) goes back to the verb (`check <thing>`).
+- Genitive chains: «результаты оценки возможности …» rendered as `the results of the assessment of the possibility of …`. Break the chain into a clause with a subject and a verb.
+- Impersonal passive: `a decision was made`, `it was agreed` for the Russian impersonal or reflexive form. Name the actor when the source or context gives one; keep the passive only when the actor is unknown or beside the point.
+- Bureaucratic politeness: `I kindly ask you to consider the possibility of …` for «прошу рассмотреть возможность …». Say the request plainly (`Could you …`, `Please …`) at the source's register.
+
+At a formal or legal register some of these are the register itself; keep the shape there, and drop it everywhere else.
+
 ### 3. Preserve technical exactness
 
 Never translate, alter, or paraphrase:
@@ -125,6 +136,7 @@ For each piece of source text:
    - Code, identifiers, URLs, version numbers untouched?
    - No AI-marker phrases from the forbidden list?
    - No literal calques of Russian connectors?
+   - No English-side calques of Russian syntax (nominalizations, genitive chains, actorless passives, bureaucratic politeness; section 2a)?
    - Sentence rhythm and register match the source?
    - No meaning degradation: specific→vague, precision loss («p<0,05» → "statistically significant"), causation→correlation, assertion→hedge?
 6. Deliver the result (write to a file, or output inline — see Output section).
@@ -137,7 +149,8 @@ When the user asks you to mirror a directory tree from a Russian source to an En
 - Preserve subdirectory layout and nesting depth.
 - Keep filenames identical — don't translate file names.
 - Apply the rules above to each file based on its actual format (Markdown, plain text, source code, HTML, etc.). Don't assume every file is the same kind.
-- Internal cross-document links like `[See here](other.md)` (or equivalent in other formats) keep the same relative path; only the link text is translated.
+- Internal cross-document links like `[See here](other.md)` (or equivalent in other formats) keep the same relative path; only the link text is translated (except in an i18n docs site, below).
+- When the tree is an i18n docs site, the locale segment in include paths and links is rewritten (`…/ru/…` becomes `…/en/…`), since a link left on the Russian path sends the English reader back to the Russian page. Site configuration (navigation, the locales list, admonition titles) is not changed silently: it is named in the report as needing a decision.
 - Internal anchor links (`#russian-heading-slug`) need the slug regenerated to match the new English heading slug. Flag these explicitly if you find them.
 
 The user supplies the source and target directories — don't assume any particular naming convention.

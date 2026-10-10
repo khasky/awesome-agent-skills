@@ -43,7 +43,7 @@ When you receive code review feedback:
 5. RESPOND — Acknowledge with technical content (what you will do or why not), or ask a clarifying question. Avoid performative agreement (see below).
 6. IMPLEMENT — Address items one at a time where possible; run tests after each logical change. Do not batch unrelated fixes without testing in between.
 
-Triage each comment by type: a clear fix-instruction → apply it directly; a question or discussion point → do not auto-apply, surface it to the user with your read; two comments that conflict on the same passage → present both and ask which to take. Per thread, after implementing, reply stating what was done and resolve it, so the reviewer sees the resolution.
+Triage each comment by type: a clear fix-instruction → apply it directly; a question or discussion point → do not auto-apply, surface it to the user with your read; two comments that conflict on the same passage → present both and ask which to take. Reply to every thread, stating what was done or why not. Resolve a thread only when the decision was ours to make: on a bot comment or a nit, once a fix landed or the point was declined with a stated reason. A thread from a human reviewer, or from a security scanner, gets the reply with the analysis and stays open for the reviewer or the user to close, fix landed or not.
 
 ## Handling Unclear Feedback
 
@@ -112,6 +112,7 @@ When there are several feedback items:
 3. Handle related comments — Fixing a high-severity root comment often auto-resolves the lower-severity ones that depend on it. Process in severity order, and before implementing each lower item re-check whether it still applies — don't fix a nit the root fix already made moot.
 4. Test each fix — Run tests after each logical change; avoid one big batch with a single test at the end.
 5. Verify no regressions — Full test suite (and smoke test if applicable) before marking feedback "addressed."
+6. Watch for oscillation and scope drift — If you are about to re-apply an edit you reverted in an earlier round, stop and hand the decision to the user: two reviewers (or a reviewer and a bot) want opposite things, and another round will not settle it. Across repeated bot-review rounds, periodically compare every edit so far against the PR's original goal and look for edits outside that goal, over-engineering added only to satisfy a bot, and a fix that undoes an earlier fix. Verdict: continue, revert the drifted commits and ship, or hand to the user.
 
 When the reviewer is a bot (CodeRabbit, Gemini, etc.): cross-check its claimed count ("Actionable comments posted: N") against how many you actually found — a mismatch means you missed some or the tool truncated the output. Batch pure-cosmetic nits into a single `style:` commit; keep functional fixes as separate commits that reference the comment they resolve.
 

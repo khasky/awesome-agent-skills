@@ -183,7 +183,7 @@ Rules that hold in all three forms. These are the rules a reader's choice betwee
 - **Punctuation.** ASCII only (`'`, `"`, `-`, `->`), no em or en dash and no Unicode arrow outside exact code, a quotation or the footer. No semicolons.
 - **Emphasis.** Bold only for the numbers of a compact proof and for one bold one-line lesson in the long form. Nothing else.
 - **Emoji** follow the interview draw and the family cap, at the end of a frame sentence that ends its paragraph, never on an anchor, a heading, a list item or code, never two in one paragraph. Only the palette and gate in `references/authored-style.md` section 8.
-- **Voice.** Under first person every form carries at least one genuine stance, and the long form a second one at the recommendation.
+- **Voice.** Under first person every form carries at least one genuine stance, and the long form a second one at the recommendation. Under a profile or style guide the patterns are borrowed and the words are not: no sentence, caption or heading is copied from its samples, a recurring turn of phrase is paraphrased, and a quirk is never amplified (in doubt, take the plainer variant). Before delivery, check that no phrase was lifted from a sample.
 
 ## Phase 8 - Frontmatter
 
@@ -221,7 +221,7 @@ Counted:
 - **Ceilings** - each body measured the way its ceiling is defined: the short the way `x` counts with the link reserve when its `links` is not empty, the regular in characters with the footer included, the long in characters and per paragraph. A body over its ceiling is rewritten shorter, never cut at the tail.
 - **Coverage** - the long form carries every module on the map, the regular carries the portable takeaways and the medium details that make the argument, the short carries the core proof point and the finding. A guide reduced to one path in the long form fails however accurate it is.
 - **Anchors** - every anchor present in each form whose length can hold it, every number, unit, condition and named case identical to `anchors.md`, every block and command byte for byte.
-- **Commands and blocks** - every fenced JSON, YAML or TOML block parses (checked with a parser the agent already has, nothing executed), every risky command named in `references/fidelity.md` section 7 carries its sentence in the long form, and no block carries a credential-shaped value.
+- **Commands and blocks** - every fenced JSON, YAML or TOML block parses (checked with a parser the agent already has, nothing executed), every risky command named in `references/fidelity.md` section 7 carries its sentence in the long form, and no block, caption or sentence carries a credential-shaped value or other private material (internal hosts and IPs, account IDs, env values, user- or machine-revealing paths, client, colleague or internal-project names; `references/fidelity.md` section 7).
 - **Rhythm and tells** - per file, on prose only, against the level's floor and tell count in `references/creativity.md`.
 - **Repetition** - no sentence twice in a file, no closing shared between forms, no short or regular sentence that is a long-form sentence with a word or two moved.
 - **Style** - ASCII punctuation, zero semicolons, no H1, no tag line, no footer in the short, the footer byte-identical in the other two with its hard breaks, the `***` line above it, every URL in a command inside a fence, no bare dotted token (`CLAUDE.md`, `api.example.com`) left outside a code span, emoji count per form against the draw, no run of more than five prose paragraphs in the long form without a heading, a block or a list between them.
@@ -265,6 +265,10 @@ Each form file lists the pictures its own platforms take: both entries where its
 
 The final message states: the folder path, the source type, the subject family and the selected idea, the creativity level, each form's platforms and its body length against its ceiling, the comparison set when there is one, the material corrections, the rhythm figures against the level's floor, the media answer and what was attached, the language fixes made to a post the author wrote, five alternative titles for the long form, each a different reading of the subject under the Phase 8 title rules, and anything not verified. Post bodies are not pasted into chat unless asked.
 
+## After delivery
+
+An edit the user asks for after delivery (shorter, a different tone, one sentence changed) sends the revised file through the Phase 9 audit again: signs and rhythm against the creativity level, fidelity against the ledgers, ceilings, and the voice check. The voice or profile chosen in Phase 1 holds to the end of the session; without the re-audit the text slides into the model's default tone within a few iterations.
+
 ## Anti-patterns
 
 - Drafting before the six interview answers exist, or recovering any of them from an earlier run.
@@ -293,3 +297,4 @@ The final message states: the folder path, the source type, the subject family a
 - A creativity level used as permission to invent an experience, a stake, a number or a contrarian line.
 - A posts folder created beside the source file or in the invocation directory when the user named no path, or a run folder named from the source alone.
 - Ending the run without the media question, or asking it before the three files exist.
+- Editing a delivered file on request ("shorter", "change the tone") and handing it back unaudited, so the voice drifts toward the model's default after a few rounds.

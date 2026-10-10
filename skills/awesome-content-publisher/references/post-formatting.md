@@ -25,6 +25,8 @@ Remove, in this order: fence lines (` ``` ` and ` ```lang `, keeping the code li
 
 A heading is not stripped to bare words, because a plain line of text between paragraphs reads as a stray sentence and the section break disappears. Replace each heading's `#` markers with one emoji that fits the heading's words, followed by a space and the heading text: a section about cost takes one from the money group, a section about a failure one from the tools or warning groups, a list of findings a pin or a magnifier. Take them from the rendering-safe palette and gate in `awesome-content-repurpose/references/authored-style.md` (section 8), use a different emoji for each heading of one post, and fall back to `📌` where nothing fits. Keep one blank line above and below the heading line, as the source had.
 
+Emphasis is not rebuilt out of Unicode Mathematical Alphanumeric characters (styled bold or italic letters) to replace the `**` that was removed. Screen readers spell them out letter by letter, search does not match them, and they read as a template. The unwrapped word stays plain, and emphasis comes from word order and line breaks.
+
 Two traps in the stripping itself:
 
 - A line starting with `#` is only a heading when a space follows the hashes. `#claudecode #ai #learning` is a hashtag line and must survive untouched. A converter that treats every `#` line as a heading (or, worse, whose paragraph loop skips `#` lines without advancing) either eats the tags or spins forever — the second one hung a run until it was killed.

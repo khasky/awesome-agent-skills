@@ -34,8 +34,9 @@ Detect the stack before assuming commands: the manifest and its scripts (`packag
 
 ## Phase 1 — the aspect sweep
 
-Every aspect is read-only: it runs what the project already defines and never deploys, writes or mutates. Four rules hold the sweep together, and each exists because a sweep without it reported green over something nobody ran:
+Every aspect is read-only: it runs what the project already defines and never deploys, writes or mutates. Five rules hold the sweep together, and each exists because a sweep without it reported green over something nobody ran:
 
+- Read-only includes ignored files. Run the formatter and linter in check mode only. Builds and checks can write into gitignored paths, so a clean `git status` does not prove an untouched tree: compare `git status --porcelain --ignored` before and after the sweep.
 - A prerequisite that is absent makes the aspect a SKIP, reported with its reason, never a failure and never dropped silently. A required working copy that is absent is a failure instead.
 - An exit code is not enough. Wrappers, shims and some suites print a failure and still exit 0, so an aspect whose output carries a result line is judged on that line as well as on the code.
 - Every aspect has a ceiling on how long it may run, so one hung command cannot swallow the sweep.

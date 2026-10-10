@@ -9,7 +9,7 @@ The map is the artifact that makes the audit repeatable. Without it every pass r
 1. List the public surfaces, including the ones nobody calls documentation: marketing pages, README, store or app-store listing, privacy policy and terms, changelog, API reference, in-product help, structured data (JSON-LD), the metadata in the package manifest, and the static assets a page loads.
 2. For each surface, list the classes of fact it states — not each sentence. "Which permissions are requested" is a class; "the extension requests five permissions" is one instance of it.
 3. Find the single decider for each class. One file, one symbol. If a class needs two files to settle, that is itself a finding: the product has two sources of truth and they will diverge.
-4. Mark the rows a script can check, by check id — write `**auto:<check-id>**` at the head of the row, so the coverage cross-check can match the map against the config in both directions. The rest need a person, because the claim is prose or because only a person can tell which quoted phrase is claiming to *be* a UI label.
+4. Mark the rows a script can check, by check id — write `**auto:<check-id>**` at the head of the row, so the map can be matched against the checks you wrote in both directions. The rest need a person, because the claim is prose or because only a person can tell which quoted phrase is claiming to *be* a UI label.
 5. Record the trap in the note column whenever the obvious file is the wrong one. Those notes are the value of the map.
 
 ## Template
@@ -27,9 +27,13 @@ The map is the artifact that makes the audit repeatable. Without it every pass r
 | what a bug report carries | the reporting module | prose claim; read the payload builder |
 | what is actually published | the destination repo/bucket working tree | an empty destination makes the instructions false whatever the publisher says |
 | licenses | each artifact's LICENSE | a data-only artifact often carries a different license from the code |
+| store privacy label / data-safety form | the dependency manifest and lockfile (SDKs actually linked) plus the network endpoints the code calls | a form filled once at first submission drifts the day an analytics or ads SDK is added; compare both directions |
+| permission rationale strings | the platform manifest or plist → permissions actually requested | a rationale for a permission no longer requested, or a permission with no rationale, are both findings |
+| capability checkboxes (accessibility, purchases, generative AI) and age-rating answers | the features in code: user-generated content, chat, embedded web view, purchase calls, model calls | "no UGC" or "no web access" is a negative claim; one counterexample in code kills it |
+| listing screenshots | the current UI in a build of the shipped version | no mockups, no previous design; a screenshot showing a removed screen is a false claim |
 ```
 
-A row with no `**auto:…**` marker is a claim a person settles. Keep the split honest: the cross-check fails when the map promises a check that does not exist, and when a check exists that no row accounts for.
+A row with no `**auto:…**` marker is a claim a person settles. Keep the split honest: the comparison fails when the map promises a check that does not exist, and when a check exists that no row accounts for.
 
 Keep a second, short table for surface-internal contracts — pairs that must say the same thing and have no build-time link:
 

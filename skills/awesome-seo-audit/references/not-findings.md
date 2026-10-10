@@ -73,6 +73,7 @@ The measurements underneath a score are fine and expected: a uniqueness ratio, a
 - **"Optimal cited passages are 134–167 words."** A vendor correlation study with no primary source behind it, and it contradicts the documented position that chunking is unnecessary. Front-loading a self-contained answer is good writing; a word band is not a check.
 - **"Brand mentions correlate three times more strongly than backlinks."** Vendor study, unreproducible from anything this audit can fetch.
 - **"Only 11% of domains are cited by both engines."** Interesting, unactionable, and not a defect on any page.
+- **Missing WebMCP tool declarations.** An origin-trial browser API for exposing page actions to agents; its absence costs nothing today and is not a finding. Present tools are checked in `ai-visibility.md` only for parity with the server-side checks of the UI path.
 - **Blocking `Google-Extended` presented as a Search problem.** It is a training and grounding preference. It does not touch Search.
 
 ## Cosmetic URL rules

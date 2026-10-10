@@ -27,10 +27,10 @@ Do not activate to review test quality in a diff (awesome-code-review Phase 4 ow
 2. Read the code under test end to end — public seams, inputs, outputs, side effects, error paths. The seam you test through must be one a caller actually uses; needing to export a private function to test it is a design signal to report, not to work around.
 3. Choose placement by the lowest level that can catch the defect — pure logic gets unit tests; wiring, queries, and contracts get integration tests; only critical user flows get E2E. A bug that a unit test can catch, caught only by an E2E suite, costs 100× per run forever.
 4. Agree the seams before writing a line of test code — write down which seams the tests will run against (the public entry points, the boundaries you will observe through) and put that list to the user. Nothing gets tested at an unconfirmed seam. You cannot test everything, and agreeing the seams up front is what puts the effort on the critical paths and the complex logic instead of spreading it evenly over every edge case; it also surfaces the disagreement while it is still cheap, rather than after twenty tests exist at the wrong level. Where the shape of the interface is itself the question (how deep the module is, where the seam belongs), the vocabulary is in `awesome-architecture-audit/references/design-vocabulary.md`; without that skill installed, agreeing the seam list still binds and only the shared words are missing.
-5. Design the case list before writing code — happy path, boundaries (empty, one, many, max), error paths (invalid input, dependency failure, timeout), and the bug class this code invites (off-by-one in pagination, timezone in date math, race in check-then-act). Write the list down; each case becomes one test with one behavioral focus.
+5. Design the case list before writing code — happy path, boundaries (empty, one, many, max), error paths (invalid input, dependency failure, timeout), and the bug class this code invites (off-by-one in pagination, timezone in date math, race in check-then-act). A guard, catch, fallback or normalization exists because some input once needed it: find that input and make it a case. For each state or enum value, check it against each consumer with two lists: the values the definition declares, and the branches that actually handle them, with line numbers; a value in the first list and not the second is an untested (often unhandled) case. Write the list down; each case becomes one test with one behavioral focus.
 6. Write behavior-first — assert observable outcomes through the public seam (return value, state change, emitted event, recorded call), never internals (private fields, call order of helpers). Test name states scenario and expectation ("rejects expired token with 401", not "test token 2").
 7. Prove every test can fail — run the new test against intentionally broken code (revert the fix, flip the branch, break the constant) and watch it go red, then restore and watch it go green. A regression test is proven both ways: fails without the fix, passes with it. A test that has never failed has proven nothing.
-8. Run the suite and report — full relevant scope, exit code read, flaky behavior reported (a test passing only on re-run is a defect, not a pass — quarantine and report, never silently retry to green).
+8. Run the suite and report — full relevant scope, exit code read, flaky behavior reported (a test passing only on re-run is a defect, not a pass — quarantine and report, never silently retry to green). Report the new tests as passed, failed, errored and skipped, separately: a setup error, a missing fixture, or a skip for a missing dependency is not a pass, and a new test that was skipped proves nothing.
 
 ## Rules by area
 
@@ -54,7 +54,7 @@ Cases covered:
 ...
 
 Proven to fail: <which mutation/revert made each go red>
-Run: <command> → <N passed, 0 failed, exit 0>
+Run: <command> → <N passed, 0 failed, 0 errored, 0 skipped, exit 0>  (new tests counted apart from the existing suite)
 Not covered (and why): <cases deferred, with reason — not silence>
 ```
 
@@ -66,6 +66,10 @@ Not covered (and why): <cases deferred, with reason — not silence>
 | Change-detector test — snapshot of internals that fires on any redesign | Assert the observable contract; snapshot only true output surfaces |
 | Assertion roulette — many bare asserts, unclear which failed | One behavioral focus per test; messages on non-obvious asserts |
 | Testing the mock — asserting the stub returned what it was told to | Assert the system's behavior around the mock, and the request into it |
+| Shape-only assertion — checks a value is there, not what it is | Assert the value itself |
+| First-match-only check — finds one correct item among many and stops | Assert the whole collection: count, order, and that no wrong item is present |
+| One-sided negative test — on rejection, asserts one consequence is absent | Assert every consequence is absent: no write, no event, no side effect, state unchanged |
+| A mutation or boundary input the validator rejects first | Use an input that passes validation, so the test exercises the logic and not the validator (test the validator separately) |
 | New framework beside the incumbent runner | The repo's runner, even if another is nicer |
 | Coverage-driven padding — trivial getters tested, error paths bare | Case list from behavior and risk, boundaries and failures first |
 | A test written after the fix and never seen red | Revert the fix, watch red, restore, watch green — both ways, every time |

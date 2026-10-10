@@ -25,6 +25,10 @@ If the problem is a mix (a code bug that a broken process let ship), fix the bug
 ### 1. Frame the problem
 State it as an observable gap, not a solution or a culprit: current condition vs expected condition, when it started, how often, blast radius, and how you know (the evidence — logs, tickets, timeline). If you can't state the gap concretely, gather more before analyzing.
 
+Build the timeline from records (logs, tickets, deploy history, chat), not from memory, with four separate marks: onset, detection, mitigation, resolution. Time-to-detect (onset to detection) is a finding in its own right. Signals lag: an alarm fires after its evaluation window, a metric datapoint is stamped at one edge of its aggregation period (often the start), not when the event happened, logs flush late, audit events arrive after the action. So onset is the earliest anomaly in the raw data, not the time the alarm fired. A gap in the timeline that the records cannot explain is a question for the team, not a blank to fill with a guess.
+
+Narrow the blast radius top-down: environment or account, then region, then service, then operation, then resource. When several units at one level are affected together, look for the dependency they share (network, DNS, identity, a shared pipeline) before going deeper into any one of them.
+
 ### 2. Widen the candidates (fishbone)
 Before drilling, sweep six cause categories so you don't fixate on the obvious one — People, Process, Technology, Environment, Methods, Materials. List candidate contributors under each. Root causes sit in Process or Methods far more often than in Technology; a purely technical cause is the exception, not the default.
 
@@ -60,9 +64,10 @@ Deliver a compact report, not a wall of prose:
 Title / date / owner
 
 Background       — why this matters, in 1–2 lines
-Current condition — the gap, with evidence (metric, timeline)
+Current condition — the gap, with evidence (metric, timeline: onset, detection, mitigation, resolution)
 Target           — the measurable desired state
 Root cause(s)    — from the 5-Whys chains, each with its evidence
+Contributing factors — conditions that widened or prolonged the impact but would not alone have caused it (slow detection, missing runbook)
 Countermeasures  — fix | owner | prevents recurrence how
 Verification plan — success criterion + PDCA check date
 Follow-up        — open items, what to watch

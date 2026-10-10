@@ -1,0 +1,22 @@
+[
+  { "query": "What tests are we missing in this repo? Rank the gaps by risk, don't write any tests yet.", "should_trigger": true, "split": "train" },
+  { "query": "audit test coverage for the billing package in packages/ledger-core - where are the holes?", "should_trigger": true, "split": "train" },
+  { "query": "Our suite is green and coverage says 87%, but I don't trust it. Which of these tests could never actually fail?", "should_trigger": true, "split": "train" },
+  { "query": "Before we open-source the Quillstack SDK I want a list of the riskiest untested paths - auth, data writes, anything touching money.", "should_trigger": true, "split": "train" },
+  { "query": "find skipped, xfail'd and .only'd tests across the monorepo and tell me which ones are hiding real gaps", "should_trigger": true, "split": "train" },
+  { "query": "Where are the coverage gaps around the refund flow in services/payouts? Read-only, give me a ranked worklist.", "should_trigger": true, "split": "train" },
+  { "query": "Is the permission checking in api/admin actually tested, or do the tests just mock it away? I need to know what's proven and what isn't.", "should_trigger": true, "split": "validation" },
+  { "query": "we keep shipping regressions in the import pipeline even though there are tests - figure out which behaviors aren't really covered", "should_trigger": true, "split": "validation" },
+  { "query": "Give me a test gap report for the Larkspur backend: missing, weak and stale tests, with a verdict on whether it's safe to release.", "should_trigger": true, "split": "validation" },
+  { "query": "Which parts of src/sync have no tests at all? Check the e2e folder and the other packages too before you say something's untested.", "should_trigger": true, "split": "validation" },
+  { "query": "The refund calculator in services/payouts has no tests - write unit tests for the over-refund and partial-refund cases.", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
+  { "query": "Here's the gap list from last week's audit - start writing the P0 tests from it.", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "train" },
+  { "query": "Review this PR - did the author add enough tests for the new rate limiter, and are the assertions any good?", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "train" },
+  { "query": "Run every suite, typecheck and lint against the baseline from last release and tell me what regressed.", "should_trigger": false, "belongs_to": "awesome-regression-sweep", "split": "train" },
+  { "query": "test_export_csv started failing on CI yesterday and passes locally - find out why.", "should_trigger": false, "belongs_to": "awesome-bug-fix", "split": "train" },
+  { "query": "Judge the whole project's design - module boundaries, dependency direction, whether docs match the code - and give a ship verdict.", "should_trigger": false, "belongs_to": "awesome-architecture-audit", "split": "train" },
+  { "query": "add a regression test for the timezone bug I just fixed in the scheduler", "should_trigger": false, "belongs_to": "awesome-test-writing", "split": "validation" },
+  { "query": "Check this diff before merge: correctness, security, and whether the changed tests still make sense.", "should_trigger": false, "belongs_to": "awesome-code-review", "split": "validation" },
+  { "query": "Verify nothing broke after the deploy - run the contract checks against staging and diff with the recorded baseline.", "should_trigger": false, "belongs_to": "awesome-regression-sweep", "split": "validation" },
+  { "query": "quick question: is 80% line coverage a reasonable target for a team our size?", "should_trigger": false, "split": "validation" }
+]

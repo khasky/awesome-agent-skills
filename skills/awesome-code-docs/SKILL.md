@@ -38,7 +38,7 @@ State the plan in one line: source, commit, output folder, depth, language, audi
 
 ## Phase 1 — Source
 
-Load `references/source-and-graph.md`. Resolve the input (local path, `owner/repo` shorthand, or a browse, clone or SSH URL on any host, with its ref and sub-path), and for a URL make a shallow clone into the OS temporary directory with hooks, submodule recursion and large-file fetching off. Private repositories use the credentials the user's git or host CLI already holds; a token is never requested in chat or placed in a URL. Record the commit hash: every citation in the set points at it. The clone is removed at the end unless the user asks to keep it.
+Load `references/source-and-graph.md`. Resolve the input (local path, `owner/repo` shorthand, or a browse, clone or SSH URL on any host, with its ref and sub-path), and for a URL make a shallow clone into the OS temporary directory with hooks, submodule recursion and large-file fetching off. Private repositories use the credentials the user's git or host CLI already holds; a token is never requested in chat or placed in a URL. A local repository's `origin` URL is stripped of any embedded token before it appears in the set. Record the commit hash: every citation in the set points at it. The clone is removed at the end unless the user asks to keep it.
 
 ## Phase 2 — Inventory
 
@@ -83,8 +83,8 @@ With every module written, write the documents that span them, in this order, ea
 
 ## Phase 6 — Verify
 
-1. Every file path, symbol name and line citation resolves at the recorded commit.
-2. Every intra-set link resolves to an existing file and heading.
+1. Every file path, symbol name and line citation resolves at the recorded commit, and the cited line contains what it is cited for: open it and see the symbol's name on that line, not a decorator, a blank line or a body line.
+2. Every intra-set link resolves to an existing file and heading, every document is reachable by links from the index (no orphan page), and every document is listed in `llms.txt`.
 3. Every signature in the reference matches the code — recheck by reading, not from memory.
 4. Every edge drawn in a diagram exists in the graph, and every edge in the graph between units appears in the architecture diagram.
 5. Coverage: every module has a document; at standard depth, every public symbol has an entry. Gaps are listed, not hidden.

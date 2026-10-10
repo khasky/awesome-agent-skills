@@ -23,8 +23,10 @@ gap mean                      274 s                 4 639 s
    | Every ref in the backup, not just the branch | `git -C <backup> log --reverse --all --format='%ad' --date=iso \| head -1` | an older commit on a tag or another branch |
    | `refs/pull/*` | already fetched in Phase 0, step 16 — reuse `git rev-list $refs --not <branch> \| tail -1 \| xargs git log -1 --format='%ad' --date=iso` | commits kept alive by pull-request refs, frequently older than the branch |
    | Repository creation | `gh repo view <owner>/<repo> --json createdAt` (step 7 already fetches it) | when the repository was made — a floor for anything not imported |
-   | The activity log | `gh api "repos/<owner>/<repo>/activity?per_page=100" --jq '.[-1].timestamp'` | the oldest push the host still records |
+   | The activity log | `gh api --paginate "repos/<owner>/<repo>/activity?per_page=100" --jq '.[].timestamp' \| sort \| head -1` | the oldest push the host still records |
    | Erased history | `awesome-git-history-salvage` | commits no ref reaches: the `before` SHAs in the activity log, fetched by SHA over the git protocol |
+
+   The activity log answers newest first and 100 rows a page, so the last row of the first page is the oldest of the newest hundred, not the earliest push. Page until exhausted and take the minimum over every row. If paging stops early (an error, a rate limit), the date is only "no later than the earliest row seen": report it as truncated and do not anchor to it.
 
    When the cheap sources disagree with each other, that disagreement is the finding. A repository created in April whose oldest reachable commit is dated August has had something erased between the two, and that gap is exactly what salvage reads. Report both dates and offer the escalation rather than silently taking the later one.
 

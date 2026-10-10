@@ -163,7 +163,7 @@ Read `references/preflight-checks.md` before running these checks: it holds the 
     Repairing any of this changes file content, which Phase 9's tree-identity proof forbids inside the rebuild. It happens in Phase 10, as its own commit on top of the proven tip — decision #4 at step 26.
 
 23. Secret scan of the history being discarded (if `gitleaks` is present) — this is the last moment anyone will look at those commits:
-    Findings → stop and tell the user to rotate the exposed credential. The rewrite does not make a leaked secret unrecoverable — forks, caches and existing clones keep it — so rotation is the part that protects them. No gitleaks → state that history was not scanned.
+    Findings → stop and tell the user to rotate the exposed credential. The rewrite does not make a leaked secret unrecoverable — forks, caches and existing clones keep it — so rotation is the part that protects them. A finding in the tree at the tip, with push protection enabled or unknown (`references/preflight-checks.md`, section C), also means the push will be rejected: say so now, not at Phase 8. No gitleaks → state that history was not scanned.
 
 ### E — Local capacity
 
@@ -347,7 +347,7 @@ Confirmation gate #2 — the last one before anything irreversible. Quote the ex
 
 Read `references/replay-and-verification.md` for the exact force-push commands.
 
-`--force-with-lease`, never a bare `--force`: it aborts if someone pushed after the backup was taken. Rejected as *stale info* → a new commit landed; stop and restart from Phase 1 against the new tip rather than steamrolling it. Rejected as *protected branch*, *non-fast-forward* or *unsigned commit* → a protection or ruleset gate (Phase 0, steps 10–11) was skipped or has been added since.
+`--force-with-lease`, never a bare `--force`: it aborts if someone pushed after the backup was taken. Rejected as *stale info* → a new commit landed; stop and restart from Phase 1 against the new tip rather than steamrolling it. Rejected as *protected branch*, *non-fast-forward* or *unsigned commit* → a protection or ruleset gate (Phase 0, steps 10–11) was skipped or has been added since. Rejected by *push protection* → stop; never scrub the secret and never take the bypass for the user (`references/replay-and-verification.md`).
 
 ---
 

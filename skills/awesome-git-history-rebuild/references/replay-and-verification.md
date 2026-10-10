@@ -19,7 +19,7 @@ git diff --cached --name-only            # must equal the planned path set exact
 GIT_AUTHOR_DATE="@$T $OFF" GIT_COMMITTER_DATE="@$T $OFF" git commit -m "<subject>" [-m "<body>"] [-s] [-S]
 ```
 - Hooks run. Never `--no-verify` by default: a repo that enforces a rule means it. If a `pre-commit` hook fails on an intermediate partial tree (a type-checker or a full-project linter that cannot see files not yet committed), stop and hand the user the choice — coarsen the split so each commit is self-consistent, or accept `--no-verify` for intermediate commits only, disclosed in the final report. If a hook *rewrites* files (formatters via lint-staged), the Phase 7 tree check will catch the drift; do not paper over it.
-- `--mode bisectable` — run the repo's build or test command after each commit; a failure stops the run at that commit for regrouping.
+- `--mode bisectable` — run the repo's build or test command after each commit; a failure stops the run at that commit for regrouping. That command, the install step before it and any lifecycle scripts it triggers run the repository's own code with the user's permissions: the owner gate (Phase 0, step 5) makes that the user's own repository in the normal case, but for a repository the user did not write (a confirmed owner mismatch, or a local path they have not vouched for) list the exact commands and ask before the first run.
 - Keep a running counter of paths committed against the inventory total, so a gap is visible at the commit that caused it and not at the end.
 - The replay ends when the last row of the plan is committed or a hook or `--mode bisectable` failure has stopped it for the user's choice. The counter is a progress line inside the work, not a place to end the turn with rows still to commit.
 Submodules and LFS: `git add` on a submodule path re-adds the gitlink, and LFS pointers commit like any other file — both survive the replay as long as `.gitmodules` and `.gitattributes` are in the same or an earlier commit than the paths they govern.
@@ -51,6 +51,7 @@ git log --format='%h %ad %s' --date=short | grep -iE 'release|changelog|version'
 git push --force-with-lease=<branch>:<OLD_SHA> origin <branch>
 git ls-remote origin <branch>            # sha equals the new HEAD
 ```
+Rejected by push protection (the error names a secret and offers a bypass URL) → stop and report. The secret sits in a file of the tree, so removing it means amending or rebasing the rebuilt commits, which changes the tree and voids the tree-hash proof of Phase 9; the run does not do that. The bypass is a decision about someone's credential and belongs to the user alone: give them the URL from the rejection, the file, and the advice that rotating the secret is what protects them. Carry on only on their instruction, and record it in the report (`Secret scan:`) as a push-protection rejection with the user's chosen outcome. The same goes for a `workflow` scope refusal (`refusing to allow an OAuth App to create or update workflow`): the user refreshes the token, the run retries.
 
 ## Published-tree proof (Phase 9)
 

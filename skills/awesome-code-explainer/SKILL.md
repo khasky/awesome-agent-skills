@@ -29,7 +29,7 @@ Bundled files (load on demand):
 
 The input is a local path or a URL. Work out which, and what exactly it points at.
 
-- Local path: use it in place, read-only. If it is inside a git work tree, note the current commit and whether the tree has uncommitted changes — the page describes what is on disk, and says so when that differs from the last commit.
+- Local path: use it in place, read-only. If it is inside a git work tree, note the current commit and whether the tree has uncommitted changes — the page describes what is on disk, and says so when that differs from the last commit. The `origin` URL may embed a token (`scheme://<token>@host/…`): strip it before the URL reaches the page or a permalink.
 - Shorthand `owner/repo`: treat as GitHub, and say that assumption in the report.
 - A URL on any host — GitHub, GitLab (including nested groups), Bitbucket, Codeberg, Gitea or Forgejo instances, Azure DevOps, SourceHut, a self-hosted server, an SSH clone address: separate the clone address from what follows it. Browse URLs carry a ref and a path after a host-specific marker (a tree or blob segment, a `-/tree/` segment, a `src/` segment, a query parameter); the ref is a branch, tag or commit, and the path narrows the scope to a directory or a file. An issue, pull-request or merge-request link resolves to its repository, and the item itself is read as context for what the user wants to understand.
 - Anything else — a package-registry page, an archive URL, a gist — ask what the user means rather than guessing a repository.

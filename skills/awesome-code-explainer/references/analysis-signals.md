@@ -27,7 +27,7 @@ What to read for each part of the page, and what a claim needs behind it before 
 
 Every statement on the page carries one of three, and the page shows the difference:
 
-- Read — the run opened the file and the line says it. Cited with a link.
+- Read — the run opened the file and the line says it. Cited with a link. The cited line literally contains what it is cited for: a symbol is cited at the line bearing its name — not a decorator above it, a blank line or a line of its body — and a range starts at the line with the name. A citation that merely resolves is not enough.
 - Counted — a norm established by search across the whole scope: "handlers validate input with schemas (31 of 33 route files)". Cited with the pattern and the count, in the page's collapsible detail.
 - Inferred — a reasonable reading of structure without a line that states it: "the `workers/` directory appears to process the queue fed by `api/` — both reference the same queue name". Labeled as inference, with the clue.
 
@@ -42,6 +42,7 @@ Anything below inference — a guess from a directory name, from the README's ad
 ## Stack
 
 - Evidence: manifests and lockfiles, toolchain pin files, container base images, CI setup steps, framework config files.
+- Collect every runtime version pin: the version file, the manifest's engines field, the container base image, the CI setup step. Where the version that builds differs from the version that runs, state it as a fact with both citations, without judgement.
 - Separate runtime dependencies from development tools. Group by role — language and runtime, framework, data, messaging, UI, testing, build, lint and format, deploy — and give each its version where pinned.
 - A dependency in the manifest that no source file imports is listed as unused-looking only if the page has a place for it; never presented as part of the stack.
 - Only what matters: twenty utility packages are one line ("plus common utilities"), not twenty rows.
@@ -74,7 +75,8 @@ The single most useful part of the page for a newcomer.
 2. Follow it through the code, not through the docs: from the entry point, open each function it calls into that is part of the project. Record each hop as `file:line`, the function name, and one sentence of what happens there.
 3. Stop at the project boundary. Framework and library internals are named ("the ORM runs the query"), not traced.
 4. Note what the flow reveals in passing: where validation happens, where errors are turned into responses, where transactions begin, where caching sits.
-5. Keep it to 5–12 hops. More means the flow is being traced too finely; merge hops within one module.
+5. Each hop carries one non-obvious point beyond what the function is called: what a smart reader would misread, which opening the file alone will not show (a value changed in passing, a hand-off that happens elsewhere, a branch that skips the next hop). A hop with nothing like that keeps its one sentence.
+6. Keep it to 5–12 hops. More means the flow is being traced too finely; merge hops within one module.
 
 ## Architecture and boundaries
 
@@ -87,6 +89,7 @@ The single most useful part of the page for a newcomer.
 - Evidence: client libraries in the manifest and where they are constructed, connection strings read from config, container-compose services, infrastructure-as-code files, environment variable reads.
 - For each external system: what it is, what the project uses it for, where the connection is made.
 - Configuration: variable names from the template file or from reads in code, grouped by purpose. Never values. Feature flags and their definition site.
+- Compare the template and the reads both ways and state the differences as facts: a key in the template that nothing reads, a key read in code but missing from the template, a key read only in a module no entry point reaches.
 
 ## Data model
 
@@ -132,7 +135,7 @@ Domain terms the code uses that a newcomer would not know: entity names, interna
 
 ## Reading path and what to skip
 
-- Reading path: 5–10 files in order — usually the entry point, the main flow's core hop, the central data definitions, one exemplary instance of the most repeated pattern, and the hottest file. Each with one sentence on what the reader will learn there.
+- Reading path: 5–10 files in order — usually the entry point, the main flow's core hop, the central data definitions, one exemplary instance of the most repeated pattern, and the hottest file. Each with one sentence on what the reader will learn there, including the one non-obvious point about that file — what a smart reader would misread, which opening the file alone will not show.
 - Skip on a first read: generated code, vendored code, fixtures, legacy directories being migrated away from, large configuration dumps.
 
 ## Numbers

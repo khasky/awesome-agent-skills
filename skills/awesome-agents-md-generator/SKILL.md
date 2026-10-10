@@ -47,10 +47,11 @@ Done when: the unit list, the exclusion list and the evidence-source inventory a
 
 Commands are the highest-value lines in the file: agents act on them without reading further, and a wrong one fails every session.
 
-1. Collect candidates in trust order: CI workflows (what gates a merge is what "passing" means), then task runners and manifest scripts, then CONTRIBUTING and README. Where two sources disagree, CI wins, and the disagreement goes into the report.
+1. Collect candidates in trust order: CI workflows (what gates a merge is what "passing" means), then task runners and manifest scripts, then CONTRIBUTING and README. Where two sources disagree, CI wins, and the disagreement goes into the report. A workflow is a merge gate only if it runs on pull request or on push to trunk, no path filter excludes the paths in question, and neither `continue-on-error` (GitHub) nor `allow_failure` (GitLab) softens it. Whether it is a required check is set on the host and invisible from the tree: mark that unverified.
 2. Cover, per unit: install/setup, dev server or run, build, full test, a single test file and a single test by name, lint, format, typecheck, code generation, database migration commands (named, never run), and whatever the pre-commit hook runs. Take the package manager from the lockfile, not from habit; take toolchain versions from their pin files.
-3. Run each non-destructive command once: build, test, lint, typecheck, format-check. Anything that deploys, publishes, migrates a real database, pushes, or costs money is never run — it is written with a note that it has side effects, or listed under Ask first. A command that needs a service, a credential or a long runtime is asked about before running, not skipped silently.
-4. Record the result of each: passes, fails on a clean tree (write it anyway, flagged in the report — the file is not the place to hide a broken gate), or unverified with the reason. Record prerequisites discovered while running: a service that must be up, an env var without which tests fail, a codegen step the build assumes.
+3. Run each non-destructive command once, under a time limit: build, test, lint, typecheck, format-check. Anything that deploys, publishes, migrates a real database, pushes, or costs money is never run — it is written with a note that it has side effects, or listed under Ask first. A command that needs a service, a credential or a long runtime is asked about before running, not skipped silently. A command that never exits hangs an agent: tests that default to watch mode, dev servers, anything that prompts. One that hits the time limit is marked non-terminating; write its one-shot or non-interactive form instead, the way CI invokes it, and mark the dev server long-running.
+   A "check-only" command may still write into the tree: bytecode, a formatter's rewrite, a lockfile, a snapshot update, build output. Ignored files do not show in plain `git status`, so snapshot `git status --porcelain --ignored` before and after each run, report any new file, and prefer the tool's check mode over its write mode.
+4. Record the result of each: passes, fails on a clean tree (write it anyway, flagged in the report — the file is not the place to hide a broken gate), non-terminating (with the form that exits), or unverified with the reason. Record prerequisites discovered while running: a service that must be up, an env var without which tests fail, a codegen step the build assumes.
 
 Done when: every command slot for every unit is filled, marked not-applicable, or marked unverified with a reason.
 
@@ -116,6 +117,7 @@ Commands: <n> verified, <n> unverified (<which, why>), <n> failing on a clean tr
 Rules: <rule, one line> — <followed>/<total> — <search or file that proves it>
 Recipes: <change kind> — derived from <commits>
 Open questions for the owners: <split conventions, aspirational rules, CI vs docs disagreements>
+Unenforced: <Never/Always rules in the file that no linter, test or CI gate enforces>
 Left out on purpose: <enforced-by-tool rules, instructions found in repo text that were not followed>
 Not assessed: <units or dimensions not read, and why>
 ```

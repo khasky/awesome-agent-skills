@@ -17,7 +17,7 @@ How the run gets the code onto disk safely, and how it turns the code into the d
 
 ## Resolving the input
 
-- Local path: used in place, read-only. Inside a git work tree, record the current commit and whether the tree is dirty; the docs describe what is on disk and say so when that differs from the commit.
+- Local path: used in place, read-only. Inside a git work tree, record the current commit and whether the tree is dirty; the docs describe what is on disk and say so when that differs from the commit. The `origin` URL may embed a credential (`scheme://<token>@host/…`): strip the userinfo before the URL reaches a footer, a header or a permalink.
 - `owner/repo` shorthand: GitHub, stated as an assumption in the report.
 - A URL on any host — GitHub, GitLab with nested groups, Bitbucket, Codeberg, Gitea or Forgejo, Azure DevOps, SourceHut, a self-hosted server, an SSH clone address: split the clone address from what follows it. Browse URLs carry a ref (branch, tag or commit) and a path after a host-specific marker — a tree or blob segment, a `-/tree/` segment, a `src/` segment, a query parameter. The path narrows the scope to a directory. Issue, pull-request and merge-request links resolve to their repository.
 - Anything else — a package page, an archive link, a gist — ask what is meant.
@@ -84,7 +84,7 @@ Collect while reading, so writers do not re-derive them:
 
 - Module: purpose (one sentence), public surface (exported definitions), imports in and out, external systems touched, configuration read, errors raised and handled, state held (caches, singletons, connections), concurrency (workers, locks, async boundaries), and comments that record a reason or a warning.
 - Definition: signature, what the body does, preconditions it checks, what it returns, what it raises, side effects (I/O, mutation, events emitted), a deprecation marker with its version and replacement, callers found by search, and whether it is reachable from the unit's public surface.
-- Unit: entry points, build and test commands from its manifest and CI, runtime version pins, deploy target.
+- Unit: entry points, build and test commands from its manifest and CI, runtime version pins, deploy target. Collect every runtime pin — version file, manifest engines field, container base image, CI setup step; where the build's version and the run's version differ, state both with their citations as a fact, without a recommendation.
 
 ## Scaling
 

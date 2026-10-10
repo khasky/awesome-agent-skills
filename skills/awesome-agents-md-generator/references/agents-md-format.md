@@ -17,7 +17,7 @@ How the mined rules become a file every agent reads the same way. The format its
 Agents skim from the top and some truncate, so order is by how often a line is needed and how costly it is to miss. Leave out any section with nothing project-specific in it.
 
 1. Title and one-paragraph overview — what the project is and the stack in a sentence, so the rest has context. No marketing, no history.
-2. Commands — setup, dev, build, test, single test, lint, format, typecheck, codegen. Each in a code span, runnable from the directory the file sits in (say so when a command must run elsewhere).
+2. Commands — setup, dev, build, test, single test, lint, format, typecheck, codegen. Each in a code span, runnable from the directory the file sits in (say so when a command must run elsewhere). A command that never exits hangs an agent: write the one-shot, non-interactive form (the way CI invokes it, not the watch-mode default), and mark the dev server as long-running.
 3. Project map — one line per directory an agent would otherwise have to open to understand.
 4. Conventions — the Rule and Migration items from Phase 3, grouped by dimension, each pointing to an exemplar file.
 5. Recipes — "Adding a new `<kind>`": ordered steps, each naming a file or a command.

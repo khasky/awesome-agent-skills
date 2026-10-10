@@ -1,0 +1,26 @@
+# Agents and MCP servers — the server side
+
+`checklists.md` §7 audits a project that *consumes* models, tools and MCP servers. This file is the other half: the project *is* the MCP server, the tool host, or the agent runtime that other clients and models call into. Load it when the tree exposes tools over MCP or an equivalent protocol, or runs agents that act with their own credentials. Every check below goes through the same confidence gate and the four confirmations in `verification.md` as any other finding.
+
+## Identity and tokens
+
+- No token passthrough — the server validates an inbound token issued *for its own audience* and, when it calls a downstream API, obtains a separate token for that API (token exchange, its own client credentials). Forwarding the caller's token downstream makes the server a confused deputy: the downstream service trusts a token never minted for it, and the server's own authorization is bypassed in both directions. Evidence: the code that reads the inbound `Authorization` header and the code that builds the outbound one — the same variable in both is the finding. Also check the inbound side: an `aud` that is not checked, or a check that accepts any audience, is the same bug from the front. CWE-441, CWE-863.
+- A session ID is not a credential — a session or connection identifier routes messages; it does not prove who sent them. Authentication and authorization run on every request, not once at connect. A handler that looks up "the user of this session" and acts without re-validating the token is the finding; so is a session ID that is guessable (sequential, timestamp-derived) or bound to nothing (not tied to the authenticated principal). CWE-384, CWE-306.
+- Rate limits per identity, on the server itself — throttling that lives only in the client, or only per connection, falls to a caller who opens more connections. The limit keys on the authenticated principal and is enforced where the tool executes. Expensive tools (search, code execution, outbound fetch) get their own lower limit. CWE-770.
+
+## Tool inputs and outputs
+
+- Argument schemas are enforced server-side and closed — every tool validates its arguments against a schema that rejects unknown properties (`additionalProperties: false` or the framework's equivalent), types, ranges and lengths. A schema advertised to the client but never applied by the server is documentation, not validation. Extra properties that reach an ORM or a config merge are mass assignment (see `checklists.md` §1). Each argument then reaches its sink under the §1 rules — a path argument canonicalized, a URL argument under the SSRF allowlist, a command argument passed as an argument vector.
+- Tool output is a channel back into the model — what a tool returns (fetched pages, file contents, database rows, third-party API bodies) lands in a model's context and can carry instructions. The server marks or wraps untrusted content as data, strips the control and invisible characters listed in §1, and never returns raw upstream text it cannot vouch for under a field the client treats as trusted. Evidence: the tool's return path and whether any transformation sits between the upstream body and the response. CWE-74.
+- Error and result text leaks like any response — stack traces, internal hostnames and credentials in tool errors reach the model and through it the user; `checklists.md` §4 applies.
+
+## Authorization and the agent's own boundary
+
+- Permission decisions are deterministic — whether a tool call is allowed is decided by code and policy (an allowlist, a role check, a scope), never by asking a model. A model in the authorization path can be argued out of its answer by the very input it is judging. The model may *propose* an action; a deterministic check grants or denies it. CWE-863.
+- The agent cannot change its own boundary — the agent's configuration, permission set, tool allowlist, approval settings and system prompt live where the agent's own tools cannot write. A file-write or shell tool that reaches the directory holding its config is a privilege escalation path, even when no current prompt uses it. Evidence: the writable paths the agent's tools can reach, against the location of each config file. CWE-269.
+- Sub-agents never get more than the parent — a spawned or delegated agent inherits a permission set equal to or narrower than the one that spawned it; credentials passed down are scoped to the sub-task. A sub-agent created with a broader tool list, a wider filesystem root or a longer-lived token than its parent launders privilege. CWE-269.
+- Destructive and irreversible tools sit behind an approval the agent cannot grant itself — the approval comes from a human or a policy outside the agent's write reach, and an approval for one call does not carry over to the next.
+
+## Audit trail
+
+- The audit log sits outside every path the agent can write — an agent that can edit, truncate or rotate its own log can erase the evidence of what it did. Log the principal, the tool, the arguments (redacted under §4), the decision and its reason, to a sink the agent's tools cannot reach (a separate service, an append-only store). A log file inside the agent's working directory is the finding. CWE-778.

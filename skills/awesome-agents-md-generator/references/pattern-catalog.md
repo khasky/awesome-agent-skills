@@ -34,6 +34,7 @@ Stack-agnostic by design: the evidence sources are named by role (the lockfile, 
 - A rule when: a version is pinned somewhere a tool reads, or CI installs exactly one version. Write the pin file's path beside the version so the next reader updates one place.
 - Typical line: which package manager (from the lockfile present), which runtime version (from the pin), which workspace tool drives the monorepo.
 - Watch for: two lockfiles for two package managers — a Split to report, not a rule to pick.
+- Runtime version drift: collect every pin (version file, manifest engines field, container base image, CI setup step). When the version that builds differs from the version that runs, or two pins disagree, it is a Split, not a rule — the report names both pins with their paths; the file stays silent on which to use.
 
 ## Layout and ownership
 

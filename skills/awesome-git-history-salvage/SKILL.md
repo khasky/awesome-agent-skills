@@ -134,13 +134,14 @@ The activity log is a list of ref states, not commits. Each row carries `before`
 
 ```bash
 R=<owner>/<repo>
-for p in 1 2 3 4 5; do
-  gh api "repos/$R/activity?per_page=100&page=$p" --jq '.[] | .before, .after'
-done | grep -v '^0\{40\}$' | sort -u > shas.txt
+gh api --paginate "repos/$R/activity?per_page=100" --jq '.[] | .before, .after' \
+  | grep -v '^0\{40\}$' | sort -u > shas.txt
 wc -l < shas.txt
+gh api --paginate "repos/$R/activity?per_page=100" --jq '.[] | .after' | wc -l      # ref-state rows seen
 ```
 
-- Paginate until a page comes back empty; a repository with a long life has more than one page.
+- Page until the listing is exhausted; `--paginate` follows the host's own next-page links, where a fixed page count silently drops every row past it. A repository with a long life has many pages, and the rows-seen count is the figure the report quotes.
+- If paging ends on an error or a rate limit, the list is truncated: say so in the report beside the count, and rerun rather than treating a short list as the whole log.
 - `grep -v '^0\{40\}$'` drops the all-zero SHA, which is how a creation or deletion writes "nothing was here".
 - `--jq '.[] | .timestamp, .activity_type, .ref, .actor.login'` on the same endpoint gives the human-readable log, worth capturing alongside as context for *why* a state existed.
 

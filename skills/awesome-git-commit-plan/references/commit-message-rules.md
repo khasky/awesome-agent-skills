@@ -247,6 +247,7 @@ Prefer the active voice and one precise verb over stacked modifiers. Passive is 
 ## 4. Characters
 
 - Plain ASCII throughout. No em dash, no arrow glyph, no curly quote, no ellipsis character, no emoji, no non-breaking space. They break `git log`, changelog parsers and terminals, and they read as machine output.
+- One exception, and it comes from the repository, not from this file: a log whose subjects open with an emoji or a `:shortcode:` (gitmoji) is a convention visible in the log, and the convention wins. Write the subject in the form the log uses, with the emoji the log already pairs with that kind of change. The `:shortcode:` form is plain ASCII and stays inside this rule; a unicode emoji is the one non-ASCII character allowed, in that position only. The section 9 non-ASCII check then matches exactly that leading character and nothing else.
 - No backticks anywhere. Identifiers are written bare: `profiles.json` becomes profiles.json, `core.hooksPath` becomes core.hooksPath.
 - Quoting is for the rare case where a string has to be marked off. Single quotes then. Never a backticked quoted string.
 - No implementation trivia in prose. Not a noreply address template, not an `includeIf` condition, not a full lint command line, not an `invoke` call with its argument object. Name the thing in words.
@@ -304,8 +305,8 @@ Run these over a drafted message before committing. Each maps to a rule above.
 
 ```bash
 grep -n '`'                          # 4, must be empty
-grep -nP '[^\x00-\x7F]'              # 4, must be empty
-grep -n '[a-z]: [a-z]'               # 3.4, only the type separator may match
+grep -nP '[^\x00-\x7F]'              # 4, must be empty (gitmoji log: only the leading emoji may match)
+grep -n '[a-z]: [a-z]'               # 3.4, only the type separator may match (gitmoji log: also the closing colon of the leading :shortcode:)
 grep -c 'rather than\|instead of'    # 3.5, at most one
 grep -n 'used to\|previously'        # 3.6, only in a commit changing old code
 grep -c ', so \| which \| because '  # 3.7, one per sentence

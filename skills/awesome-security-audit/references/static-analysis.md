@@ -43,6 +43,12 @@ codeql database analyze db --format=sarif-latest -o raw/codeql.sarif \
 
 Reach for CodeQL when the finding hinges on interprocedural data flow (a taint chain across several functions or modules) that a single-file matcher misses.
 
+- Check what the database actually holds before trusting an empty result. For compiled languages the extractor sees only what the build compiled: a build that failed partway, skipped a module, or was autodetected wrongly yields a database with a fraction of the source and a clean-looking analysis. Compare the extracted file and line counts (the database creation log and its baseline summary report them) against the source tree's own count for that language; a large gap means the build command needs fixing, and until it is fixed the uncovered paths are `NOT ASSESSED`.
+
+## Empty output
+
+A scan that reports nothing is clean only if it ran — exit 0, the target and include globs covered the files you meant (the scanner's own "files scanned" count, not an assumption), and a rule known to match something in the tree did match. Otherwise retry once with a different config or target, then mark the area `NOT ASSESSED`. The full rule is in `verification.md`, "Zero hits is a result only if the search ran".
+
 ## Language-native quick scanners
 
 ```bash

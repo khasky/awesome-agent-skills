@@ -43,6 +43,26 @@ When reviewing an existing design, walk the same decisions as findings:
 - Webhooks the API sends are treated as public surface: signed, versioned, redeliverable — same contract discipline as endpoints.
 - Nothing in the response a client shouldn't see: internal ids, flags, or fields leaking through by serializer default.
 
+## Change review
+
+When the input is a change to a shipped contract (a diff to a spec, schema, handler or payload), review the change, not the end state. Compatibility is never declared from the new schema alone: read the old and new shapes side by side, and the code on both sides of the wire. Walk four scenarios and record the result of each:
+
+- Old writer, new reader: a payload produced before the change reaches code after it.
+- New writer, old reader: a payload produced after the change reaches code that has not been updated yet (still-deployed servers, shipped mobile or SDK builds).
+- Rollback: the old code returns while values only the new code writes are already stored or in flight.
+- Payloads at rest: old-format messages in queues, cache entries, stored rows and files are read by new code, and new-format ones by old code after a rollback.
+
+Search for consumers both ways, in every repository you can reach:
+
+- A client reads a field the server stopped sending, renamed or retyped. This breaks silently: no error, a missing or wrong value.
+- The server returns a status code or error code the client has no branch for.
+- A request field becomes required, or a validation tightens, while existing callers omit it.
+- A new enum value reaches a consumer with an exhaustive switch or a closed type.
+
+"No consumer found" is not "unused": external clients, other repositories, scripts and stored data are invisible to a code search. Say what was searched and treat the rest as unknown.
+
+Verdict, one per change: **Compatible** (all four scenarios pass, evidence cited), **Order-dependent** (safe only in a stated deploy order or with a stated migration step; name it), **Breaking** (some scenario fails for a live consumer; the fix is a new version or a layered shape), **Not determinable** (a scenario or consumer set could not be checked; name what is missing and never round up to Compatible).
+
 ## Output Format
 
 ```text

@@ -54,6 +54,7 @@ The docs are part of the product; drift between them and the code is a real defe
 - Every referenced command exists and behaves as described — run the build/test/lint/dev scripts the README and dev docs name; a missing or renamed one is a finding.
 - Every referenced file, symbol, flag, or path resolves — an example that imports a helper that was renamed, a plugin named in a diagram that no longer exists, a stale prerequisite version.
 - Claims are true — "everything derives from X", "the manifest is generated", "these two formats stay in lockstep": verify the mechanism (the derivation, the test that pins it) actually exists.
+- Env vars and config settings, checked both ways — documented but never read by code (grep the name across the source); read by code and required but absent from `.env.example` and the docs; a documented setting that is read only by a module nothing imports. Where the docs are generated, the fix direction targets the generator's source, not its output, or the next run reverts it.
 - Inline code comments count as docs — a comment claiming a function is used somewhere it no longer is, or describing behavior the code no longer has, is drift. (Do not rewrite comments here — that is `awesome-code-cleanup`; just report the mismatch.)
 - Verdict cue — a "build from source" or reviewer-reproducibility doc that doesn't reproduce is FIX; a stale plugin name in a contributor guide is Low; a whole section that's accurate earns a one-line "accurate".
 
@@ -80,6 +81,7 @@ The sharpest test of an architecture is how cheaply the next contributor extends
 
 - Right layer — a check belongs where its risk lives: pure logic in fast unit tests, integration/DOM/visual behavior in the suite that exercises the real thing. A unit test that fakes an external surface pins a stale snapshot and gives false confidence — flag it and name the layer it belongs to.
 - Gates exist and pass — typecheck, test, lint, build. Run them; a project that can't prove its own health is a finding in itself.
+- A gate that cannot fail is a finding — the check never runs (not wired into any pipeline), runs on another path than the one that ships, has its result ignored (`continue-on-error`, `|| true`, `allow_failure` in GitLab, a job not marked required for merge), or checks a stale artifact (a cached or previously built output). A local hook bypassable with `--no-verify` and no CI job behind it is not a gate. The proof of a gate is a plausibly wrong input pushed through that same path and seen to fail; a gate nobody has seen fail is Medium confidence, however green it is.
 - Skip ≠ fail — when running suites against live/flaky targets, a `skip` (anti-bot wall, missing credential, environment gap) is not a regression. Attribute each failure to *code* vs *environment* before reporting it, and say which.
 
 ## What not to flag

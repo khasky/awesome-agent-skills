@@ -31,7 +31,7 @@ Apply consistent naming, structure, and patterns so code is readable and maintai
 
 ## Work Process (when applying standards)
 
-1. Discover project conventions — Scan existing code: naming (camelCase vs snake_case), file layout, import style, test patterns. Check for CONTRIBUTING, .eslintrc, .prettierrc, or editorconfig.
+1. Discover project conventions — Scan existing code: naming (camelCase vs snake_case), file layout, import style, test patterns. Check for CONTRIBUTING, .eslintrc, .prettierrc, or editorconfig. Count per dimension (quotes, indentation, naming case): the majority variant is the convention, the minority is a finding, and a tie is asked, not decided.
 2. Identify violations — Compare changed or new code against those conventions and the rules below.
 3. Suggest concrete fixes — Rename symbols, extract functions, add types, fix formatting. Prefer one logical edit per suggestion.
 4. Document exceptions — If the project has an exception (e.g. "use any here for legacy"), note it rather than "fixing" it without context.
@@ -190,7 +190,7 @@ Dynamically-typed languages without a checker (plain JS, Ruby, PHP, Lua) do the 
 - No section rulers — `// --- HTTP`, `// ==== Helpers ====` and their kind: a blank line separates blocks, and a file that wants a table of contents wants splitting.
 - Lists in a comment sit flush — One space after the marker, wrapped lines starting where the marker starts, no hanging indent built out of `//   `. Indentation that mirrors real nesting being documented is content and stays.
 - No claim that a choice was meant — `deliberately`, `intentionally`, `by design` assert what only the reason proves; write the reason, drop the word (`lexicon.md`, Borrowed diction).
-- Doc comments on public APIs — Summary, parameters, return, what it raises, optional example. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
+- Doc comments carry the contract the types do not — errors raised, side effects, units, ordering, special values (what `null`, `0` or empty means), and an example where the call is not obvious. Document more on a published library or SDK surface, and near nothing on an internal helper or a plain data type. `@param` and `@returns` appear only when they say something beyond the name and type; a block that repeats the signature is noise. Use the language's own format and match project style: JSDoc/TSDoc, Python docstrings (PEP 257, in the project's Google/NumPy/reST flavor), Go doc comments starting with the symbol name, Rust `///` with a `# Examples` section, Javadoc, XML doc comments in C#.
 - No commented-out code — Remove or explain in a ticket; use version control for history.
 
 That is the bar for code you are writing or touching now. For a repo-wide pass over existing comments — deciding what to delete, condense, or fix, with the false-positive boundaries and the behavior-preserving verification gate — use awesome-code-cleanup, which owns that procedure.

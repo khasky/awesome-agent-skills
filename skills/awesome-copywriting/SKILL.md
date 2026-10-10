@@ -123,6 +123,8 @@ Pass 2 — hand the copy to the de-slop catalog. Persuasive writing is where pro
 - Sentence case in headings and labels unless the product's existing convention says otherwise; no period on buttons and labels.
 - Honest, specific numbers. An odd verifiable figure beats a round inflated one, and every figure traces to the user.
 
+A revision asked for after delivery ("shorter", "warmer") goes through both passes again, with the reader state and the voice held, or the set drifts toward the model's default tone within a few rounds.
+
 ## Verification
 
 The final report states, with evidence rather than intent: which surface was written, the reader state named for it, the intake answers used and which of the three quality probes had to be re-asked, whether the story cleared the gate or the user was sent back to dig, how many variants across which angles, the pick and the reader-state reason for it, the audit passes run with what each caught, and — explicitly — every line resting on a fact the user did not supply. Anything that could not be settled is stated, never implied as fine.

@@ -26,6 +26,7 @@ Markers:
 - The arrow glyph as a prose connective: `input → output`, `problem → solution`, `2020 → 2026`, `old name → new name`, or an arrow-chained pipeline inside a running sentence. It compresses a relation the sentence should state, and no one types `→` on a keyboard.
 - More than five bolded terms per paragraph.
 - Bold falls not on the load-bearing concepts but on random words, purely for rhythm.
+- Emphasis faked with Unicode Mathematical Alphanumeric characters (styled bold or italic letters, such as `𝗟𝗮𝘂𝗻𝗰𝗵`) in a post or a title. Screen readers spell them out, search does not match them, and they read as a template. Fix: plain letters, with the emphasis carried by word order and line breaks. Real mathematical notation is not a tell.
 
 How to fix an arrow. Name the relation in words — `becomes`, `then`, `leads to`, `renamed to`, `from X to Y` — or, in technical prose where a symbol genuinely reads better, use ASCII `->`. Change the characters, not the facts.
 

@@ -40,6 +40,11 @@ Done when: the scope is stated, every checklist area below has been walked, each
 - [ ] One `<h1>` per page; heading levels in order (no skipping 2 → 4).
 - [ ] Skip link to main content as the first focusable element (WCAG 2.4.1 Bypass Blocks).
 - [ ] Viewport meta does not disable zoom: flag `user-scalable=no` and `maximum-scale=1` (WCAG 1.4.4).
+- [ ] Every page has a `<title>` that describes its topic or purpose, and it changes on SPA route changes (2.4.2 Page Titled, A).
+- [ ] Page language is set with `lang` on `<html>` (3.1.1, A); passages in another language carry their own `lang` (3.1.2 Language of Parts, AA).
+- [ ] Content is not locked to one orientation (a CSS or manifest orientation lock) unless the orientation is essential (1.3.4 Orientation, AA).
+- [ ] Reflow: at 320 CSS px wide (400% zoom of a 1280px viewport) content needs no two-dimensional scrolling, except for data tables, maps, and similar content that needs both (1.4.10, AA).
+- [ ] Text spacing: with line height 1.5, paragraph spacing 2x, letter spacing 0.12em and word spacing 0.16em applied, nothing clips, overlaps, or disappears; flag fixed-height text containers and `overflow: hidden` on text (1.4.12, AA).
 - [ ] Landmarks: `<main>`, `<nav>`, `<aside>`, `<footer>` where appropriate.
 - [ ] Lists use `<ul>`/`<ol>`/`<li>`; tables use `<th>`, `scope`, and caption if applicable.
 - [ ] Buttons are `<button>` or `<input type="submit">`; links are `<a href="...">`. Do not use `<div onclick>` for actions without role, keyboard, and focus.
@@ -52,6 +57,7 @@ Done when: the scope is stated, every checklist area below has been walked, each
 - [ ] Visible focus indicator (outline or custom style); not removed with `outline: none` without replacement. Prefer `:focus-visible` (no ring on mouse click) and `:focus-within` for compound controls.
 - [ ] No keyboard trap: user can tab out of modals and menus; Escape closes where expected.
 - [ ] Custom widgets (tabs, accordions, menus) operable with keyboard (Enter/Space to activate, Arrow keys if applicable).
+- [ ] Content shown on hover or focus (tooltips, popovers, submenus) is dismissible without moving the pointer (Escape), hoverable (the pointer can move onto it without it vanishing), and persistent until dismissed or no longer relevant (1.4.13, AA). A feature reachable only by hover has a keyboard and touch path.
 
 ### 3. Labels and names
 
@@ -61,6 +67,7 @@ Done when: the scope is stated, every checklist area below has been walked, each
 - [ ] User input is preserved on submit error, not cleared (reduces re-entry burden; see 3.3.7). Validate on blur, not on every keystroke.
 - [ ] Paste is never blocked (`onPaste` + `preventDefault` is an anti-pattern) — anywhere, not just password fields.
 - [ ] Buttons and links have clear, unique names (text content or `aria-label`). No "Click here" or "Read more" without context.
+- [ ] Label in name: the accessible name of a control contains its visible text, ideally starting with it, so voice-control users can say what they see (2.5.3, A). An `aria-label` that replaces visible text with different words fails.
 - [ ] Images: meaningful images have `alt` describing content; decorative images have `alt=""` or `role="presentation"`. Decorative icons (inline SVG, icon fonts) get `aria-hidden="true"`.
 - [ ] Iframe and embedded content have `title` or `aria-label`.
 
@@ -77,9 +84,13 @@ Done when: the scope is stated, every checklist area below has been walked, each
 - [ ] Modals and dialogs: focus moves into the modal when opened; focus is trapped inside; focus returns to trigger when closed; first focusable element or explicit `autoFocus` per pattern.
 - [ ] State is communicated: expanded/collapsed (`aria-expanded`), selected (`aria-selected`), current (`aria-current`), disabled (`disabled` or `aria-disabled`).
 
-### 6. Motion
+### 6. Motion, media and time
 
 - [ ] If the project supports it: respect `prefers-reduced-motion` (disable or reduce animation). Optional but recommended for vestibular sensitivity.
+- [ ] Nothing flashes more than three times in any one second (2.3.1 Three Flashes or Below Threshold, A); check animated GIFs, video, and canvas effects.
+- [ ] Anything that moves, blinks, or scrolls automatically for more than 5 seconds alongside other content (carousels, tickers, autoplay background video) has a pause, stop, or hide control; auto-updating content has one too (2.2.2, A).
+- [ ] Audio that plays automatically for more than 3 seconds can be paused or stopped, or its volume controlled independently of system volume (1.4.2, A).
+- [ ] Prerecorded video with sound has captions (1.2.2, A) and audio description or a text alternative for visual-only information (1.2.3, A; 1.2.5 audio description, AA); live video with sound has captions (1.2.4, AA); audio-only and video-only media have a transcript or equivalent (1.2.1, A). Check the player controls themselves are keyboard operable and labelled.
 
 ### 7. WCAG 2.2 additions (often missed)
 

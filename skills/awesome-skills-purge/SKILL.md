@@ -151,6 +151,7 @@ Two passes over the same entry list, per root, skipping anything on the keep lis
 - `rm --` and `Get-ChildItem -Force` handle the two things that break naive loops: an entry whose name starts with `-`, and dot-prefixed entries an unforced listing skips.
 - A real directory inside a git work tree is skipped and reported, never deleted, even when the keep list does not name it.
 - Count what each pass removed. A pass that deletes zero where the inventory listed entries means the loop is not seeing what the inventory saw — stop and re-inventory rather than escalating force.
+- A delete can fail partway, most often on Windows, where a running agent holds files open inside its own skills folder. Handle each entry on its own: catch the failure, record the entry and the reason, and carry on with the next. Never escalate force to get past it (no taking ownership, no killing the agent's process, no retry loop with stronger flags). A real directory whose delete failed midway is half-deleted: name that exact folder in the report, say that its contents are incomplete, and offer to restore it from the archive. Tell the user to close the agent holding it, and re-run the purge for the leftovers.
 - Leave the `skills` root directories in place, empty. Agents create them anyway, and removing them buys nothing. Remove a root only if the user asks.
 
 ---
@@ -159,7 +160,7 @@ Two passes over the same entry list, per root, skipping anything on the keep lis
 
 Re-run the Phase 1 inventory. It is the proof, not the deletion's own exit codes:
 
-- Every remaining entry is in the keep list. Anything else means a root was missed.
+- Every remaining entry is in the keep list or is recorded as failed in Phase 4. Anything else means a root was missed.
 - Every kept link still resolves: `[ -e "$link" ]` (POSIX) / `Test-Path $e.Target` (Windows). A dangling kept link means Phase 2 failed to pull in a target.
 - Every clone recorded in Phase 1 still exists, and `git -C <clone> status --porcelain` is unchanged from before.
 - The archive exists and opens: `tar -tzf <archive> | head` / `Get-ChildItem` on the expanded zip listing.
@@ -172,10 +173,11 @@ Re-run the Phase 1 inventory. It is the proof, not the deletion's own exit codes
 Platform:   <detected OS> / <shell>
 Roots:      <M> skill directories under <home or project path>
 Deleted:    <K> links, <R> real folders (<size> reclaimed)
+Failed:     none | <path> — <reason> (half-deleted: restore from the archive, or close the holding agent and re-run)
 Kept:       <names>  (at <roots>)
 Protected:  <clone paths>  — links removed, working trees untouched
 Backup:     <absolute path>  (<size>)  |  none (--no-backup)
-Verified:   re-inventory = keep list only; kept links resolve; clones intact
+Verified:   re-inventory = keep list only (bar the Failed entries); kept links resolve; clones intact
 ```
 
 Manual residuals (a file delete cannot reach these):

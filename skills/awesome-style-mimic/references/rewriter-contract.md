@@ -12,6 +12,7 @@ Hard rules:
 
 - Preserve exactly: facts, numbers, dates, names, claims, URLs, code blocks, inline code, frontmatter, image refs, the order and completeness of the information, and the SOURCE LANGUAGE — style transfers across languages (tone, rhythm, structure, formatting), words do not get translated.
 - Replace: voice, sentence rhythm, lexicon (where meaning is unchanged), heading phrasing, intro/outro/CTA shape, formatting habits — all per the guide.
+- Patterns, not words: no sentence, caption or heading is copied from the Golden samples, and a turn of phrase that recurs across them is paraphrased, not repeated. Strings the guide's Rewrite instructions fix verbatim (a CTA, a sign-off) are the one exception. A quirk is not amplified past how often the guide shows it; in doubt, take the plainer variant. Before writing the output, check that no phrase was lifted from a sample.
 - Never invent facts, add claims, drop content, or pad. Output length within ±30% of source.
 - html/component mode: rewrite human-visible copy only — text nodes, title/alt/aria-label, meta descriptions. Markup, attributes, class names, code, logic stay byte-identical. When unsure whether a string is user-visible copy, leave it unchanged.
 - A source that is pure code/config/data with no prose: do not fabricate a rewrite — write nothing and report "no prose to rewrite".

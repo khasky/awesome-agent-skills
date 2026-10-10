@@ -56,6 +56,10 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     ```
     glab api projects/<url-encoded-path>/push_rule
     ```
+    ```
+    gh api repos/<owner>/<repo> --jq .security_and_analysis      # secret_scanning_push_protection: enabled | disabled
+    ```
+    Push protection is a fourth push-time rejection, and a rebuild presents the whole tree to it as new commits. The field is absent without admin rights and an organization-level policy may not show in it, so absent means unknown, never off. Enabled or unknown, together with a gitleaks finding in the tree at the tip (step 23), goes in the matrix as "push will be rejected" and is quoted at gate #1.
 
 ## D — Repository state and blast radius
 
@@ -79,10 +83,14 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     Ask the host, not the local clone: `git branch -r --merged` only sees remote-tracking refs this checkout happens to have fetched, so a branch that was never fetched reads as unmerged and produces exactly the false stop this step exists to avoid. Without a host CLI, fetch the heads first (`git fetch origin 'refs/heads/*:refs/remotes/origin/*'` — it writes remote-tracking refs, the one non-read-only act in this phase) or declare the classification unavailable and let the user judge the list.
 
     ```
-    gh pr list --repo <owner>/<repo> --state open
-    gh pr list --repo <owner>/<repo> --state all --limit 100 --json number,state
-    glab mr list --repo <owner>/<repo>
+    gh api "search/issues?q=repo:<owner>/<repo>+is:pr+is:open&per_page=1" --jq .total_count     # full counts first
+    gh api "search/issues?q=repo:<owner>/<repo>+is:pr+is:merged&per_page=1" --jq .total_count
+    gh api "search/issues?q=repo:<owner>/<repo>+is:pr&per_page=1" --jq .total_count
+    gh pr list --repo <owner>/<repo> --state open --limit 200
+    gh pr list --repo <owner>/<repo> --state all --limit 1000 --json number,state
+    glab mr list --repo <owner>/<repo> --per-page 100                  # add --page N until a page comes back empty
     ```
+    Every one of these lists silently stops at its limit (30 rows by default, so a bare `gh pr list` understates a busy repository). Read the total first, then compare it with the rows returned: equal to the limit, or fewer than the total, means the list is truncated. Raise the limit or page on until the count is met, and until then mark the figure in the matrix as truncated rather than as the number of PRs. Every PR count quoted at gate #1 (open, merged, refs) comes from the total, not from the length of a listing.
     Every PR record survives the rewrite permanently, and none of them can be deleted. A pull request is a row in the host's database keyed by repository and number — title, author, timeline, and its own `refs/pull/N/*` refs — and not one of its fields depends on the branch's commit graph. Rewriting `refs/heads/<branch>` cannot reach it. GitHub has no deletion path either: the GraphQL schema carries `deleteIssue`, `deletePullRequestReview` and `deletePullRequestReviewComment` but no `deletePullRequest`, and `DELETE /repos/{owner}/{repo}/pulls/{n}` answers `404` because the endpoint does not exist. So Insights → Pulse keeps listing the merged PRs, the PR tab keeps its full list, and the only way to clear either is deleting and recreating the repository — which also costs every issue, star, watcher, release and its assets, the Actions history and secrets, the traffic stats and the creation date. Say this at gate #1, in those terms, because a user who asked for a clean history usually believes it covers this too.
 
     Those refs are also the reason the wipe is never total. Count the refs, then count what they keep alive that the branch does not. Run the fetch in the scratch bare clone from step 14, never in the user's checkout — it writes twenty-odd remote-tracking refs, the same non-read-only exception step 15 already carves out, and it does not belong in a working copy the user has to live with:
@@ -111,10 +119,12 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     - What cannot be done, so do not offer it: a merged PR cannot be re-pointed, re-merged, renumbered or recreated under its own number — the record is keyed to the repository and the number, and no API writes it. Synthesizing a merge commit for a diff the final tree does not contain is inventing history, the same rule that forbids fabricated `fix:` arcs. A bump whose *before* state exists nowhere in the tree can be attributed, never re-enacted.
 
     ```bash
-    gh api "repos/<owner>/<repo>/activity?per_page=100" \
+    gh api --paginate "repos/<owner>/<repo>/activity?per_page=100" \
       --jq '.[] | "\(.timestamp) \(.activity_type) \(.ref) \(.before[0:7])..\(.after[0:7])"'
     curl -s "https://archive.softwareheritage.org/api/1/origin/<repository-url>/visits/"   # third-party snapshot?
     ```
+
+    `--paginate` is not decoration: a single page holds 100 rows, so counting `force_push` rows or reading the oldest push from the first page alone understates both. Count the rows once paging ends, and if it stops early on an error or a rate limit, report the figure as truncated.
 
     Four records, three of which never expire:
     - The activity log (`/repos/{owner}/{repo}/activity`, rendered at Insights → Activity) keeps every `push`, `force_push`, `branch_creation`, `branch_deletion` and `pr_merge` with both SHAs and the actor — including the rows this run is about to add, the Phase 11 branch rename, and every tag deletion Phase 12 performs. There is no delete endpoint, the reference documents no retention window, its `time_period` filter accepts `year`, and a repository months old returns rows back to its creation. It is world-readable on a public repo. Nothing overwrites it, either: an append-only log answers a second rewrite with a second `force_push` row, so an attempt to bury the first doubles the evidence. Do not spend a step on it — state it.

@@ -42,7 +42,7 @@ Apply consistent logging so operations are debuggable and compliant without leak
 
 | Category | Level | Content | Do not log |
 |----------|--------|---------|------------|
-| Request start/end | INFO | method, path, status, duration_ms, request_id | Body, headers with tokens |
+| Request start/end | INFO | method, path (query string stripped), status, duration_ms, request_id | Body, headers with tokens, query strings, path segments carrying tokens or PII |
 | Errors | ERROR | message, error type, stack (server-side), request_id | Full request/response, secrets |
 | Recoverable issues | WARN | message, context (e.g. retry count), request_id | |
 | Key business events | INFO | event name, relevant ids (order_id, user_id if safe), outcome | Full payloads, PII |
@@ -97,6 +97,9 @@ logger.error('Error: ' + err);   // May include stack or internal detail in mess
 
 - Do not add logs that dump full request/response or env vars. Suggest redaction or sampling if needed for debugging.
 - If the project has a logging or privacy policy (retention, PII, secrets), align with it.
+- Scrub the `path` before it is written: drop the query string and replace path segments that carry a token, an email or another personal identifier with a route template (`/users/:id`). Mask client IPs where the full address is not needed (zero the last octet of IPv4, the last 80 bits of IPv6).
+- Log the event, not the data: "user changed email" with the user id, never the old and new values.
+- Keep the audit log (sensitive reads, admin actions) apart from the application log, with its own retention and its own access list; the app log is wide-readable and short-lived, the audit log is neither.
 - Use the same library and format as the rest of the codebase. Do not introduce a second logging system without good reason.
 
 ## Checklist

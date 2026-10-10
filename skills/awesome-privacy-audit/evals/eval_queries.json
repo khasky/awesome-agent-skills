@@ -1,0 +1,22 @@
+[
+  { "query": "we're launching the booking app in Europe next quarter, go through the codebase and tell me what personal data we hold and where it all ends up", "should_trigger": true, "split": "train" },
+  { "query": "if a user deletes their account in our fitness tracker, does their data actually disappear from everywhere, search index and analytics included", "should_trigger": true, "split": "train" },
+  { "query": "we just added a session replay SDK to the checkout pages, check whether it starts recording before the cookie banner is answered", "should_trigger": true, "split": "train" },
+  { "query": "do a GDPR readiness pass on the patient-portal repo before the hospital pilot", "should_trigger": true, "split": "train" },
+  { "query": "map every third party our backend sends user emails, phone numbers or locations to, and what each one receives", "should_trigger": true, "split": "train" },
+  { "query": "half the fields on our signup form feel like we never use them, find which personal fields we collect but nothing ever reads", "should_trigger": true, "split": "train" },
+  { "query": "we're getting ready for CCPA questions from a customer, check whether we actually have data export and deletion for users in the code", "should_trigger": true, "split": "validation" },
+  { "query": "privacy review of the kids' learning app, especially what goes to analytics and whether minors are treated differently", "should_trigger": true, "split": "validation" },
+  { "query": "our users table uses a deleted_at flag, check whether anything ever purges those rows or the copies in the cache and the warehouse", "should_trigger": true, "split": "validation" },
+  { "query": "how bad would it be if the support database leaked, which kinds of personal data are in it and is the sensitive stuff encrypted", "should_trigger": true, "split": "validation" },
+  { "query": "check the profile endpoint for IDOR, can one user read another user's records by changing the id", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "our privacy policy says we share data with four vendors, check that sentence against what the code actually integrates", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "train" },
+  { "query": "add redaction to our request logger so emails and tokens never get written to the log lines", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "train" },
+  { "query": "review the customers schema, the address columns are packed into one varchar and there's no foreign key to orders", "should_trigger": false, "belongs_to": "awesome-database-audit", "split": "train" },
+  { "query": "before we publish the browser extension, check what its bundled code reveals about our private API and rate limits", "should_trigger": false, "belongs_to": "awesome-leak-audit", "split": "train" },
+  { "query": "scan the repo for committed API keys and hardcoded database passwords", "should_trigger": false, "belongs_to": "awesome-security-audit", "split": "train" },
+  { "query": "the app store data-safety form we filled in last year, is it still accurate against the SDKs we ship now", "should_trigger": false, "belongs_to": "awesome-claims-audit", "split": "validation" },
+  { "query": "mask client IPs in our access logs and pick the right level for the login-failed line", "should_trigger": false, "belongs_to": "awesome-logging-standards", "split": "validation" },
+  { "query": "what's the difference between anonymisation and pseudonymisation in general terms", "should_trigger": false, "split": "validation" },
+  { "query": "write a short cookie banner text for our marketing site", "should_trigger": false, "belongs_to": "awesome-copywriting", "split": "validation" }
+]

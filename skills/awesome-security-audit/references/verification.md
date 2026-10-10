@@ -27,10 +27,10 @@ Default to standard; escalate to deep the moment a linear read stops fitting.
 
 ## The four confirmations (a finding must answer all four)
 
-1. Reachability — the concrete entry point and the caller privilege required. "An unauthenticated attacker who can reach `POST /api/export`." Not "if someone calls this."
+1. Reachability — the concrete entry point and the caller privilege required. "An unauthenticated attacker who can reach `POST /api/export`." Not "if someone calls this." Network reachability comes from the deployment config, not from the code alone: read the ingress or load-balancer rules, the service type, and the container runtime's port mapping. A compose `ports:` entry publishes on every host interface unless it names a host address (`"8080:8080"` vs `"127.0.0.1:8080:8080"`), and the bind address in the application's own config describes the container's namespace, not the host's — read both before calling a service local-only. Several frameworks and dev servers bind `0.0.0.0` by default when no host is set. Without positive evidence of an external route, the attacker is whoever can reach the internal network — say so, and do not write "anonymous remote attacker".
 2. Control — which part of the dangerous value the attacker controls, shown as the source→sink chain.
 3. Impact — which invariant breaks and what the attacker gains. Reachability is not impact; a claim of "full DB read" needs a row you actually read, not an injectable parameter plus an inference.
-4. No mitigating control — check for the middleware, framework default, WAF rule, DB constraint, or upstream caller that already sanitizes. "None found" is a valid answer, but it must be looked for, not assumed.
+4. No mitigating control — check for the middleware, framework default, WAF rule, DB constraint, or upstream caller that already sanitizes. "None found" is a valid answer, but it must be looked for, not assumed. The reverse holds for a *missing*-control finding (no auth on the store, no TLS, no encryption at rest): it needs proof that the effective default is unsafe. Explicitly disabled → finding; not configured → look up the platform default for that product and version first; secure by default → no finding. "The config does not mention it" is not evidence. The unsafe-default list is in `checklists.md` §6.
 
 ## Adversarial revalidation (try to kill it)
 
@@ -67,11 +67,16 @@ When verifying many candidates: run Step 0 for all of them first (obvious false 
 
 ## Invariants before a finding leaves draft
 
-Four mechanical checks — run them over every finding, each maps to a way reports have actually gone wrong:
+Five mechanical checks — run them over every finding, each maps to a way reports have actually gone wrong:
 
 1. Every finding cites at least one piece of evidence — a command and its output, a request/response, the proving code lines. Support that is only a code reading makes it a *candidate*; label it so.
 2. Confirmed status and low confidence cannot coexist. If you would not bet on it, downgrade the status or say plainly what would settle it — this is how a speculative finding acquires unearned authority.
 3. Every reproduction runs without asking you a question, or names the environment it cannot leave (an offline sample, a lab-only target, a credential the reader must supply).
 4. A claim of obtained access or data has evidence of that specific claim — the row you read, not the injectable parameter and an inference about what lies behind it.
+5. The fields agree with each other. A CVSS vector with `AV:L` (local) or `PR:H` (high privileges) contradicts a Prerequisites line of "anonymous attacker from the internet"; a Critical severity contradicts a reachability of "internal network only, admin role". One of the two is wrong — fix it, don't publish both.
+
+## Zero hits is a result only if the search ran
+
+"No matches" from a grep, a scanner, or a query clears the area only when three things hold: the tool exited 0 (an error exit, a parse failure or a timeout prints nothing and looks clean), the pattern or glob actually covered files (count the files it walked — a glob that matched nothing, a wrong extension, an ignore file swallowing the directory), and a control pattern finds a known match in the same set (search for a token you know is there; if the control comes back empty, the search is broken, not the code). When any of the three fails, retry once with a different pattern or tool; if that also fails, the area is `NOT ASSESSED` with the reason, never "clean". Record the distinction in the worklist: *tool found nothing* and *tool did not run* are different verdicts.
 
 A finding that fails one of these does not get quietly dropped: it moves back to the worklist with the reason attached, so a later pass knows what would promote it.

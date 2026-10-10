@@ -57,6 +57,8 @@ Which host CLI. Detect the host from the URL, then use its tool:
 | GitLab (SaaS or self-managed) | `glab` | `glab --version` | `glab api <endpoint>` (`--hostname` for self-managed) |
 | Bitbucket, Gitea/Forgejo, Azure DevOps, plain SSH remote | none assumed | — | the host's REST API over `curl` with a token, if the user supplies one |
 
+Where the `curl` fallback is used, read the token from an environment variable and pass it from there. Never print it in a command, a log line or the report, and if the user pasted one into the chat, say so and advise revoking it and issuing a new one.
+
 For a host with no CLI and no token, treat every gate below that needs one as unavailable, not as passed: list which checks you could not run, and get the user's explicit acceptance before Phase 1. An unrunnable gate is a blind spot to disclose, never a gate to skip silently.
 
 Shell. Detect the platform before running anything (`uname -s`, or `$IsWindows` in PowerShell) and pick the shell from that check rather than from habit. On Windows the `filter-branch` fallback — a multi-line POSIX shell script — and the `xargs` cleanup in Phase 6 both need Git Bash, which ships with Git for Windows; PowerShell quoting mangles the first and has no `xargs` for the second. `filter-repo` invocations and the plain git commands are safe in either shell.
@@ -143,6 +145,8 @@ Do every check your available tools allow. Each failure is a hard stop, not a wa
     ```
     GitHub: `viewerPermission` must be `WRITE`, `MAINTAIN`, or `ADMIN`; `READ` / `null` → stop, you cannot push. GitLab: the effective `access_level` under `permissions.project_access` (or `permissions.group_access`) must be ≥ `40` (Maintainer) — `30` (Developer) cannot force-push a protected branch. URL-encode the GitLab path: `group/sub/repo` → `group%2Fsub%2Frepo`.
 
+    Token scopes. `gh auth status` prints them. `repo` (GitHub) / `write_repository` (GitLab) covers the force-push itself. `workflow` (GitHub) is also required when any commit in the rewrite set touches `.github/workflows/**`: every such commit is pushed again as a new object, and without the scope the push is rejected with `refusing to allow an OAuth App to create or update workflow`. Check it now, not at the push. An org that enforces SSO also needs the token authorized for it; a 403 carrying an SSO header means it is not.
+
 11. Branch protection (needs a host CLI) — a force-push to a protected branch is *rejected at push time*, after the rewrite is already done:
     ```
     gh api repos/<owner>/<repo>/branches/<branch>/protection
@@ -150,12 +154,19 @@ Do every check your available tools allow. Each failure is a hard stop, not a wa
     ```
     A `200` with force-push disallowed → stop; the user lifts protection or grants a bypass first (GitHub: Settings → Branches; GitLab: Settings → Repository → Protected branches, field `allow_force_push`). A `404` means unprotected — good.
 
-12. Open pull / merge requests (needs a host CLI) — they reference the old hashes and break:
+    Push protection (secret scanning) is a separate rule that also rejects at push time, and every rewritten commit reaches the host as a new object:
     ```
-    gh pr list --repo <owner>/<repo> --state open
-    glab mr list --repo <owner>/<repo>          # defaults to open MRs
+    gh api repos/<owner>/<repo> --jq .security_and_analysis
     ```
-    Any open PR/MR whose commits are in the blast radius → surface the list; the user closes or merges them first.
+    `secret_scanning_push_protection` reading `enabled` means a secret anywhere in the rewritten range gets the push rejected. The field is absent without admin rights, and an organization-level policy may not show in it: absent means unknown, never off. This skill runs no scan of its own; when `gitleaks` is on `PATH`, run `gitleaks git .` over the clone, and if it finds a secret in the rewrite range say upfront that the push will be rejected. Without `gitleaks`, say the range was not scanned.
+
+12. Open pull / merge requests (needs a host CLI) — they reference the old hashes and break. Both commands page at 30 rows by default, so get the full count first and treat a list that stops at its limit as truncated:
+    ```
+    gh api "search/issues?q=repo:<owner>/<repo>+is:pr+is:open&per_page=1" --jq .total_count
+    gh pr list --repo <owner>/<repo> --state open --limit 200
+    glab mr list --repo <owner>/<repo> --per-page 100      # open MRs; add --page N until a page comes back empty
+    ```
+    Any open PR/MR whose commits are in the blast radius → surface the list, with its count against the total; the user closes or merges them first. Rows equal to the limit, or fewer rows than the total, mean the list is truncated: raise the limit or page on, and until then mark the output as truncated rather than reporting it as the full set.
 
 13. Signatures — a rewrite invalidates every signature it touches, because the signature covers the identity headers:
     ```
@@ -185,6 +196,8 @@ git show-ref --heads                  # record each branch tip: OLD_SHA per bran
 git show -s --format=%T <OLD_SHA>     # record OLD_TREE per branch — Phase 3 compares against it
 git fsck --full                       # no missing or broken objects
 ```
+
+Git LFS: `git lfs ls-files` non-empty → a mirror clone holds pointers, not blobs. Run `git lfs fetch --all` inside the backup, or the backup cannot restore the files.
 
 `OLD_TREE` is recorded here, from the backup, because the working clone loses the old objects during Phase 2's cleanup: after that, `git diff <OLD_SHA> HEAD` answers `fatal: bad object`, while comparing tree hashes still proves the content is untouched.
 
@@ -296,8 +309,10 @@ git remote add origin <clone-url>                                  # removed dur
 git push --force-with-lease=<branch>:<OLD_SHA> origin <branch>     # one line per branch
 ```
 
-- Rejected as *stale info* → someone pushed after your backup. Stop and re-run from Phase 1 against the new tip. Never switch to `--force` to steamroll it.
+- Rejected as *stale info* → someone pushed after your backup. Stop. The confirmation was given for the numbers shown at the gate, and the tip they described has moved: go back to Phase 0, re-clone, recompute steps 8, 9, 12 and 13 (rewrite set, blast radius, open PRs, signatures) and branch protection against the new tip, show the changed numbers, and ask at step 15 again before Phase 1. Never switch to `--force` to steamroll it.
 - Rejected as *protected branch* → step 11 was skipped or protection was added since; lift it and retry.
+- Rejected by *push protection* (a secret found in a pushed commit) → stop. Do not scrub the secret by amending or rebasing: that changes the tree and breaks the same-tree-hash proof from Phase 3. The bypass link in the rejection is the user's decision, never taken on their behalf; report the rejection, where the secret is, and that rotating it is the fix that matters.
+- Rejected with `refusing to allow an OAuth App to create or update workflow` → the token lacks the `workflow` scope (step 10); the user refreshes it, then retry.
 - Tags that contain a rewritten commit moved too. A lease does not apply to them; push them explicitly and only the ones the user names: `git push --force origin refs/tags/<tag>`. A tag left un-pushed keeps the old identity reachable and the rewrite incomplete; a tag force-pushed after a release changes what that release points at. Name the tradeoff per tag, never batch it.
 
 ---

@@ -35,6 +35,7 @@ The backup holds the evidence. Run these against it, not against the rebuilt bra
 ```bash
 git -C <backup> log --format='%s' -200                      # the raw subjects
 git -C <backup> log --format='%s' -200 | grep -cE '^[a-z]+(\([a-z0-9./-]+\))?!?: '   # conventional?
+git -C <backup> log --format='%s' -200 | grep -cP '^(:[a-z0-9_+-]+:|[^\x00-\x7F])'   # gitmoji? leading emoji or :shortcode: (the non-ASCII count also catches non-English subjects: a lead to confirm by reading the subjects)
 git -C <backup> log --format='%s' -200 | sed -nE 's/^[a-z]+\(([^)]+)\).*/\1/p' | sort | uniq -c | sort -rn
 git -C <backup> log --format='%s' -200 | awk '{print length}' | sort -n | uniq -c    # subject length
 git -C <backup> log --format='%b' -50 | grep -cE '^(Signed-off-by|Co-authored-by|Closes|Fixes|Refs)'
@@ -48,6 +49,7 @@ Decide from the counts, not from one sample:
 | `subsystem: lowercase summary`, no type vocabulary | git/kernel style |
 | `[Area] Capitalized summary` | React-style bracket prefix |
 | `ABC-123: summary` or `[ABC-123]` | Ticket-prefixed — ask the user for the ticket IDs, or omit the prefix and say so |
+| Most subjects open with an emoji or a `:shortcode:` (`:sparkles: add the importer`), with or without a type after it | Gitmoji — copy the form the log uses, unicode emoji or `:shortcode:`, and the emoji-to-meaning mapping it already follows; never mix the two forms |
 | Capitalized imperative sentences, no prefix | Plain style (this repo's own logs, many small projects) |
 
 Whatever the family, copy its case, punctuation and length too. A conventional repo whose subjects are all lowercase and under 60 characters does not want a 90-character capitalized one.
@@ -67,10 +69,13 @@ git / kernel      area: summary in imperative, lowercase, no period
                   <blank>
                   Signed-off-by: Name <email>
 
+Gitmoji           <emoji or :shortcode:> summary in the log's own case and mood
 Bracketed         [Area] Summary in imperative
 Ticket-prefixed   ABC-123: summary in imperative
 Plain             Summary in imperative, capitalized, no period
 ```
+
+A gitmoji log overrides any plain-ASCII preference in a message ruleset used alongside this skill (`awesome-git-commit-plan` writes ASCII by default): the emoji is the repository's convention, and a plan that strips it fails the review and the log's own consistency. The `:shortcode:` form is ASCII anyway and is the safer choice when the log mixes both or a terminal-encoding problem is likely.
 
 Rules that hold across all of them: imperative mood ("add", not "added"/"adds"), no "This commit…", no "I"/"we", no "now"/"currently", no patch-set chatter ("rebased", "fixed review comments"), and machine-readable trailers last.
 

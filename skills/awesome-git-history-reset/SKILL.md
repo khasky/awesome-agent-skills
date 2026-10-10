@@ -55,6 +55,8 @@ Which host CLI. Detect the host from the remote URL, then use its tool. The gate
 | GitLab (SaaS or self-managed) | `glab` | `glab --version` | `glab api <endpoint>` (`--hostname` for self-managed) |
 | Bitbucket, Gitea/Forgejo, Azure DevOps, plain SSH remote | none assumed | — | the host's REST API over `curl` with a token, if the user supplies one |
 
+Where the `curl` fallback is used, read the token from an environment variable and pass it from there. Never print it in a command, a log line or the report, and if the user pasted one into the chat, say so and advise revoking it and issuing a new one.
+
 For a host with no CLI and no token, treat every gate below that needs one as unavailable, not as passed: list which checks you could not run, and get the user's explicit acceptance before Phase 1. An unrunnable gate is a blind spot to disclose, never a gate to skip silently.
 
 ---
@@ -100,6 +102,8 @@ Do every check that your available tools allow. Each failure is a hard stop, not
    ```
    GitHub: `viewerPermission` must be `WRITE`, `MAINTAIN`, or `ADMIN`; `READ` / `null` → stop, you cannot push. GitLab: the effective `access_level` under `permissions.project_access` (or `permissions.group_access`) must be ≥ `40` (Maintainer) — `30` (Developer) cannot force-push a protected branch and usually cannot push to the default one. Note whether the repo is a fork (`isFork` / `forked_from_project`) — rewriting a fork's history is fine but doesn't touch the upstream; make sure that's what the user wants.
 
+   Token scopes. `gh auth status` prints them. `repo` (GitHub) / `write_repository` (GitLab) covers the force-push itself. `workflow` (GitHub) is also required when the tree holds `.github/workflows/**`: the single commit re-adds every workflow file, and without the scope the push is rejected with `refusing to allow an OAuth App to create or update workflow`. Almost every repo with CI hits this, so check it now rather than at the push. An org that enforces SSO also needs the token authorized for it; a 403 carrying an SSO header means it is not.
+
    URL-encode the GitLab project path: `group/sub/repo` → `group%2Fsub%2Frepo`. Inside a checkout of that project, `glab api projects/:fullpath` substitutes it for you.
 
 7. Branch protection (needs a host CLI) — force-push to a protected default branch will be *rejected at push time*, after the backup and squash are already done:
@@ -109,12 +113,19 @@ Do every check that your available tools allow. Each failure is a hard stop, not
    ```
    A `200` with force-push disallowed, or required reviews / linear-history / status checks → stop and tell the user to lift protection or grant a bypass first (GitHub: Settings → Branches; GitLab: Settings → Repository → Protected branches, where `allow_force_push` is the field that matters). A `404` means the branch is unprotected — good.
 
-8. Open pull / merge requests (needs a host CLI) — they reference old commits and break on a wholesale rewrite:
+   Push protection (secret scanning) is a separate rule that also rejects at push time, and the single commit presents the whole tree to it as new content:
    ```
-   gh pr list --repo <owner>/<repo> --state open
-   glab mr list --repo <owner>/<repo>         # defaults to open MRs; --all would add closed and merged
+   gh api repos/<owner>/<repo> --jq .security_and_analysis
    ```
-   Any open PR/MR → surface the list. The user should close or merge them first; proceeding will orphan their base commits.
+   `secret_scanning_push_protection` reading `enabled` means a secret in the current tree will get the push rejected. The field is absent without admin rights, and an organization-level policy may not show in it: absent means unknown, never off. If the Phase 2 scan finds a secret in the tree at the tip, say upfront, before Phase 3, that the push will be rejected.
+
+8. Open pull / merge requests (needs a host CLI) — they reference old commits and break on a wholesale rewrite. Both commands page at 30 rows by default, so get the full count first and treat a list that stops at its limit as truncated:
+   ```
+   gh api "search/issues?q=repo:<owner>/<repo>+is:pr+is:open&per_page=1" --jq .total_count
+   gh pr list --repo <owner>/<repo> --state open --limit 200
+   glab mr list --repo <owner>/<repo> --per-page 100      # open MRs; add --page N until a page comes back empty
+   ```
+   Any open PR/MR → surface the list, with its count against the total. Rows equal to the limit, or fewer rows than the total, mean the list is truncated: raise the limit or page on, and until then mark the output as truncated in the preflight rather than reporting it as the full set. The user should close or merge them first; proceeding will orphan their base commits.
 
 9. Forks (from step 6 — `forkCount` on GitHub, `forks_count` on GitLab) — a rewrite cannot reach a fork; every forker keeps a full copy of the old history. If the count is above zero, say so plainly: this is not a way to make the old history unrecoverable.
 
@@ -144,6 +155,8 @@ git rev-list --all --count            # must be > 0
 git log --oneline -1 <branch>         # record this as OLD_SHA
 git fsck --full                       # no missing/broken objects
 ```
+
+Git LFS: `git lfs ls-files` non-empty → a mirror clone holds pointers, not blobs. Run `git lfs fetch --all` inside the backup, or the backup cannot restore the files.
 
 Record `OLD_SHA` (the pre-rewrite tip) — later phases prove no content was lost against it, and it's the exact ref to restore from if the user ever wants to roll back:
 
@@ -176,6 +189,7 @@ gitleaks git . --no-banner
 
 - `gitleaks git` scans commit history — that is the command this step needs. `gitleaks directory .` scans the working tree instead and would miss committed-then-removed keys, which are exactly what a history rewrite is usually about. On gitleaks older than 8.19 the spelling is `gitleaks detect --source . --no-banner`; 8.19 renamed `detect` → `git` and `detect --no-git` → `directory`, keeping the old names working but hidden from `--help`.
 - Findings → stop and tell the user to rotate the exposed credentials. The rewrite can still proceed afterward, but rotation is the part that actually protects them; the force-push is cosmetic for an exposed secret.
+- A finding in the tree at the tip, and push protection enabled or unknown (Phase 0 step 7) → say now that the push will be rejected, and ask how the user wants to proceed before Phase 3. Do not remove the secret from the tree to get past it: that changes the tree and voids the identical-tree proof.
 - Clean → continue — for the *tracked* history only. Neither command sees `.gitignore`d paths, so a secret in `secrets/` or `*.local` is unscanned either way; say so rather than reporting a blanket clean.
 - No `gitleaks` → state that history was not scanned and recommend installing it if secrets in old commits are a concern: `winget install gitleaks` (Windows), `brew install gitleaks` (macOS/Linuxbrew), the distro package on Linux (`apt install gitleaks`, `pacman -S gitleaks`, `dnf install gitleaks`), or a release binary from the project's GitHub releases where the distro has none.
 
@@ -212,8 +226,10 @@ Use `--force-with-lease`, not a bare `--force`: it aborts if someone pushed to `
 git push --force-with-lease=<branch>:<OLD_SHA> origin <branch>
 ```
 
-- Rejected as *stale info* → a new commit landed after your backup. Stop, re-run from Phase 1 against the new tip; do not switch to `--force` to steamroll it.
+- Rejected as *stale info* → a new commit landed after your backup. Stop. The confirmation was given for the numbers shown at the gate, and the tip they described has moved: go back to Phase 0 and redo steps 4, 5, 7 and 8 against the new tip (default branch and its tip, the branch list, protection, open PRs), show the changed numbers, and ask at step 11 again before Phase 1. The commit count is read again when Phase 1 backs up and verifies the new tip. Do not switch to `--force` to steamroll it.
 - Rejected as *protected branch* → Phase 0 step 7 was skipped or protection was added since; lift it and retry.
+- Rejected by *push protection* (a secret found in the pushed tree) → stop. Do not scrub the secret by amending or re-squashing: that changes the tree and breaks the identical-tree proof. The bypass link in the rejection is the user's decision, never taken on their behalf; report the rejection, the secret's location, and that rotating it is the fix that matters.
+- Rejected with `refusing to allow an OAuth App to create or update workflow` → the token lacks the `workflow` scope (Phase 0 step 6); the user refreshes it, then retry.
 
 Verify the remote tip is now the new commit:
 
