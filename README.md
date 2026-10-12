@@ -4,11 +4,9 @@
 
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE) [![Emojery](https://api.emojery.app/badge/github/khasky/awesome-agent-skills.svg)](https://emojery.app/react?t=github/khasky/awesome-agent-skills)
 
-Skills for AI coding agents: code review, test writing, design docs, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a `SKILL.md` in the [Agent Skills](https://agentskills.io) format — install by copying it into your agent's skills directory.
+Skills for AI coding agents: code review, test writing, design docs, debugging, security audits, refactoring, and cleaning up AI-written code and text. Each skill is a folder with a `SKILL.md` in the [Agent Skills](https://agentskills.io) format, distilled from public collections and large open-source practice, then sharpened on real repositories.
 
-Distilled from widely-used public collections and the documented practice of large open-source projects, then sharpened over several rounds of use on real repositories.
-
-Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, Windsurf, Antigravity, Kilo Code, Qwen Code, and any other agent that supports the standard. See [Install](#install) for exact paths.
+Works with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copilot, opencode, Amp, Windsurf, Antigravity, Kilo Code, Qwen Code, and any other agent that supports the standard.
 
 ## Contents
 
@@ -16,8 +14,6 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
   - [Contents](#contents)
   - [Quick start](#quick-start)
   - [Install as a plugin](#install-as-a-plugin)
-  - [Install](#install)
-    - [Copies or symlinks](#copies-or-symlinks)
   - [Skills](#skills)
     - [Code review](#code-review)
     - [Code quality and refactoring](#code-quality-and-refactoring)
@@ -30,21 +26,13 @@ Compatible with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub
     - [Agent maintenance](#agent-maintenance)
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
-      - [Running them](#running-them)
-      - [How long a publishing run takes](#how-long-a-publishing-run-takes)
-  - [Picking between similar skills](#picking-between-similar-skills)
   - [Usage examples](#usage-examples)
   - [Skill format](#skill-format)
   - [Contributing](#contributing)
-  - [How these were built](#how-these-were-built)
-  - [Design principles](#design-principles)
-    - [Which layer to install](#which-layer-to-install)
   - [Related](#related)
   - [License](#license)
 
 ## Quick start
-
-Clone once, then install every skill into your agents with one command:
 
 ```bash
 git clone https://github.com/khasky/awesome-agent-skills.git
@@ -52,34 +40,17 @@ cd awesome-agent-skills
 npx skills add ./skills -g -s "*" -a claude-code codex gemini-cli -y
 ```
 
-The [skills CLI](https://github.com/vercel-labs/skills) installs all skills globally into Claude Code, Codex, and Gemini CLI. Change `-a` to pick agents (`-a "*"` installs to every detected agent); add `--copy` to force independent copies.
+The [skills CLI](https://github.com/vercel-labs/skills) installs every skill globally into Claude Code, Codex, and Gemini CLI. Change `-a` to pick agents (`-a "*"` installs to every detected agent). To skip the clone, `npx skills add khasky/awesome-agent-skills` installs straight from GitHub.
 
-Then confirm what you got. The CLI may link an agent's directory into its own store at `~/.agents/skills/` rather than into your clone, so up to two hops sit between the clone and the agent, and any hop can be a copy:
-
-| Shell | Check |
-| --- | --- |
-| POSIX (bash, zsh, fish) | `ls -l ~/.agents/skills` |
-| PowerShell | `Get-ChildItem ~\.agents\skills \| Select-Object Name, LinkType, Target` |
-
-A link names its target — an arrow in `ls -l`, a `Target` in PowerShell. An entry with no target is a copy, and a `git pull` in your clone will not reach it. [Copies or symlinks](#copies-or-symlinks) has what to do about that.
-
-Keep them current. Where the install linked through to your clone, one pull moves every skill:
-
-```bash
-cd awesome-agent-skills && git pull
-```
-
-Where it copied, `npx skills update -g` re-fetches instead. Either way, re-run the `skills add` command to pick up skills added since. Then ask the agent naturally ("review this diff against main") or invoke a skill explicitly (`/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex).
-
-Prefer not to clone? `npx skills add khasky/awesome-agent-skills` installs straight from GitHub — but it won't auto-sync with `git pull`.
+Update with `git pull` in the clone, or `npx skills update -g` if the CLI copied instead of linking (check `ls -l ~/.agents/skills`: an entry with no link target is a copy). Re-run `skills add` to pick up new skills.
 
 ## Install as a plugin
 
-The plugin installs every skill at once and updates with the repository. Pick the plugin or the `skills add` install from the Quick start, not both: both put every skill in front of the agent twice.
+The plugin installs every skill at once and updates with the repository. Pick the plugin or the Quick start, not both.
 
 | Agent | Install | Update | Uninstall |
 |---|---|---|---|
-| Claude Code | `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills` | `/plugin marketplace update awesome-agent-skills`, or turn on auto-update under `/plugin` → Marketplaces | `/plugin uninstall awesome-agent-skills@awesome-agent-skills` |
+| Claude Code | `/plugin marketplace add khasky/awesome-agent-skills`, then `/plugin install awesome-agent-skills@awesome-agent-skills` | `/plugin marketplace update awesome-agent-skills`, or auto-update under `/plugin` → Marketplaces | `/plugin uninstall awesome-agent-skills@awesome-agent-skills` |
 | Codex | `codex plugin marketplace add khasky/awesome-agent-skills`, then `codex plugin add awesome-agent-skills@awesome-agent-skills` | `codex plugin marketplace upgrade awesome-agent-skills`, then the `add` again | `codex plugin remove awesome-agent-skills@awesome-agent-skills` |
 | GitHub Copilot CLI | `copilot plugin marketplace add khasky/awesome-agent-skills`, then `copilot plugin install awesome-agent-skills@awesome-agent-skills` | `copilot plugin update awesome-agent-skills` | `copilot plugin uninstall awesome-agent-skills` |
 | Gemini CLI | `gemini extensions install https://github.com/khasky/awesome-agent-skills` (add `--auto-update` to follow the repository) | `gemini extensions update awesome-agent-skills` | `gemini extensions uninstall awesome-agent-skills` |
@@ -88,53 +59,7 @@ The plugin installs every skill at once and updates with the repository. Pick th
 | Antigravity CLI | clone the repository, then `agy plugin install <clone>` | `git pull` in the clone, then the `install` again | `agy plugin uninstall awesome-agent-skills` |
 | Kilo Code CLI | clone the repository, then add its `skills` folder to `~/.config/kilo/kilo.jsonc`: `"skills": { "paths": ["C:/repos/awesome-agent-skills/skills"] }` | `git pull` in the clone | remove the path |
 
-- Invoke a plugin skill as usual: `/awesome-code-review` in Claude Code and Cursor, `$awesome-code-review` in Codex. Qwen Code prefixes it with the extension's name: `awesome-agent-skills:awesome-code-review`.
-- Installed users get new work when the version in `.claude-plugin/plugin.json` changes, which every release bumps.
-- CI installs the plugin into Claude Code, Codex, Copilot CLI and Gemini CLI on every push. The Antigravity CLI and Kilo Code rows were checked by hand (`agy` 1.2.14, `kilo` 7.8.1: all skills listed); the Qwen Code and Cursor rows follow each agent's documentation.
-- Antigravity CLI installs from a folder only, and copies it: an `owner/repo` target is refused. Kilo Code has no plugin format for skills (`kilo plugin` installs npm code modules), so it reads the clone through `skills.paths` instead, and a `git pull` reaches it directly.
-- Any other agent (opencode, Amp, Windsurf, Kiro, Grok Build, ...): use the Quick start or copy the folders by the table below.
-
-## Install
-
-The Quick start covers Claude Code, Codex, and Gemini CLI. For any other agent, or to install by hand without the CLI, a skill is a folder: copy it into the directory your agent reads. Most agents also read the shared `.agents/skills/` path, so one copy can serve several tools at once. To stay in sync with `git pull`, link from your clone instead of copying — [Copies or symlinks](#copies-or-symlinks) has the command and the way to tell the two apart.
-
-| Agent | Project path | Global path | Docs |
-| --- | --- | --- | --- |
-| Claude Code | `.claude/skills/` | `~/.claude/skills/` | [docs](https://code.claude.com/docs/en/skills) |
-| OpenAI Codex | `.agents/skills/` | `~/.agents/skills/` | [docs](https://developers.openai.com/codex/skills) |
-| Gemini CLI | `.gemini/skills/` or `.agents/skills/` | `~/.gemini/skills/` or `~/.agents/skills/` | [docs](https://geminicli.com/docs/cli/skills/) |
-| Cursor | `.cursor/skills/` or `.agents/skills/` | `~/.cursor/skills/` or `~/.agents/skills/` | [docs](https://cursor.com/docs/context/skills) |
-| GitHub Copilot | `.github/skills/` or `.agents/skills/` | `~/.copilot/skills/` or `~/.agents/skills/` | [docs](https://docs.github.com/en/copilot/concepts/agents/about-agent-skills) |
-| opencode | `.opencode/skills/` or `.agents/skills/` | `~/.config/opencode/skills/` | [docs](https://opencode.ai/docs/skills/) |
-| Amp | `.agents/skills/` | `~/.agents/skills/` | [docs](https://ampcode.com/manual#agent-skills) |
-| Windsurf | `.windsurf/skills/` | `~/.codeium/windsurf/skills/` | [docs](https://docs.windsurf.com/windsurf/cascade/skills) |
-| Antigravity | `.agents/skills/` (legacy `.agent/skills/`) | `~/.gemini/antigravity/skills/` | [docs](https://antigravity.google/docs/skills) |
-| Kilo Code | `.kilo/skills/` | `~/.kilo/skills/` or `~/.agents/skills/` | [docs](https://kilo.ai/docs/customize/skills) |
-
-- **Claude.ai (web):** zip a skill folder and upload it under **Settings → Skills**.
-- **Gemini CLI** can also install straight from a repo URL: `gemini skills install <repo-url> --consent`.
-- Restart or reload the agent afterwards so it picks up new skills.
-
-What "compatible" means here: the skills are plain `SKILL.md` folders under the open standard, and the Quick start (Claude Code, Codex, Gemini CLI) is the path they are used through day to day. The other rows are the paths each agent's own documentation gives; installs there have not been exercised for every release, and whether a skill then behaves as documented is not checked agent by agent. If an agent trips on a skill, file an issue with the agent and its version. The store-and-link behavior described below was confirmed on Windows with a local clone as the source — other systems, and installs from a repo URL, may link where that one copied, so run the check and trust its output over this paragraph.
-
-### Copies or symlinks
-
-A copy never breaks and never announces itself stale. It stays the version you installed, and you learn that from a skill behaving like an old one rather than from an error. That is the argument for linking, and it is worth verifying rather than assuming, because several of the paths here yield copies:
-
-- Installing straight from GitHub (`npx skills add khasky/awesome-agent-skills`) and `--copy` both copy by design.
-- A shell may answer a link request with a copy instead. Git Bash on Windows does that for `ln -s`, silently and with exit code 0, unless `MSYS=winsymlinks:nativestrict` is set.
-- With a local path as the source, `skills add` has been seen writing copies into the store even without `--copy`.
-
-Linking a skill by hand, once the copy is out of the way:
-
-| Shell | Command |
-| --- | --- |
-| POSIX | `ln -s <clone>/skills/<skill> ~/.agents/skills/<skill>` |
-| PowerShell | `New-Item -ItemType SymbolicLink -Path ~\.agents\skills\<skill> -Target <clone>\skills\<skill>` |
-
-Some systems restrict who may create a link, and some filesystems have none at all — Windows wants Developer Mode or an elevated prompt, and FAT32 volumes, certain network shares and container mounts will refuse. Where linking is unavailable, `npx skills update -g` refreshes the copies instead: it re-fetches the source, it does not follow your clone.
-
-To clear an install, `npx skills remove -g -s <name>` takes explicit skill names, one per skill (`-s "*"` removes every CLI-installed skill, including ones from other repos). Every skill here is prefixed `awesome-`, so one glob covers them when you delete the folders yourself.
+Qwen Code prefixes a plugin skill with the extension name: `awesome-agent-skills:awesome-code-review`. CI installs the plugin into Claude Code, Codex, Copilot CLI and Gemini CLI on every push; the other rows follow each agent's documentation.
 
 ## Skills
 
@@ -144,181 +69,118 @@ To clear an install, `npx skills remove -g -s <name>` takes explicit skill names
 | --- | --- |
 | [awesome-code-review](skills/awesome-code-review) | Reviews diffs and PRs for correctness, security, and team standards |
 | [awesome-code-review-feedback](skills/awesome-code-review-feedback) | Responds to review feedback: verify before implementing, clarify, push back with reasoning |
-| [awesome-code-review-jury](skills/awesome-code-review-jury) | Second opinion on a change: blind read-only reviewers on different models, a judge that cross-examines them and returns one verdict |
+| [awesome-code-review-jury](skills/awesome-code-review-jury) | Second opinion: blind reviewers on different models, a judge that cross-examines them and returns one verdict |
 
 ### Code quality and refactoring
 
 | Skill | What it does |
 | --- | --- |
 | [awesome-code-standards](skills/awesome-code-standards) | Naming, structure, and patterns for consistent code across a team |
-| [awesome-code-cleanup](skills/awesome-code-cleanup) | Repo-wide, behavior-preserving cleanup of AI-like code noise: comments by default, plus audit, refactor, dead-code detection, and an execution mode for another audit's findings. The only skill here that edits |
-| [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades safely: risk-classified batches, changelog-driven majors, overrides with removal conditions, verification between steps |
+| [awesome-code-cleanup](skills/awesome-code-cleanup) | Behavior-preserving cleanup of AI-like code noise: comments, dead code, vague names, over-abstraction. The only skill here that edits |
+| [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades in risk-classified batches, with changelog-driven majors and verification between steps |
 
 ### Testing
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-test-writing](skills/awesome-test-writing) | Designs and writes tests that catch real regressions: placement ladder, behavior-first assertions, characterization tests, property/fuzz for parsers — every test proven able to fail |
-| [awesome-regression-sweep](skills/awesome-regression-sweep) | Read-only multi-layer verification sweep against a recorded baseline: aspect pass, live wire contract, cross-implementation parity, deployed-vs-committed drift, 9 rotating deep angles |
-| [awesome-test-gap-audit](skills/awesome-test-gap-audit) | Read-only audit of which tests are missing, weak, stale or mis-scoped, mapped by what the tests actually call and ranked P0–P3 by risk, with a SHIP/FIX/BLOCK verdict and a worklist handed to awesome-test-writing |
+| [awesome-test-writing](skills/awesome-test-writing) | Designs and writes tests that catch real regressions, every test proven able to fail |
+| [awesome-regression-sweep](skills/awesome-regression-sweep) | Read-only verification sweep against a recorded baseline: typecheck, lint, tests, wire contracts, deploy drift |
+| [awesome-test-gap-audit](skills/awesome-test-gap-audit) | Read-only audit of missing, weak, stale or mis-scoped tests, ranked P0–P3, with a worklist for awesome-test-writing |
 
 ### Design and planning
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-design-doc](skills/awesome-design-doc) | Produces design docs and ADRs: requirements and numbers first, real alternatives, a recommendation tied to requirements, risks found by inverting to failure first, non-goals and rollout — with a structural gate run before delivery |
-| [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resource modeling, versioning by layering, cursor pagination, idempotency keys |
-| [awesome-plan-simplify](skills/awesome-plan-simplify) | Simplifies a written plan, design or spec against the system it changes: claims checked in the code, over-engineering found through named lenses, each finding with what goes away counted and its price stated, written to a separate document beside the plan |
+| [awesome-design-doc](skills/awesome-design-doc) | Design docs and ADRs: requirements first, real alternatives, a grounded recommendation, non-goals and rollout |
+| [awesome-api-design](skills/awesome-api-design) | Designs or reviews HTTP API shape before code: resources, versioning, pagination, idempotency |
+| [awesome-plan-simplify](skills/awesome-plan-simplify) | Simplifies a written plan against the code it changes: over-engineering, redundant guards, contradictions, as ranked cuts |
 
 ### Understanding a codebase
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-code-explainer](skills/awesome-code-explainer) | Explains how a codebase works as one illustrated, self-contained page, from a local folder or a temporary clone of any git host URL: purpose, stack, structure, entry points, the main flow traced hop by hop, patterns with evidence, data model, history, where to start reading and open questions — every claim linked to the file at the analyzed commit, the page published as an artifact or opened in the browser |
-| [awesome-code-docs](skills/awesome-code-docs) | Generates a full technical documentation set from a local folder or a temporary clone of any git host URL: a dependency graph walked bottom-up so each module is documented after what it relies on, cycles documented as one unit, per-module and public-symbol reference, architecture, flows with sequence diagrams, API, CLI, config and data-model reference, operations, how-to guides from co-change history, every statement cited at the analyzed commit, and graph-aware updates that redo only what changed and its dependents |
+| [awesome-code-explainer](skills/awesome-code-explainer) | Explains how a codebase works as one illustrated page: purpose, stack, structure, main flow, where to start reading, every claim cited |
+| [awesome-code-docs](skills/awesome-code-docs) | Generates a full technical documentation set along the dependency graph: architecture, per-module and API reference, flows, operations, how-to guides |
 
 ### Debugging and reliability
 
 | Skill | What it does |
 | --- | --- |
 | [awesome-bug-fix](skills/awesome-bug-fix) | Reproduce → isolate root cause → fix → verify; no random edits |
-| [awesome-root-cause](skills/awesome-root-cause) | Root-cause analysis for incidents and process problems with no failing test: 5-Whys, fishbone, PDCA, one-page A3 |
+| [awesome-root-cause](skills/awesome-root-cause) | Root-cause analysis for incidents and process problems with no failing test: 5 Whys, fishbone, PDCA, A3 |
 | [awesome-error-standards](skills/awesome-error-standards) | Consistent error handling, retries, and user-facing messages |
 | [awesome-logging-standards](skills/awesome-logging-standards) | Structured logging, levels, and PII handling |
 
 ### Audits
 
+All audits are read-only and end in a SHIP / FIX / BLOCK verdict where they gate a release.
+
 | Skill | What it does |
 | --- | --- |
-| [awesome-architecture-audit](skills/awesome-architecture-audit) | Read-only whole-project audit: module boundaries, docs-vs-code fidelity, YAGNI/KISS/SOLID, extensibility, with a SHIP/FIX/BLOCK verdict and a prioritized report |
-| [awesome-security-audit](skills/awesome-security-audit) | Read-only check for injection, secrets, auth issues, dependency CVEs, CI/CD pipeline exposure, and crypto misuse — findings carry their remediation, applying it is the owner's call |
-| [awesome-pentest](skills/awesome-pentest) | Authorization-gated penetration test: scoping and rules of engagement, recon, attack-surface mapping, exploitation-to-proof, findings with CWE/CVSS and retest — follows PTES, OWASP WSTG, NIST SP 800-115 |
-| [awesome-leak-audit](skills/awesome-leak-audit) | Keeps a public client (extension, app, SPA, CLI) from leaking backend internals; client hardening |
-| [awesome-accessibility-audit](skills/awesome-accessibility-audit) | Read-only WCAG-oriented a11y checks, each finding carrying its fix as a reviewable snippet |
-| [awesome-seo-audit](skills/awesome-seo-audit) | Read-only whole-site SEO audit across eight tracks: crawl and indexing, on-page and content, markup and SERP appearance, rendering and mobile parity, international and local, the link graph, scaled-content safety, and AI/agent visibility — plus a baseline/diff pass, a verdict per axis, and no composite score |
-| [awesome-performance-audit](skills/awesome-performance-audit) | Read-only performance and reliability audit: event loop, streams/backpressure, memory diagnostics, graceful shutdown, resilience topology, with a SHIP/FIX/BLOCK verdict |
-| [awesome-database-audit](skills/awesome-database-audit) | Read-only database-layer audit: schema anti-patterns (EAV, imprecise types), query/index fit, integrity and concurrency, migration hygiene and tenancy, with a SHIP/FIX/BLOCK verdict |
-| [awesome-privacy-audit](skills/awesome-privacy-audit) | Read-only privacy audit: what personal data the code holds, where it flows, minimisation, retention and deletion across every store, data-subject rights, consent gating and exposure, with a SHIP/FIX/BLOCK verdict — jurisdiction-neutral, not legal advice |
-| [awesome-dependency-audit](skills/awesome-dependency-audit) | Read-only supply-chain audit of the dependency graph: lockfile discipline, typosquats and hallucinated package names, install-script exposure, CVE reachability, licenses — with a SHIP/FIX/BLOCK verdict |
-| [awesome-landing-audit](skills/awesome-landing-audit) | Read-only structural audit of landing/marketing pages: single CTA, form friction, message match, trust elements, CLS-safe banners — mechanics only |
-| [awesome-claims-audit](skills/awesome-claims-audit) | Audits public claims (site, README, store listing, privacy policy, docs) against the constants, manifests and catalogs that decide them — mechanical checks with a mutation proof, then a fix phase |
-| [awesome-slop-audit](skills/awesome-slop-audit) | Read-only audit of a repo for machine-written "AI slop" markers across code, tests, docs and CI — absence proven per category, findings ranked and handed to awesome-code-cleanup, which applies them |
+| [awesome-architecture-audit](skills/awesome-architecture-audit) | Whole-project design: module boundaries, dependency direction, docs-vs-code drift, extensibility |
+| [awesome-security-audit](skills/awesome-security-audit) | Injection, secrets, auth, dependency CVEs, CI/CD exposure, crypto misuse, with CWE-mapped fixes |
+| [awesome-pentest](skills/awesome-pentest) | Authorization-gated penetration test per PTES and OWASP: scoping, recon, exploitation-to-proof, CWE/CVSS findings, retest |
+| [awesome-leak-audit](skills/awesome-leak-audit) | What a public client (extension, app, SPA, CLI) reveals about the private backend; client hardening |
+| [awesome-accessibility-audit](skills/awesome-accessibility-audit) | WCAG checks, each finding carrying its fix |
+| [awesome-seo-audit](skills/awesome-seo-audit) | Crawling, indexing, on-page, structured data, rendering, hreflang, links, visibility to LLMs and agents |
+| [awesome-performance-audit](skills/awesome-performance-audit) | Event loop, backpressure, memory and CPU, timeouts, retries, queues, Core Web Vitals, bundles |
+| [awesome-database-audit](skills/awesome-database-audit) | Schema anti-patterns, query and index fit, integrity, concurrency, migrations, tenancy |
+| [awesome-privacy-audit](skills/awesome-privacy-audit) | What personal data the code holds, where it flows, retention and deletion, consent, exposure |
+| [awesome-dependency-audit](skills/awesome-dependency-audit) | Supply chain: lockfiles, typosquats, install scripts, CVE reachability, licenses |
+| [awesome-landing-audit](skills/awesome-landing-audit) | Landing page conversion structure: primary CTA, form friction, message match, trust elements |
+| [awesome-claims-audit](skills/awesome-claims-audit) | Public claims (site, README, store listing, privacy policy) against the code that decides them, then fixes drift |
+| [awesome-slop-audit](skills/awesome-slop-audit) | AI-slop markers across code, tests, docs and CI, ranked and handed to awesome-code-cleanup |
 
 ### Git and repository operations
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-git-commit-plan](skills/awesome-git-commit-plan) | Reads a codebase and plans its commit history: a split where every commit builds and tests alone, proven by replaying it in a scratch clone against the repo's own gates, output as one plan file numbered #1 to #N. Read-only; feeds awesome-git-history-rebuild |
-| [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's git history to a single Initial commit and force-pushes — safely: access checks, verified mirror backup, secret scan, and a confirmation gate before anything irreversible |
-| [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites the author/committer identity on a commit, or on every commit carrying a wrong one, and force-pushes — ownership and access checks, verified backup, counted hash blast radius |
-| [awesome-git-history-rebuild](skills/awesome-git-history-rebuild) | Erases a history and replays the same tree as a curated commit series — an approved split plan, the repo's own commit rules and hooks, paced timestamps, verified backup, and a tree-hash proof that nothing was lost |
-| [awesome-git-history-salvage](skills/awesome-git-history-salvage) | Read-only reconstruction of every commit a repo has ever held, erased history included — merges current refs, pull-request refs, mirror backups and the host's activity log, then fetches unreachable commits by SHA over the git protocol |
+| [awesome-git-commit-plan](skills/awesome-git-commit-plan) | Plans a codebase as a bisectable commit series, each commit verified to build and test alone in a scratch clone |
+| [awesome-git-history-reset](skills/awesome-git-history-reset) | Wipes a repo's history to a single Initial commit and force-pushes, behind a verified backup, secret scan and confirmation gate |
+| [awesome-git-author-rewrite](skills/awesome-git-author-rewrite) | Rewrites a wrong author/committer identity across commits and force-pushes, behind the same gates |
+| [awesome-git-history-rebuild](skills/awesome-git-history-rebuild) | Replays the same tree as a curated commit series from an approved plan, with a tree-hash proof that nothing was lost |
+| [awesome-git-history-salvage](skills/awesome-git-history-salvage) | Read-only recovery of every commit a repo ever held, force-pushed history included |
 
 ### Agent maintenance
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-agents-md-generator](skills/awesome-agents-md-generator) | Reads a codebase and writes an agent-agnostic `AGENTS.md` from what the code already does: commands verified by running them, conventions admitted only with counted evidence, change recipes derived from co-change history, Always / Ask first / Never boundaries, nested files per monorepo package, and opt-in shims for agents that read their own filename |
-| [awesome-skills-purge](skills/awesome-skills-purge) | Removes installed skills from every agent on the machine behind a keep list — a home-wide sweep for skill roots, links deleted as links, git work trees protected as sources, archive and confirmation gate before anything goes |
+| [awesome-agents-md-generator](skills/awesome-agents-md-generator) | Writes an agent-agnostic `AGENTS.md` from the codebase's real commands, conventions and boundaries, with counted evidence |
+| [awesome-skills-purge](skills/awesome-skills-purge) | Removes installed skills from every agent on the machine behind a keep list, an archive and a confirmation gate |
 
 ### Writing and text
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-copywriting](skills/awesome-copywriting) | Writes a product's own short copy — headlines, descriptions, button and empty-state and error microcopy, subject lines, CTAs — from the reader's state at the moment the line lands, with a quality-probing intake, a story gate, and variants delivered with a pick |
-| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text (Russian via a calibration file): review and edit operations, venue rules for release notes, replies, postmortems, tickets and articles, a discourse layer fixed before style, regex markers, source-fabrication checks, editing-trace tests, a pinned evidence ledger |
+| [awesome-copywriting](skills/awesome-copywriting) | Short product copy: headlines, descriptions, buttons, empty states, error messages, subject lines, CTAs |
+| [awesome-humanize-en](skills/awesome-humanize-en) | Removes signs of AI generation from English text: cliches, filler, sycophancy, fake sources, chatbot markers |
 | [awesome-document-style](skills/awesome-document-style) | Line-edits Markdown into clear, specific, publication-ready prose |
-| [awesome-grammar-check](skills/awesome-grammar-check) | Advisory copy-edit — grammar, logic, and flow issues as suggestions, without rewriting the text |
+| [awesome-grammar-check](skills/awesome-grammar-check) | Advisory copy-edit: grammar, logic, and flow issues as suggestions, without rewriting |
 | [awesome-translate-ru-en](skills/awesome-translate-ru-en) | Russian → English translation that preserves structure, formatting, and the author's voice |
-| [awesome-style-mimic](skills/awesome-style-mimic) | Learns a website's writing style into a reusable style guide (live-browser deep crawl), then rewrites documents in that voice with a cross-document consistency pass |
+| [awesome-style-mimic](skills/awesome-style-mimic) | Learns a website's writing style into a reusable style guide, then rewrites documents in that voice |
 
 ### Content marketing
 
 | Skill | What it does |
 | --- | --- |
-| [awesome-content-voice](skills/awesome-content-voice) | Builds one reusable author-voice profile from whatever evidence exists — own posts read through the live browser, files, samples, or an interview — with per-platform register, protected personal tics, and a confidence stamp |
-| [awesome-content-campaign](skills/awesome-content-campaign) | Builds a scheduled batch of platform-fit marketing posts from any source (repos, sites, files): claim tracing, an interview for topic, start date, duration and posting times, a shipped best-time table, dated platform limits, the writing handed to awesome-content-repurpose per unit, a 2-stage self-audit, dated folders of posts plus a manifest whose filenames and frontmatter are checked by a gate, not asserted |
-| [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one existing text (a link, a file, pasted notes) into three posts that cover every platform: a full long read written first, a regular post derived from it and a short post, each held to the tightest cap of its platform group and listing those platforms in frontmatter. A source-module map that keeps a guide a guide, an interview for language, idea, voice, emoji, creativity and footer, verified facts with locked comparison peers, a counted audit |
-| [awesome-content-image-adapter](skills/awesome-content-image-adapter) | Adapts one finished image into two pictures, a horizontal 16:9 and a vertical 9:16, and each platform takes the one the canonical platform table names for it, from researched per-platform feed behavior, so nothing is restated. Standalone it writes a session folder and opens it; in a chain it runs straight after the user hands over a picture and drops both pictures beside the posts |
-| [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser (Playwright MCP bridge): login preflights, a persistent dedup ledger, timezone-aware scheduling, human-paced posting with read-back verification |
-
-#### Running them
-
-These five chain, and the publisher needs a browser bridge set up before its first run. The step-by-step guide covers installing the Playwright MCP extension, reading the per-profile token, the MCP server entry that pairs them, running each skill alone, and running the whole chain:
-
-- **[Content skills guide](docs/content-skills-guide.md)** — English
-- **[Руководство по content-навыкам](docs/content-skills-guide.ru.md)** — Russian
-
-#### How long a publishing run takes
-
-Measured from the publisher's own ledger timestamps on a 25-platform run. The figure is the full cycle per platform: open the composer, fill it, attach the image, submit, read back the permalink, diff it against the source file, write the ledger.
-
-| Composer type | Platforms | Per post |
-| --- | --- | --- |
-| Plain text box | x, bluesky, threads, mastodon, truthsocial, minds, peerlist, lemmy, quora, bastyon | 2–6 min |
-| Markdown field | devto, wonderful-dev | 2–4 min |
-| Caption with a required image | instagram, pixelfed, pinterest | 4–8 min |
-| Rich editor, short post | tumblr, daily-dev, patreon, ko-fi, buymeacoffee | 3–9 min |
-| Rich editor, long-form | medium, hashnode, substack, hackernoon, teletype | 4–9 min |
-
-15 platforms took 73 minutes of uninterrupted work — about 5 minutes each, which is the number to plan with. The first platform of a session costs more, because the bridge gate, the login preflights and the source scan all land on it: budget 15–20 minutes before the first post goes out. Posts to different platforms follow each other immediately; two posts to the *same* platform stay at least 2 hours apart.
-
-## Picking between similar skills
-
-Some skills sit next to each other on purpose: they share a file format, a target, or a vocabulary. The overlap is real — what separates them is one question, in the last column. Names are shortened there; every skill links from the tables above.
-
-| These look alike | Shared ground | What decides |
-| --- | --- | --- |
-| awesome-code-review · awesome-architecture-audit | Both read code and rank findings on the same severity scale | One diff or PR before merge → code-review. The whole project — boundaries, docs-vs-code fidelity, extensibility, SHIP/FIX/BLOCK → architecture-audit. |
-| awesome-code-review · awesome-code-review-feedback | Two ends of one review thread | Writing the review → code-review. Answering comments you received → code-review-feedback. |
-| awesome-code-review · awesome-code-review-jury | Both review one change and rank findings by severity | One reviewer, one pass → code-review. Several isolated reviewers on different models plus a judge that cross-examines them, at several times the cost → code-review-jury. |
-| awesome-security-audit · awesome-pentest | Same vulnerability classes, same CWE mapping | Static white-box read of your own code, no gate → security-audit. Active probing of a live target, hard-gated behind written authorization → pentest. |
-| awesome-security-audit · awesome-leak-audit | Both ask what an attacker gains | Exploitable server-side flaws → security-audit. What a shipped public client reveals about the private backend → leak-audit. |
-| awesome-security-audit · awesome-dependency-audit | Both report CVEs | Vulnerabilities in code you wrote → security-audit. The dependency graph itself — lockfiles, typosquats, install scripts, reachability → dependency-audit. |
-| awesome-dependency-audit · awesome-dependency-upgrade | Same package set, two halves of one job | Decide what is risky → audit. Execute the bumps in verified batches → upgrade. |
-| awesome-performance-audit · awesome-database-audit | Both answer "why is this slow" | Runtime behavior — event loop, memory, streams, resilience topology → performance-audit. The static data layer — schema, index-vs-predicate fit, migrations → database-audit. |
-| awesome-code-explainer · awesome-architecture-audit | Both read a whole codebase and map its layers | Understand how it works — a neutral, illustrated explanation for a newcomer, no verdict → code-explainer. Judge whether the design is sound, with a SHIP/FIX/BLOCK verdict → architecture-audit. |
-| awesome-code-explainer · awesome-agents-md-generator | Both mine the same signals — commands, entry points, patterns | A page a person reads once to understand the project → code-explainer. Standing instructions an agent loads every session → agents-md-generator. |
-| awesome-code-docs · awesome-code-explainer | Same sources, same citations at a pinned commit | One illustrated page a newcomer reads once → code-explainer. A linked Markdown set — architecture, per-module and API reference, operations, how-to guides — that a team keeps and updates → code-docs. |
-| awesome-bug-fix · awesome-root-cause | Both refuse to fix before the cause is known | A failure you can reproduce on command → bug-fix. An incident or process problem with nothing runnable to fail → root-cause. |
-| awesome-test-writing · awesome-regression-sweep | Both live in the test suite | Designing and writing tests → test-writing. Running every layer against a recorded baseline and reporting deltas → regression-sweep. |
-| awesome-test-gap-audit · awesome-test-writing | Same test suite, two halves of one job | Find and rank which tests are missing, weak or stale, writing nothing → test-gap-audit. Design and write the tests → test-writing, which takes the worklist. |
-| awesome-privacy-audit · awesome-security-audit · awesome-claims-audit | All three read where personal data goes | What personal data is held, where it flows, how long it stays and whether deletion reaches every store → privacy-audit. Exploitable flaws that expose it → security-audit. Whether the privacy policy's text matches the code → claims-audit. |
-| awesome-seo-audit · awesome-landing-audit · awesome-accessibility-audit | 3 read-only audits of the same public page | Found and parsed by search and LLMs → seo-audit. Structure that converts — CTA, form friction, message match → landing-audit. Usable by everyone, WCAG → accessibility-audit. |
-| awesome-seo-audit · awesome-regression-sweep | Both diff a live surface against a recorded baseline | Search-visible surfaces — canonical, robots, schema, titles → seo-audit's re-audit mode. Everything the build and the test suite can prove — types, lint, contracts, parity → regression-sweep. |
-| awesome-claims-audit · awesome-architecture-audit | Both catch drift between what is written and what the code does | Public claims — site, store listing, privacy policy, README → claims-audit. Internal docs against the codebase they describe → architecture-audit. |
-| awesome-slop-audit · awesome-code-cleanup | Both target machine-written noise in a repo | They chain rather than compete: slop-audit finds and ranks across code, tests, docs and CI, and never edits; code-cleanup executes — its own comment and naming pass, or the report slop-audit produced. |
-| awesome-agents-md-generator · awesome-code-standards | Both end in coding rules an agent follows | Describe the conventions this repository already follows, with evidence, as an `AGENTS.md` → agents-md-generator. Prescribe conventions the project lacks → code-standards. |
-| awesome-code-standards · awesome-code-cleanup | Both govern how code reads | Prescribe conventions for work being written → code-standards. Sweep noise out of what already exists → code-cleanup. |
-| awesome-git-commit-plan · awesome-git-history-rebuild | The same split, planned then executed | Read-only, produces the numbered plan → commit-plan. Erases the history and replays the tree to that plan → history-rebuild. |
-| awesome-git-history-reset · awesome-git-history-rebuild | Both erase history and force-push, behind the same safety gates | One Initial commit → history-reset. A curated series over the identical tree → history-rebuild. |
-| awesome-git-history-salvage · awesome-git-history-reset | Both act on a history that is about to be, or already was, rewritten | Recover and list every commit that ever existed, writing nothing → history-salvage. Destroy and replace → history-reset. |
-| awesome-design-doc · awesome-plan-simplify | Both work on a plan before code is written | No plan yet, or a pre-mortem asking what will kill the chosen approach → design-doc. An existing plan checked against the code for what can be cut at the same safety → plan-simplify. |
-| awesome-design-doc · awesome-api-design | Both run before code exists | The system — requirements, alternatives, recommendation, rollout → design-doc. The HTTP surface — resources, versioning, pagination, idempotency → api-design. |
-| awesome-error-standards · awesome-logging-standards | Both shape what happens on failure | The error contract — types, envelopes, status mapping, retries → error-standards. What gets written down — levels, structure, PII → logging-standards. |
-| awesome-humanize-en · awesome-document-style · awesome-grammar-check | 3 passes over the same English text | Strip AI fingerprints → humanize-en. Line-edit for clarity and specificity → document-style. Suggest without touching the text → grammar-check. |
-| awesome-copywriting · awesome-humanize-en · awesome-document-style | All four end in English prose someone ships | There is no line yet and you are writing one → copywriting. A line exists and reads machine-made → humanize-en. A document exists and reads vague → document-style. |
-| awesome-copywriting · awesome-landing-audit | Both act on the words a marketing page shows | Write or replace the line → copywriting. Judge the page's structure — CTA count, form friction, message match — without touching the words → landing-audit, which hands copy quality to copywriting. |
-| awesome-copywriting · awesome-content-campaign | Both write marketing text from product facts | The product's own surfaces — headline, button, empty state, subject line → copywriting. Posts for other people's platforms, on a schedule, in that platform's register → content-campaign. |
-| awesome-style-mimic · awesome-content-voice | Both write the same section set, so either file feeds a rewrite or a campaign | A site's brand voice, learned by crawling it → style-mimic. The author's own voice from their own evidence, with consent, counted absence and a confidence stamp → content-voice. |
-| awesome-content-campaign · awesome-content-repurpose | One schedules and one writes: the campaign hands each unit to the repurposer | Product sources plus a schedule → content-campaign, which calls the other. One existing text, no schedule → content-repurpose on its own. |
-| awesome-content-campaign · awesome-content-publisher | Two halves of one shipping pipeline | Write the post files → content-campaign. Post them to your accounts through your own browser → content-publisher. |
+| [awesome-content-voice](skills/awesome-content-voice) | Builds a reusable profile of the user's own writing voice from their posts, files, samples or an interview |
+| [awesome-content-campaign](skills/awesome-content-campaign) | Plans a scheduled batch of platform-fit posts about a product, every claim traced to evidence |
+| [awesome-content-repurpose](skills/awesome-content-repurpose) | Turns one text into three posts covering every platform: a long read, a regular and a short post |
+| [awesome-content-image-adapter](skills/awesome-content-image-adapter) | Adapts one image into a horizontal 16:9 and a vertical 9:16 version for social platforms |
+| [awesome-content-publisher](skills/awesome-content-publisher) | Publishes a post batch to the user's own accounts through their live browser, with dedup and scheduling |
 
 ## Usage examples
 
-Skills trigger on intent — plain requests work. Explicit mentions make the choice deterministic:
+Skills trigger on intent, so plain requests work. Naming a skill makes the choice deterministic:
 
-- "Use **awesome-code-review** on the diff against `main`: Critical / Suggestions / Nice to have, with file:line references."
-- "Here are the review comments — use **awesome-code-review-feedback**: agree, clarify, or push back with evidence."
+- "Use **awesome-code-review** on the diff against `main`."
 - "**awesome-bug-fix** for this error: reproduce first, root cause before any fix — [paste logs]."
-- "**awesome-security-audit** the files touched by this change (auth, injection, secrets)."
 - "Audit this repo with **awesome-leak-audit** before we open-source it."
 - "**awesome-humanize-en**: remove the AI voice from this draft."
-- "**awesome-translate-ru-en**: mirror `docs-ru/` into `docs-en/` — same structure, translate each file."
 
-They also chain: implement → **awesome-code-cleanup** in audit mode (read-only findings) → apply the cleanup → **awesome-code-review** before merge. Or: **awesome-content-campaign** from your repo and site → review the drafts → **awesome-content-publisher** ships them on schedule.
+They also chain: implement → **awesome-code-cleanup** → **awesome-code-review** before merge. Or: **awesome-content-campaign** → review the drafts → **awesome-content-publisher**.
 
-The four skills that rewrite a published history or post to live accounts (**awesome-git-history-reset**, **awesome-git-history-rebuild**, **awesome-git-author-rewrite**, **awesome-content-publisher**) set `disable-model-invocation: true`: in Claude Code and Cursor they run only when you name them (`/awesome-content-publisher`), never on a matching request alone.
+The four skills that rewrite a published history or post to live accounts (**awesome-git-history-reset**, **awesome-git-history-rebuild**, **awesome-git-author-rewrite**, **awesome-content-publisher**) run only when you name them explicitly, never on a matching request alone.
 
 ## Skill format
 
@@ -330,58 +192,27 @@ skills/<skill-name>/
 └── references/       # optional: detailed docs the agent loads on demand
 ```
 
-**No `README.md` inside a skill folder.** A skill folder holds only what the agent reads: `SKILL.md` and the files it names. What each skill is for and when to reach for it belongs here in the root README (the tables above), so a reader compares skills in one place instead of opening every folder. Where a skill ships `references/`, `SKILL.md` itself maps them: an agent that skips the map skips the files.
+A skill is Markdown and nothing else: no scripts, templates or fixtures, so nothing here runs the author's code on your machine. The frontmatter `description` tells the agent when to activate; the body loads only on activation, and `references/` only when needed.
 
-**Instructions only, no code.** A skill is Markdown and nothing else: no scripts, no templates, no fixtures, no binaries. A check is written as what to look for, what counts as a pass and what evidence to report, and the agent writes whatever it needs in whatever language fits its own environment — which is also the one that knows the platform, the shell and the project in front of it. Nothing here runs the author's code on your machine.
-
-The frontmatter `description` tells the agent when to activate the skill; the body loads only after activation, and `references/` files only when needed — so a large skill still costs little context until used.
-
-The collection shares 2 rating vocabularies, so reports never mean different things by the same word:
-
-- **Findings** — `Critical / High / Medium / Low / Informational`, rated on impact and reachability. A skill may truncate the scale from the bottom: top 4 where `Informational` carries no meaning (architecture, database), top 3 where `Low` doesn't either (accessibility, copy-editing, landing mechanics), and its output section states which tiers it uses. Never reorder or rename tiers.
-- **Verdict** — `SHIP / FIX / BLOCK`, for the read-only audits that gate a release, always paired with `NOT ASSESSED` for anything that could not be checked.
-
-`awesome-code-review` keeps its own reviewer-comment buckets (`Critical / Suggestions / Nice to have`) because those are addressed to an author, not to a release gate.
+Reports share two vocabularies: findings are rated `Critical / High / Medium / Low / Informational`, and release-gating audits end in `SHIP / FIX / BLOCK`, paired with `NOT ASSESSED` for what could not be checked.
 
 ## Contributing
 
-The repository has one gate, and it is the same one locally and in CI:
+One gate, the same locally and in CI:
 
 ```bash
 python3 scripts/lint.py          # run the gates by hand
 python3 scripts/install-hooks.py # once per clone: run them before every commit
 ```
 
-The installer writes a pre-commit hook that calls `scripts/lint.py`. Where `core.hooksPath` points outside the repository — a tool that manages git identities, say — it says so: git runs that directory's hooks instead, and the gate fires only if they chain through to the repository's own.
-
-## How these were built
-
-3 passes per skill:
-
-1. **Survey** — the widely-used public skill and prompt collections, plus the documented practice of projects that do the job at scale: kernel and git patch-series rules, OpenStack's commit guide, Conventional Commits, OWASP, WCAG, PTES, NIST SP 800-115.
-2. **Distill** — keep what changes an agent's output, drop what it already does untold. A rule that survives is one an agent gets wrong without it. Borrowed material is cited where it is used.
-3. **Iterate on real work** — every skill is run on real repositories, revised from what it got wrong, and run again. The phases, stop gates and output formats here are what survived those rounds.
-
-## Design principles
-
-- **Self-contained** — every skill is complete in this repo; no chasing external links or docs.
-- **A small set** — enough skills to cover repeated engineering work, few enough to remember.
-- **Portable** — plain `SKILL.md` per the open spec, stack-agnostic, nothing vendor-specific baked in.
-- **Verification-first** — skills end with the check that proves the claim: run the command, read the output, then say "done".
-
-### Which layer to install
-
-A rule is a standing constraint the agent honors without being asked; a skill is a procedure you invoke, with phases and an output contract. The two layers overlap by design: `rules/code-review.md` in [Awesome AGENTS.md](https://github.com/khasky/awesome-agents-md) sets the bar every review must meet, `awesome-code-review` here runs the review and produces the report. Install both: rules keep everyday work in line, skills handle the jobs you name.
+Each skill went through three passes: a survey of public collections and documented practice (kernel patch rules, OWASP, WCAG, PTES, NIST SP 800-115), a distillation that keeps only what changes an agent's output, and rounds of use on real repositories. Skills are self-contained, portable, stack-agnostic, and end with the check that proves the claim.
 
 ## Related
 
-Part of a set of agent tooling — pick the layer you need:
-
-- **Awesome Agent Skills** — *this repo:* portable `SKILL.md` skills every agent loads — code review, debugging, security and leak audits, code and text cleanup.
-- [Awesome AGENTS.md](https://github.com/khasky/awesome-agents-md) — the base, tool-agnostic ruleset every agent imports (one `AGENTS.md`).
+- [Awesome AGENTS.md](https://github.com/khasky/awesome-agents-md) — the base, tool-agnostic ruleset every agent imports. Rules keep everyday work in line; skills here handle the jobs you name. Install both.
 - [Agent MCP Integrations](https://github.com/khasky/agent-mcp-integrations) — MCP servers that connect agents to browsers, cloud, databases, infra, and domain APIs.
-- [Claude Code Token Optimization](https://github.com/khasky/claude-code-token-optimization) — the token-efficiency layer (RTK, LSP, Context7, `codebase-memory-mcp`, claude-mem, Caveman, Ponytail).
-- [Claude Code Security Audit](https://github.com/khasky/claude-code-security-audit) — the layered security-audit workflow (deep audit, continuous guardrails, scanners).
+- [Claude Code Token Optimization](https://github.com/khasky/claude-code-token-optimization) — the token-efficiency layer.
+- [Claude Code Security Audit](https://github.com/khasky/claude-code-security-audit) — the layered security-audit workflow.
 
 ## License
 
