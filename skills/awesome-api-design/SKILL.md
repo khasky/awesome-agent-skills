@@ -63,7 +63,7 @@ Search for consumers both ways, in every repository you can reach:
 
 Verdict, one per change: **Compatible** (all four scenarios pass, evidence cited), **Order-dependent** (safe only in a stated deploy order or with a stated migration step; name it), **Breaking** (some scenario fails for a live consumer; the fix is a new version or a layered shape), **Not determinable** (a scenario or consumer set could not be checked; name what is missing and never round up to Compatible).
 
-## Output Format
+## Output
 
 ```text
 API Design — <scope> — <date>

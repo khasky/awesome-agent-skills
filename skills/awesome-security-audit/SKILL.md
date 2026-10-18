@@ -1,6 +1,6 @@
 ---
 name: awesome-security-audit
-description: "Read-only security audit of code: injection, secrets, auth and authorization, dependency CVEs, CI/CD exposure, crypto misuse, with CWE-mapped fixes. Use for a security review, before a release, or after adding auth or payments."
+description: "Read-only security audit of source code: injection, secrets, authn and authz, dependency CVEs, CI/CD exposure, crypto misuse, with CWE-mapped fixes. Use for a security review, before a release, or after adding auth."
 license: MIT
 metadata:
   author: Khasky
@@ -103,7 +103,7 @@ The detailed checklists live in [references/checklists.md](references/checklists
 | 9 | CI/CD and build pipeline | unpinned actions, privileged triggers, expression injection, token scope, cross-trust caches, runner exposure |
 | 10 | Cryptographic misuse | broken primitives, weak randomness, nonce reuse, timing oracles and compiler-defeated constant time, secret lifetime in memory, password hashing, JWT, rotation, certificate validation |
 
-## Output Format
+## Output
 
 Open with a findings matrix so the reader sees the whole picture before the detail:
 

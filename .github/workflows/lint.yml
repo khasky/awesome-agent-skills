@@ -23,6 +23,11 @@ jobs:
       - name: gates
         run: python3 scripts/lint.py
 
+      # Each gate broken on purpose in a temporary copy must fail, or it
+      # guards nothing.
+      - name: gates fail on what they exist for
+        run: python3 scripts/test_lint.py
+
   plugin-load:
     # A manifest can pass every schema check and still fail to install, so each
     # agent installs this checkout into an empty home and must list it enabled.

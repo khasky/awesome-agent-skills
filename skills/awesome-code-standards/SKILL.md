@@ -21,7 +21,7 @@ Apply consistent naming, structure, and patterns so code is readable and maintai
 - Onboarding: documenting or applying coding conventions
 - Enforcing naming, formatting, or structural consistency
 
-## Core Principles
+## Core principles
 
 1. Readability first — Code is read more than written; clear names and structure beat clever tricks.
 2. KISS — Simplest solution that works; avoid over-engineering and premature optimization.

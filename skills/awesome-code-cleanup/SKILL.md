@@ -1,6 +1,6 @@
 ---
 name: awesome-code-cleanup
-description: "Behavior-preserving cleanup of AI-like code noise: narrating comments, dead code, vague names, over-abstraction; applies a slop-audit report. Use when asked to clean up code or comments, or to de-slop."
+description: "Behavior-preserving cleanup of AI-like code noise: narrating comments, dead code, vague names, over-abstraction. Use when asked to clean up code or comments, de-slop, or apply a slop-audit report."
 license: MIT
 metadata:
   author: Khasky

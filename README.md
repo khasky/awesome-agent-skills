@@ -27,6 +27,7 @@ Works with Claude Code, Claude.ai, OpenAI Codex, Gemini CLI, Cursor, GitHub Copi
     - [Writing and text](#writing-and-text)
     - [Content marketing](#content-marketing)
   - [Usage examples](#usage-examples)
+  - [Skill dependencies](#skill-dependencies)
   - [Skill format](#skill-format)
   - [Contributing](#contributing)
   - [Related](#related)
@@ -76,7 +77,7 @@ Qwen Code prefixes a plugin skill with the extension name: `awesome-agent-skills
 | Skill | What it does |
 | --- | --- |
 | [awesome-code-standards](skills/awesome-code-standards) | Naming, structure, and patterns for consistent code across a team |
-| [awesome-code-cleanup](skills/awesome-code-cleanup) | Behavior-preserving cleanup of AI-like code noise: comments, dead code, vague names, over-abstraction. The only skill here that edits |
+| [awesome-code-cleanup](skills/awesome-code-cleanup) | Behavior-preserving cleanup of AI-like code noise: comments, dead code, vague names, over-abstraction |
 | [awesome-dependency-upgrade](skills/awesome-dependency-upgrade) | Executes dependency upgrades in risk-classified batches, with changelog-driven majors and verification between steps |
 
 ### Testing
@@ -182,6 +183,31 @@ They also chain: implement → **awesome-code-cleanup** → **awesome-code-revie
 
 The four skills that rewrite a published history or post to live accounts (**awesome-git-history-reset**, **awesome-git-history-rebuild**, **awesome-git-author-rewrite**, **awesome-content-publisher**) run only when you name them explicitly, never on a matching request alone.
 
+## Skill dependencies
+
+Some skills read a reference file that ships with another skill instead of keeping their own copy, so one vocabulary or platform table has one source. The plugin and the Quick start install every skill, and nothing breaks. Installing a single skill (`npx skills add ... -s <name>`) leaves these links dangling: install the skills in its row too.
+
+| Skill | Reads from other skills |
+| --- | --- |
+| awesome-code-cleanup | `awesome-architecture-audit/references/design-vocabulary.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-code-standards | `awesome-humanize-en/references/lexicon.md` |
+| awesome-content-campaign | `awesome-content-publisher/references/browser-interaction.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-content-image-adapter | `awesome-content-campaign/references/platforms.md` |
+| awesome-content-publisher | `awesome-content-campaign/references/platforms.md`, `awesome-content-repurpose/references/authored-style.md`, `awesome-content-repurpose/references/forms.md` |
+| awesome-content-repurpose | `awesome-content-campaign/references/platforms.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-content-voice | `awesome-content-publisher/references/browser-interaction.md` |
+| awesome-document-style | `awesome-humanize-en/references/chatbot-artifacts.md`, `awesome-humanize-en/references/domain-*.md`, `awesome-humanize-en/references/language-patterns.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md`, `awesome-humanize-en/references/structural-style-patterns.md` |
+| awesome-git-commit-plan | `awesome-humanize-en/references/lexicon.md` |
+| awesome-grammar-check | `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-pentest | `awesome-security-audit/references/checklists.md` |
+| awesome-root-cause | `awesome-humanize-en/references/domain-postmortems.md` |
+| awesome-slop-audit | `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-style-mimic | `awesome-content-publisher/references/browser-interaction.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-test-writing | `awesome-architecture-audit/references/design-vocabulary.md` |
+| awesome-translate-ru-en | `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
+
+`scripts/lint.py` fails when this table and the links in the skills disagree.
+
 ## Skill format
 
 Each skill follows the [Agent Skills specification](https://agentskills.io/specification):
@@ -202,6 +228,7 @@ One gate, the same locally and in CI:
 
 ```bash
 python3 scripts/lint.py          # run the gates by hand
+python3 scripts/test_lint.py     # prove each gate fails on a broken copy
 python3 scripts/install-hooks.py # once per clone: run them before every commit
 ```
 

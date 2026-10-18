@@ -30,7 +30,7 @@ A rule a skill states is proved by reading it, and a check it prescribes is prov
 
 **The loop costs real sessions** — twenty queries at three runs each is sixty of them. Ask before spending that, and never wire it into CI.
 
-`scripts/lint.py` checks the shape of what is committed: the folder carries those two filenames and nothing else, each file parses, a trigger set holds both positive and negative cases, repeats no query, labels every split `train` or `validation`, and points `belongs_to` at a real sibling rather than at the skill under test.
+`scripts/lint.py` checks the shape of what is committed: the folder carries those two filenames and nothing else, each file parses, a trigger set holds both positive and negative cases, repeats no query, labels every split `train` or `validation`, and points `belongs_to` at a real sibling rather than at the skill under test. An output case may carry `checks`, regex patterns each with the answers it must accept (`pass`) and reject (`fail`); lint compiles every pattern and runs it on both lists, so a broken check is caught offline before a run pays for it.
 
 ## Text only: a skill instructs, it never ships code
 

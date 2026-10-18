@@ -1,0 +1,61 @@
+{
+  "skill_name": "awesome-security-audit",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Security review of server/files.js before release: app.get('/download', (req, res) => res.sendFile(path.join(__dirname, 'uploads', req.query.name))).",
+      "expected_output": "A path traversal finding mapped to CWE-22, rated High or Critical, with a fix that resolves the path and checks it stays inside the uploads directory.",
+      "assertions": [
+        "Names path traversal and CWE-22",
+        "Shows an input such as ../ that escapes the uploads folder",
+        "Fixes by resolving and checking the prefix, or by an allowlist of names"
+      ],
+      "checks": [
+        {
+          "pattern": "CWE-22\\b",
+          "pass": ["F1 Path traversal (CWE-22) in server/files.js: name=../../.env escapes uploads/"],
+          "fail": ["F1 Missing rate limiting (CWE-770) on /download"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Audit the auth module: src/auth/token.py signs JWTs with SECRET = \"dev-secret-123\" and verifies them with jwt.decode(token, SECRET, algorithms=[\"HS256\", \"none\"]).",
+      "expected_output": "Two findings: a hard-coded signing secret (CWE-798) and acceptance of unsigned tokens through the none algorithm (CWE-347), each with its fix.",
+      "assertions": [
+        "Flags the hard-coded secret and says it must be rotated, not only moved",
+        "Flags the none algorithm as allowing forged tokens",
+        "Maps each finding to a CWE"
+      ],
+      "checks": [
+        {
+          "pattern": "CWE-798\\b",
+          "pass": ["F1 Hard-coded credential (CWE-798): SECRET in src/auth/token.py, move to the environment and rotate"],
+          "fail": ["F1 Weak password policy"]
+        },
+        {
+          "pattern": "(?i)\\bnone\\b.*(algorithm|alg)|(algorithm|alg).*\\bnone\\b",
+          "pass": ["F2 Signature bypass (CWE-347): algorithms includes \"none\", so an unsigned token verifies"],
+          "fail": ["F2 Tokens never expire"]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Check our CI for exposure: .github/workflows/preview.yml runs on pull_request_target, checks out ${{ github.event.pull_request.head.sha }}, runs npm install and npm run build, and has DEPLOY_TOKEN in env.",
+      "expected_output": "A Critical CI/CD finding: untrusted PR code runs with repository secrets because pull_request_target checks out the PR head; fix by splitting into an unprivileged build and a privileged deploy, or by not checking out the head.",
+      "assertions": [
+        "Explains that fork code runs with access to DEPLOY_TOKEN",
+        "Rates it Critical or High",
+        "Gives a fix that removes secrets from the job that runs PR code"
+      ],
+      "checks": [
+        {
+          "pattern": "pull_request_target",
+          "pass": ["Critical: pull_request_target plus checkout of the PR head runs fork code with DEPLOY_TOKEN"],
+          "fail": ["Low: pin actions to a SHA"]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+{
+  "skill_name": "awesome-code-review",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "Review this diff before I merge it. In src/orders/search.py the new handler does: query = \"SELECT * FROM orders WHERE customer = '\" + request.args['customer'] + \"'\" and passes it to cursor.execute(query).",
+      "expected_output": "A blocking finding that the customer parameter is concatenated into SQL, rated Critical or High, located at the handler, with a parameterized query as the fix.",
+      "assertions": [
+        "Names SQL injection as the defect",
+        "Rates it Critical or High, not a style note",
+        "Points at the concatenation in src/orders/search.py",
+        "Gives a parameterized query or bound parameter as the fix"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)sql[ -]injection",
+          "pass": ["Critical: SQL injection in src/orders/search.py, the customer value is concatenated into the query"],
+          "fail": ["Looks good to me, nice clean handler."]
+        },
+        {
+          "pattern": "(?i)parameteri[sz]ed|bound parameter|placeholder",
+          "pass": ["Fix: cursor.execute(\"SELECT * FROM orders WHERE customer = %s\", (customer,)), a parameterized query"],
+          "fail": ["Fix: escape the quotes in the customer string before concatenating"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Quick review of my pagination change in lib/paging.ts: the loop went from `for (let i = 0; i < items.length; i++)` to `for (let i = 1; i < items.length; i++)` so page 2 starts at the right offset.",
+      "expected_output": "A correctness finding that the loop now skips the first item of every page, with the input that shows it and the off-by-one fix.",
+      "assertions": [
+        "States that the first element is skipped",
+        "Shows a concrete input where the output is wrong",
+        "Does not bury the defect under style comments"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)(skip|drop|miss)(s|ped|ping)? the first|off[- ]by[- ]one|index 0",
+          "pass": ["High: off-by-one, the loop now skips the first item of each page (index 0 is never read)"],
+          "fail": ["Consider using Array.prototype.slice for readability"]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "Review PR 7: it renames the `userName` field to `username` in the JSON returned by GET /api/profile, to match our style guide. The mobile app reads that endpoint.",
+      "expected_output": "A finding that the rename breaks existing clients of a public response, with a compatible path: keep both fields for a deprecation window or version the endpoint.",
+      "assertions": [
+        "Identifies the change as breaking for existing consumers",
+        "Mentions the mobile client explicitly",
+        "Offers a backward-compatible migration"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)breaking|backward[- ]compat|deprecat",
+          "pass": ["High: breaking change, the mobile app still reads userName; keep both fields during a deprecation window"],
+          "fail": ["Nice consistency fix, approved."]
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "Can you review this one-line diff? docs/setup.md: `Instal the CLI` becomes `Install the CLI`.",
+      "expected_output": "A short approval with no invented findings.",
+      "assertions": [
+        "Approves the change",
+        "Raises no Critical, High or Medium finding"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)\\b(approve|lgtm|no (blocking )?(issues|findings)|ship)\\b",
+          "pass": ["Approve: typo fix only, no findings."],
+          "fail": ["Medium: the setup guide should be restructured into three sections"]
+        }
+      ]
+    }
+  ]
+}

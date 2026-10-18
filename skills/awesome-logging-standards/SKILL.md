@@ -19,7 +19,7 @@ Apply consistent logging so operations are debuggable and compliant without leak
 - Defining or reviewing logging standards for the project
 - After an incident where logs were insufficient or leaked data
 
-## Core Principles
+## Core principles
 
 - Define "working" before instrumenting — Write the 2–4 questions on-call will actually ask ("did checkout succeed for this user?", "which dependency is slow?") and make every signal map to one of them. A log line that answers no operational question is noise.
 - Structured — Prefer key-value fields (e.g. JSON) over long prose so logs are queryable and parseable. Use the same structure across the app (timestamp, level, message, fields).

@@ -19,7 +19,7 @@ Apply consistent patterns for throwing, catching, logging, and surfacing errors 
 - Reviewing code for proper failure handling
 - Defining or documenting error contract for a service or API
 
-## Core Principles
+## Core principles
 
 - Operational vs programmer errors — Classify first. Operational failures (network timeout, invalid input, missing record) are expected: handle, retry, or surface them. Programmer errors (undefined access, broken invariant) are bugs: crash loudly or restart the process rather than limping on with corrupted state.
 - Make the bug impossible, not just fixed — A single-point fix stops one path; defense in depth stops the class. Prefer prevention left of production, in order: (1) make invalid states unrepresentable in the type system (discriminated unions, branded/opaque types) so bad states won't compile; (2) validate at the boundary; (3) runtime guards; (4) error boundaries. For a high-value invariant, guard it at more than one layer and test that bypassing an outer layer still gets caught by an inner one (deliberately skip Layer 1, verify Layer 2 catches it; confirm mocks don't silently disable a validation).

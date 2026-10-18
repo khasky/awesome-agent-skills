@@ -1,0 +1,61 @@
+{
+  "skill_name": "awesome-bug-fix",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "test_daily_report in tests/test_reports.py fails on CI maybe once a week and always passes on my machine. The report groups events by date. Fix it.",
+      "expected_output": "A deterministic reproduction first (clock frozen near midnight or a time zone forced), the root cause named, then a fix to the date handling rather than a retry or a skip.",
+      "assertions": [
+        "Builds a reproduction that fails on demand before changing code",
+        "Names the time or time-zone boundary as the cause",
+        "Does not add a retry, a sleep or a skip marker"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)reproduc",
+          "pass": ["Reproduction first: run the test with the clock frozen at 23:59:59 UTC and it fails every time"],
+          "fail": ["Add @pytest.mark.flaky(reruns=3) to the test"]
+        },
+        {
+          "pattern": "(?i)midnight|time ?zone|utc|clock",
+          "pass": ["Root cause: the event timestamp is grouped in local time while the expected date is computed in UTC"],
+          "fail": ["Root cause: the CI machine is slow"]
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "Production log: TypeError: Cannot read properties of undefined (reading 'id') at handleInvoice (src/billing/invoice.js:88). Just make it stop crashing.",
+      "expected_output": "Traces where the undefined value comes from and fixes it at its origin or validates at the boundary, instead of adding optional chaining at line 88 and moving on.",
+      "assertions": [
+        "Traces the undefined value back to where it is produced",
+        "Fixes the origin or the trust boundary, not only the crashing line",
+        "Adds or names a check that reproduces the crash"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)root cause|where .* comes from|origin|upstream",
+          "pass": ["Root cause: fetchCustomer returns undefined for archived customers, and handleInvoice is called with it"],
+          "fail": ["Changed line 88 to invoice?.customer?.id, crash fixed."]
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "This is my third attempt at fixing the cache invalidation bug in services/cache.go; each fix passed locally and the stale reads came back in staging.",
+      "expected_output": "Stops patching, switches method: states several hypotheses, tests the likeliest with a check built to disprove it, and questions the design after repeated failed fixes.",
+      "assertions": [
+        "Does not propose a fourth patch of the same kind straight away",
+        "Lists more than one hypothesis",
+        "Builds a reproduction in an environment that matches staging"
+      ],
+      "checks": [
+        {
+          "pattern": "(?i)hypothes[ie]s",
+          "pass": ["Three hypotheses, ranked: a second writer bypasses the cache, TTLs differ per replica, the invalidation message is dropped"],
+          "fail": ["Let's try increasing the TTL check frequency again"]
+        }
+      ]
+    }
+  ]
+}

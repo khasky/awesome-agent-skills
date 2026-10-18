@@ -101,7 +101,7 @@ Done when: the scope is stated, every checklist area below has been walked, each
 - [ ] 3.3.8 Accessible authentication — no cognitive test to log in; paste allowed in password fields; passkey or email-link alternative offered.
 - [ ] 3.2.6 Consistent help — help mechanism appears in the same place on every page.
 
-## Output Format
+## Output
 
 For each issue:
 

@@ -1,6 +1,6 @@
 ---
 name: awesome-bug-fix
-description: "Fixes a bug by building a runnable reproduction and finding the root cause before any fix. Use for errors, crashes, failing tests or builds, flaky behavior, or repeated failed fixes."
+description: "Fixes a bug through a runnable reproduction and its root cause. Use for errors, crashes, failing tests or builds, flaky behavior, or repeated failed fixes."
 license: MIT
 metadata:
   author: Khasky
@@ -14,7 +14,7 @@ Find and fix bugs by following a strict process: no fixes without root cause fir
 
 Why this matters: Random fixes feel faster but often introduce new bugs and leave the original cause in place. A few minutes of real investigation—reproduce, trace, hypothesize—usually leads to one right fix instead of a long chain of patches. It works the same whether you’re in a Node app, a Python script, or a distributed system: understand, then change.
 
-## Core Principle
+## Core principle
 
 NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST. Symptom fixes waste time and introduce new bugs. If you have not completed Phase 1, you may not propose fixes.
 

@@ -1,6 +1,6 @@
 ---
 name: awesome-plan-simplify
-description: "Simplifies a written plan, design or spec against the system it changes: checks its claims in the code, finds over-engineering, redundant guards and contradictions, writes ranked cuts to a separate document. Use when asked what a plan can drop."
+description: "Simplifies a written plan, design or spec against the system it changes: over-engineering, redundant guards and contradictions, as ranked cuts in a separate document. Use when asked what a plan can drop."
 license: MIT
 metadata:
   author: Khasky

@@ -1,6 +1,6 @@
 ---
 name: awesome-git-commit-plan
-description: "Plans a codebase as a bisectable commit series: a module map, then commits that each build and test alone, verified in a scratch clone, as one plan file. Use when asked to split a project into commits."
+description: "Plans a codebase as a bisectable series of commits that each build and test alone, delivered as one plan file. Use when asked to split a project into commits."
 license: MIT
 metadata:
   author: Khasky
