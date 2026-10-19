@@ -148,7 +148,7 @@ Each of these fails *at push time*, after the backup and the whole rebuild are d
     ```
 
     Three findings, each of which changes the answer the user should give:
-    - Immutable-registry publication. If any tag matches a version published to npm, PyPI, crates.io, the Go module proxy, Maven Central or NuGet, deleting or moving it is a hard stop in Phase 11: those registries freeze a version to a content hash, and a re-tagged version makes consumers fail checksum verification rather than upgrade. Check the name rather than assuming (`https://registry.npmjs.org/<name>`, `https://index.crates.io/…`); a manifest with `private: true` or `publish = false` settles it too.
+    - Immutable-registry publication. If any tag matches a version published to npm, PyPI, crates.io, the Go module proxy, Maven Central or NuGet, deleting or moving it is a hard stop in Phase 12: those registries freeze a version to a content hash, and a re-tagged version makes consumers fail checksum verification rather than upgrade. Check the name rather than assuming (`https://registry.npmjs.org/<name>`, `https://index.crates.io/…`); a manifest with `private: true` or `publish = false` settles it too.
     - Uploaded assets and their download counts, per release. They do not come back — a mirror backup restores tags, never a release object or its binaries.
     - Anything that reads "the latest release" — an auto-updater endpoint (Tauri, Sparkle, electron-updater), an install script, a docs badge. Deleting every release breaks it until a new one is cut. Grep the tree for the updater endpoint before claiming otherwise.
 

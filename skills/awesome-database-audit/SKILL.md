@@ -59,7 +59,7 @@ Done when: the scope and the engine version are stated, every track in scope has
 - Multi-row invariants get transactions — dependent writes run in one transaction; side-effects (email, publish) happen after commit, never inside.
 - Concurrent updates have a named strategy — optimistic locking (a `version` column, `0 rows updated` surfaced as conflict) or `SELECT … FOR UPDATE`; check-then-insert for "at most one" invariants loses to parallel requests — a partial `UNIQUE` index plus `ON CONFLICT` is the mutex.
 - Isolation named where the default is wrong — read-committed doesn't stop the phantom the invariant needs stopped; lock order documented; `lock_timeout`/`statement_timeout` set so a stuck transaction fails fast.
-- Verdict cue — a money or inventory invariant enforced only in app code is FIX at minimum; a documented single-writer design that needs no locking earns a Positive line.
+- Verdict cue — a money or inventory invariant enforced only in app code is FIX at minimum; a documented single-writer design that needs no locking is not a finding.
 
 ## Track D — Migrations and operations
 

@@ -16,7 +16,7 @@ Why this matters: Random fixes feel faster but often introduce new bugs and leav
 
 ## Core principle
 
-NO FIXES WITHOUT ROOT CAUSE INVESTIGATION FIRST. Symptom fixes waste time and introduce new bugs. If you have not completed Phase 1, you may not propose fixes.
+No fix until the root cause is found: a fix aimed at a symptom leaves the cause in place and usually adds a new bug. Propose a fix only after Phase 1.
 
 Redact before you show anything. This skill quotes commands, outputs and captured artifacts back to the user, and the transcript leaves the machine. Write `<REDACTED>` in place of every token, password, connection string, cookie and customer identifier; build loops against environment variables so the credential stays in the environment rather than in the command you paste; and from a captured artifact (a HAR file, a log dump, a request trace) quote only the lines carrying the signal, because auth headers ride in the rest. If the redacted output is genuinely not enough to diagnose the bug, say so and ask the user rather than pasting the raw capture.
 
@@ -37,7 +37,7 @@ Complete each phase before proceeding to the next.
 
 ### Phase 1: Root cause investigation
 
-Before attempting ANY fix:
+Before attempting any fix:
 
 1. Read error messages and stack traces
    - Do not skip past errors or warnings. Note line numbers, file paths, and error codes.

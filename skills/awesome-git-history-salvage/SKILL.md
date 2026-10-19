@@ -2,7 +2,7 @@
 name: awesome-git-history-salvage
 description: "Read-only recovery of every commit a repository ever held, force-pushed history included, from refs, PR refs, backups and the host's activity log. Use when asked what a repo held before a rewrite."
 license: MIT
-compatibility: "Requires git and the GitHub CLI (gh). Read-only, and it never writes to a remote."
+compatibility: "Requires git; a host CLI (gh or glab) adds the pull-request and activity-log sources. Read-only, and it never writes to a remote."
 metadata:
   author: Khasky
   tags: ["git", "forensics", "history-recovery", "repository-ops", "read-only"]
@@ -124,7 +124,7 @@ git rev-list --all | sort -u | wc -l                   # baseline commit count
 
 Record that baseline. Everything Phase 3 adds is history the remote no longer advertises, and the difference between the two numbers is the headline finding.
 
-Merged pull requests are the quiet source. Their `head` refs are refs, so garbage collection never touches what they reach. A pull request branched off a since-erased tip drags its whole ancestry along permanently — in the measured case, 20 such refs kept 88 commits of a deleted history alive.
+Merged pull requests are the quiet source. Their `head` refs are refs, so garbage collection never touches what they reach. A pull request branched off a since-erased tip drags its whole ancestry along permanently — a handful of such refs can keep a whole deleted history alive.
 
 ---
 

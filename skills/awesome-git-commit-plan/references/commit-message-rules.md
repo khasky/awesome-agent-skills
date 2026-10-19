@@ -1,6 +1,6 @@
 # Commit message rules
 
-Derived from three sources. First, the conventional-commit history of angular, vue, vite, tauri, electron and nest — around 130 commits read for subject length, body frequency, body shape and footer use. Second, a rewrite of a 66-commit plan for a real desktop application, where every rule below replaced a draft that was rejected for breaking it. Third, two sibling skills: `awesome-slop-audit`, whose marker catalog supplied sections 3.2, 3.3, 3.5, 3.6, 3.8 and section 5, and `awesome-document-style`, whose language pass supplied the filler catalog in 3.10 and the questions that close section 9.
+Derived from two sources. First, the conventional-commit history of angular, vue, vite, tauri, electron and nest — around 130 commits read for subject length, body frequency, body shape and footer use. Second, two sibling skills: `awesome-slop-audit`, whose marker catalog supplied sections 3.2, 3.3, 3.5, 3.6, 3.8 and section 5, and `awesome-document-style`, whose language pass supplied the filler catalog in 3.10 and the questions that close section 9.
 
 A repository's own convention outranks every rule here. A commitlint config, a hook, `CONTRIBUTING.md` or the existing log decides the format — always, including where this file's default is nicer.
 
@@ -35,7 +35,7 @@ Shape: at most four paragraphs, wrapped under 80 columns, ordered problem, mecha
 
 ## 3. What never goes in a body
 
-Ten rules, each with the draft that produced it.
+Ten rules, each with a bad and a good form.
 
 ### 3.1 No enumeration of members
 
@@ -131,7 +131,7 @@ good  Only the IPC origin is allowed to connect. Every network call this app
 
 ### 3.5 No contrast frame
 
-State what the code does. Contrast with what it does not do at most once per message. A draft with 47 uses of "rather than" across 66 commits is a fingerprint, not a style.
+State what the code does. Contrast with what it does not do at most once per message. The same contrast repeated across a plan is a fingerprint, not a style.
 
 ```text
 bad   Identity and remotes go through git itself rather than through a config
@@ -271,7 +271,7 @@ Never write a claim into a message to satisfy a rule here. Anything stated must 
 
 ## 6. Rhythm
 
-Vary the paragraph opening. 71 of 130 paragraphs starting on the word "The" is a rhythm a reader feels before they can name it.
+Vary the paragraph opening. Many paragraphs opening on the same word is a rhythm a reader feels before they can name it.
 
 Vary sentence length. A body where every sentence is a 20-word compound with a comma before "so" reads as generated even when every fact in it is true.
 

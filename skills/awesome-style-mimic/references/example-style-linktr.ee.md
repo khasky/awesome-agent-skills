@@ -56,7 +56,7 @@ Third-party names as trust proxies, never explained and never normalized (`beehi
 
 Warm concrete metaphors instead of abstraction: "your corner of the internet", "your digital home base", "your launchpad", "a control center", "digital universe", "take your Linktree IRL".
 
-Reproduce, don't fix — real house inconsistencies
+Real house inconsistencies — recognize, don't reproduce
 
 - Spelling is mixed AU/US, often inside one page: `organise`/`organize`, `centralised`/`centralized`, `monetise`/`monetize`, plus surviving `whilst`, `enquiry`, `humour`, `Centre`, `licence`. Marketing tilts US; legal and transparency copy tilts AU.
 - The serial comma is inconsistent — usually present in verb triads ("curate, grow, and monetize"), usually absent in brand lists ("Instagram, TikTok, YouTube and more").

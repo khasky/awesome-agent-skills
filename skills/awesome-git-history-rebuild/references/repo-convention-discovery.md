@@ -50,7 +50,7 @@ Decide from the counts, not from one sample:
 | `[Area] Capitalized summary` | React-style bracket prefix |
 | `ABC-123: summary` or `[ABC-123]` | Ticket-prefixed — ask the user for the ticket IDs, or omit the prefix and say so |
 | Most subjects open with an emoji or a `:shortcode:` (`:sparkles: add the importer`), with or without a type after it | Gitmoji — copy the form the log uses, unicode emoji or `:shortcode:`, and the emoji-to-meaning mapping it already follows; never mix the two forms |
-| Capitalized imperative sentences, no prefix | Plain style (this repo's own logs, many small projects) |
+| Capitalized imperative sentences, no prefix | Plain style (many small projects) |
 
 Whatever the family, copy its case, punctuation and length too. A conventional repo whose subjects are all lowercase and under 60 characters does not want a 90-character capitalized one.
 

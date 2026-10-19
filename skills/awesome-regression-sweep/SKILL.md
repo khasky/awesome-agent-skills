@@ -78,7 +78,7 @@ Split the aspects into two lanes by resource contention, not just independence �
 - Safe to fan out concurrently: the static/read-only aspects (typecheck, lint, generated-artifact drift, docs-vs-code constants — angle 7) and the black-box HTTP probes, one agent per endpoint or per malformed shape. They share no port, database, or browser.
 - Must stay serial: the unit / integration / e2e suites and any live browser suite. Concurrent runs fight over ports, test databases, and browsers and manufacture the exact flakes angle 1 exists to catch — so run heavy suites one at a time, and angle 1 (order-dependent flakes) always runs alone.
 
-The barrier is the verdict: one agent merges all deltas against the single `baseline.json` and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or emits a verdict. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for the static/HTTP agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+The barrier is the verdict: one agent merges all deltas against the single `baseline.json` and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or emits a verdict. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Phase 2 — the nine angles
 
@@ -110,7 +110,7 @@ Done when: every invariant has been checked or marked NOT ASSESSED with its reas
 
 - A skip caused by the environment. No local server, no credential, an anti-bot wall on a third-party page. Report it as a skip with the reason.
 - A flake called a regression before it is isolated. But the reverse is not allowed either: a test that passes only on re-run is a defect — report the flake, never silently retry until green.
-- A harness bug called a product bug. Both happen and both look identical at first. Two of this sweep's historical failures were harness bugs; conflating them wastes the run. Diagnose before the next iteration.
+- A harness bug called a product bug. Both happen and both look identical at first; diagnose which it is before the next iteration.
 - An absolute tally. A number with no baseline is not a finding.
 - Style a formatter owns, when the formatter itself is green.
 - A latency number without a baseline — that is `awesome-performance-audit`.

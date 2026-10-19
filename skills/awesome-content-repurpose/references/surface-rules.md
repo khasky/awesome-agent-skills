@@ -1,6 +1,6 @@
 # Surface rules - the smaller rules that support Phase 5 to 7
 
-`SKILL.md` keeps the rules a reader's choice between versions turned on. These are the rules that support them, one construction each. They bind in the same way, they are read with Phase 5, and the audit in Phase 9 counts them under `Style` and reads them under `Fidelity`.
+`SKILL.md` keeps the main rules. These are the rules that support them, one construction each. They bind in the same way, they are read with Phase 5, and the audit in Phase 9 counts them under `Style` and reads them under `Fidelity`.
 
 Where a rule names a guide's furniture (paths, clients, setup blocks, the routing split), it applies to a guide source. An essay, a benchmark or a retrospective takes the rule's shape with its own modules in the slots, and a rule with no slot for the source in hand is skipped rather than forced.
 

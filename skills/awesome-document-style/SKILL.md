@@ -104,7 +104,7 @@ One variant of English per document. American spelling is the default; the excep
 
 Density fails in both directions. A paragraph trimmed until it lost the caveat, the next step or the one number the reader came for is a defect, the same as a padded one; cut filler, not content. And a rewrite must not come out more promotional, more upbeat or more confident than its source: hedges of genuine doubt, disagreement and refusals are the author's stance, and stance is not the editor's to move.
 
-That list is the working bar for this pass, and the vocabulary half of it now lives once, in `awesome-humanize-en/references/lexicon.md`: with that skill installed the words come from there, and without it this pass runs on the shapes above and says so in the report. `awesome-humanize-en/references/language-patterns.md` carries the pattern numbers and the before-and-after shape behind each entry, `awesome-humanize-en/references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and `awesome-humanize-en/references/domain-*.md` files carry per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. Those three are optional; the lexicon is where the word list went.
+That list is the working bar for this pass. The vocabulary lives in `awesome-humanize-en/references/lexicon.md`: with that skill installed the words come from there, and without it this pass runs on the shapes above and says so in the report. `awesome-humanize-en/references/language-patterns.md` carries the pattern numbers and the before-and-after shape behind each entry, `awesome-humanize-en/references/structural-style-patterns.md` (#16) covers the em-dash, arrow-glyph and bold-overuse policy behind Pass 2, and `awesome-humanize-en/references/domain-*.md` files carry per-venue rules for release notes, replies, postmortems, tickets and technical articles — all with false-positive boundaries. Those three are optional; the lexicon carries the word list.
 
 ## Pass 4: Specificity and source discipline
 
@@ -148,7 +148,7 @@ If editing files:
 If editing pasted text:
 
 - Return the cleaned Markdown.
-- Then add `## Editorial notes` with at most six short bullets.
+- Then add `## Editorial notes`: short bullets covering only what the author needs to act on.
 - Do not include generic praise.
 
 If the user asks for an audit trail:

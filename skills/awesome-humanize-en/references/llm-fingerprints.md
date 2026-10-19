@@ -1,4 +1,4 @@
-# Large language model fingerprints — state as of July 2, 2026
+# Large language model fingerprints
 
 This file is a reference to the characteristic tells of individual models. Signals fall into two levels:
 
@@ -7,7 +7,7 @@ This file is a reference to the characteristic tells of individual models. Signa
 
 The stylistic tells come from two source tiers, kept apart in every vendor section: community-observed tells (Wikipedia, forums, evaluation reviews — the tables with C/O/Cond confidence codes) and vendor-documented prose defaults — what a model's own vendor says its current release does at the sentence level, taken from the vendor's prompting documentation and tagged with the exact release the page names. A vendor row is *operative* for a role whose release matches the tag and a *prior* for any other release of that family; a vendor that publishes no such guidance is recorded as consulted, not guessed. Ledger: `sources.md`, "Vendor guidance".
 
-Tells evolve every 6–8 weeks as new model versions ship. Freshness of this file: through August 31, 2026, after which reassessment is mandatory.
+Tells evolve every 6–8 weeks as new model versions ship.
 
 > When to load: when the author or executor model is known (the Model identity rule in `SKILL.md`); when working with fresh 2025–2026 text; when preparing regexes for batch processing. Never to work out which model wrote a text: model identity comes from the user or from metadata (a commit trailer, a tool signature, a stated source), and the executor's identity from your own system context. Attribution by reading is not a classifier — the best measured six-way attribution from hundreds of narrative features reaches 68.4% macro-F1 (`sources.md`, `STORYSCOPE-2026`), and reading is not that classifier. An unknown role loads nothing from this file and is reported as `none`.
 
@@ -89,7 +89,7 @@ Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read seco
 Current, summer 2025 – summer 2026:
 - Claude Fable 5 (`claude-fable-5`, June 9, 2026; access suspended June 12 on a US government requirement — export control, restored globally July 1, 2026) — the sitting flagship, a Mythos-class model with safety restrictions. Detail that matters for the skill: queries on restricted topics (cybersecurity) are handled silently, invisibly to the user, by Claude Opus 4.8 — so two model styles can mix within a single conversation.
 - Claude Mythos 5 (June 9, 2026) — the same base intelligence as Fable 5 but with the restrictions removed; access only for approved US organizations (Project Glasswing), not encountered in ordinary text.
-- Claude Sonnet 5 (`claude-sonnet-5`, June 30, 2026) — a new-generation workhorse: 1-million context, output up to 128K, adaptive thinking on by default, a new tokenizer. Stylistic tells are still accumulating — until the next review, apply the Sonnet 4.6 tells.
+- Claude Sonnet 5 (`claude-sonnet-5`, June 30, 2026) — a new-generation workhorse: 1-million context, output up to 128K, adaptive thinking on by default, a new tokenizer. Stylistic tells are still accumulating; apply the Sonnet 4.6 tells meanwhile.
 - Claude Opus 4.8 (`claude-opus-4-8`, May 28, 2026) — the previous flagship, and still the fallback model for Fable 5's blocked queries. Stated emphasis on "honesty": the model more often flags uncertainty outright. Practical consequence (applies to the 5 line as well): uncertainty disclaimers by themselves are no longer an anti-tell — cross-check #23/#23a by meaning, not by the mere presence of a disclaimer.
 - Claude Opus 4.7 (April 16, 2026), Claude Haiku 4.5 (`claude-haiku-4-5-20251001`, October 15, 2025) — previous generations.
 - Claude Sonnet 4.6 (`claude-sonnet-4-6`, February 17, 2026) — price/quality balance, 1-million context.
@@ -302,7 +302,7 @@ Note. Like Nova, Cohere is rarely seen in consumer text — more often inside en
 
 ## Vendor-independent universal tells
 
-These tells show up equally across all models. If present, it is AI regardless of which model produced it.
+These tells show up across all models; like every soft tell, each counts only in combination (Rules for using fingerprints, 1).
 
 | Tell | Where described | Where in this skill |
 |---|---|---|
@@ -355,9 +355,7 @@ This file needs updating:
 
 Minimum: reassess every 90 days.
 
-Last reviewed: July 2, 2026.
-
-Next scheduled review: September 30, 2026. Unscheduled — August 2, 2026 (Article 50 of the EU AI Act takes effect: check which forms of text marking have actually appeared at the major providers).
+Read dates live per source in `sources.md`; re-read a vendor's page when it ships a new release.
 
 Sources for review:
 

@@ -87,7 +87,7 @@ Short answers weigh differently from articles. Replies, review comments and tick
 
 ## Marker severity scale
 
-- 🔴 Instant marker — gives away AI almost certainly, must be removed.
+- 🔴 Critical — the strongest soft tells, fixed first in an edit; like every soft tell they count toward a verdict only in combination (The main rule). Only `chatbot-artifacts.md` markers identify AI on their own.
 - 🟡 Strong signal — unnatural for a human, common in AI output.
 - 🟢 Weak signal — a statistical tell that also occurs in human writing; works only in combination.
 

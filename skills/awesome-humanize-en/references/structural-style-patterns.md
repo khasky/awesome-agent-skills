@@ -6,7 +6,7 @@ The machine's habit of over-formatting, over-listing, and visual noise. Extensio
 
 ---
 
-## 16. 🔴 Em-dash, arrow and bold overuse
+## 16. 🟢 Em-dash, arrow and bold overuse
 
 Problem. The model mechanically reaches for the em-dash (—) to mark "strong" pauses, drops the arrow glyph (→) wherever a sentence would need a verb, and slathers key terms in bold to fake the look of professional copywriting.
 

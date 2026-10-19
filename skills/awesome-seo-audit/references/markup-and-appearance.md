@@ -23,7 +23,7 @@ Microdata and RDFa are read too. A site with both microdata and JSON-LD describi
 
 ## Live feature types
 
-Confirm against the current documentation before a finding rests on this list — the set moves, and the whole point of the section below is that it moved twice in the last eighteen months.
+Confirm against the current documentation before a finding rests on this list — the set moves, as the retired list below shows.
 
 Currently documented as supported search features: Article, Breadcrumb, Carousel, Course list, Dataset, Discussion forum, Education Q&A, Employer aggregate rating, Event, Image metadata, Job posting, Local business, Math solver, Movie, Organization, Product, Profile page, Q&A, Recipe, Review snippet, Software app, Speakable, Subscription and paywalled content, Vacation rental, Video.
 

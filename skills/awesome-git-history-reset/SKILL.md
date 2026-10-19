@@ -3,7 +3,7 @@ name: awesome-git-history-reset
 description: "Erases a repository's entire history into one fresh commit and force-pushes, after access checks, a mirror backup, a secret scan and a confirmation gate. Use when asked to wipe history."
 disable-model-invocation: true
 license: MIT
-compatibility: "Requires git and the GitHub CLI (gh) authenticated with push access to the target repository."
+compatibility: "Requires git with push access to the target repository. A host CLI (gh or glab) enables the access gates; without one they are reported as unavailable."
 metadata:
   author: Khasky
   tags: ["git", "history-rewrite", "force-push", "repository-ops", "safety"]

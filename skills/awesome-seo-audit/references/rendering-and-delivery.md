@@ -73,7 +73,7 @@ Frame these as delivery facts. They become findings when they push the primary c
 
 ## Performance, and what this audit may claim about it
 
-The field metrics are **LCP**, **INP** and **CLS**, measured at the 75th percentile of real users. INP replaced FID, which no longer exists in field tooling. There is no "Core Web Vitals 2.0", no additional official vital, and the thresholds have not moved.
+The field metrics are **LCP**, **INP** and **CLS**, measured at the 75th percentile of real users. INP replaced FID, which no longer exists in field tooling. Confirm the set and its thresholds against primary documentation before a finding rests on them.
 
 **This audit does not measure them.** It has no field data and runs no lab test. What it may report is the set of observable proxies above, labelled as proxies:
 

@@ -26,7 +26,7 @@ Do not regex the page HTML for a CDN pattern. A run that used `/https:\/\/dev-to
 
 Whatever URL you end up with, prove it is yours before publishing: open it and check the pixel dimensions against the source file. That single check would have caught this.
 
-That URL then goes in two places: `cover_image:` in the front matter, and an ordinary markdown image on the first line of the body, before the first `##`:
+That URL goes in `cover_image:` in the front matter, and the body starts on its first paragraph:
 
 ```text
 ---
@@ -36,12 +36,10 @@ tags: tag1, tag2, tag3
 cover_image: https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png
 ---
 
-![<frontmatter title>](https://dev-to-uploads.s3.amazonaws.com/uploads/articles/<id>.png)
-
 <body>
 ```
 
-Uploading and then referencing it only from `cover_image` is the failure to avoid: the article body then has no image in it, and the cover carries no alt text. The in-body markdown is also the only place the alt text (the frontmatter `title`) survives. Confirm on the published page that an `img` sits above the first `h2` and that its `alt` is the post file's alt text.
+Confirm on the published page that the cover renders once and the body opens on its first paragraph. dev.to's cover has no alt field, so record `adapted: no alt on cover`.
 
 Proving the uploaded URL is yours without leaving the editor: load it as an `Image()` inside `page.evaluate` and read `naturalWidth`/`naturalHeight` off the `onload`. That compares against the source file's dimensions in one call and costs no navigation, so the draft stays intact.
 

@@ -90,9 +90,9 @@ Climb only as far as needed; stop at the first rung that works. Never repeat a f
 1. `browser_click` — try it first. On light pages it just works.
 2. Coordinate click — the workhorse. Read the rect in-page, then drive the real mouse:
    ```js
-   const b = await page.evaluate(() => {
+   // call 1: bring the control into view (page.mouse.wheel toward it, or an instant scrollIntoView where the wheel cannot reach it); wait ~1.5 s
+   const b = await page.evaluate(() => {   // call 2: read the rect only after the scroll has settled
      const el = /* find it */;
-     el.scrollIntoView({ block: 'center' });      // instant, NOT smooth — smooth keeps the box moving
      const r = el.getBoundingClientRect();
      return { x: Math.round(r.x + r.width / 2), y: Math.round(r.y + r.height / 2) };
    });
@@ -109,7 +109,7 @@ When the composer refuses to open, stop clicking and look for the platform's own
 
 - `https://bsky.app/intent/compose?text=<encoded>`
 - `https://www.threads.com/intent/post?text=<encoded>`
-- `dev.to/new`, `studio.buymeacoffee.com/posts/new`, `patreon.com/posts/new`, `tumblr.com/new/text`, `hashnode.com/draft/new` — direct composer routes rather than intents, but the same idea: skip the button.
+- `dev.to/new`, `www.buymeacoffee.com/posts/create`, `patreon.com/posts/new`, `tumblr.com/new/text` — direct composer routes (Hashnode: the `Write` button on `/drafts`) rather than intents, but the same idea: skip the button.
 
 Two more rules learned the hard way:
 
@@ -305,8 +305,7 @@ await page.mouse.wheel(0, y0 - 420); await page.waitForTimeout(1100);
 const r = await page.evaluate(t => { const p = [...document.querySelectorAll('section p')]
   .find(x => x.innerText.trim() === t); const b = p.getBoundingClientRect();
   return { x: Math.round(b.x + 40), y: Math.round(b.y + b.height/2) }; }, text);
-// 2. real click, then keyboard selection
-await page.mouse.click(r.x, r.y);
+// 2. real click via the pointer path in *Input the way a person gives it* (move with steps, hover pause, down, pause, up), then keyboard selection
 await page.keyboard.press('Home');
 await page.keyboard.down('Shift'); await page.keyboard.press('End'); await page.keyboard.up('Shift');
 // 3. assert the selection is what you think it is, THEN format

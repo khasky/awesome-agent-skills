@@ -16,11 +16,10 @@ Word markers:
 - "Would you like me to…"
 - "Let me know if…"
 - "I'd be happy to!"
-- "Subject: …" (an AI email subject line)
 - "Dear editor…" (the stock opener of an AI-written Wikipedia talk-page comment)
 - `[insert name]`, `[add date]`, `[add link]`, `[citation needed]` — unfilled placeholders
 
-Problem. The AI leaves scraps of its conversation with the user, plus unfilled placeholders. This is a definitive tell: one such marker means the text was almost certainly copied out of a chat without review.
+Problem. The AI leaves scraps of its conversation with the user, plus unfilled placeholders. A strong tell: a chat turn addressed to the user, or an unfilled placeholder, usually means the text was copied out of a chat without review; it still counts with other tells (The main rule in SKILL.md).
 
 Before:
 > Here's a brief overview of the French Revolution. Hope this helps! Let me know if you'd like me to expand any section in more detail.

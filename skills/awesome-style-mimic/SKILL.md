@@ -61,7 +61,7 @@ Rules:
 - Read-only: navigation and DOM reads only; never click actions or type into forms (consent dismissal excepted). The skip list above already keeps login, cart and account paths, media files, `.md`/`.txt` page mirrors, feeds and localized mirrors out of the frontier.
 - One crawl at a time machine-wide; never crawl the same host from two sessions, which would have both writing the same record.
 - Mid-crawl steering between batches is allowed: trim a low-value serial quota (author bios, changelog entries), or purge noise the skip list missed (legal archive years, malformed URLs). Remove such URLs from the frontier AND from the discovered classification, so the coverage math stays honest.
-- Report the counters to the user every three batches or so: visited, coverage, frontier depth, failures.
+- Keep the user posted on the crawl's counters (visited, coverage, frontier depth, failures) whenever they change the picture, and before any long stretch of batches.
 
 ### 2. Serial pages and the stop criterion
 
@@ -71,7 +71,7 @@ Eighteen members per pattern is the sample; the pool beyond that is recorded and
 
 ### 3. Analysis fan-out (parallel, from disk)
 
-Split `corpus/*.md` into batches of ~15 files; spawn one subagent per batch, all concurrently. Each reads its files and writes STYLE observations (not content summaries) to `style-crawl/<host>/analysis/batch-N.md` with fixed sections: Lexicon / Voice & POV / Rhythm / Structure / Formatting / Genre notes / Golden-sample candidates (3–5 verbatim excerpts ≤120 words with source file and why), returning only a 5-line summary. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+Split `corpus/*.md` into batches of ~15 files; spawn one subagent per batch, all concurrently. Each reads its files and writes STYLE observations (not content summaries) to `style-crawl/<host>/analysis/batch-N.md` with fixed sections: Lexicon / Voice & POV / Rhythm / Structure / Formatting / Genre notes / Golden-sample candidates (3–5 verbatim excerpts ≤120 words with source file and why), returning only a 5-line summary. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ### 4. Synthesis
 
@@ -84,7 +84,7 @@ Two sample policies — pick by the guide's destination, ask when unclear:
 
 ## Apply mode
 
-Inputs: a style-guide path + a target (file or folder). Read the guide FIRST, fully — its Golden samples anchor the tone; its Rewrite instructions override defaults below.
+Inputs: a style-guide path + a target (file or folder). Read the guide FIRST, fully — its samples (golden or synthetic) anchor the tone; its Rewrite instructions override defaults below.
 
 ### Target resolution
 
@@ -104,7 +104,7 @@ The guide's `Spelling variant` governs the rewrite. A site that writes `colour` 
 
 ### Fan-out and the one-author guarantee
 
-One subagent per file, spawned in parallel. Each subagent gets: the style-guide path, one source path, one output path, the file mode (markdown/html/component), and the FULL text of `references/rewriter-contract.md` — identical guide + identical contract per file is what keeps one authorial voice across the batch. Never relay a summary of the guide; each subagent reads the guide file itself. A failed file gets one retry, then is reported — never silently dropped. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read/write agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+One subagent per file, spawned in parallel. Each subagent gets: the style-guide path, one source path, one output path, the file mode (markdown/html/component), and the FULL text of `references/rewriter-contract.md` — identical guide + identical contract per file is what keeps one authorial voice across the batch. Never relay a summary of the guide; each subagent reads the guide file itself. A failed file gets one retry, then is reported — never silently dropped. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 After all rewrites land (2+ files), run ONE consistency-pass subagent over the whole output set (for >15 files: first/last 3 paragraphs plus a middle excerpt each): find cross-document drift — lexicon used in one file but violated in another, tone shifts, inconsistent heading/CTA patterns — fix findings directly with edits, return the `path: what changed` list. Report that list to the user; it is the evidence the batch reads as one author.
 

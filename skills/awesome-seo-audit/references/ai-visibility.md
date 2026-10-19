@@ -56,7 +56,7 @@ Read `robots.txt` per bot, never per company. Every major operator now runs seve
 
 Report what is allowed and what is blocked, per bot, with the rule that does it. A deliberate block of training-only crawlers while answer and search bots stay open is a business choice and not a defect; the finding is when the pattern is clearly unintended — `GPTBot` blocked and `OAI-SearchBot` blocked alongside it by a wildcard nobody read.
 
-Confirm the roster against current vendor documentation before a finding rests on a bot name. It changed twice in the last year.
+Confirm the roster against current vendor documentation before a finding rests on a bot name.
 
 ## Google-Extended and the user-triggered fetchers
 

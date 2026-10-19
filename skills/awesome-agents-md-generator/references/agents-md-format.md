@@ -57,7 +57,7 @@ Agent-specific instructions that the project genuinely needs belong in that agen
 
 ## Size budget
 
-Every session pays for the file in context before doing any work, and some agents cap what they load (Codex, for one, stops reading project docs past a byte limit, 32 KiB by default at the time of writing, counted across all nested files it merges).
+Every session pays for the file in context before doing any work, and some agents cap what they load (Codex, for one, stops reading project docs past a configurable byte limit counted across all nested files it merges; check its current default).
 
 - Root file: aim for under 150 lines; above 250, cut.
 - Nested file: under 80 lines, differences only.

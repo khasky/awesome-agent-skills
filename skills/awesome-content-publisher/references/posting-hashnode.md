@@ -36,7 +36,7 @@ A cover is not attached until its CDN URL exists. The panel says `Change cover` 
 
 Cover panel route on a published article: the `Cover` button above the title opens a panel with `Upload` / `Unsplash` tabs and an `Upload Image` button. Its file input is inside the panel — walk up from the `Upload Image` button until a `input[type=file]` turns up and `setInputFiles` on that one, rather than clicking the button and answering a native chooser.
 
-The footer's three lines publish as one. Hashnode's body is Markdown, so the bare newlines between the footer's lines are spaces to the renderer and the block arrives as a single run-on sentence. Append two trailing spaces to every footer line but the last before the body goes in, and confirm three lines on the published article. `github-gists` and `mataroa` carry the same defect for the same reason, and the durable fix is in the post file (`awesome-content-repurpose`, Phase 7).
+The footer's three lines publish as one. Hashnode's body is Markdown, so the bare newlines between the footer's lines are spaces to the renderer and the block arrives as a single run-on sentence. Append two trailing spaces to every footer line but the last before the body goes in, and confirm three lines on the published article. `github-gists` and `mataroa` carry the same defect for the same reason, and the durable fix is in the post file (`awesome-content-repurpose`, Phase 5).
 
 Three mechanical traps, each of which costs a run time rather than correctness:
 

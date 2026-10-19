@@ -3,7 +3,7 @@ name: awesome-git-author-rewrite
 description: "Rewrites the author and committer on commits with a wrong identity, then force-pushes after access checks, a mirror backup and a confirmation gate. Use when a commit has the wrong name or email."
 disable-model-invocation: true
 license: MIT
-compatibility: "Requires git, git-filter-repo, and the GitHub CLI (gh) authenticated with push access to the target repository."
+compatibility: "Requires git with push access to the target repository; git-filter-repo preferred, filter-branch as the fallback. A host CLI (gh or glab) enables the access gates; without one they are reported as unavailable."
 metadata:
   author: Khasky
   tags: ["git", "history-rewrite", "commit-author", "force-push", "repository-ops", "safety"]

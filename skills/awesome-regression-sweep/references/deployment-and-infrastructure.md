@@ -30,7 +30,7 @@ Run the repo's own post-deploy gates, once a deployment exists — a smoke scrip
 
 ## The status page is not evidence of freshness
 
-A status page reports *health*, and its thresholds are deliberately loose because a quiet system ages legitimately. One has reported `operational` for four hours while the thing it monitors had stopped advancing. Compare the numbers directly instead:
+A status page reports *health*, and its thresholds are deliberately loose because a quiet system ages legitimately. One can read `operational` for hours while the thing it monitors has stopped advancing. Compare the numbers directly instead:
 
 ```bash
 curl -s https://api.example.com/v1/checkpoint     # what the publisher last published

@@ -20,7 +20,7 @@ Squad path, only when the post file's target names one: go to that squad's page,
 
 Read-back: the user's profile Posts tab, or the squad feed where one was named, the item visible with its timestamp and permalink.
 
-Before submitting, confirm the user has seen the AI-content rule. daily.dev prohibits AI-generated content. If nothing in the run records the user's decision to publish this text as their own after editing it, stop and ask rather than posting — this is one of the few places where publishing quietly can cost the account, not just the post.
+Before submitting, confirm the user has seen the AI-content rule. daily.dev prohibits AI-generated content. The decision is settled in the Phase 3b sweep; where `decisions` holds no answer for `daily-dev`, record the entry `skipped` with that reason rather than posting — this is one of the few places where publishing quietly can cost the account, not just the post.
 
 Confirmed again end to end, with two details worth pinning: the cover goes through the page's first `input[type=file]` (the second, `name="content_upload"`, belongs to the body toolbar and inserts inline), and the audience control's label is the plain text `Everyone` at the top-left of the modal — a page-wide text search matches the sidebar's `Squads` navigation first, so read the control, not the document. Posting navigates straight to `daily.dev/posts/<slug>`.
 

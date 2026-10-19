@@ -72,7 +72,7 @@ A rule with no failing fixture has never been proven to fire; a rule with no pas
 Every suppression carries a reason and an expiry:
 
 ```python
-# nosec B608 — table name is an enum, not input; revisit 2026-Q4
+# nosec B608 — table name is an enum, not input; revisit <YYYY-QN>
 ```
 
 A bare `.semgrepignore` line, `# noqa`, or undated baseline file is how a real finding gets inherited as "already triaged". `.semgrepignore` generated and vendored paths (they are not the audited code), and date every suppression.

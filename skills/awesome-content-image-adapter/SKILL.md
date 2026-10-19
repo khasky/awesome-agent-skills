@@ -13,7 +13,7 @@ metadata:
 
 One picture, two frames. The artwork does not change: no regeneration, no redraw, no restyle, no image service. What changes is the shape around it, and how the picture meets the edges of that shape.
 
-The horizontal picture serves the feeds that show an image wide or at its own ratio, the vertical one serves the feeds that give a tall or square image more room and crop it toward the middle, and a platform whose frame differs from both crops its picture the way it crops any image. Two files cover every surface, where one file per form produced three identical pictures and one file per platform produced forty.
+The horizontal picture serves the feeds that show an image wide or at its own ratio, the vertical one serves the feeds that give a tall or square image more room and crop it toward the middle, and a platform whose frame differs from both crops its picture the way it crops any image. Two files cover every surface.
 
 Nothing platform-specific lives here. Which picture each platform takes is the `Picture` column of the canonical table in `awesome-content-campaign/references/platforms.md`, with the research behind every row in that file's *The picture each platform takes*. This skill reads the column and adds nothing to it; with that file absent, which platforms need the vertical picture is asked of the user rather than guessed.
 

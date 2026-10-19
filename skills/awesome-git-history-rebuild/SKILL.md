@@ -40,7 +40,7 @@ Seven invariants hold throughout:
 
 - `<repository-url-or-path>` — required. A remote URL (`https://…`, `git@…`) or a local path. A local path with no remote is supported: everything runs except the push. A directory that is not a git repository at all is supported too — there is no history to erase and nothing to compare against, so Phases 1, 8, 9 and 10 are skipped and the skill becomes "initialize with a curated history".
 - `[branch]` — optional. Defaults to the detected default branch. Never hardcode `main`.
-- `--plan <file>` — optional. A commit plan written before this run, usually by `awesome-git-commit-plan`: commits numbered `#1` to `#N`, each with its message and its exact file set. Given one, Phase 4 validates and presents it instead of proposing a split of its own, and Phase 3 narrows to what that validation needs. Without it, the split is built here exactly as before. Ask for a plan file at the start (see below) rather than assuming the user has none.
+- `--plan <file>` — optional. A commit plan written before this run, usually by `awesome-git-commit-plan`: commits numbered `#1` to `#N`, each with its message and its exact file set. Given one, Phase 4 validates and presents it instead of proposing a split of its own, and Phase 3 narrows to what that validation needs. Without it, the split is built here. Ask for a plan file at the start (see below) rather than assuming the user has none.
 - `--commits N` — optional target count, ignored under `--plan`. Otherwise proposed from repo size (see the granularity table in `references/commit-splitting-patterns.md`).
 - `--span <duration|anchored>` — optional wall-clock length the rebuilt ladder covers, ending at "now" (`4h`, `3d`, `2w`). Default: the span the replaced history actually occupied, measured from the backup. `anchored` instead starts the ladder at the repository's earliest evidenced activity, which can predate the history being replaced — the date is recovered in Phase 5, escalating to `awesome-git-history-salvage` when the current refs do not reach far enough. Any span longer than the measured one and not backed by such evidence is backdating and needs a stated reason (Phase 5).
 - `--sessions N` — optional number of sittings the span is split into. Default `clamp(round(span ÷ 24 h), 1, 6)`.
@@ -54,7 +54,7 @@ If the user invokes the skill without a target, ask for one before doing anythin
 Ask where the split comes from, once, at the start. Two paths reach the same Phase 6, and the user picks:
 
 - A plan file they already have (`--plan`) — written by `awesome-git-commit-plan`, or by hand. Its commits are already grouped and worded, and `awesome-git-commit-plan` additionally proves the ladder builds, which is the property `--mode bisectable` otherwise has to establish here. This run validates it against the tree, presents it as the Phase 4 table, and takes approval on that table like any other.
-- No plan — the split is proposed here, as it always was. This stays the default when the user has nothing prepared.
+- No plan — the split is proposed here. This stays the default when the user has nothing prepared.
 
 Ask before the backup, alongside gate #1, and never assume the absence of `--plan` means the user has no file. A plan that exists and is not used costs the run its cheapest input.
 
@@ -459,7 +459,7 @@ Deleted releases do not come back — a release object and its uploaded assets a
 
 ## References
 
-- `references/commit-splitting-patterns.md` — how large OSS projects split work into commits (git, the Linux kernel, OpenStack, Angular/Conventional Commits), the layer order, granularity by repo size, honest commit types, the six re-split strategies, per-ecosystem file mapping, and the anti-patterns. Read it when building or re-splitting the plan (Phase 5), and for the granularity table when a commit count has to be proposed.
+- `references/commit-splitting-patterns.md` — how large OSS projects split work into commits (git, the Linux kernel, OpenStack, Angular/Conventional Commits), the layer order, granularity by repo size, honest commit types, the six re-split strategies, per-ecosystem file mapping, and the anti-patterns. Read it when building or re-splitting the plan (Phase 4), and for the granularity table when a commit count has to be proposed.
 - `references/repo-convention-discovery.md` — where a repo states and enforces its commit rules, precedence between sources, inferring the format from the existing log, message templates per convention, DCO and signing, and how to handle hooks during the replay. Read it when the repository's own convention is being discovered, before any message is drafted.
 - `references/preflight-checks.md` — the exact commands, per-host branching, PR-permanence and merged-PR-attribution mechanics, and the preflight-matrix report template behind every Phase 0 check, plus the Phase 1 backup and rollback commands. Read it while running Phase 0 or making the backup.
 - `references/commit-plan-and-signing.md` — the commit-signing rationale and key-detection commands (Phase 2), the source-inventory commands (Phase 3), and the `--plan` validation commands, example table and six re-split strategies (Phase 4). Read it while running Phase 2, 3 or 4.

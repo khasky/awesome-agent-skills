@@ -95,7 +95,7 @@ How the service behaves when a dependency is slow, dead, or delivers twice — t
 - Queue topology — every consumer has bounded retries and a dead-letter destination someone monitors; every in-memory queue/buffer is bounded with a declared overflow policy (backpressure, drop, throttle). Unbounded is Track B's OOM arriving via topology.
 - Blast-radius isolation — per-dependency pools and concurrency limits (bulkhead) so one slow downstream saturates its own pool, not the shared one; one shared pool serving both critical and bulk traffic is a finding when the shared resource is the measured bottleneck.
 - Ordering assumed under concurrency (Low) — a consumer that relies on message order while several instances or workers consume the same queue (competing consumers); order holds only per partition or key, so look for a partition key or a single-consumer guarantee.
-- Verdict cue — a confirmed lost-event dual-write or an unbounded retry-amplification path is BLOCK for the affected flow; a missing breaker or DLQ on a hot path is FIX; bounded queues with idempotent consumers earn a Positive line.
+- Verdict cue — a confirmed lost-event dual-write or an unbounded retry-amplification path is BLOCK for the affected flow; a missing breaker or DLQ on a hot path is FIX.
 
 ## Track F — Frontend delivery (web)
 
@@ -108,7 +108,7 @@ Run only when the scope includes a web frontend. Field data over lab data: a lab
 - Render-path blockers — render-blocking scripts/styles in `<head>` (third-party tags included), unsized images, embeds and ad slots with no reserved space, content injected above what is already painted, the LCP image lazy-loaded, discoverable only from CSS or JS, or left at default priority, main content fetched client-side so LCP waits on JS plus an API round trip, redirect hops before the document, text assets served uncompressed, missing `font-display`, an intro animation or preloader that hides the LCP element until assets load, a smooth-scroll library that hijacks scrolling on the main thread — each cited from the actual HTML or response headers, with the metric and phase it moves.
 - Runtime render cost — layout thrash (interleaved reads/writes), scroll handlers doing layout work, animation off the compositor, long lists rendered in full instead of virtualized, per-interaction computation that belongs in a worker or a yielded chunk — confirmed in a performance trace, not inferred from code style.
 - Client memory over a session — heap growth across repeated in-app navigations, from timers, listeners, subscriptions and effects never cleaned up, or detached DOM nodes still referenced: confirmed by heap snapshots before and after the same navigation loop. Track C's leak, in a tab that stays open all day. The style rules themselves live in awesome-code-standards; this track measures their violation cost.
-- Verdict cue — a field CWV failing its threshold on a money page is FIX; a page whose primary content cannot load without a multi-MB bundle on the measured connection class is BLOCK for that cohort; passing field CWV earns a Positive line.
+- Verdict cue — a field CWV failing its threshold on a money page is FIX; a page whose primary content cannot load without a multi-MB bundle on the measured connection class is BLOCK for that cohort.
 - Handoffs — crawl/indexability impact of the same signals belongs to awesome-seo-audit; animation/interaction style standards to awesome-code-standards.
 
 ## What not to flag

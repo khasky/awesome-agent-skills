@@ -4,7 +4,7 @@ The interview asks for a number from 1 to 10 (`SKILL.md` Phase 1). This file say
 
 ## 1. The problem the dial exists to solve
 
-A post can satisfy every rule in this skill and still read as machine-made, because the rules decide one shape and the run applies it to whatever came in. Measured on earlier packs: almost every sentence sat between 15 and 35 words, the same sentence-opening stems recurred across unrelated subjects, and nothing was false. The dial decides how much of the shape the run may choose for itself.
+A post can satisfy every rule in this skill and still read as machine-made, because the rules decide one shape and the run applies it to whatever came in. The typical failure: almost every sentence sits between 15 and 35 words, the same sentence-opening stems recur across unrelated subjects, and nothing is false. The dial decides how much of the shape the run may choose for itself.
 
 The fix for uniform rhythm is not a prescribed rhythm. Mechanical long-short-long alternation is its own fingerprint. Every rhythm rule below sets a **spread** and bans **clustering**, and none prescribes an order.
 

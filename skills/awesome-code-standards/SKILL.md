@@ -103,7 +103,7 @@ Other languages — same rule, different mechanism:
 ## Error Handling
 
 ```typescript
-// GOOD: Validate, throw or return with context
+// GOOD: add context, keep the cause; log once at the boundary
 async function fetchData(url: string) {
   try {
     const response = await fetch(url);
@@ -112,8 +112,7 @@ async function fetchData(url: string) {
     }
     return await response.json();
   } catch (error) {
-    console.error('Fetch failed:', error);
-    throw new Error('Failed to fetch data');
+    throw new Error(`Failed to fetch ${url}`, { cause: error });
   }
 }
 

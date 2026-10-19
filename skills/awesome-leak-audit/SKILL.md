@@ -32,7 +32,7 @@ The rewrite rule. Client code and tests may state the *contract* ("HTTP 422 → 
 
 ## Workflow
 
-Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first, and pass every agent the public/private boundary from phase 1 or an unavoidable disclosure gets mis-flagged. Keep phase 4 remediation single-writer and serial — parallel editors of the same files collide. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+Scale effort to the request: a quick "does this leak anything" is phases 1–2; "scrub before open-sourcing" or "full audit" is all six. For a large codebase, fan out phase 2 across parallel read-only agents (one per taxonomy cluster) and merge their `file:line` findings — but do the scoping in phase 1 yourself first, and pass every agent the public/private boundary from phase 1 or an unavoidable disclosure gets mis-flagged. Keep phase 4 remediation single-writer and serial — parallel editors of the same files collide. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ### Phase 1 — Scope the public/private boundary
 
@@ -59,7 +59,7 @@ When the repo ships agent configuration of its own — a hook manifest, an MCP s
 
 Frame leaks as taint chains — source→sink data flow — not just "a secret is present": credential→network sink (exfiltration), file-read→network sink, external-input→code-exec. Distinguish direct flow from variable-mediated flow (the secret passes through one or more intermediates before the sink).
 
-Two novel lenses worth a dedicated pass:
+Lenses worth a dedicated pass:
 - Permission diff — for a client that declares capabilities (extension manifest, MCP tool list, app entitlements): flag both *under-declared* (code uses a capability it never declares) and *over-declared* (declares a capability it never uses); a wildcard scope is its own finding.
 - Description–behavior mismatch — does the client actually do what its docs, comments, and store listing claim? A gap either misleads users or hides undisclosed behavior.
 - Unicode deception — homoglyph identifiers, right-to-left overrides, and mixed-script names hide backdoors and exfil targets from a skim.

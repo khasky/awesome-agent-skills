@@ -26,7 +26,7 @@ The `Post` entry button on `/scroll` opens the composer only through `el.click()
 
 The composer's body editor refuses `handle.click()` (actionability never settles). Focus it in-page and place the caret with a Range collapsed to the end, then `insertText`.
 
-The link recipe works and is worth following exactly. Insert the body *without* its closing URL, press `Control+End`, wait for the caret to settle, then `keyboard.type(URL)` with a real delay and follow it with a space. Peerlist's linkifier fires on typed input and the space commits it: the published caption then carries `<a href="…">`, confirmed on the API. Inserting the URL as part of the body text produces dead characters, which is how this platform shipped a bare link last campaign.
+The link recipe works and is worth following exactly. Insert the body *without* its closing URL, press `Control+End`, wait for the caret to settle, then `keyboard.type(URL)` with a real delay and follow it with a space. Peerlist's linkifier fires on typed input and the space commits it: the published caption then carries `<a href="…">`, confirmed in the page's own network log (`browser_network_requests`). Inserting the URL as part of the body text produces dead characters.
 
 The composer prints its own constraints while you work — the character cap (`480`), `Sharing only a link is no fun.` and `We don't support hashtags (yet)`. A post file whose body ends in a hashtag line therefore needs that line dropped here, and the composer says so rather than silently stripping it.
 

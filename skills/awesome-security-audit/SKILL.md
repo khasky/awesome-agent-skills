@@ -45,7 +45,7 @@ The 10 category checklists are independent read-only lenses. On a large tree, fa
 
 Every active step stays in the parent. A sub-agent must never run a scanner, `npm audit`/`pip audit`, or reach a package registry — those are gated (step 2) and approved once, by the parent, not N times by N agents.
 
-Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents or 1.5 GB if one runs a language server, tests or a browser; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## What not to flag (false-positive control)
 
@@ -79,7 +79,7 @@ Scanners are an active step (step 2 gate) — they execute rules over the tree a
 - When a confirmed class has no rule, write one. A rule ships with two fixtures: the vulnerable snippet it must match and the fixed snippet it must not. A rule with no failing fixture has never been proven to fire; a rule with no passing fixture will flag the fix.
 - Port a rule before re-deriving it — the same class in a second language is usually the same rule with different syntax, and the fixture pair carries over.
 - SARIF is the interchange format when the output has to reach CI, a code-scanning tab, or another tool. Emit it there; keep the human report separate — a SARIF dump is not an audit report.
-- Every suppression carries a reason and an expiry (`# nosec B608 — table name is an enum, not input; revisit 2026-Q4`). A bare `.semgrepignore` line, `# noqa`, or baseline file that nobody can date is how a real finding gets inherited as "already triaged".
+- Every suppression carries a reason and an expiry (`# nosec B608 — table name is an enum, not input; revisit <YYYY-QN>`). A bare `.semgrepignore` line, `# noqa`, or baseline file that nobody can date is how a real finding gets inherited as "already triaged".
 - Know the blind spots. Parsers under-report on templated code (Jinja2, ERB, JSX) and on anything reached through metaprogramming, ORMs, or decorators. A clean scan over those paths is `NOT ASSESSED`, not "clean" — read them by hand.
 
 ## Trust boundaries first

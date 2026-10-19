@@ -11,7 +11,7 @@ Two axes decide whether a hit is a finding.
 - **Tier** is density. Tier 1 is flagged on sight; Tier 2 only when two or more share a paragraph; Tier 3 only at high density (about 3% of running words). The sections below the tiers are out regardless of density.
 - **Scope** is in each section heading: `prose` (documents, posts, articles, release notes), `comment` (comment text of any language), `commit` (the prose of a commit message). An entry binds in its scope only — a word banned in a comment can be ordinary in an article, and the reverse.
 
-Every entry is one backticked span at the head of its bullet, with the plain word it displaces after the dash. An entry is written in its base form and covers its family (`-s`, `-es`, `-ed`, `-ing`) unless a variant carries a distinct honest sense. A phrase or a hyphenated compound turns up written both ways, so read a space and a hyphen as the same thing when you search for one. carries a distinct honest sense.
+Every entry is one backticked span at the head of its bullet, with the plain word it displaces after the dash. An entry is written in its base form and covers its family (`-s`, `-es`, `-ed`, `-ing`) unless a variant carries a distinct honest sense. A phrase or a hyphenated compound turns up written both ways, so read a space and a hyphen as the same thing when you search for one.
 
 ## Tier 1 (prose)
 

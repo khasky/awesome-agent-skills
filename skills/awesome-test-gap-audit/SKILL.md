@@ -35,7 +35,7 @@ On a scope too large to read in one pass (more than one package, or more than ro
 - Depth: analyse surfaces in risk order — data, auth, money and outage paths first — until the budget ends. Analysis is Phase 2 in full.
 - Everything surveyed but not analysed goes into the report by name, with its provisional risk and why it was not reached. The header states both counts: surfaces surveyed, surfaces analysed. A breadth pass is never presented as a complete audit, and a surface missing from both lists was not looked at.
 
-Parallelizing: surfaces are independent, so disjoint partitions can go to read-only sub-agents, one surface group each, where the runtime offers them. Disjoint is what makes the not-analysed list accountable. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for these read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; where the runtime caps sub-agent concurrency itself, defer to it. The parent ranks and dedupes; no sub-agent runs a suite.
+Parallelizing: surfaces are independent, so disjoint partitions can go to read-only sub-agents, one surface group each, where the runtime offers them. Disjoint is what makes the not-analysed list accountable. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it. The parent ranks and dedupes; no sub-agent runs a suite.
 
 Done when: every in-scope surface is either analysed or named on the not-analysed list.
 
@@ -67,7 +67,7 @@ A negative claim backed by one default search is not evidence. Zero hits after e
 | Stale | A test pins behavior that no longer exists, or no longer runs | The removed behavior or the dead mechanism named; the skip, exclusion or focus marker quoted |
 | Mis-scoped | The behavior is tested at a level that cannot catch its defect, or at a cost out of proportion to it | The level used, the level that catches it, and what the wrong level misses or costs |
 
-Weak is the kind most audits under-report, because a weak test looks like coverage in every count. The assertion shapes that cannot fail are the ones `awesome-test-writing` names in its Anti-patterns table — presence-only, existence-only, mirror assertions, testing the mock, the incomplete negative test — and three more this audit checks for by reading:
+Weak is the kind most audits under-report, because a weak test looks like coverage in every count. The assertion shapes that cannot fail are the ones `awesome-test-writing` names in its Anti-patterns table — shape-only and first-match-only assertions, mirror assertions, testing the mock, the one-sided negative test — and three more this audit checks for by reading:
 
 - A mock that makes the test tautological: the unit under test, or the decision it makes, is itself stubbed, so the test asserts the stub's canned answer.
 - Snapshot-only coverage: the only check on a behavior is a stored snapshot, and nothing states which part of it matters. A snapshot regenerated in the same commit as the code change it should have caught is the strongest form of this finding.

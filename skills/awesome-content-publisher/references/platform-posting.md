@@ -7,7 +7,7 @@ Read `browser-interaction.md` first. These notes say *where* things are; that fi
 Shared rules for every platform:
 
 - Login signal — load the platform's home/feed URL; a login form or "Sign in" wall = logged out; the user's avatar/composer = logged in. Ambiguous → classify `unknown` and say what was seen.
-- Fill — type through the type tool with delay, one field at a time; attach media via the real file input; pause 2–8 s between distinct actions.
+- Fill — per `browser-interaction.md` (*Input the way a person gives it*, *Run speed*): one field at a time, media through the composer's own file input.
 - Read-back — after submitting, navigate to where the post should be visible and confirm it; capture the permalink. A confirmation toast is not read-back.
 - Never — change audience/visibility defaults the user didn't specify, dismiss platform warnings, or touch any dialog that mentions unusual activity (that one goes to the user). Profile fields are off-limits with one exception: the bio-link update the Phase 3 bio-link check explicitly confirmed, one field, one URL.
 
@@ -15,4 +15,4 @@ Each platform's own notes are a file of their own, `posting-<slug>.md` in this f
 
 `facebook-wall`, `facebook-page`, `linkedin`, `reddit`, `lemmy`, `quora`, `tumblr`, `mastodon`, `bluesky`, `x`, `truthsocial`, `wonderful-dev`, `hackernoon`, `hashnode`, `devto`, `hackernews`, `patreon`, `ko-fi`, `bastyon`, `buymeacoffee`, `instagram`, `pixelfed`, `pinterest`, `vk-wall`, `threads`, `telegram`, `peerlist`, `daily-dev`, `minds`, `medium`, `telegraph`, `teletype`, `substack`, `blogger`, `flipboard`, `livejournal`, `dreamwidth`, `mewe`, `youtube`, `tiktok`, `imgur`, `flickr`, `mataroa`, `deviantart`, `github-gists`.
 
-A slug the post set names with no file here is a slug this skill has no observed flow for. Say so in the report and drive it from the shared rules above plus an accessibility snapshot, never from another platform's notes.
+A slug the post set names with no file here is a slug this skill cannot post: Phase 2 reports it as a defect, and it is never driven from another platform's notes.

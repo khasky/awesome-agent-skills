@@ -59,9 +59,7 @@ Two traps worth naming:
 - Git Bash on Windows is Windows. A POSIX-looking shell there still faces junctions, `USERPROFILE`, and backslash paths. Detect the OS, not the shell.
 - A wildcard path can be refused. Some agent harnesses block a delete whose path ends in `\*` or `/*` as a protected-path pattern. Iterate over entries and delete each by its full path — which is what this skill does anyway, because entries need per-entry classification.
 
-Prove the link handling before the destructive run (optional, ten seconds, and the one check that stands between a mistake and a deleted repository):
-
-Make a throwaway directory holding a file, point a symbolic link at it, delete the link, and read the file back: it has to still be there. On Windows the same proof uses a junction and the directory-delete call that removes the junction itself rather than its contents. Ten seconds, and it is the one check standing between a mistake and a deleted repository.
+Before the destructive run, prove the link handling: make a throwaway directory holding a file, point a symbolic link at it, delete the link, and read the file back — it has to still be there. On Windows the same proof uses a junction and the directory-delete call that removes the junction itself rather than its contents. It is the one check standing between a mistake and a deleted repository.
 
 ---
 

@@ -88,7 +88,7 @@ The measurements underneath a score are fine and expected: a uniqueness ratio, a
 Naming these prevents a report from citing something that was removed:
 
 - **First Input Delay.** Replaced by INP; gone from field tooling.
-- **"Core Web Vitals 2.0"**, a visual-stability index, a lowered LCP threshold, or any additional official vital. None exists. The set is LCP, INP, CLS at the 75th percentile, and the thresholds have not moved.
+- **"Core Web Vitals 2.0"**, a visual-stability index, a lowered LCP threshold, or any additional official vital. Check the current set against primary documentation; anything absent there is not a finding.
 - **A crawl-rate setting in Search Console.** Removed. Server responsiveness, sitemaps and robots rules are the levers.
 - **`<priority>` and `<changefreq>` in sitemaps.** Ignored. Safe to delete, never a finding.
 - **`crawl-delay` as a Google directive.** Unsupported there, though other operators honor it, so its presence is not an error.

@@ -1,6 +1,6 @@
 # Fuzzing, sanitizers, and harness writing
 
-The property/fuzz bullet in the main skill points here. Fuzzing is the tool for code that parses untrusted bytes — file formats, protocol frames, user markup, deserializers — where example-based tests systematically miss the inputs an attacker tries. This file is the depth: which harness to write, which sanitizer catches which bug, and how the corpus becomes regression seeds. It is the suite-level extension of the main skill's step 6 (prove every test can fail).
+The property/fuzz bullet in the main skill points here. Fuzzing is the tool for code that parses untrusted bytes — file formats, protocol frames, user markup, deserializers — where example-based tests systematically miss the inputs an attacker tries. This file is the depth: which harness to write, which sanitizer catches which bug, and how the corpus becomes regression seeds. It is the suite-level extension of the main skill's step 7 (prove every test can fail).
 
 ## When fuzzing pays
 

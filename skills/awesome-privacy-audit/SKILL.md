@@ -39,7 +39,7 @@ Reference files (load the one you need):
 
 Zero hits is not absence. Search honours ignore files, generated clients hide calls, and an SDK configured by a remote tag manager shows nothing in source. Search with ignores off before concluding a class never reaches a store, and put what source cannot show under NOT ASSESSED.
 
-Parallelizing (large scope). Tracks 3 to 7 are independent read-only lenses over one shared data map. Build the inventory and the map first, yourself — they are the frozen brief every lens needs, and two agents with two maps reach two verdicts. Then fan out one read-only sub-agent per track; merge at one barrier that owns severity, deduplication and the verdict. Resource preflight (before fan-out): cap concurrency at `min((cores−1)×0.75, free_gb×0.7/per_agent, 6)`, `per_agent` ≈ 0.7 GB for read-only agents; go serial if CPU load > 85% or free RAM < 2×per_agent; recompute before each wave; where the runtime caps sub-agent concurrency itself, defer to it.
+Parallelizing (large scope). Tracks 3 to 7 are independent read-only lenses over one shared data map. Build the inventory and the map first, yourself — they are the frozen brief every lens needs, and two agents with two maps reach two verdicts. Then fan out one read-only sub-agent per track; merge at one barrier that owns severity, deduplication and the verdict. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Track 1 — Inventory
 
