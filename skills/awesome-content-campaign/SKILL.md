@@ -192,7 +192,7 @@ That skill not installed → say so and stop before writing a single post, rathe
 
 ### What the brief carries, and what Phase 6 audits
 
-The rules from here to the end of this phase are no longer executed by this skill, since `awesome-content-repurpose` writes the text. They have two jobs now: they are what the brief tells that skill about this campaign (the genre the platform sits in, the link discipline, the disclosure, the voice profile, the emoji answer), and they are what Phase 6 reads the returned posts against. A returned post that breaks one goes back to that skill with the finding, never edited in place.
+`awesome-content-repurpose` writes the text, so the rules from here to the end of this phase have two jobs: they are what the brief tells that skill about this campaign (the genre the platform sits in, the link discipline, the disclosure, the voice profile, the emoji answer), and they are what Phase 6 reads the returned posts against. A returned post that breaks one goes back to that skill with the finding, never edited in place.
 
 Load the genre file for every selected platform before the brief is written — `references/platforms.md` names which of the three governs each platform. The genre file carries that genre's human baseline, the tells it produces, and its rules; the human-style rules further down this phase are global. Genre is what makes a post native to where it lands: the same content unit is one idea in a feed post, the same idea with the work shown in a long-form article, and the usable part first with the affiliation disclosed in a community. A campaign spanning several genres writes each post to its own genre file, not to an average of them.
 

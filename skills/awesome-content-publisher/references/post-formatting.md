@@ -17,7 +17,7 @@ Three classes, and the class decides what reaches the editor:
 
 A toolbar-only editor is the one class where the formatting is a second pass, not part of the fill. Patreon renders no markdown and sanitises an HTML paste away, so the body goes in as plain text and every `##` and `**…**` is then converted by hand: `Range` over the block's text node → the floating toolbar mounts above the selection → `button[aria-label="Text size"]` → `Heading 2`, or `button[aria-label="Bold"]` → then delete the marker characters, which the style does not consume. Budget for it: the pass is one round trip per heading, and skipping it publishes the markers as literal text.
 
-The class is a hypothesis until the live page proves it. `wonderful-dev` renders code fences, inline code and headings but not every link, so it belongs to no class cleanly (its note says which parts stay markdown; headings there take the plain-text emoji form) — and a run that assumed "markdown platform" shipped `[eli5](https://…)` as literal text. Before deciding, open one existing post on that platform and look at what its markup actually became.
+The class is a hypothesis until the live page proves it. `wonderful-dev` renders code fences, inline code and headings but not every link, so it belongs to no class cleanly (its note says which parts stay markdown; headings there take the plain-text emoji form) — and assuming "markdown platform" ships `[label](https://…)` as literal text. Before deciding, open one existing post on that platform and look at what its markup actually became.
 
 ## Stripping for plain-text composers
 
@@ -62,12 +62,12 @@ Assume nothing autolinks. The failure is silent and it always eats the one thing
 - In an HTML paste, emit the anchor yourself — convert every bare `https://…` in the source to `<a href="…">…</a>` during the conversion, not afterwards.
 - In a plain-text composer, the platform's own linkifier decides. Where it exists, it fires on *typed* input, not on `insertText`: peerlist linkified the closing URL only when it was typed with real keystrokes and followed by a space, and produced dead text every other way.
 - Where an editor has a link control, use it on a selection: Tumblr (`Control+k`), Substack (toolbar `title="Link"`), Buy Me a Coffee (`button.option-button` index 3). Select the URL with a Range over its text node — `Home`/`Shift+End` grabs only the visual line and a wrapped URL loses its head.
-- Backticks inside a link label break the parser. ``[`eli5`](https://…)`` published as literal text on wonderful.dev while plain `[eli5](https://…)` rendered as an anchor on the same platform. Strip inline code from link labels for every target.
+- Backticks inside a link label break the parser. ``[`label`](https://…)`` publishes as literal text on wonderful.dev while plain `[label](https://…)` renders as an anchor on the same platform. Strip inline code from link labels for every target.
 
 ## Paragraph shape survives or it does not
 
 - `insertText` of a multi-paragraph string collapses it into one block in block editors. Insert paragraph by paragraph with an explicit `Enter` between them.
-- Newlines *inside* one inserted paragraph are dropped. A Tumblr "Examples:" block of five `/eli5 …` lines published as one run-on line. Where a source paragraph contains single newlines, insert them as explicit `Shift+Enter` breaks and count the `br` elements afterwards.
+- Newlines *inside* one inserted paragraph are dropped. A Tumblr block of five `/command …` lines publishes as one run-on line. Where a source paragraph contains single newlines, insert them as explicit `Shift+Enter` breaks and count the `br` elements afterwards.
 - Never press `Escape` between paragraph inserts. It was added to dismiss a slash-command menu and instead scrambled the block order — the last paragraph ended up first. Nothing needs dismissing: `insertText` does not open Tumblr's slash menu.
 - Runs of very short paragraphs publish as a stretched wall in rich editors. A rhythmic `Browser.` / `Resolver.` / `Root.` sequence gets a full paragraph gap under each line on Medium and reads as broken. Fuse a run of three or more consecutive one-line paragraphs of ≤32 characters into one block joined by hard breaks. The threshold matters: at 35 it swallows real prose sentences, at 30 it misses `No assumed background knowledge.`
 
@@ -78,7 +78,7 @@ Run all of it, in the composer, before the submit click. Every item is here beca
 1. Zero literal markdown where the platform renders it: no ` ``` `, no `^#{1,6} `, no `](http`, no stray backticks.
 2. Every URL in the source is an `a[href]` in the composer — or the platform is one whose linkifier is proven to fire server-side, and you say so in the ledger.
 3. Paragraph count and order match the source, and the first and last block are the source's first and last.
-4. Character-for-character diff of every block against the source. Rich editors *move characters*: Patreon produced `very little tex` and `/eli5 Fourier trans` with the missing `t` and `forms` appended to the closing URL as `eli5formst`; Ko-fi's Froala did the same to four blocks at once. Compare per block, not by total length — the totals matched in both cases.
+4. Character-for-character diff of every block against the source. Rich editors *move characters*: Patreon drops the last letters of a paragraph (`…the last wor`) and appends them to the closing URL (`…/slugd`); Ko-fi's Froala does the same to several blocks at once. Compare per block, not by total length — the totals match.
 5. Attachment count equals what the post file declares.
 6. No `�` anywhere.
 7. Every backticked span in the source is a code element (or, on Patreon, a Quote block; on Tumblr, a Chat block) in the composer, and none of those spans contains an `a[href]`. Stripping the backticks for a plain-text class is right for `x`, `mastodon` or `bluesky`, where nothing renders; it is wrong for a rich editor, where the bare command gets autolinked from the `https://` inside it — Patreon and Tumblr both shipped `pip install -e 'git+https://…[fetch]'` with a dead anchor and the closing quote inside it. Count code spans against the source the way attachments are counted.
@@ -96,7 +96,7 @@ Only when no sibling in the folder carries a title does the first sentence of th
 
 ## Where the platform decides the shape, say so instead of fighting it
 
-Three platforms in one run turned a piece of the source into something of their own, and each is correct behaviour to record rather than a defect to repair:
+Some platforms turn a piece of the source into something of their own, and each case below is correct behaviour to record rather than a defect to repair:
 
 - Tumblr turns a bare URL on its own line into a link card — the repo's title, description and a real anchor — and swallows the paragraph typed immediately after it. Keep the card; re-insert the lost paragraph.
 - Bluesky replaces its auto-generated link preview with the image when one is attached. The URL survives as a facet, so it is still a real link; only the card is gone.

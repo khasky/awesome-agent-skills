@@ -10,7 +10,7 @@ Read-back: `<name>.blogspot.com`, newest post at `/<yyyy>/<mm>/<slug>.html`; con
 
 Three defects from one run, all in the finished post and none visible while composing:
 
-**A leading space before the first word.** The published article opened on ` Run DeepSeek…` — one space the source does not have. HTML view preserves whatever whitespace the pasted markup carries, so a document whose first element is `\n<p>…` or that is set through a helper adding a newline publishes with the indent. Trim the HTML to start exactly at `<` before switching views, and read the first 20 characters of the published body back against the source's first 20.
+**A leading space before the first word.** The published article can open on ` <first word>…` — one space the source does not have. HTML view preserves whatever whitespace the pasted markup carries, so a document whose first element is `\n<p>…` or that is set through a helper adding a newline publishes with the indent. Trim the HTML to start exactly at `<` before switching views, and read the first 20 characters of the published body back against the source's first 20.
 
 **Labels are the hashtags, and the run must actually fill them.** They live in the Post settings sidebar on the right of the editor, as a comma-separated `Labels` field with suggestions from the blog's existing labels. This is the only place tags exist on Blogger — a `#tag` line in the body indexes nothing. Open the `Labels` row, type the frontmatter `hashtags` as one comma-separated string, close the row and confirm the chips render before publishing. A run that reported "the sidebar Labels field did not expose an input my probe could reach" had not opened the row: the input mounts when the row is expanded, not before.
 

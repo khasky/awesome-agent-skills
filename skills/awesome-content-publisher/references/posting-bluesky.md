@@ -12,7 +12,7 @@ The composer already holds one attachment before you add anything: Bluesky auto-
 
 `Add media to post` opens the native chooser, which the MCP server parks. The first click at a rect read a moment earlier did nothing; re-read the rect and hit-test immediately before clicking, then answer the parked chooser with `browser_file_upload` from an allowed root.
 
-The composer dialog mounts before it is usable. For a second or two it carries `opacity: 0` and its rect keeps moving as the panel settles, so a click computed from the first read lands on nothing and reports success — two attempts went that way in one run. Read the rect twice, require two consecutive reads to agree and the computed opacity to be 1, and only then click inside it.
+The composer dialog mounts before it is usable. For a second or two it carries `opacity: 0` and its rect keeps moving as the panel settles, so a click computed from the first read lands on nothing and reports success. Read the rect twice, require two consecutive reads to agree and the computed opacity to be 1, and only then click inside it.
 
 An attachment probe that counts `blob:` or CDN `img` sources reports zero on a composer that is holding the picture, because Bluesky paints the thumbnail as a CSS background. The proof that the image attached is the `Remove image` control by its `aria-label`, with a screenshot as the fallback.
 
