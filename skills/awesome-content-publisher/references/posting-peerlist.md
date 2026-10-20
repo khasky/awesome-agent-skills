@@ -8,7 +8,7 @@ The cap is 480 characters and the Post button enforces it — measured by probe:
 
 There is no edit, and the listing lies — so this platform gets exactly one submit. The post's `⋮` menu offers only `Copy Link` and `Delete`, and a post starts collecting upvotes within minutes, so a delete is not a free undo. A defect published here is effectively permanent, which makes the pre-submit format gate load-bearing above all other platforms.
 
-Never judge what exists from `peerlist.io/<handle>/posts`. That listing is virtualised and inconsistent: consecutive loads returned one post, then four, then two, sometimes without the newest. A run that read two agreeing loads as "the republish did not land" submitted twice more on that basis.
+Never judge what exists from `peerlist.io/<handle>/posts`. That listing is virtualised and inconsistent: consecutive loads return different subsets, sometimes without the newest, and two agreeing loads prove nothing about whether a republish landed.
 
 Cross-check on the surfaces peerlist renders, and never by calling its API. The page fetches `/api/v2/scroll/user` for itself; `browser_network_requests` will show that call and its status after a submit, which is a passive reading and useful. Requesting it yourself is not allowed here — see the Core principle. The visual cross-checks are the permalink (`/scroll/post/<id>`, ~10 s to render), the composer's `Drafts` panel, and the feed at `/feed`; treat a post as present only when two loads agree, and where they never do, leave the entry `unverified` and tell the user rather than submitting again.
 

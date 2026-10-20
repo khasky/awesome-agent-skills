@@ -86,7 +86,7 @@ Done when: the scope is stated, every checklist area below has been walked, each
 
 ### 6. Motion, media and time
 
-- [ ] If the project supports it: respect `prefers-reduced-motion` (disable or reduce animation). Optional but recommended for vestibular sensitivity.
+- [ ] Animation respects `prefers-reduced-motion` (reduced or disabled); flag motion that ignores it (2.3.3 Animation from Interactions, AAA — report as Medium).
 - [ ] Nothing flashes more than three times in any one second (2.3.1 Three Flashes or Below Threshold, A); check animated GIFs, video, and canvas effects.
 - [ ] Anything that moves, blinks, or scrolls automatically for more than 5 seconds alongside other content (carousels, tickers, autoplay background video) has a pause, stop, or hide control; auto-updating content has one too (2.2.2, A).
 - [ ] Audio that plays automatically for more than 3 seconds can be paused or stopped, or its volume controlled independently of system volume (1.4.2, A).
@@ -179,7 +179,7 @@ Each checklist item encodes a default that prevents the most common failure mode
 - [ ] Each finding has location, issue, WCAG reference, recommendation, severity
 - [ ] At least semantic structure, keyboard, and labels/names covered
 - [ ] Follow-up (automated + manual testing) suggested
-- [ ] No "fully WCAG 2.1 AAA compliant" without full audit
+- [ ] No "fully WCAG 2.2 compliant" claim without a full audit
 
 ## Anti-patterns
 

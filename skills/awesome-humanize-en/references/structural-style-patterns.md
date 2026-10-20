@@ -137,11 +137,9 @@ Addendum. English Wikipedia's "Signs of AI writing" flags a neighboring pattern 
 
 ---
 
-## English-edition repurpose
+## Section headings
 
 ### 21a. 🔴 Boilerplate section headings
-
-> Note on this slot. Title Case in an English heading is normal and is not a tell — it sits in `false-positives.md` among the ineffective indicators. The slot covers boilerplate section headings instead.
 
 Problem. The model reaches for the same generic, templated section headings no matter the subject — "Introduction", "Conclusion", "Key Takeaways", "Final Thoughts", "In Summary", "Overview", "Understanding X", "The Importance of X" — and pours every article into one identical skeleton: Introduction → Key Features (bullets) → Benefits (bullets) → Conclusion. A piece on espresso machines and a piece on tax law come out with the same scaffolding.
 

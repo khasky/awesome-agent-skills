@@ -7,7 +7,7 @@ This file is a reference to the characteristic tells of individual models. Signa
 
 The stylistic tells come from two source tiers, kept apart in every vendor section: community-observed tells (Wikipedia, forums, evaluation reviews — the tables with C/O/Cond confidence codes) and vendor-documented prose defaults — what a model's own vendor says its current release does at the sentence level, taken from the vendor's prompting documentation and tagged with the exact release the page names. A vendor row is *operative* for a role whose release matches the tag and a *prior* for any other release of that family; a vendor that publishes no such guidance is recorded as consulted, not guessed. Ledger: `sources.md`, "Vendor guidance".
 
-Tells evolve every 6–8 weeks as new model versions ship.
+Tells change with each model release.
 
 > When to load: when the author or executor model is known (the Model identity rule in `SKILL.md`); when working with fresh 2025–2026 text; when preparing regexes for batch processing. Never to work out which model wrote a text: model identity comes from the user or from metadata (a commit trailer, a tool signature, a stated source), and the executor's identity from your own system context. Attribution by reading is not a classifier — the best measured six-way attribution from hundreds of narrative features reaches 68.4% macro-F1 (`sources.md`, `STORYSCOPE-2026`), and reading is not that classifier. An unknown role loads nothing from this file and is reported as `none`.
 
@@ -61,18 +61,7 @@ Stylistic tells:
 
 Typical English openers and closers (soft primary signals): "Certainly!", "Of course!", "Great question!" as answer openers; "It's worth noting that…" as a connective; "Would you like me to…" as a closing question; "Hope this helps!" as a sign-off.
 
-Empirical check on English output (May 31, 2026). GPT-5.5 (xHigh) was run on neutral English prompts with no "write like an AI" instruction, to see the default style. What actually surfaced in every sample:
-
-| What was observed | Pattern | Frequency |
-|---|---|---|
-| Rule of three: "circulation, energy, and focus", "pulse, sleep, activity, and workouts" | #13 | in each of 3 samples |
-| Negative parallelism "not only at university but also in professional life" | #12 | confirmed |
-| Transition crutch "Moreover," | #15c | confirmed |
-| Inflated significance "the perfect start to your day", "a reliable companion" | #2 | confirmed |
-| Markdown `###` heading in a reply where blog prose was requested | #20/#21 | in the blog post |
-| Closing call with an exclamation "Start small, and you'll feel the difference!" | #25 | in marketing and blog text |
-
-Unlike the Russian edition (where the English lexis never surfaces in Russian output), in English the lexical tells "delve" and "It's important to note" (#10) appear right alongside the structural ones — so both layers are in play at once. Conclusion: for fresh English text the priority signals are the rule of three (#13), negative parallelism (#12), transition crutches (#15c), and inflated significance (#2), reinforced by the "It's important to note"/"delve" lexis (#10).
+For fresh English GPT output the priority signals are the rule of three (#13), negative parallelism (#12), transition crutches (#15c) and inflated significance (#2), with the "It's important to note" / "delve" lexis (#10) appearing alongside the structural tells rather than instead of them.
 
 Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read second-hand, 2026-09-02):
 
@@ -87,10 +76,10 @@ Vendor-documented prose defaults (GPT-5.6, `OPENAI-GPT-5-6-PROMPTING`, read seco
 ## Anthropic Claude
 
 Current, summer 2025 – summer 2026:
-- Claude Fable 5 (`claude-fable-5`, June 9, 2026; access suspended June 12 on a US government requirement — export control, restored globally July 1, 2026) — the sitting flagship, a Mythos-class model with safety restrictions. Detail that matters for the skill: queries on restricted topics (cybersecurity) are handled silently, invisibly to the user, by Claude Opus 4.8 — so two model styles can mix within a single conversation.
+- Claude Fable 5 (`claude-fable-5`, June 9, 2026; access suspended June 12 on a US government requirement — export control, restored globally July 1, 2026) — superseded by Claude Fable 5.1 in the same tier (the vendor table below carries the current releases); a Mythos-class model with safety restrictions. Detail that matters for the skill: queries on restricted topics (cybersecurity) are handled silently, invisibly to the user, by Claude Opus 4.8 — so two model styles can mix within a single conversation.
 - Claude Mythos 5 (June 9, 2026) — the same base intelligence as Fable 5 but with the restrictions removed; access only for approved US organizations (Project Glasswing), not encountered in ordinary text.
 - Claude Sonnet 5 (`claude-sonnet-5`, June 30, 2026) — a new-generation workhorse: 1-million context, output up to 128K, adaptive thinking on by default, a new tokenizer. Stylistic tells are still accumulating; apply the Sonnet 4.6 tells meanwhile.
-- Claude Opus 4.8 (`claude-opus-4-8`, May 28, 2026) — the previous flagship, and still the fallback model for Fable 5's blocked queries. Stated emphasis on "honesty": the model more often flags uncertainty outright. Practical consequence (applies to the 5 line as well): uncertainty disclaimers by themselves are no longer an anti-tell — cross-check #23/#23a by meaning, not by the mere presence of a disclaimer.
+- Claude Opus 4.8 (`claude-opus-4-8`, May 28, 2026) — a previous flagship, and the fallback model for Fable 5's blocked queries. Stated emphasis on "honesty": the model more often flags uncertainty outright. Practical consequence (applies to the 5 line as well): uncertainty disclaimers by themselves are no longer an anti-tell — cross-check #23/#23a by meaning, not by the mere presence of a disclaimer.
 - Claude Opus 4.7 (April 16, 2026), Claude Haiku 4.5 (`claude-haiku-4-5-20251001`, October 15, 2025) — previous generations.
 - Claude Sonnet 4.6 (`claude-sonnet-4-6`, February 17, 2026) — price/quality balance, 1-million context.
 - Knowledge cutoff: January 2026 for Opus and Sonnet, July 2025 for Haiku.
@@ -128,7 +117,7 @@ Vendor-documented prose defaults (Anthropic prompting pages, read second-hand, w
 
 Current, summer 2025 – spring 2026:
 - Gemini 3.5 Flash (the standard model since May 19, 2026, after Google I/O 2026) — lightweight, action-oriented.
-- Gemini 3.5 Pro (launch scheduled for June 2026; not yet released at the time this file was compiled).
+- Gemini 3.5 Pro — confirm on the vendor's release page before applying any tell to it.
 - Gemini Omni Flash — on-demand video generation, for paid tiers.
 - Gemini Spark — a background agent, in beta for the AI Ultra tier.
 - Antigravity 2.0 — an agentic coding platform.
@@ -280,7 +269,7 @@ Stylistic tells:
 | Traces of adjustable reasoning depth ("extended thinking"): an expanded train of thought before a short conclusion | M | Cond | New 2026 tell, depends on the setting. |
 | Structural traces of agentic automation (Nova Act): step-by-step descriptions of browser actions | M | Cond | Only in agent mode. |
 
-Note. Nova is still thinly represented in consumer text; data on stable tells is scarce — this section is subject to refinement at the next scheduled review.
+Note. Nova is still thinly represented in consumer text; data on stable tells is scarce.
 
 ---
 
@@ -325,7 +314,7 @@ From August 2, 2026, Article 50 of the EU AI Act applies: providers of generativ
 
 What this means for the skill:
 
-- Expect a rise in invisible text marking. The technical candidates are character-level tricks (see `chatbot-artifacts.md` A.10) and word-choice statistical watermarks (Google SynthID). The A.10 check becomes a mandatory step for text obtained after August 2026.
+- Expect a rise in invisible text marking. The technical candidates are character-level tricks (see `chatbot-artifacts.md` A.10) and word-choice statistical watermarks (Google SynthID). Run the A.10 check on every text; absence of marking proves nothing.
 - Absence of marking proves nothing. SynthID and similar schemes are removed by paraphrase; character-level ones by swapping the characters out. The reverse is also true: a legal watermark is not a sign of "bad" text, only a sign of origin.
 - Don't mix the layers. A watermark answers "was this text generated"; the skill answers "does the text still carry traces of generation". These are different tasks; do not merge the verdicts.
 
@@ -345,15 +334,14 @@ Scientific base (English and universal). The model-idiolect and syntactic findin
 
 ## Freshness and update procedure
 
-Stylistic tells evolve every 6–8 weeks with each sub-release. The unambiguous markers in `chatbot-artifacts.md` live longer — until a vendor changes its tool-output format.
+Stylistic tells change with each sub-release. The unambiguous markers in `chatbot-artifacts.md` live longer — until a vendor changes its tool-output format.
 
 This file needs updating:
 
-- When any major vendor changes its flagship (roughly every 6–8 weeks in 2025–2026).
+- When any major vendor changes its flagship.
 - When a new generation ships (X.0 → X+1.0) — a full review of the stylistic tells.
 - When a new vendor appears with more than 5% market share.
 
-Minimum: reassess every 90 days.
 
 Read dates live per source in `sources.md`; re-read a vendor's page when it ships a new release.
 
@@ -365,4 +353,4 @@ Sources for review:
 - Model release notes from Anthropic, OpenAI, Google, xAI — official changes.
 - Each vendor's prompting guide for the current release (the vendor-documented tier above): re-read the page, compare the quoted defaults against it, and update the release tag and the read date in `sources.md`. A vendor page that says nothing about how the model writes is recorded there as "consulted, no prose-layer statement" so the search is not repeated.
 
-How a new tell earns its row. A community observation is a lead, not a row. Before adding a tell, sample it: generate 20 or more outputs from the release on neutral prompts of the venue in question (the way the GPT-5.5 check above was run), record which candidate defaults recur across most samples and which appear once, and add only the recurring ones — with the sample size and date in the Note column. A tell seen in one thread and never reproduced stays out. The method is the one mshumer/unslop applies to find a model's defaults for a domain; it is what separates a fingerprint from an anecdote.
+How a new tell earns its row. A community observation is a lead, not a row. Before adding a tell, sample it: generate 20 or more outputs from the release on neutral prompts of the venue in question, record which candidate defaults recur across most samples and which appear once, and add only the recurring ones — with the sample size and date in the Note column. A tell seen in one thread and never reproduced stays out. The method is the one mshumer/unslop applies to find a model's defaults for a domain; it is what separates a fingerprint from an anecdote.

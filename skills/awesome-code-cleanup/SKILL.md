@@ -94,10 +94,8 @@ Read every in-scope file fully — grep sweeps find keywords, not bad comments. 
 - Simplify nested conditionals with guard clauses when that matches local style.
 - Do not add dependencies, abstractions, broad try/catch, logging, caching, retries, or defensive branches the existing behavior doesn't require.
 - No tests over the target? Write characterization tests first — lightweight tests capturing current input/output behavior — before any structural edit, and state that confidence is limited by their coverage.
-- Ranking candidates: score a suspicious module 1–5 on interface complexity, behavior per call, testability, locality, and stability; average ≤2 = strong candidate. Deletion test for shallow modules: if deleting it and inlining its logic would not make callers more complex, it is shallow.
+- Deletion test for shallow modules: if deleting it and inlining its logic would not make callers more complex, it is shallow.
 - Anti-over-simplification — simplify ≠ shrink: no nested ternaries or dense one-liners to save lines; don't merge unrelated concerns into one function; expanding a cryptic one-liner into named intermediate steps is a valid simplification. Hot paths: ugly code may be intentionally optimized — check before "cleaning" hand-tuned loops.
-- One concern per pass: first make it work, then make it clear, then make it efficient — don't chase all three at once. Complete and verify each pass before the next.
-- Design it twice for a non-trivial interface reshape: before committing to one interface for the module, sketch 2–3 genuinely different ones (minimal entry points / maximal flexibility / optimize the common caller / ports-and-adapters) and compare them on depth, locality, and where the seam falls. Pick or hybridize — don't refactor into the first shape that comes to mind.
 - Name the shape in the shared vocabulary: module, interface, depth, seam, adapter, leverage, locality, defined once in `awesome-architecture-audit/references/design-vocabulary.md` (read it when that skill is installed). Using those words rather than "component", "service" or "boundary" is what lets a cleanup report and an architecture audit describe the same module without a translation step.
 
 What NOT to flag (each refactor smell has a legitimate form):

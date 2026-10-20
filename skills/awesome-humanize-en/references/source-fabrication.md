@@ -6,7 +6,7 @@ When an AI is asked to write connected prose backed by sources, it often halluci
 
 This file is a separate class of checks, applied after the content-pattern analysis is done.
 
-The failure has been productized: some marketing/SEO "GEO optimizer" skills in the wild explicitly instruct the model to *insert* plausible-but-unverified authority citations ("According to a 2024 Gartner report…") and merely flag them as "suggested". That is exactly the fabrication this file exists to reject — an inserted citation that was never checked is a defect no matter how it got there. Never add a source; verify or flag `UNVERIFIED:`.
+An inserted citation that was never checked is a defect no matter how it got there, including one a tool added and marked "suggested". Never add a source; verify or flag `UNVERIFIED:`.
 
 > When to load: always when the text cites scholarly sources, books, journal articles, or news. Especially for academic writing, a Wikipedia article, a legal review, or a grant proposal.
 
@@ -30,9 +30,9 @@ Check. Open the link. A 404 means it is either stale (which happens to genuine l
 
 The DOI is well-formed and resolves, but it opens a completely different article — not the one the text claims to cite.
 
-Example from a Wikipedia "Ohm's law" article:
+Example (invented, in the shape the real ones take):
 
-> M. E. Van Valkenburg, "The validity and limitations of Ohm's law in non-linear circuits", Proceedings of the IEEE, vol. 62, no. 6, pp. 769–770, Jun. 1974. doi:10.1109/PROC.1974.9547
+> R. Halvorsen, "The validity and limitations of Ohm's law in non-linear circuits", Proceedings of the IEEE, vol. 62, no. 6, pp. 769–770, Jun. 1974. doi:10.1109/PROC.1974.0000
 
 The DOI resolves. But it lands on an article about methods for solving transient and dynamic stability problems, which has nothing to do with Ohm's law.
 
@@ -57,11 +57,11 @@ Check. Search WorldCat (worldcat.org), the catalog of a major library (Library o
 
 The AI cites an article with a specific year, but by that date the author was already dead or had not yet begun their scholarly career.
 
-Example from a Wikipedia "Ohm's law" article:
+Example (invented, in the shape the real ones take):
 
-> C. L. Fortescue, "Ohm's Law in alternating current circuits", Proceedings of the IEEE, vol. 55, no. 11, pp. 1934–1936, Nov. 1967.
+> P. Lindqvist, "Ohm's Law in alternating current circuits", Proceedings of the IEEE, vol. 55, no. 11, pp. 1934–1936, Nov. 1967.
 
-Charles LeGeyt Fortescue died in 1936, 31 years before the cited publication date. A fabrication.
+The named author died in 1936, 31 years before the cited publication date. A fabrication.
 
 Check. Compare the author's life dates against the publication date (via Wikipedia, ORCID, Google Scholar author profiles, or biographical databases). If the author died before the publication — or had not yet started publishing — it is a fabrication.
 

@@ -70,7 +70,7 @@ A file under 200 words of prose is measured on the spread and the run only. The 
 
 ## 5. Tell density rather than a ban list
 
-A banned-word list produces prose that dodges the list. Count instead, per 200 words of body: a single machine-favored construction is noise, three in one paragraph is a rewrite of that paragraph. What counts as one:
+The vocabulary itself is `awesome-humanize-en/references/lexicon.md`, applied by its tiers. Constructions are counted, per 200 words of body: a single machine-favored construction is noise, three in one paragraph is a rewrite of that paragraph. What counts as one:
 
 - a nominalization where a verb was available, a transition word that names a relation the sentence order already shows (`additionally`, `moreover`, `furthermore`), a triad where the material has two items or four;
 - the `not X, but Y` frame, the `it is not only ... but also` frame, an announced thought (`the key insight is that`), a summary that restates the paragraph above it;

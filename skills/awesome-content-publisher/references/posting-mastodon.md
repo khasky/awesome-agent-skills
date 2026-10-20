@@ -4,7 +4,7 @@ Check: `https://<instance-from-frontmatter>/home` — the compose column renders
 
 Read-back: `https://<instance>/@<handle>`, newest `/@<handle>/<numeric-id>` link. Mastodon shortens the displayed URL ("code.claude.com/docs/en/cross-…"), so a tail comparison against the page text fails on a post that is perfectly intact — open the permalink and compare the `a[href]` of the link instead, which carries the full URL.
 
-The submit is `.compose-form button.button--compact`. A page-wide sweep for a button whose text is `Post` and taking `.pop()` picks the navigation's own Post entry instead, and clicking that does nothing — which is what made an earlier run report the composer unsubmittable. Scope the query to `.compose-form`.
+The submit is `.compose-form button.button--compact`. A page-wide sweep for a button whose text is `Post` and taking `.pop()` picks the navigation's own Post entry instead, and clicking that does nothing. Scope the query to `.compose-form`.
 
 When the attachment has no description (the frontmatter `title`, set before Post), Post opens a confirmation instead of publishing. The modal reads "Add alt text? Your post contains media without alt text." with `Cancel` / `Post anyway` / `Add alt text`. Until it is answered the composer keeps its text, the Post button keeps looking enabled and untouched, and every further click is swallowed — an element-handle click times out on actionability because the modal owns the pointer. The composer's own state is not the tell here; a screenshot is. The description is always the frontmatter `title` (`SKILL.md`), so the modal means the description did not take: answer `Add alt text`, type the title, and post. `Post anyway` is for the second failed attempt only, and then the post is `degraded`.
 

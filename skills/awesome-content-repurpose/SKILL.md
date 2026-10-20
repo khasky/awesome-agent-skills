@@ -257,7 +257,7 @@ A supplied file is a path or a URL. A URL is downloaded into `media/` and the ru
 attachments: [{ file: horizontal.png, frame: horizontal, alt: "<what it shows and what it means>" }, { file: vertical.png, frame: vertical, alt: "<what it shows and what it means>" }]
 ```
 
-Each form file lists the pictures its own platforms take: both entries where its group mixes wide and square-or-tall frames, one where it does not. The `frame` marks alternatives rather than a carousel, and the publisher gives each platform the one that matches its shape. Paths are relative to the posts folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No media` is an answer about pictures, never about which forms get written.
+Each form file lists the pictures its own platforms take: both entries where its group mixes wide and square-or-tall frames, one where it does not. The `frame` marks alternatives rather than a carousel, and the publisher gives each platform the one that matches its shape. Paths are relative to the campaign folder. Alt text is in the output language and carries no date; the publisher types the post's `title` as alt where a platform offers the field. `No media` is an answer about pictures, never about which forms get written.
 
 **Then close `run-settings.md`**: fill its `Media` line with the answer, the files that came out of it, and which forms carry none.
 

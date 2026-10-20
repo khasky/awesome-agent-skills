@@ -9,7 +9,7 @@ A form file is a `.md` post whose frontmatter carries `platforms`, a list of can
 - `1-short.md`, `2-regular.md`, `3-long.md`, as `awesome-content-repurpose` names them, unscheduled;
 - `YYYY-mm-dd_HH-mm_<pub-timezone>_<title>_<form>.md`, as `awesome-content-campaign` names them, where `<form>` is `short`, `regular` or `long` and the frontmatter carries `scheduled`, `timezone`, `status` and, where a platform needs one, `targets`.
 
-A file named for a single platform with a `platform` key is the older one-file-per-platform layout, and it is published exactly as before. A folder may not mix the two for the same piece of content; a mix is a defect the scan reports.
+A file named for a single platform with a `platform` key publishes to that platform alone. A folder may not mix the two for the same piece of content; a mix is a defect the scan reports.
 
 The frontmatter keys a form file carries: `platforms`, `title`, `voice`, `creativity`, `model`, `links`, `hashtags`, optionally `attachments`, and on a scheduled file the publishing keys. `targets` is a map from slug to target (`facebook-wall: https://...`, `mastodon: mastodon.social`), consulted wherever the canonical table's Target column names one.
 
@@ -32,7 +32,7 @@ The body the file carries is published whole, always. What the publisher adds ar
 1. the first entry of `links`, on its own line after a blank line, if the file lists one and it fits;
 2. then hashtags, taken from the front of the `hashtags` pool, up to the platform's norm in the hashtag table of `awesome-content-campaign/references/platforms.md`, as many whole tags as still fit, on one line after a blank line.
 
-On `x` the link is not optional (user's rule, 2026-10-01): the link outranks the hashtags and the text. Where the link does not fit, the text is shortened by meaning until it does and tags are added only into the room left — the one exception to "nothing is ever cut" and to the body being published whole. The shortened text is approved in Phase 3b; `references/posting-x.md` has the details.
+On `x` the link is not optional: the link outranks the hashtags and the text. Where the link does not fit, the text is shortened by meaning until it does and tags are added only into the room left — the one exception to "nothing is ever cut" and to the body being published whole. The shortened text is approved in Phase 3b; `references/posting-x.md` has the details.
 
 The short form never carries a footer, and the publisher never adds one to it.
 

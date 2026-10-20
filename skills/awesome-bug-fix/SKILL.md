@@ -136,17 +136,6 @@ When a fix is really an experiment (perf, flakiness, an unclear interaction), ru
 - "One more fix" after already trying 2+ fixes
 - Each fix reveals a new problem in a different place
 
-## Common rationalizations
-
-| Excuse | Reality |
-|--------|--------|
-| "Issue is simple, don't need process" | Simple issues have root causes; process is fast for simple bugs. |
-| "Emergency, no time" | Systematic debugging is faster than guess-and-check thrashing. |
-| "Just try this first, then investigate" | First fix sets the pattern; do it right from the start. |
-| "I'll write test after confirming fix" | Untested fixes don't stick. Test first proves the fix. |
-| "Multiple fixes at once saves time" | You cannot isolate what worked; causes new bugs. |
-| "I see the problem, let me fix it" | Seeing symptoms ≠ understanding root cause. |
-
 ## Quick reference
 
 | Phase | Key activities | Success criteria |

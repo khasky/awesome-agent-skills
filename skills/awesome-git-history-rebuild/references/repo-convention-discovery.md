@@ -59,7 +59,7 @@ Whatever the family, copy its case, punctuation and length too. A conventional r
 ```text
 Conventional      type(scope): summary in imperative, lowercase, no period
                   <blank>
-                  Body: what was wrong / why this way. Wrap at 72.
+                  Body: what was wrong / why this way. Wrap under 80.
                   <blank>
                   BREAKING CHANGE: ...        Closes #12
 

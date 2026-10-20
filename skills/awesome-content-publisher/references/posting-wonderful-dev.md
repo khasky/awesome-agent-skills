@@ -2,7 +2,7 @@
 
 Check: `wonderful.dev` — logged-in header state; the app lands on `/home`. Compose: the composer is already on the timeline — a visible `textarea[placeholder="Start typing…"]`, no dialog to open. Coordinate-click it and type.
 
-Submitting is solved: it is the `button[type=submit]` whose text is exactly `Post` and whose width is ~54 px. The 28 px-wide `Media` and `Poll` buttons beside it are the composer's *type* tabs and submit nothing, which is what made this look unsolvable. Filling works with `t.focus(); t.setSelectionRange(0, t.value.length)` then `page.keyboard.insertText(text)`.
+The submit is the `button[type=submit]` whose text is exactly `Post` and whose width is ~54 px. The 28 px-wide `Media` and `Poll` buttons beside it are the composer's *type* tabs and submit nothing. Filling works with `t.focus(); t.setSelectionRange(0, t.value.length)` then `page.keyboard.insertText(text)`.
 
 The submit button moves once an image is attached — from `y≈154` to `y≈1045`, below a 1068 px viewport, and it is then no longer within ~7 parents of the textarea, so a scoped search returns `null`. Search the whole document for it, `mouse.wheel` it into view, re-read the rect immediately before clicking. A stale coordinate here clicks nothing and the draft is lost on the next navigation (this composer does not persist drafts across reloads).
 

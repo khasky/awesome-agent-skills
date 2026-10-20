@@ -107,7 +107,7 @@ Async: Use try/catch in async functions; ensure promise rejections are handled (
 
 ## Silent failures
 
-The hardest class: it starts fine, returns 200, and quietly does nothing (or the wrong thing). Diagnose in order: unwired/unregistered component → undefined reference resolving to a no-op → type/signal mismatch dropping the payload → a swallowed error (`catch {}`, `|| true`) → sampling/filtering upstream making a downstream metric silently wrong. Never conclude a feature is absent because a key was rejected — look up that component's *own* key before shipping a degraded config, and disclose any tool/method substitution rather than reporting the original as missing.
+The hardest class: it starts fine, returns 200, and quietly does nothing (or the wrong thing). Diagnose in order: unwired/unregistered component → undefined reference resolving to a no-op → type/signal mismatch dropping the payload → a swallowed error (`catch {}`, `|| true`) → sampling/filtering upstream making a downstream metric silently wrong.
 
 ## Checklist
 

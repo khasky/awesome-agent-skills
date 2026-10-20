@@ -6,7 +6,7 @@ Compose: `Choose File` takes photos and videos (multiple). Each uploaded item ge
 
 Read-back: `flickr.com/photos/<user-id>/`, newest photo; the permalink is `/photos/<user-id>/<photo-id>/`.
 
-Every field here must be focused by a real click and **verified before a single keystroke**, because unfocused keystrokes become page shortcuts. A run that computed a field's rect from the batch-edit panel clicked an element at `y = -9760`, typed a 468-character description into the page itself, and watched the `?` in it open *Keyboard shortcuts for this page* while the rest ran as hotkeys; all fields stayed empty and the state ended with 33 console errors. Read `document.activeElement`'s `placeholder` after the click — `Add a title`, `Add a description`, `Separate tags with a space` — and type only when it matches.
+Every field here must be focused by a real click and **verified before a single keystroke**, because unfocused keystrokes become page shortcuts. A rect computed from the batch-edit panel can sit at `y = -9760`; a click there types the description into the page itself, where a `?` opens *Keyboard shortcuts for this page* and the rest runs as hotkeys, leaving every field empty. Read `document.activeElement`'s `placeholder` after the click — `Add a title`, `Add a description`, `Separate tags with a space` — and type only when it matches.
 
 The uploader mounts two sets of fields and only one set is real. Before the file is staged, the title and description inputs have zero-size rects; after it is staged, a second pair appears with real coordinates (the batch pair stays off-screen at `y ≈ -9760`). Filter by `getBoundingClientRect().y > 0` and width, never by placeholder alone.
 

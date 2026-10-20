@@ -194,7 +194,7 @@ Some skills read a reference file that ships with another skill instead of keepi
 | awesome-content-campaign | `awesome-content-publisher/references/browser-interaction.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
 | awesome-content-image-adapter | `awesome-content-campaign/references/platforms.md` |
 | awesome-content-publisher | `awesome-content-campaign/references/platforms.md`, `awesome-content-repurpose/references/authored-style.md`, `awesome-content-repurpose/references/forms.md` |
-| awesome-content-repurpose | `awesome-content-campaign/references/platforms.md`, `awesome-humanize-en/references/spelling-variants.md` |
+| awesome-content-repurpose | `awesome-content-campaign/references/platforms.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md` |
 | awesome-content-voice | `awesome-content-publisher/references/browser-interaction.md` |
 | awesome-document-style | `awesome-humanize-en/references/chatbot-artifacts.md`, `awesome-humanize-en/references/domain-*.md`, `awesome-humanize-en/references/language-patterns.md`, `awesome-humanize-en/references/lexicon.md`, `awesome-humanize-en/references/spelling-variants.md`, `awesome-humanize-en/references/structural-style-patterns.md` |
 | awesome-git-commit-plan | `awesome-humanize-en/references/lexicon.md` |

@@ -1,17 +1,10 @@
 # Pacing and timestamps
 
-Detail behind Phase 5: the measured-vs-flat-band example, the earliest-date source table for an `anchored` span, and the gap-generation and verification scripts. Read this while choosing timestamps.
+Detail behind Phase 5: the flat-band problem, the earliest-date source table for an `anchored` span, and how the gaps are generated and verified. Read this while choosing timestamps.
 
-## The flat-band problem, measured
+## The flat-band problem
 
-Measured — a 33-commit rebuild on a flat 3–6 minute band, against the 39-commit history it replaced:
-
-```text
-                    rebuilt (flat band)      the history it replaced
-gap min                       194 s                     2 s
-gap max                       355 s                64 741 s   (18 hours)
-gap mean                      274 s                 4 639 s
-```
+A flat band of a few minutes produces near-identical gaps everywhere, with no gap wider than a coffee break. A real history mixes seconds with overnight breaks, so its widest gap is hours, not minutes, and its mean is dominated by the long pauses.
 
 ## Step 1a — recovering the earliest date for an `anchored` span
 
@@ -34,42 +27,11 @@ gap mean                      274 s                 4 639 s
 
    The anchor is evidence, not permission. Starting the ladder at a date the repository can be shown to have existed is honest. Starting it earlier, or anchoring to a date salvage did not actually return, is backdating with extra steps — and the first commit of the rebuilt series carries that date forever, in a field anyone can read.
 
-## Gap-generation and verification scripts
+## Gap generation and verification
 
 In-session gaps come from a mixture rather than a uniform range — mostly short, occasionally long. Session breaks are inserted on top, and the whole ladder is scaled to the chosen span:
 
-```bash
-N=<commit count>; SPAN=<seconds>; SESSIONS=<S>      # the last commit lands at "now"
-
-# One draw: ~55% under 4 min, ~30% under 20 min, ~12% under 75 min, ~3% up to 3 h.
-draw() { local r=$((RANDOM % 100))
-  if   [ $r -lt 55 ]; then echo $((  30 + RANDOM %  211))
-  elif [ $r -lt 85 ]; then echo $(( 240 + RANDOM %  961))
-  elif [ $r -lt 97 ]; then echo $((1200 + RANDOM % 3301))
-  else                     echo $((4500 + RANDOM % 6301)); fi; }
-
-gaps=(); for ((i=1;i<N;i++)); do gaps[i]=$(draw); done
-
-# SESSIONS-1 of those gaps become overnight breaks, spread evenly so two never touch.
-for ((s=1;s<SESSIONS;s++)); do gaps[$(( s * N / SESSIONS ))]=$(( 3*3600 + RANDOM % (13*3600) )); done
-
-# Scale the shape to the requested span, then start the ladder that far back.
-raw=0; for ((i=1;i<N;i++)); do raw=$((raw + gaps[i])); done
-total=0; for ((i=1;i<N;i++)); do gaps[i]=$(( gaps[i] * SPAN / raw )); total=$((total + gaps[i])); done
-T=$(( $(date +%s) - total ))
-OFF=$(git log -1 --format=%ad --date=format:%z 2>/dev/null || echo +0000)
-
-# per commit i:  commit, then advance
-GIT_AUTHOR_DATE="@$T $OFF" GIT_COMMITTER_DATE="@$T $OFF" git commit -m "<subject>"
-T=$(( T + ${gaps[$i]:-0} ))
-```
-
-```powershell
-# Same ladder, same arithmetic; only the date plumbing differs.
-$t   = [int][double]::Parse((Get-Date -UFormat %s)) - $total
-$off = (Get-Date -Format zzz) -replace ':',''
-$env:GIT_AUTHOR_DATE = "@$t $off"; $env:GIT_COMMITTER_DATE = $env:GIT_AUTHOR_DATE
-```
+Draw one gap per commit from this mixture: about 55% between 30 seconds and 4 minutes, 30% between 4 and 20 minutes, 12% between 20 and 75 minutes, 3% between 75 minutes and 3 hours. Turn `SESSIONS - 1` of those gaps, spread evenly through the series so two never touch, into overnight breaks of 3 to 16 hours. Scale every gap by the same factor so the gaps sum to the chosen span, start the ladder that far back from now, and give each commit the running time as both `GIT_AUTHOR_DATE` and `GIT_COMMITTER_DATE` in the form `@<epoch> <offset>` (for example `GIT_AUTHOR_DATE="@1718000000 +0200"`), with the offset taken from the old history's last commit (`git log -1 --format=%ad --date=format:%z`).
 
 `@<epoch> <offset>` is git's portable date form — no `date -d` versus `date -r` split between GNU and BSD. Take the offset from the old history rather than from the machine: a rebuild whose timezone differs from every commit it replaced announces itself.
 
@@ -77,10 +39,4 @@ Both date fields move together. `GIT_AUTHOR_DATE` alone leaves the committer dat
 
 Verify the shape in Phase 7, against the backup — the model is worth nothing if it was not applied:
 
-```bash
-span() { git ${1:+-C "$1"} log --reverse --format='%at' ${2:-HEAD} |
-         awk 'NR>1{d=$1-p; if(!n||d<mn)mn=d; if(d>mx)mx=d; s+=d; n++} {p=$1}
-              END{print "min="mn"s max="mx"s mean="int(s/n)"s n="n}'; }
-span                       # rebuilt
-span <backup> main         # what it replaced
-```
+Read the author timestamps of the rebuilt series and of the backup's old branch in order (`git log --reverse --format=%at`), take the differences between neighbours, and compare their minimum, maximum and mean: the rebuilt series must show the mixture above, with overnight breaks as its widest gaps, not a flat band.

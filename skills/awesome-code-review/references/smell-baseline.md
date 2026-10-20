@@ -31,5 +31,5 @@ Each smell reads *what it is on this diff* → *the direction of the fix*.
 ## Which of these belong in the review
 
 - Only where the diff creates or worsens them. A smell that already lived in the file and is untouched by the change is a note at most; demanding its cleanup inside an unrelated PR is scope creep with a citation attached.
-- Ranked with everything else. These compete for the round's five to seven slots against correctness and security findings, and they usually lose. One structural smell that explains several others is worth reporting; a list of twelve is a wall the author will scroll past.
+- Ranked with everything else. These compete with correctness and security findings for the round's attention, and they usually lose. One structural smell that explains several others is worth reporting; a list of twelve is a wall the author will scroll past.
 - With a location and a direction. "Possible Data Clumps at `orders.ts:88` — `userId, tenantId, locale` travel together through four signatures in this diff; a `RequestContext` type would carry them" is actionable. "This could be cleaner" is not.

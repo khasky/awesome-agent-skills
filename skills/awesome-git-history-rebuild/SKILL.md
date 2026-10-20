@@ -192,7 +192,7 @@ Read `references/preflight-checks.md` before running these checks: it holds the 
     > Nothing is touched yet — the next steps are a verified backup and a read-only analysis, and you will approve the exact commit list before anything is pushed. Proceed? And: tags — `<delete | keep>`? releases — `<delete | keep>` (`<N>` releases, `<n>` assets, `<n>` downloads)? contributors sidebar — `<clean | leave>`? tree references — `<repair in a follow-up commit | leave and disclose>` (`<file list>`)? merged PRs — `<attribute in the plan | leave>` (`<N>`)?
     The PR-and-activity paragraph is a disclosure, not a sixth decision — there is no action to offer, which is exactly why it has to be said before the backup rather than discovered in Phase 13.
 
-    Report the facts — the concentration number, every stop gate, what the push sets off, what each of the five end-state answers costs, and what the host logs permanently — and let the user weigh them. The user invoked this skill on purpose: a low concentration number is a finding to state plainly, not a case to argue, and an impression that "the log already looks conventional" is not a finding at all.
+    Report the facts — the concentration number, every stop gate, what the push sets off, what each of the five end-state answers costs, and what the host logs permanently — and let the user weigh them. The user invoked this skill on purpose.
 
 ---
 
@@ -389,7 +389,7 @@ Read `references/post-push-repair.md` for the diagnostic commands, the exact ren
 
 The rebuild re-authored every commit to the person running it, so after Phase 9 the commit graph holds exactly one identity. GitHub's Contributors sidebar does not follow: it is a cached index, not a live read of the graph, and a force-push replaces the refs without ever invalidating it. The old account keeps appearing — for days, in reported cases.
 
-Run this phase, or skip it, according to the answer collected at gate #1 (step 26). Skipping is a legitimate answer *the user gives*; it is never one the run makes for them, and "the fix renames the default branch, which seemed like a lot for a cosmetic entry" is a cost to have stated at step 26, not a decision to take in Phase 11.
+Run this phase, or skip it, according to the answer collected at gate #1 (step 26). Skipping is a legitimate answer *the user gives*; it is never one the run makes for them; a cost the run judges too high is stated at step 26, not decided in Phase 11.
 
 The API is not the sidebar — this is the trap this phase exists to avoid. `repos/<owner>/<repo>/contributors`, `stats/contributors` and the rendered repository page are fed by *different* caches. The API commonly answers with the new, correct list within seconds of the push while `https://github.com/<owner>/<repo>` still shows every account that ever committed. So:
 
@@ -405,7 +405,7 @@ The fix — rename the default branch, then rename it back. This is what forces 
 
 Read `references/post-push-repair.md` for the exact tag and release deletion commands.
 
-Execute the tag and release answers collected at gate #1 (step 26) — that is what this phase is, and there is no branch of it where the run decides for itself. *Keep* is a legitimate answer and needs no action beyond the report; it is legitimate because the user gave it, not because the run judged deletion too expensive. If the answer names a subset, delete exactly that subset.
+Execute the tag and release answers collected at gate #1 (step 26) — that is what this phase is, and there is no branch of it where the run decides for itself. *Keep* is a legitimate answer and needs no action beyond the report. If the answer names a subset, delete exactly that subset.
 
 Keeping tags leaves every one of them pointing into the old history, which keeps those objects reachable — say so in Phase 13 rather than implying the wipe was total.
 
@@ -447,7 +447,7 @@ Deleted releases do not come back — a release object and its uploaded assets a
 - The published result is proved, not assumed: a fresh clone of the remote is compared to the backup by root tree hash, and a mismatch rolls back before anything else happens.
 - Whether a rebuild is worth doing is answered with the Phase 0 concentration measurement and decided by the user; the run reports the number and the stop gates, it does not talk the user out of the task it was invoked for.
 - The plan is approved as a table, by the user, before a single commit is made — and re-split on request rather than defended. A plan supplied with `--plan` is validated against this tree first, and a coverage mismatch stops the run rather than being reconciled quietly.
-- Tags, releases, the contributors sidebar, the tree's references to the erased history and the merged pull requests are decided by the user at gate #1 and executed verbatim in Phases 10–12. The run never leaves one alone by its own judgment, never treats silence as "keep", and never reads a clean `contributors` API response as an answer about a rendered page it cannot see. A cost the run thinks is too high is a fact to state at the gate, not a decision to make after it.
+- Tags, releases, the contributors sidebar, the tree's references to the erased history and the merged pull requests are decided by the user at gate #1 and executed verbatim in Phases 10–12. The run never leaves one alone by its own judgment, never treats silence as "keep", and never reads a clean `contributors` API response as an answer about a rendered page it cannot see.
 - File content is changed in Phase 10 only, as one commit on top of a tip whose tree was already proved identical, with the diff approved. Never inside the rebuild, never by amending a rebuilt commit, never with a second force-push.
 - No invented history: no fabricated bug-fix arcs, no commit describing work the tree does not contain, no synthesized merge for a PR whose diff is not in the final tree.
 - Both date fields carry the approved ladder, and Phase 7 checks them against it rather than assuming the loop applied them. Signing is offered and verified against the objects and the host, never assumed.

@@ -170,16 +170,6 @@ No coverage, no verdict. If a high-risk area couldn't actually be reviewed (no s
 
 Rate on impact and reachability, not the pattern alone: weigh exploitability, required access, data sensitivity, privilege gained, blast radius, and existing mitigations. CVSS may accompany the rating but doesn't replace business-risk judgment.
 
-## Common rationalizations
-
-| Excuse | Reality |
-|--------|---------|
-| "Small change, skip the audit" | Heartbleed was two lines. |
-| "It's behind a WAF" | WAFs mask origin vulnerabilities; test the origin. |
-| "Internal service, trusted network" | Lateral movement is the standard second step of every breach. |
-| "That default is just for development" | If it can reach production code, it's a finding. |
-| "The framework handles that" | Confirm the escape hatches (`mark_safe`, `.raw()`, `dangerouslySetInnerHTML`) aren't in use first. |
-
 ## Anti-patterns (avoid in the remediation you specify)
 
 - Introducing new hardcoded secrets or logging secrets/PII.

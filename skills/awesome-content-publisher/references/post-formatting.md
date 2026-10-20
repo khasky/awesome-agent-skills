@@ -1,6 +1,6 @@
 # Post formatting — getting the source's markdown into a composer that is not markdown
 
-The post files are markdown. Almost no social composer is. Every defect in this file shipped to a live account because a run typed the source verbatim and checked only that the *characters* arrived.
+The post files are markdown. Almost no social composer is. Every defect in this file comes from typing the source verbatim and checking only that the *characters* arrived.
 
 Read this before the first composer of a run, alongside `browser-interaction.md`. The pre-submit checks it ends with are not optional extras: they are the difference between a post and a post with ` ```text ` printed in it.
 
@@ -13,9 +13,9 @@ Three classes, and the class decides what reaches the editor:
 | Plain text | linkedin, facebook-wall, threads, instagram, pixelfed, x, mastodon, bluesky, truthsocial, peerlist, minds, bastyon, pinterest, tumblr, quora | markdown stripped: fences and inline backticks removed, `#` heading markers removed, `**bold**` unwrapped, `[t](u)` flattened |
 | Markdown-native | devto, hashnode (via paste), lemmy | the source verbatim |
 | Rich editor | medium, substack, buymeacoffee, daily-dev, ko-fi | markdown converted to HTML and delivered as a paste event |
-| Toolbar-only | patreon | plain text, then each heading and emphasis applied by selecting the range and picking the style from the floating toolbar |
+| Rich editor (paste first) | patreon | HTML paste into the Remirror body; the toolbar walk below only where the element count shows loss |
 
-A toolbar-only editor is the one class where the formatting is a second pass, not part of the fill. Patreon renders no markdown and sanitises an HTML paste away, so the body goes in as plain text and every `##` and `**…**` is then converted by hand: `Range` over the block's text node → the floating toolbar mounts above the selection → `button[aria-label="Text size"]` → `Heading 2`, or `button[aria-label="Bold"]` → then delete the marker characters, which the style does not consume. Budget for it: the pass is one round trip per heading, and skipping it publishes the markers as literal text.
+Where the paste count shows loss, the formatting becomes a second pass. Patreon renders no markdown, so any `##` or `**…**` left as text is converted by hand: `Range` over the block's text node → the floating toolbar mounts above the selection → `button[aria-label="Text size"]` → `Heading 2`, or `button[aria-label="Bold"]` → then delete the marker characters, which the style does not consume. Budget for it: the pass is one round trip per heading, and skipping it publishes the markers as literal text.
 
 The class is a hypothesis until the live page proves it. `wonderful-dev` renders code fences, inline code and headings but not every link, so it belongs to no class cleanly (its note says which parts stay markdown; headings there take the plain-text emoji form) — and assuming "markdown platform" ships `[label](https://…)` as literal text. Before deciding, open one existing post on that platform and look at what its markup actually became.
 
@@ -29,7 +29,7 @@ Emphasis is not rebuilt out of Unicode Mathematical Alphanumeric characters (sty
 
 Two traps in the stripping itself:
 
-- A line starting with `#` is only a heading when a space follows the hashes. `#claudecode #ai #learning` is a hashtag line and must survive untouched. A converter that treats every `#` line as a heading (or, worse, whose paragraph loop skips `#` lines without advancing) either eats the tags or spins forever — the second one hung a run until it was killed.
+- A line starting with `#` is only a heading when a space follows the hashes. `#claudecode #ai #learning` is a hashtag line and must survive untouched. A converter that treats every `#` line as a heading (or, worse, whose paragraph loop skips `#` lines without advancing) either eats the tags or spins forever.
 - A trailing hashtag line is a heading on markdown platforms. On `devto` it renders as an `<h1>`; move it into the front-matter `tags:` field instead, which is that platform's own mechanism. On `hashnode` and `lemmy` a `#word` with no space is safe as body text.
 
 ## HTML paste is the reliable route into TipTap and ProseMirror
@@ -68,7 +68,7 @@ Assume nothing autolinks. The failure is silent and it always eats the one thing
 
 - `insertText` of a multi-paragraph string collapses it into one block in block editors. Insert paragraph by paragraph with an explicit `Enter` between them.
 - Newlines *inside* one inserted paragraph are dropped. A Tumblr block of five `/command …` lines publishes as one run-on line. Where a source paragraph contains single newlines, insert them as explicit `Shift+Enter` breaks and count the `br` elements afterwards.
-- Never press `Escape` between paragraph inserts. It was added to dismiss a slash-command menu and instead scrambled the block order — the last paragraph ended up first. Nothing needs dismissing: `insertText` does not open Tumblr's slash menu.
+- Never press `Escape` between paragraph inserts. It scrambles the block order — the last paragraph ends up first. Nothing needs dismissing: `insertText` does not open Tumblr's slash menu.
 - Runs of very short paragraphs publish as a stretched wall in rich editors. A rhythmic `Browser.` / `Resolver.` / `Root.` sequence gets a full paragraph gap under each line on Medium and reads as broken. Fuse a run of three or more consecutive one-line paragraphs of ≤32 characters into one block joined by hard breaks. The threshold matters: at 35 it swallows real prose sentences, at 30 it misses `No assumed background knowledge.`
 
 ## The pre-submit format gate
@@ -106,7 +106,7 @@ The rule underneath: when a platform transforms the source, check that nothing w
 
 ## Try the HTML paste on every rich editor, including the ones this skill says cannot take one
 
-A run that ended with forty-odd published posts used the same first move everywhere and it worked on every rich editor it met: focus the body node, dispatch a `paste` `ClipboardEvent` carrying `text/html`, read the result. That includes editors whose own notes here said otherwise — Patreon's Remirror, documented as having "no HTML paste that survives", converted a whole campaign unit in one call with headings, lists, bold and anchors intact. Classify by measuring, not by reputation: paste, then count `h1..h4`, `pre`, `li`, `a[href]`, `pre a` and the joined text against the source. Only where that count shows real loss does the per-construct toolbar walk earn its cost, and the note for that platform should record which of the two ran.
+The same first move works on every rich editor: focus the body node, dispatch a `paste` `ClipboardEvent` carrying `text/html`, read the result. Patreon's Remirror included: it takes a whole campaign unit in one call with headings, lists, bold and anchors intact. Classify by measuring, not by reputation: paste, then count `h1..h4`, `pre`, `li`, `a[href]`, `pre a` and the joined text against the source. Only where that count shows real loss does the per-construct toolbar walk earn its cost, and the note for that platform should record which of the two ran.
 
 What the paste loses is narrower and more predictable than "the editor cannot take HTML":
 

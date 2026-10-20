@@ -80,7 +80,7 @@ The examples above are TypeScript; the rule is "follow the language's own publis
 - Java / Kotlin — `camelCase` methods and fields, `PascalCase` types, one public type per file named after it.
 - C# — `PascalCase` for methods, properties, and types; `camelCase` for locals and parameters; interfaces prefixed `I`.
 
-## Immutability (critical)
+## Immutability
 
 ```typescript
 // GOOD: Spread and new references

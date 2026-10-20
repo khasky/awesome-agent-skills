@@ -122,7 +122,7 @@ After: 2023 saw the release of films such as *Oppenheimer*, *Barbie*, and *Anato
 
 The base content patterns (#1–9) are stable; they cross-link to adjacent classes:
 
-- On finding #1 Regression to the mean — also check `false-positives.md`, the section "Rhetorical figures in literary prose".
+- On finding #1 Regression to the mean — also check `false-positives.md` §1 (the em-dash in literary prose) and §3 (the rule of three in rhetorical prose).
 - On finding #6 Vague attributions — always run it through `source-fabrication.md` (DOI/ISBN checks, author lifespan checks against publication dates).
 - On finding #3 Emphasis on media presence in comments, drafts, or wiki talk pages — see `chatbot-artifacts.md` (unambiguous markers such as `:contentReference[oaicite:N]` are often nearby).
 
@@ -140,9 +140,9 @@ Difference from honest attribution. A real writer citing Ebert reports a specifi
 
 What to do. Open the source. If the claim is not there, it is a forged attribution: delete it or replace it with a real quote. Always run `source-fabrication.md` — next to a pseudo-attribution the citation itself often leads nowhere.
 
-Before: Film critic Roger Ebert underscored the film's enduring influence on American cinema.
+Before: Film critic Dana Whitlock underscored the film's enduring influence on American cinema.
 
-After: In his review for the Chicago Sun-Times, Roger Ebert noted that the final scene was shot in a single take with no cuts.
+After: In her review for the Daily Ledger, Dana Whitlock noted that the final scene was shot in a single take with no cuts.
 
 ---
 

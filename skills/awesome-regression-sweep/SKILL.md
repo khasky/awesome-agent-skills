@@ -56,14 +56,9 @@ Nine aspects, one line each, then a verdict. Include the ones that exist:
 | end-to-end audit | the system does not verify end to end |
 | downstream consumer build | a consumer of the contract no longer builds |
 
-Baseline discipline. The first pass writes `baseline.json` at a path it states in that pass and every later pass reuses, one per repository and per sweep configuration; every later pass compares against it and prints a `DELTAS` block, or `no deltas`. "846 passed" is not a result; "846 passed, same as the baseline" is. Only a line the aspect declares as its `tally` is compared — a bare last line carries timings and would report a delta every pass. Re-baseline deliberately with `--update-baseline`, never to make a red pass look green.
+Baseline discipline. The first pass records a baseline (one tally per aspect) at a location it states and every later pass reuses, one per repository and per sweep configuration; every later pass reports its deltas against it, or that there are none. "846 passed" is not a result; "846 passed, same as the baseline" is. Compare the aspect's own result line, never its last line, which carries timings and would report a delta every pass. Re-baseline only deliberately, never to make a red pass look green.
 
-Four config options that decide whether the sweep can be trusted:
-
-- `expect` — a pattern the output must contain. Exit codes lie: wrapper scripts, shell shims, and some suites report `0` while printing a failure, and a filtered summary has reported "clean" while the underlying tool failed. When an aspect prints its own verdict, assert on that verdict; and when a wrapper compresses output, run the tool's binary directly rather than the wrapper.
-- `timeoutMs` — a ceiling per aspect. A hung live check otherwise stalls the pass forever, and a sweep that never finishes verified nothing.
-- `failLines` — the pattern that marks a failing case, so a red aspect prints the failing names instead of a blind tail.
-- `env` — derive environment parameters from the application's own config rather than re-typing them in the harness. A key, an endpoint, or a limit copied into the sweep drifts from the code it is supposed to check, and then the harness is what is wrong.
+Two more things decide whether the sweep can be trusted. When a wrapper compresses output, run the tool's binary directly rather than the wrapper, and have a red aspect print the names of the failing cases rather than a blind tail. Derive environment parameters from the application's own config rather than re-typing them: a key, an endpoint, or a limit copied into the sweep drifts from the code it is supposed to check, and then the sweep is what is wrong.
 
 Running it repeatedly is the point. One pass proves the code compiles. Several passes spread over time catch flakes, state leaking between tests, and drift caused by things outside the repo — a scheduled job that ran, a machine that slept, someone else's deploy. For a long watch, schedule the sweep and rotate the angles below through the iterations.
 
@@ -78,7 +73,7 @@ Split the aspects into two lanes by resource contention, not just independence �
 - Safe to fan out concurrently: the static/read-only aspects (typecheck, lint, generated-artifact drift, docs-vs-code constants — angle 7) and the black-box HTTP probes, one agent per endpoint or per malformed shape. They share no port, database, or browser.
 - Must stay serial: the unit / integration / e2e suites and any live browser suite. Concurrent runs fight over ports, test databases, and browsers and manufacture the exact flakes angle 1 exists to catch — so run heavy suites one at a time, and angle 1 (order-dependent flakes) always runs alone.
 
-The barrier is the verdict: one agent merges all deltas against the single `baseline.json` and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or emits a verdict. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
+The barrier is the verdict: one agent merges all deltas against the single baseline and assigns SHIP/FIX/BLOCK — a sub-agent never re-baselines or emits a verdict. Resource preflight (before fan-out): keep a wave to a few sub-agents, fewer when each runs a browser, a language server or tests; go serial when the machine is already short on CPU or memory; where the runtime caps sub-agent concurrency itself, defer to it.
 
 ## Phase 2 — the nine angles
 
@@ -146,15 +141,7 @@ Not verified: <standing gaps, and what it would take to close each>
 A sweep starts servers, browsers, tails, and background jobs. Close them.
 
 - A stopped background task is not a stopped process. Dev servers spawn children that survive the parent; browser suites leave a browser alive after a crashed run.
-- Never kill by name. Several agent sessions and editors run on one machine; `node`, `pwsh`, and `chrome` are not yours to kill wholesale. Walk the parent chain, confirm the process descends from your own command, and stop only that subtree.
-
-```powershell
-$p = <pid>; while ($p) { $x = Get-CimInstance Win32_Process -Filter "ProcessId=$p"; if (-not $x) { break }; "$($x.Name)($($x.ProcessId)) :: $($x.CommandLine)"; $p = $x.ParentProcessId }
-```
-
-```bash
-pid=<pid>; while [ -n "$pid" ] && [ "$pid" != 0 ]; do ps -o pid=,ppid=,comm=,args= -p "$pid" || break; pid=$(ps -o ppid= -p "$pid" | tr -d ' '); done
-```
+- Never kill by name. Several agent sessions and editors run on one machine; `node`, `pwsh`, and `chrome` are not yours to kill wholesale. Walk the parent chain with the platform's process query (`Get-CimInstance Win32_Process` by `ProcessId` and `ParentProcessId` on Windows, `ps -o pid=,ppid=,comm=` on POSIX) until it reaches your own command, and stop only that subtree.
 
 - Confirm the port is closed after stopping a server, and stop every tail and monitor the run armed.
 - Disk counts too. Browser profiles, downloaded fixtures, and coverage output grow without bound. Prune the ignored caches when no run is active.

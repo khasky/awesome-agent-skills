@@ -81,7 +81,7 @@ The inventory is shared across the collection and lives once, in `awesome-humani
 Three entries carry a translator's note on top of the inventory:
 
 - "in conclusion" has natural English replacements a translation reaches for first — "to wrap up", "all told", or a closing that simply starts differently.
-- "deliberately" as an intent stamp is usually a calque of «специально» / «намеренно»; write "on purpose", or give the reason the Russian sentence implies.
+- "deliberately" as an intent stamp is usually a calque of «специально» / «намеренно»; give the reason the Russian sentence implies.
 - Negation-frame calques of «не X, а Y» / «X, а не Y» rendered as a theatrical "It's not X, it's Y" — translate to a direct positive statement, or, if the contrast genuinely matters, two parallel positive clauses.
 
 ### 5. Russian connectors → natural English

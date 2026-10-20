@@ -163,7 +163,7 @@ What to do. Delete the markers. As in A.8: the claim the marker was attached to 
 
 ### A.10. Non-standard spaces and Unicode watermarks
 
-From August 2, 2026, Article 50 of the EU AI Act applies: the output of generative systems must be "machine-detectable" (the code of practice was published June 10, 2026). The expected consequence is a rise in invisible text marking. Two mechanisms already observed:
+Article 50 of the EU AI Act requires the output of generative systems to be machine-detectable, so invisible text marking is rising. Two mechanisms already observed:
 
 | Marker | Who leaves it | Regular expression |
 |---|---|---|

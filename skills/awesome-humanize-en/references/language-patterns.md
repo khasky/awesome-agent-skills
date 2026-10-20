@@ -159,7 +159,7 @@ False-positive boundary. A deliberate literary tonal shift — between dialogue 
 
 ### 15e. 🟡 Formulaic multi-word collocations / AI-favourite phrases
 
-Source: English Wikipedia "Signs of AI writing"; community observation of default LLM phrasing. (The slot holds an English tell; the Russian-specific one it replaced has no counterpart here.)
+Source: English Wikipedia "Signs of AI writing"; community observation of default LLM phrasing.
 
 Problem. Where a specific writer would choose a concrete phrase, the model reaches for the single most statistically frequent multi-word formula. This is distinct from the single words in #10 above — these are fixed multi-word phrases the model produces by default.
 

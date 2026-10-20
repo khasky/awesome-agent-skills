@@ -56,7 +56,7 @@ Missing or jarring transitions, choppy runs of same-length sentences, overuse of
 ## Output
 
 1. Summary line — error counts by category (Grammar N · Logic N · Flow N), and whether the text reads as ready / needs-work.
-2. Top 3–5 fixes — the highest-impact ones first, each labeled Critical / High / Medium, so the author fixes what matters before the long tail.
+2. Top fixes — the few highest-impact ones first, each labeled Critical / High / Medium, so the author fixes what matters before the long tail.
 3. Full table — `# | Location (quote) | Category | Issue | Suggested fix | Why`. Keep the suggestion minimal and quote the span; do not rewrite surrounding text. Explain the "Why" in plain terms, no grammar jargon the author would have to look up.
 4. Objective/tone check (only if `objective` was given) — one line on whether the text serves its purpose and the tone fits the audience.
 
@@ -69,7 +69,7 @@ Advisory mode is the default and the only mode: return the list, never a rewritt
 - Every item is a real error or a clearly-labeled subjective suggestion — not a style preference dressed as a rule.
 - Objective errors and subjective suggestions are visibly separated.
 - Nothing inside code/quotes/foreign spans was flagged.
-- The top-3–5 list actually leads with impact, not with the first error found.
+- The top-fixes list actually leads with impact, not with the first error found.
 
 ## Example output
 

@@ -27,8 +27,8 @@ Before running it:
 
 - Re-check protection — `gh api "repos/$REPO/branches/<branch>/protection"`. A `404 Branch not protected` means there is nothing to lose; otherwise verify the rules again after the second rename.
 - Do not push between the two commands. In that window the branch does not exist under its real name.
-- The rename does fire workflow events. Verify, never assume it is silent. Observed on a public repo: `main` → `main-tmp` → `main` produced two `delete`-event runs *and* a `push`-event run on the restored branch — `head_sha` unchanged, no commit involved. Anything keyed to `on: push: branches: [<branch>]` or `on: delete` runs. Re-read the triggers from Phase 0, step 19 and say what will fire before renaming.
-- A mirror or cleanup job that prunes is the real hazard in that window. While the branch is renamed away, a `--prune` mirror sees it as deleted and tries to delete it downstream. In the observed run the downstream refused — `remote: GitLab: The default branch of a project cannot be deleted.` — and the mirror survived on the luck of both sides naming the default branch the same. A downstream whose default branch is named differently loses the branch. If a mirror exists: pause it, or accept the risk deliberately, and re-verify the downstream tip and tags afterwards.
+- The rename does fire workflow events. Verify, never assume it is silent: `main` → `main-tmp` → `main` fires a `delete`-event run per rename *and* a `push`-event run on the restored branch — `head_sha` unchanged, no commit involved. Anything keyed to `on: push: branches: [<branch>]` or `on: delete` runs. Re-read the triggers from Phase 0, step 19 and say what will fire before renaming.
+- A mirror or cleanup job that prunes is the real hazard in that window. While the branch is renamed away, a `--prune` mirror sees it as deleted and tries to delete it downstream. A downstream that protects its default branch refuses the delete only while both sides name the default branch the same; one whose default branch is named differently loses the branch. If a mirror exists: pause it, or accept the risk deliberately, and re-verify the downstream tip and tags afterwards.
 - `422 Validation Failed — New branch already exists` on the second rename is usually a stale read, not a conflict. Check `git ls-remote --heads origin`; if it shows only `<branch>-tmp`, the rename simply has not propagated and the call retries clean. Treating the 422 as a hard failure abandons the repository on the temporary name — the worst outcome this phase has.
 - After the second rename, `git ls-remote --heads` can list both names. Re-read before touching anything: the extra ref is normally a stale response that is gone on the next call, and deleting on the first reading risks deleting the branch that was just restored.
 - Open pull requests are retargeted automatically by GitHub.
@@ -39,7 +39,7 @@ Preventing the next one: a wrong identity almost always comes from a global `git
 git config --local user.name  "<login>"
 git config --local user.email "<id>+<login>@users.noreply.github.com"
 ```
-Background, sources and the community threads behind each escalation: <https://gist.github.com/khasky/3939637b842510c4ff44d2e4d84acd0f>. This phase is GitHub-specific — for any other host, report the sidebar as unverified rather than assuming the same trick exists.
+This phase is GitHub-specific — for any other host, report the sidebar as unverified rather than assuming the same trick exists.
 
 ## Phase 12 — tags and releases
 

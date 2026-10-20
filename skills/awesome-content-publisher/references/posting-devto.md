@@ -22,7 +22,7 @@ const md = [...document.querySelectorAll('input,textarea')].map(x => x.value || 
 const url = md.match(/\((https:[^)]+)\)/)[1];
 ```
 
-Do not regex the page HTML for a CDN pattern. A run that used `/https:\/\/dev-to-uploads\.s3\.amazonaws\.com\/uploads\/articles\/[\w.-]+/` matched the *first* such URL in the document — a foreign 300×299 asset belonging to another article in the editor shell — and published that image as both the cover and the in-body picture while reporting success. The upload had worked fine; only the URL was wrong. Two details make the mismatch invisible to that kind of regex: the real host is `s3.us-east-2.amazonaws.com` (not the bare `s3.amazonaws.com` other assets use), and the file keeps its original extension, so a JPEG upload yields `.jpg`, not `.png`.
+Do not regex the page HTML for a CDN pattern. A regex like `/https:\/\/dev-to-uploads\.s3\.amazonaws\.com\/uploads\/articles\/[\w.-]+/` matches the *first* such URL in the document — a foreign asset belonging to another article in the editor shell — and publishes that image as both the cover and the in-body picture while the upload itself worked. Two details make the mismatch invisible to that kind of regex: the real host is `s3.us-east-2.amazonaws.com` (not the bare `s3.amazonaws.com` other assets use), and the file keeps its original extension, so a JPEG upload yields `.jpg`, not `.png`.
 
 Whatever URL you end up with, prove it is yours before publishing: open it and check the pixel dimensions against the source file. That single check would have caught this.
 

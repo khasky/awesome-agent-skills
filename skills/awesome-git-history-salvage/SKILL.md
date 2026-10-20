@@ -15,8 +15,6 @@ Answer one question completely: what has this repository ever contained? Not wha
 
 Why it is not just `git log --all`: a force-push replaces a ref, it does not delete objects. The objects stay on the host, unreachable, and the host keeps a public record of every ref state in its activity log. Those two facts together are what makes the old history recoverable — but only if you know that `git fetch origin <sha>` serves an unreachable commit while `GET /repos/{owner}/{repo}/commits/{sha}` answers `422 No commit found` for the same SHA. The git protocol succeeds where REST refuses, and that asymmetry is the whole technique.
 
-Measured case. A repository whose default branch had just been rebuilt showed 67 commits in `git log`. Merging the four sources below produced 319 — 252 of them off-branch, including a whole erased 62-commit history, 50 bot commits on pull-request refs, and 5 commits under a differently-capitalized author name that exist nowhere in the current tree. All 74 ref states the activity log recorded were still fetchable; none had aged out.
-
 ## Core principle
 
 READ-ONLY, AND HONEST ABOUT THE EDGES. This skill fetches and reports. It never pushes, never deletes a ref, and never touches the user's own checkout — every fetch lands in a disposable scratch clone, because salvage writes dozens of refs (`refs/salvage/*`, `refs/pr/*`) that nobody wants in a working repository.
@@ -295,9 +293,9 @@ Column 2:  *  = reachable from origin/<branch> today
            .  = erased, orphaned, or living only on a pull-request ref
 
 ==============================================================================
-079d53ab  *  2026-04-07  khasky                 chore(tauri): add the rust crate and its bundle configuration  [origin,backup]
-2052f425  .  2026-04-12  khasky                 Initial commit  [backup,activity]
-40f357fa  *  2026-04-13  khasky                 feat(tauri): run child processes without flashing a console window  [origin,pr]
+079d53ab  *  2026-04-07  <author>               chore(core): add the build crate and its bundle configuration  [origin,backup]
+2052f425  .  2026-04-12  <author>               Initial commit  [backup,activity]
+40f357fa  *  2026-04-13  <author>               feat(core): start worker processes without a visible console  [origin,pr]
 ```
 
 The `Level:` block is not optional, and it names the *other* files when several were written. A reader holding one of three files with no idea which one is reading a row count they will misinterpret; the `unique` file in particular is shorter than the truth on purpose.
